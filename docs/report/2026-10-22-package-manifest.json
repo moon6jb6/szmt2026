@@ -1,38 +1,38 @@
 {
   "schema": "dsh/package-manifest/v1",
   "project": "《把名字留下来》",
-  "generatedAt": "2026-10-21T15:13:09.103Z",
-  "generatedAtLocal": "2026-10-21 23:13:09 +08:00",
-  "durationSeconds": 5.26,
+  "generatedAt": "2026-10-21T15:19:39.484Z",
+  "generatedAtLocal": "2026-10-21 23:19:39 +08:00",
+  "durationSeconds": 5.5,
   "tool": "tools/package.mjs",
-  "command": "node tools/package.mjs --name 把名字留下来_460737 --out D:\\提交\\把名字留下来_460737.zip --note 正式打包：作品编号 460737（视频/报名表为占位，后续替换后可重跑）",
-  "runNote": "正式打包：作品编号 460737（视频/报名表为占位，后续替换后可重跑）",
+  "command": "node tools/package.mjs --name 把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737 --out D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip --note 正式打包：作品名称定稿，编号 460737；PDF 已重出",
+  "runNote": "正式打包：作品名称定稿，编号 460737；PDF 已重出",
   "dryRun": false,
   "ok": true,
   "exitCode": 2,
   "submissionReady": false,
-  "name": "把名字留下来_460737",
+  "name": "把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737",
   "nameIsPlaceholder": false,
   "git": {
     "available": true,
-    "head": "c3b900e",
-    "dirty": 0
+    "head": "1a09a53",
+    "dirty": 23
   },
   "metrics": {
     "path": "docs/report/2026-10-22-afternoon-metrics.json",
     "generatedAt": "2026-10-21T14:43:04.949Z"
   },
   "archive": {
-    "path": "D:\\提交\\把名字留下来_460737.zip",
-    "pathRelative": "D:/提交/把名字留下来_460737.zip",
-    "bytes": 30845467,
-    "human": "29.42 MiB",
-    "mib": 29.42,
-    "sha256": "e4ca133e46adbdf24430e3bc8be5261c7cdc43aebc99c92ec5362e48676607ce",
+    "path": "D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip",
+    "pathRelative": "D:/提交/把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip",
+    "bytes": 30906562,
+    "human": "29.47 MiB",
+    "mib": 29.47,
+    "sha256": "b97427858617a1f167cca76c76ccb377827c0b4b1ab19e87d989853cddf3d916",
     "entries": 597,
     "files": 579,
     "dirs": 18,
-    "compressionRatio": 0.9273,
+    "compressionRatio": 0.9292,
     "utf8FilenameFlag": true,
     "crossCheck": {
       "tool": "bsdtar -tf",
@@ -45,17 +45,17 @@
       "shell": "powershell",
       "entries": 597,
       "expectedEntries": 597,
-      "rootFolder": "把名字留下来_460737/",
+      "rootFolder": "把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737/",
       "rootFolderReadable": true,
       "ok": true,
       "sample": [
-        "把名字留下来_460737/",
-        "把名字留下来_460737/01_作品及成果文件/",
-        "把名字留下来_460737/01_作品及成果文件/art/"
+        "把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737/",
+        "把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737/01_作品及成果文件/",
+        "把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737/01_作品及成果文件/art/"
       ],
       "reason": null
     },
-    "stagingDir": "D:\\提交\\_staging\\把名字留下来_460737__20261021151303\\把名字留下来_460737",
+    "stagingDir": "D:\\提交\\_staging\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737__20261021151933\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737",
     "stagingKept": true,
     "limitBytes": 10737418240,
     "limitHuman": "10 GiB",
@@ -71,7 +71,7 @@
     "files": 579,
     "dirs": 16,
     "dirsIncludingRoot": 17,
-    "bytes": 33262332,
+    "bytes": 33262552,
     "human": "31.72 MiB",
     "byGroup": [
       {
@@ -84,15 +84,15 @@
       {
         "group": "02_作品展示视频",
         "files": 1,
-        "bytes": 953,
-        "human": "953 B",
+        "bytes": 1004,
+        "human": "1004 B",
         "label": "作品展示/评审视频（当前缺）"
       },
       {
         "group": "03_作品介绍文档",
         "files": 1,
-        "bytes": 850522,
-        "human": "830.6 KiB",
+        "bytes": 850640,
+        "human": "830.7 KiB",
         "label": "作品介绍 PDF"
       },
       {
@@ -126,8 +126,8 @@
       {
         "group": "报名与承诺书（线下办理）",
         "files": 1,
-        "bytes": 983,
-        "human": "983 B",
+        "bytes": 1034,
+        "human": "1.0 KiB",
         "label": "报名信息 / 承诺书（线下办理，当前缺）"
       }
     ],
@@ -185,8 +185,8 @@
       "label": "作品展示/评审视频（当前缺）",
       "required": false,
       "files": 1,
-      "bytes": 953,
-      "human": "953 B",
+      "bytes": 1004,
+      "human": "1004 B",
       "status": "placeholder"
     },
     {
@@ -194,8 +194,8 @@
       "label": "作品介绍 PDF",
       "required": true,
       "files": 1,
-      "bytes": 850522,
-      "human": "830.6 KiB",
+      "bytes": 850640,
+      "human": "830.7 KiB",
       "status": "ok"
     },
     {
@@ -275,8 +275,8 @@
       "label": "报名信息 / 承诺书（线下办理，当前缺）",
       "required": false,
       "files": 1,
-      "bytes": 983,
-      "human": "983 B",
+      "bytes": 1034,
+      "human": "1.0 KiB",
       "status": "placeholder"
     }
   ],
@@ -314,26 +314,26 @@
       {
         "packagePath": "03_作品介绍文档/作品介绍.pdf",
         "sourcePath": "docs/deliverables/作品介绍.pdf",
-        "bytes": 850522,
-        "mtime": "2026-10-21T15:03:38.810Z",
-        "mtimeLocal": "2026-10-21 23:03:38 +08:00",
-        "sha256": "ca4c5b464f41a5aed9ac19c6fddce468c9b9f45a31bc52c4b79ff0eb78385a2a"
+        "bytes": 850640,
+        "mtime": "2026-10-21T15:18:57.461Z",
+        "mtimeLocal": "2026-10-21 23:18:57 +08:00",
+        "sha256": "08aea7cba299841e59b87ad2944114ef159c01987e34ffb1d6ab5ccea61d3f91"
       },
       {
         "packagePath": "04_运行或使用说明/运行说明.pdf",
         "sourcePath": "docs/deliverables/运行说明.pdf",
         "bytes": 476103,
-        "mtime": "2026-10-21T15:04:05.307Z",
-        "mtimeLocal": "2026-10-21 23:04:05 +08:00",
-        "sha256": "f999a305745d7d4d9007120f0efa5bb0d642b59570d86be6b8ed6e9734d391f3"
+        "mtime": "2026-10-21T15:19:33.280Z",
+        "mtimeLocal": "2026-10-21 23:19:33 +08:00",
+        "sha256": "455c0b8b9984c57f766acab1e491fa0b259d80e2045d136c383a01fb669d2a93"
       },
       {
         "packagePath": "05_补充成果材料/测试记录.pdf",
         "sourcePath": "docs/deliverables/测试记录.pdf",
         "bytes": 451418,
-        "mtime": "2026-10-21T15:03:59.212Z",
-        "mtimeLocal": "2026-10-21 23:03:59 +08:00",
-        "sha256": "92a3b600e871c1c95258d60d2f5ccac489c26a65f0e7f10f194f236d47fc397e"
+        "mtime": "2026-10-21T15:19:25.685Z",
+        "mtimeLocal": "2026-10-21 23:19:25 +08:00",
+        "sha256": "9ebad1080cff614ffc56fd6a5858a0c829ec7762d8eb761796b08a93cb256d05"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/00-menu.png",
@@ -563,17 +563,17 @@
         "packagePath": "06_第三方资源说明/第三方资源说明.pdf",
         "sourcePath": "docs/deliverables/第三方资源说明.pdf",
         "bytes": 299210,
-        "mtime": "2026-10-21T15:04:00.953Z",
-        "mtimeLocal": "2026-10-21 23:04:00 +08:00",
-        "sha256": "84ca04c670c18ac56575dabc872628bfdd1d2de320f4f3892827e712c2134fbe"
+        "mtime": "2026-10-21T15:19:27.875Z",
+        "mtimeLocal": "2026-10-21 23:19:27 +08:00",
+        "sha256": "fcf9dec6c7e06fc00599bca2a384bc109ff040dabd13ff66c22c9166cf22af7d"
       },
       {
         "packagePath": "07_AI工具使用补充说明/AI使用说明.pdf",
         "sourcePath": "docs/deliverables/AI使用说明.pdf",
         "bytes": 452471,
-        "mtime": "2026-10-21T15:03:35.279Z",
-        "mtimeLocal": "2026-10-21 23:03:35 +08:00",
-        "sha256": "f9a30eeab3e6102922f8f58f017a54cdc72f0bef69a1b39b18ab652cc499f72f"
+        "mtime": "2026-10-21T15:18:53.301Z",
+        "mtimeLocal": "2026-10-21 23:18:53 +08:00",
+        "sha256": "a997fbca7c6912037de87af47ffd8714cb4130a0900085cbd93ca0fa56886f97"
       }
     ]
   },
@@ -581,12 +581,12 @@
     {
       "packagePath": "02_作品展示视频/占位说明.txt",
       "whyEmpty": "作品展示/评审视频尚未录制（缺 MP4 源文件）",
-      "bytes": 953
+      "bytes": 1004
     },
     {
       "packagePath": "报名与承诺书（线下办理）/占位说明.txt",
       "whyEmpty": "报名系统信息与承诺书盖章为线下环节，本地无文件",
-      "bytes": 983
+      "bytes": 1034
     }
   ],
   "missing": [],
@@ -698,12 +698,12 @@
           "md": "docs/deliverables/作品介绍.md",
           "pdfPresent": true,
           "mdPresent": true,
-          "pdfBytes": 850522,
-          "pdfMtime": "2026-10-21T15:03:38.810Z",
-          "pdfMtimeLocal": "2026-10-21 23:03:38 +08:00",
-          "mdMtime": "2026-10-21T14:45:11.905Z",
-          "mdMtimeLocal": "2026-10-21 22:45:11 +08:00",
-          "deltaSeconds": 1107,
+          "pdfBytes": 850640,
+          "pdfMtime": "2026-10-21T15:18:57.461Z",
+          "pdfMtimeLocal": "2026-10-21 23:18:57 +08:00",
+          "mdMtime": "2026-10-21T15:18:30.297Z",
+          "mdMtimeLocal": "2026-10-21 23:18:30 +08:00",
+          "deltaSeconds": 27,
           "status": "FRESH"
         },
         {
@@ -712,11 +712,11 @@
           "pdfPresent": true,
           "mdPresent": true,
           "pdfBytes": 476103,
-          "pdfMtime": "2026-10-21T15:04:05.307Z",
-          "pdfMtimeLocal": "2026-10-21 23:04:05 +08:00",
+          "pdfMtime": "2026-10-21T15:19:33.280Z",
+          "pdfMtimeLocal": "2026-10-21 23:19:33 +08:00",
           "mdMtime": "2026-10-21T14:45:11.937Z",
           "mdMtimeLocal": "2026-10-21 22:45:11 +08:00",
-          "deltaSeconds": 1133,
+          "deltaSeconds": 2061,
           "status": "FRESH"
         },
         {
@@ -725,11 +725,11 @@
           "pdfPresent": true,
           "mdPresent": true,
           "pdfBytes": 299210,
-          "pdfMtime": "2026-10-21T15:04:00.953Z",
-          "pdfMtimeLocal": "2026-10-21 23:04:00 +08:00",
+          "pdfMtime": "2026-10-21T15:19:27.875Z",
+          "pdfMtimeLocal": "2026-10-21 23:19:27 +08:00",
           "mdMtime": "2026-10-21T14:45:11.929Z",
           "mdMtimeLocal": "2026-10-21 22:45:11 +08:00",
-          "deltaSeconds": 1129,
+          "deltaSeconds": 2056,
           "status": "FRESH"
         },
         {
@@ -738,11 +738,11 @@
           "pdfPresent": true,
           "mdPresent": true,
           "pdfBytes": 452471,
-          "pdfMtime": "2026-10-21T15:03:35.279Z",
-          "pdfMtimeLocal": "2026-10-21 23:03:35 +08:00",
+          "pdfMtime": "2026-10-21T15:18:53.301Z",
+          "pdfMtimeLocal": "2026-10-21 23:18:53 +08:00",
           "mdMtime": "2026-10-21T14:45:11.901Z",
           "mdMtimeLocal": "2026-10-21 22:45:11 +08:00",
-          "deltaSeconds": 1103,
+          "deltaSeconds": 2021,
           "status": "FRESH"
         },
         {
@@ -751,11 +751,11 @@
           "pdfPresent": true,
           "mdPresent": true,
           "pdfBytes": 451418,
-          "pdfMtime": "2026-10-21T15:03:59.212Z",
-          "pdfMtimeLocal": "2026-10-21 23:03:59 +08:00",
+          "pdfMtime": "2026-10-21T15:19:25.685Z",
+          "pdfMtimeLocal": "2026-10-21 23:19:25 +08:00",
           "mdMtime": "2026-10-21T14:45:39.155Z",
           "mdMtimeLocal": "2026-10-21 22:45:39 +08:00",
-          "deltaSeconds": 1100,
+          "deltaSeconds": 2027,
           "status": "FRESH"
         }
       ],
@@ -874,10 +874,10 @@
           "Title": "作品介绍",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261021150336+00'00'",
-          "ModDate": "D:20261021150336+00'00'"
+          "CreationDate": "D:20261021151854+00'00'",
+          "ModDate": "D:20261021151854+00'00'"
         },
-        "bytes": 850522
+        "bytes": 850640
       },
       {
         "packagePath": "04_运行或使用说明/运行说明.pdf",
@@ -885,8 +885,8 @@
           "Title": "运行与使用说明",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261021150404+00'00'",
-          "ModDate": "D:20261021150404+00'00'"
+          "CreationDate": "D:20261021151931+00'00'",
+          "ModDate": "D:20261021151931+00'00'"
         },
         "bytes": 476103
       },
@@ -896,8 +896,8 @@
           "Title": "测试记录",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261021150357+00'00'",
-          "ModDate": "D:20261021150357+00'00'"
+          "CreationDate": "D:20261021151923+00'00'",
+          "ModDate": "D:20261021151923+00'00'"
         },
         "bytes": 451418
       },
@@ -907,8 +907,8 @@
           "Title": "第三方资源说明",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261021150400+00'00'",
-          "ModDate": "D:20261021150400+00'00'"
+          "CreationDate": "D:20261021151926+00'00'",
+          "ModDate": "D:20261021151926+00'00'"
         },
         "bytes": 299210
       },
@@ -918,8 +918,8 @@
           "Title": "AI使用说明",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261021150334+00'00'",
-          "ModDate": "D:20261021150334+00'00'"
+          "CreationDate": "D:20261021151852+00'00'",
+          "ModDate": "D:20261021151852+00'00'"
         },
         "bytes": 452471
       }
