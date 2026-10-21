@@ -339,4 +339,47 @@ A：以 manifest（实测）和 <code>docs/report/2026-10-22-afternoon-metrics.j
 <li>数字一律来自 <code>dist</code> 实测或 metrics JSON，脚本内不写死会漂移的数字；对账不过会明确列出差异项。</li>
 <li>包内目录结构、文件名与 <code>docs/deliverables/提交清单.md</code> §二一致；规范若有变动，改脚本顶部 <code>DIR_SPEC</code> / <code>ENTRY_SPEC</code> 两处即可，其余逻辑不用动。</li>
 </ul>
+<hr>
+<h2 id="2026-10-22-231x-460737">2026-10-22 23:1x 正式打包记录（作品编号 460737）</h2>
+<pre><code class="language-powershell">node tools/package.mjs --name &quot;把名字留下来_460737&quot; --out &quot;D:\提交\把名字留下来_460737.zip&quot;
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>产物</td>
+<td><code>D:\提交\把名字留下来_460737.zip</code></td>
+</tr>
+<tr>
+<td>大小</td>
+<td>30,845,467 B（29.42 MiB）</td>
+</tr>
+<tr>
+<td>条目</td>
+<td>597（579 文件 + 18 目录）</td>
+</tr>
+<tr>
+<td>SHA256</td>
+<td><code>e4ca133e46adbdf24430e3bc8be5261c7cdc43aebc99c92ec5362e48676607ce</code></td>
+</tr>
+<tr>
+<td>根目录</td>
+<td><code>把名字留下来_460737/</code></td>
+</tr>
+<tr>
+<td>体检</td>
+<td>dist/metrics 对账/PDF 新鲜度/截图/匿名化 全过</td>
+</tr>
+<tr>
+<td>仍缺</td>
+<td><code>02_作品展示视频/</code>（评审视频未录）、<code>报名与承诺书（线下办理）/</code>（线下）</td>
+</tr>
+</tbody>
+</table>
+<p>录好视频后把 MP4 放进暂存树的 <code>02_作品展示视频/</code> 并删占位说明，或告诉我视频路径，我重跑打包替换正式 ZIP。</p>
 </div></body></html>
