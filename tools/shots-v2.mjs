@@ -1,11 +1,11 @@
 import { chromium } from 'playwright'
-import { mkdir } from 'node:fs/promises'
+import { mkdir, readdir, unlink } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 /**
- * 交付版截图（10 张，1600×1000）。
- * 通过 localStorage 注入 GameState 直达指定场景；结局一段走完整流程，先拍"终极画面"，再拍结局页。
+ * 最终交付截图（10 张，1600×1000；移动端 390×844 也算一张）。
+ * 顺序：菜单 / 2.5D 序卷 / 3D 仓库内景 / 尾声九结局 / 结局终极画面 / 结局页 / 人物志 / 后来 / 史料库 / 移动端菜单
  */
 const url = process.argv[2] ?? 'http://127.0.0.1:4173/'
 const OUT = path.join(fileURLToPath(new URL('../', import.meta.url)), 'docs', 'deliverables', 'screenshots')
@@ -35,16 +35,16 @@ async function clearSave() {
   await page.goto(url, { waitUntil: 'networkidle' })
   await page.evaluate(() => localStorage.clear())
   await page.reload({ waitUntil: 'networkidle' })
-  await page.waitForTimeout(400)
+  await page.waitForTimeout(500)
 }
 
 async function inject(state) {
   await page.goto(url, { waitUntil: 'networkidle' })
   await page.evaluate(({ key, value }) => localStorage.setItem(key, JSON.stringify(value)), { key: SAVE_KEY, value: state })
   await page.reload({ waitUntil: 'networkidle' })
-  await page.waitForTimeout(400)
+  await page.waitForTimeout(500)
   await page.getByRole('button', { name: '继续上次' }).click()
-  await page.waitForTimeout(2400)
+  await page.waitForTimeout(2200)
 }
 
 const shots = []
@@ -53,72 +53,79 @@ async function shot(name) {
   shots.push(name)
 }
 
-// 00 菜单
+// 0 菜单
 await clearSave()
 await shot('00-menu.png')
 
-// 01 序卷第一场（带插画）
+// 1 2.5D 序卷（带插画）
 await inject({ ...base, sceneId: 'v0-01' })
-await shot('01-scene-v0-01.png')
+await shot('01-scene-2.5d.png')
 
-// 02 第一夜（点名）
+// 2 真 3D：第一夜仓库内景
 await inject({ ...base, sceneId: 'night1' })
-await shot('02-scene-night1.png')
+const toggle = page.getByRole('button', { name: '3D 视角' })
+if (await toggle.isVisible().catch(() => false)) {
+  await toggle.click()
+  await page.waitForTimeout(2800)
+}
+await shot('02-scene-3d.png')
 
-// 03 第三夜（升旗）
-await inject({ ...base, sceneId: 'night3' })
-await shot('03-scene-night3.png')
-
-// 04 尾声（造册，9 个结局选项）—— 滚到选项处截图
+// 3 尾声：9 个结局选项
 await inject({ ...base, sceneId: 'epilogue' })
 await page.locator('.choices').scrollIntoViewIfNeeded().catch(() => {})
 await page.waitForTimeout(700)
-await shot('04-epilogue-choices.png')
+await shot('03-epilogue-choices.png')
 
-// 05 结局终极画面：从尾声选第一个结局，点"把东西交出去"，抓拍画面后段（名字落成册页）
+// 4 结局终极画面（名册）
 await page.locator('.choice').first().click()
 await page.waitForTimeout(500)
 await page.getByRole('button', { name: '把东西交出去' }).click()
 await page.waitForTimeout(5200)
-await shot('05-finale-roster.png')
+await shot('04-finale.png')
 
-// 06 结局页（跳过终极画面后）
+// 5 结局页
 await page.locator('.finale').click({ position: { x: 400, y: 300 } }).catch(() => {})
 for (let i = 0; i < 30; i += 1) {
   if (await page.locator('.ending').isVisible().catch(() => false)) break
   await page.waitForTimeout(250)
 }
 await page.waitForTimeout(500)
-await shot('06-ending-names.png')
+await shot('05-ending.png')
 
-// 07 人物志
+// 6 人物志
 await clearSave()
 await page.getByRole('button', { name: '人物志' }).click()
-await page.waitForTimeout(600)
-await shot('07-people.png')
+await page.waitForTimeout(700)
+await shot('06-people.png')
 
-// 08 后来
+// 7 后来
 await page.getByRole('button', { name: '返回' }).click()
 await page.waitForTimeout(400)
 await page.getByRole('button', { name: '后来' }).click()
-await page.waitForTimeout(600)
-await shot('08-later.png')
+await page.waitForTimeout(700)
+await shot('07-later.png')
 
-// 09 史料库
+// 8 史料库
 await page.getByRole('button', { name: '返回' }).click()
 await page.waitForTimeout(400)
 await page.getByRole('button', { name: '史料库' }).click()
-await page.waitForTimeout(600)
-await shot('09-sources.png')
+await page.waitForTimeout(700)
+await shot('08-sources.png')
 
-// 10 移动端菜单
+// 9 移动端菜单
 const mobile = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 })
 await mobile.goto(url, { waitUntil: 'networkidle' })
 await mobile.evaluate(() => localStorage.clear())
 await mobile.reload({ waitUntil: 'networkidle' })
-await mobile.waitForTimeout(800)
-await mobile.screenshot({ path: path.join(OUT, '10-mobile-menu.png') })
-shots.push('10-mobile-menu.png')
+await mobile.waitForTimeout(900)
+await mobile.screenshot({ path: path.join(OUT, '09-mobile-menu.png') })
+shots.push('09-mobile-menu.png')
+
+// 清理不在清单里的旧截图
+const keep = new Set(shots)
+for (const file of await readdir(OUT)) {
+  if (file.endsWith('.png') && !keep.has(file)) await unlink(path.join(OUT, file))
+}
 
 console.log('shots:', shots.length)
 console.log(shots.join('\n'))

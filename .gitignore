@@ -1,4 +1,4 @@
-# 依赖与构建产物
+﻿# 依赖与构建产物
 node_modules/
 dist/
 .env
@@ -31,3 +31,6 @@ trash/
 public/generated/*/world.glb
 public/generated/*/world.obj
 public/generated/*/world.mtl
+
+tools/audio/out/
+docs/deliverables/_pdf_tmp/

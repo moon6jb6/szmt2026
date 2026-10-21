@@ -1,0 +1,75 @@
+{
+  "when": "2026-10-21T02:06:41.044Z",
+  "url": "http://127.0.0.1:5399/tools/3d/proto.html",
+  "viewport": "1600x1000",
+  "headed": false,
+  "seconds": 4,
+  "budget": {
+    "calls": 25,
+    "tris": 6000,
+    "fps": 55
+  },
+  "gpu": "ANGLE (Intel, Intel(R) UHD Graphics (0x0000A788) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+  "slices": [
+    {
+      "variant": "warehouse-int",
+      "fps": 101.4,
+      "calls": 16,
+      "tris": 3093,
+      "dpr": 1,
+      "gpu": "ANGLE (Intel, Intel(R) UHD Graphics (0x0000A788) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pass": true,
+      "failures": [],
+      "screenshot": "tools/3d/shots/warehouse-int.png",
+      "lookScreenshot": "tools/3d/shots/warehouse-int-look-left.png",
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ]
+    },
+    {
+      "variant": "rooftop",
+      "fps": 120.3,
+      "calls": 12,
+      "tris": 2096,
+      "dpr": 1,
+      "gpu": "ANGLE (Intel, Intel(R) UHD Graphics (0x0000A788) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pass": true,
+      "failures": [],
+      "screenshot": "tools/3d/shots/rooftop.png",
+      "lookScreenshot": null,
+      "errors": []
+    },
+    {
+      "variant": "bridge",
+      "fps": 105,
+      "calls": 11,
+      "tris": 2176,
+      "dpr": 1,
+      "gpu": "ANGLE (Intel, Intel(R) UHD Graphics (0x0000A788) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pass": true,
+      "failures": [],
+      "screenshot": "tools/3d/shots/bridge.png",
+      "lookScreenshot": null,
+      "errors": []
+    },
+    {
+      "variant": "office-1947",
+      "fps": 114.6,
+      "calls": 15,
+      "tris": 828,
+      "dpr": 1,
+      "gpu": "ANGLE (Intel, Intel(R) UHD Graphics (0x0000A788) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "pass": true,
+      "failures": [],
+      "screenshot": "tools/3d/shots/office-1947.png",
+      "lookScreenshot": null,
+      "errors": []
+    }
+  ],
+  "dprCap": {
+    "devicePixelRatio": 3,
+    "ratio": 2
+  },
+  "dprCapPass": true,
+  "allPass": true
+}

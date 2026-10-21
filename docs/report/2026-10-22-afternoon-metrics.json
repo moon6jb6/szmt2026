@@ -1,0 +1,122 @@
+{
+  "generatedAt": "2026-10-21T04:58:28.221Z",
+  "gitHead": "ref: refs/heads/main",
+  "words": {
+    "total": 113138,
+    "byFile": {
+      "volume0": 7283,
+      "volume1": 19391,
+      "volume2": 33017,
+      "volume3": 12816,
+      "volume4": 4148,
+      "volume5": 10115,
+      "chapter1": 11213,
+      "endings": 15155
+    }
+  },
+  "scenes": 140,
+  "endings": {
+    "count": 9,
+    "kinds": [
+      {
+        "kind": "roster",
+        "title": "名册"
+      },
+      {
+        "kind": "letters",
+        "title": "家书"
+      },
+      {
+        "kind": "flag",
+        "title": "旗"
+      },
+      {
+        "kind": "photo",
+        "title": "照片"
+      },
+      {
+        "kind": "testimony",
+        "title": "口述"
+      },
+      {
+        "kind": "message",
+        "title": "口信"
+      },
+      {
+        "kind": "archive",
+        "title": "档案"
+      },
+      {
+        "kind": "relics",
+        "title": "遗物"
+      },
+      {
+        "kind": "wordofmouth",
+        "title": "口耳"
+      }
+    ]
+  },
+  "sources": {
+    "total": 76,
+    "statuses": {
+      "verified": 63,
+      "pending": 7,
+      "needed": 6
+    }
+  },
+  "images": {
+    "artFiles": 496,
+    "backgroundFiles": 8,
+    "sceneMapEntries": 128
+  },
+  "audio": {
+    "files": 28,
+    "bytes": 5112113,
+    "mb": 4.88,
+    "model": "stabilityai/stable-audio-open-small",
+    "modelParamsM": 497.2,
+    "peakVramMib": 3364,
+    "license": "Stability AI Community License"
+  },
+  "build": {
+    "distFiles": 544,
+    "distMb": 22.93,
+    "jsBytes": 1436864,
+    "cssBytes": 18751,
+    "jsAssets": [
+      "index-CLSpgOr7.js",
+      "Scene3D-BkEU69la.js"
+    ],
+    "jsGzipEstimate": 295707,
+    "cssGzipEstimate": 4875
+  },
+  "threeD": {
+    "slices": [
+      {
+        "variant": "warehouse-int",
+        "fps": 101.4,
+        "calls": 16,
+        "tris": 3093
+      },
+      {
+        "variant": "rooftop",
+        "fps": 120.3,
+        "calls": 12,
+        "tris": 2096
+      },
+      {
+        "variant": "bridge",
+        "fps": 105,
+        "calls": 11,
+        "tris": 2176
+      },
+      {
+        "variant": "office-1947",
+        "fps": 114.6,
+        "calls": 15,
+        "tris": 828
+      }
+    ],
+    "allPass": true
+  }
+}

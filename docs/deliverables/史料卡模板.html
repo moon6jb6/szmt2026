@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>史料卡模板与接入说明</title>
+<title>史料卡模板</title>
 <style>
 @page { size: A4; margin: 20mm 17mm 18mm 17mm; }
 * { box-sizing: border-box; }
@@ -44,13 +44,13 @@ a { color: #8a2b22; text-decoration: none; }
 </style>
 </head><body><div class="sheet">
 <div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
-<h1 id="_1">史料卡模板与接入说明</h1>
+<p>﻿# 史料卡模板与接入说明</p>
 <blockquote>
 <p>目标：以后拿到任何文献，只改 <code>src/game/content/sources.ts</code> 一个文件，UI 自动生效，不用碰组件。
 当前：14 条（已核对 8 / 待接入 6），覆盖 8 个场景。</p>
 </blockquote>
 <hr>
-<h2 id="_2">一、一张卡长什么样</h2>
+<h2 id="_1">一、一张卡长什么样</h2>
 <pre><code class="language-ts">{
   id: 's-baibai',
   type: 'book',                 // book | news | archive | museum | interview
@@ -69,7 +69,7 @@ a { color: #8a2b22; text-decoration: none; }
 }
 </code></pre>
 <hr>
-<h2 id="_3">二、三种状态</h2>
+<h2 id="_2">二、三种状态</h2>
 <table>
 <thead>
 <tr>
@@ -136,9 +136,9 @@ locator: '第 2 章《孤堡》，p.45',
 <pre><code class="language-bash">npm run build
 node tools/ending-test.mjs http://127.0.0.1:4173/
 </code></pre>
-<p>确认 6 个结局仍然全通、控制台无报错。</p>
+<p>确认 9 个结局仍然全通、控制台无报错。</p>
 <hr>
-<h2 id="_4">四、写作规范（避免踩坑）</h2>
+<h2 id="_3">四、写作规范（避免踩坑）</h2>
 <ol>
 <li><strong>一条卡只支持一个陈述</strong>。一句话说不清就拆两张。</li>
 <li><strong>原句不改字</strong>。要删节用「……」；不要意译。</li>

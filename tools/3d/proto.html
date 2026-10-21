@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>3D 切片验证页 · 把名字留下来</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #0a0807;
+        color: #ede6d8;
+        font: 13px/1.6 'Cascadia Mono', 'Consolas', ui-monospace, monospace;
+        overflow: hidden;
+      }
+      /* 3D 切片铺满整页，和 App 里 .stage 的位置一致 */
+      #scene-root {
+        position: fixed;
+        inset: 0;
+      }
+      .bar {
+        position: fixed;
+        left: 16px;
+        bottom: 16px;
+        display: flex;
+        gap: 6px;
+        z-index: 10;
+      }
+      .bar button {
+        font: inherit;
+        padding: 5px 10px;
+        border: 1px solid rgba(237, 230, 216, 0.24);
+        background: rgba(22, 19, 15, 0.82);
+        color: #bdb3a2;
+        border-radius: 2px;
+        cursor: pointer;
+      }
+      .bar button[data-on='1'] {
+        border-color: #c8a063;
+        color: #ede6d8;
+      }
+      .hud {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 10;
+        min-width: 232px;
+        padding: 10px 12px;
+        background: rgba(12, 10, 8, 0.78);
+        border: 1px solid rgba(237, 230, 216, 0.16);
+        border-left: 2px solid #a32b2b;
+        letter-spacing: 0.02em;
+      }
+      .hud h1 {
+        margin: 0 0 8px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        color: #c8a063;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .row b {
+        font-weight: 400;
+        color: #8d857a;
+      }
+      .row span {
+        color: #ede6d8;
+      }
+      .budget {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(237, 230, 216, 0.12);
+        color: #bdb3a2;
+      }
+      .ok {
+        color: #9bba8a;
+      }
+      .bad {
+        color: #d1735f;
+      }
+      .hint {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 10;
+        color: #6f675c;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="scene-root"></div>
+
+    <div class="hud">
+      <h1>SCENE 3D · SLICE</h1>
+      <div class="row"><b>variant</b><span id="hud-variant">–</span></div>
+      <div class="row"><b>fps</b><span id="hud-fps">–</span></div>
+      <div class="row"><b>draw calls</b><span id="hud-calls">–</span></div>
+      <div class="row"><b>triangles</b><span id="hud-tris">–</span></div>
+      <div class="row"><b>dpr</b><span id="hud-dpr">–</span></div>
+      <div class="row"><b>renderer</b><span id="hud-gpu">–</span></div>
+      <div class="budget" id="hud-budget">预算 ≤25 calls / ≤6000 tris / 55fps+</div>
+    </div>
+
+    <div class="bar" id="bar"></div>
+    <div class="hint">1–4 切换切片 · 鼠标移动看 yaw ±18° / pitch ±14° · 滚轮不做任何事</div>
+
+    <script type="module">
+      import { createElement } from 'react'
+      import { createRoot } from 'react-dom/client'
+      import Scene3D from '/src/game/components/Scene3D.tsx'
+
+      const VARIANTS = ['warehouse-int', 'rooftop', 'bridge', 'office-1947']
+      const params = new URLSearchParams(location.search)
+      const requested = params.get('variant')
+      const start = VARIANTS.includes(requested) ? requested : VARIANTS[0]
+
+      const root = createRoot(document.getElementById('scene-root'))
+      const bar = document.getElementById('bar')
+      const els = {
+        variant: document.getElementById('hud-variant'),
+        fps: document.getElementById('hud-fps'),
+        calls: document.getElementById('hud-calls'),
+        tris: document.getElementById('hud-tris'),
+        dpr: document.getElementById('hud-dpr'),
+        gpu: document.getElementById('hud-gpu'),
+        budget: document.getElementById('hud-budget'),
+      }
+
+      let current = start
+
+      const buttons = VARIANTS.map((variant) => {
+        const button = document.createElement('button')
+        button.textContent = variant
+        button.dataset.variant = variant
+        button.addEventListener('click', () => setVariant(variant))
+        bar.appendChild(button)
+        return button
+      })
+
+      function setVariant(variant) {
+        if (!VARIANTS.includes(variant) || variant === current) return
+        current = variant
+        // 切场景一定换 key：让 Scene3D 走一遍卸载，顺带验证 dispose
+        root.render(createElement(Scene3D, { key: variant, variant }))
+        els.variant.textContent = variant
+        for (const button of buttons) button.dataset.on = button.dataset.variant === variant ? '1' : '0'
+      }
+
+      root.render(createElement(Scene3D, { key: current, variant: current }))
+      els.variant.textContent = current
+      for (const button of buttons) button.dataset.on = button.dataset.variant === current ? '1' : '0'
+
+      // 显卡信息：报告里要能分辨「真 GPU」还是 SwiftShader 软光栅
+      let gpu = 'unknown'
+      try {
+        const probe = document.createElement('canvas')
+        const gl = probe.getContext('webgl2') || probe.getContext('webgl')
+        if (gl) {
+          const info = gl.getExtension('WEBGL_debug_renderer_info')
+          gpu = info ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL)) : 'webgl(no-debug-info)'
+          const lose = gl.getExtension('WEBGL_lose_context')
+          if (lose) lose.loseContext()
+        } else {
+          gpu = 'no-webgl'
+        }
+      } catch {
+        gpu = 'probe-failed'
+      }
+      els.gpu.textContent = gpu
+      els.gpu.title = gpu
+      els.dpr.textContent = String(window.devicePixelRatio || 1)
+
+      const readStats = () => {
+        const host = document.querySelector('.scene3d')
+        return {
+          variant: current,
+          fps: Number(host?.dataset.fps ?? 0),
+          calls: Number(host?.dataset.calls ?? 0),
+          tris: Number(host?.dataset.tris ?? 0),
+          dpr: window.devicePixelRatio || 1,
+          gpu,
+        }
+      }
+
+      setInterval(() => {
+        const stats = readStats()
+        els.fps.textContent = stats.fps ? stats.fps.toFixed(1) : '–'
+        els.calls.textContent = stats.calls || '–'
+        els.tris.textContent = stats.tris || '–'
+        const pass = stats.calls <= 25 && stats.tris <= 6000
+        els.budget.textContent = pass
+          ? `预算内：${stats.calls} calls / ${stats.tris} tris`
+          : `超预算：${stats.calls} calls / ${stats.tris} tris`
+        els.budget.className = pass ? 'budget ok' : 'budget bad'
+        window.__proto = { variant: current, stats, ready: stats.calls > 0 }
+      }, 300)
+
+      window.__proto = { variant: current, stats: readStats(), ready: false }
+      window.__setVariant = setVariant
+      window.__variants = VARIANTS
+
+      window.addEventListener('keydown', (event) => {
+        const index = Number(event.key)
+        if (index >= 1 && index <= VARIANTS.length) setVariant(VARIANTS[index - 1])
+      })
+    </script>
+  </body>
+</html>

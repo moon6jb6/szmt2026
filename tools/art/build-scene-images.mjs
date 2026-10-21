@@ -26,8 +26,9 @@ try {
 const entries = []
 let missing = 0
 for (const [sceneId, meta] of Object.entries(raw)) {
-  const image = String(meta.image ?? '').replace(/^public\//u, '/')
-  const filename = image.replace(/^\/art\//u, '')
+  // 相对路径（不带前导 /），配合 vite base:'./'，子目录部署与 file 服务都能找到
+  const image = String(meta.image ?? '').replace(/^public\//u, '')
+  const filename = image.replace(/^\/?art\//u, '')
   try {
     await access(path.join(ART, filename))
     entries.push([sceneId, image])

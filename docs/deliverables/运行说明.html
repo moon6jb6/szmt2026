@@ -73,15 +73,8 @@ a { color: #8a2b22; text-decoration: none; }
 </tbody>
 </table>
 <h2 id="_3">二、评审期快速启动（推荐）</h2>
-<h3 id="a">方式 A：直接打开构建产物</h3>
-<ol>
-<li>解压参赛打包文件。</li>
-<li>进入 <code>01_作品及成果文件/</code>，双击 <code>index.html</code>。</li>
-</ol>
-<blockquote>
-<p>注意：部分浏览器对 <code>file://</code> 协议下的模块脚本有限制。若打开后白屏，请改用方式 B。</p>
-</blockquote>
-<h3 id="b">方式 B：本地静态服务器（最稳）</h3>
+<h3 id="a">方式 A：本地静态服务器（最稳，推荐）</h3>
+<p>构建产物用了 ES Module，<strong>必须通过 HTTP 起服务</strong>（直接双击 <code>index.html</code> 会被浏览器的 file:// 安全策略拦成白屏，这不是作品问题）。</p>
 <p>在 <code>01_作品及成果文件/</code> 目录下执行任意一种：</p>
 <pre><code class="language-bash"># Python 3
 python -m http.server 8080
@@ -93,7 +86,10 @@ npx serve -l 8080
 php -S 127.0.0.1:8080
 </code></pre>
 <p>浏览器打开 <a href="http://127.0.0.1:8080/">http://127.0.0.1:8080/</a>。</p>
-<h3 id="c">方式 C：源码开发模式</h3>
+<blockquote>
+<p>打包说明：构建已改为相对路径（<code>base: './'</code>），因此整个 <code>01_作品及成果文件/</code> 目录可以放在任意子目录下、在父目录起服务也能正常访问。</p>
+</blockquote>
+<h3 id="b">方式 B：源码开发模式</h3>
 <pre><code class="language-bash">npm install
 npm run dev        # 开发预览
 npm run build      # 产出 dist/
@@ -174,6 +170,14 @@ npm run preview    # 预览构建产物
 <td>按天气分五种：墨、雨、雪、灰、烟</td>
 </tr>
 <tr>
+<td>3D 视角</td>
+<td>在四行仓库底楼 / 楼顶 / 桥 / 1947 厢房场景，右上角按钮切真 3D：移动鼠标换视角，再点回到 2.5D；无 WebGL 或开启减少动效时自动不显示</td>
+</tr>
+<tr>
+<td>声音</td>
+<td>右下角「声音 关/开」。<strong>默认静音</strong>，首次打开后才播放；开启后跟随场景切换环境音，结局有低音；状态会记住</td>
+</tr>
+<tr>
 <td>结局</td>
 <td>先播放约 6 秒「终极画面」（可点击跳过），再进入结局正文；结局页可「重看结局画面」</td>
 </tr>
@@ -210,7 +214,7 @@ npm run preview    # 预览构建产物
 </tr>
 <tr>
 <td>菜单 →「结局一览」</td>
-<td>六个结局的解锁情况</td>
+<td>九个结局的解锁情况</td>
 <td>每个结局附同一句 coda</td>
 </tr>
 </tbody>

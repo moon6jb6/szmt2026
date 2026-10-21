@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { InkCurtain, type CurtainHandle, type CurtainOpts } from './game/components/InkCurtain'
 import { Stage } from './game/components/Stage'
 import { ChoiceBurst, type BurstHandle, type BurstKind } from './game/components/ChoiceBurst'
@@ -8,6 +8,23 @@ import { SCENE_IMAGES } from './game/content/sceneImages'
 import { VOLUME4 } from './game/content/volume4'
 import { VOLUME5 } from './game/content/volume5'
 import { COMPOSITE_ORDER, COMPOSITE_REQUIRES, ENDINGS, ENDING_ORDER } from './game/content/endings'
+import { getScene3D } from './game/content/scene3d'
+import {
+  ambienceForScene,
+  ambienceForScreen,
+  clickSoundFor,
+  droneForEnding,
+  isAudioUnlocked,
+  isMuted,
+  playSfx,
+  setAmbience,
+  setDrone,
+  setMuted,
+  unlockAudio,
+} from './game/audio'
+
+/** 真 3D 切片按需加载：不进主包，只有点「3D 视角」才拉取 */
+const Scene3D = lazy(() => import('./game/components/Scene3D'))
 import {
   NEEDED_SOURCES,
   PENDING_SOURCES,
@@ -31,8 +48,32 @@ import type { Choice, EndingKind, GameState, MemoryKind, Scene, SceneId } from '
 
 type Screen = 'menu' | 'game' | 'ending' | 'gallery' | 'about' | 'sources' | 'people' | 'later'
 
-/** 插画地址：sceneImages.ts 里是 "/art/scene-001.jpg"，场景数据里可能只写 "scene-001" */
-const artSrc = (id?: string): string => (!id ? '' : id.startsWith('/') ? id : `/art/${id}.jpg`)
+/** 插画地址：sceneImages.ts 里是 "art/scene-001.jpg"，场景数据里可能只写 "scene-001"
+ *  用 import.meta.env.BASE_URL 拼前缀，配合 vite base:'./' 可在任意子目录部署 */
+const artSrc = (id?: string): string => {
+  if (!id) return ''
+  const base = import.meta.env.BASE_URL ?? './'
+  if (id.startsWith('art/') || id.startsWith('./art/')) return `${base}${id.replace(/^\.\//u, '')}`
+  if (id.startsWith('/')) return `${base}${id.replace(/^\//u, '')}`
+  return `${base}art/${id}.jpg`
+}
+
+/** 这台设备/这个设置下能不能跑真 3D（失败就继续 2.5D，不报错） */
+function canUse3D(): boolean {
+  if (typeof window === 'undefined') return false
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
+  if (window.innerWidth < 700) return false
+  try {
+    const canvas = document.createElement('canvas')
+    const gl = canvas.getContext('webgl2') ?? canvas.getContext('webgl')
+    if (!gl) return false
+    const lose = (gl as WebGLRenderingContext).getExtension('WEBGL_lose_context')
+    lose?.loseContext()
+    return true
+  } catch {
+    return false
+  }
+}
 
 /** 结局页插画：每个结局取 manifest 里该结局的第 1 张（ending-0xx，见 docs/art/image-manifest.json） */
 const ENDING_IMAGE: Record<string, string> = {
@@ -122,8 +163,27 @@ export default function App() {
   const [laterId, setLaterId] = useState<string | null>(null)
   const [finaleDone, setFinaleDone] = useState(true)
   const [finaleKey, setFinaleKey] = useState(0)
+  const [view3d, setView3d] = useState(false)
+  // 默认静音（评审环境不突然出声）；用户点右下角「声音」才开启
+  const [audioOn, setAudioOn] = useState(() => !isMuted())
   const curtain = useRef<CurtainHandle>(null)
   const burst = useRef<BurstHandle>(null)
+
+  const toggleAudio = () => {
+    const next = !audioOn
+    setAudioOn(next)
+    setMuted(!next)
+    if (next) void unlockAudio()
+  }
+
+  // 换场景就回 2.5D，避免下一场无意中停在 3D 背景上
+  const sceneId = state.sceneId
+  useEffect(() => {
+    setView3d(false)
+  }, [sceneId])
+
+  const scene3dSpec = useMemo(() => (screen === 'game' ? getScene3D(sceneId) : null), [screen, sceneId])
+  const show3d = view3d && Boolean(scene3dSpec)
 
   /** 点击效果的种类：结局 > 记忆载体 > 场景天气兜底，保证每次点击的动效都不同 */
   const burstKindFor = (choice?: Choice): BurstKind => {
@@ -205,7 +265,27 @@ export default function App() {
     return getScene(state.sceneId, state.ledger)
   }, [screen, state.sceneId, state.ledger])
 
+  // 声音跟随场景/页面：场景按天气与地点选环境声，结局加 drone，其余页面安静或留底噪
+  useEffect(() => {
+    if (!audioOn) {
+      setAmbience(null)
+      setDrone(null)
+      return
+    }
+    if (screen === 'game' && scene) {
+      setAmbience(ambienceForScene(scene.weather, scene.chapter, scene.location))
+      setDrone(null)
+    } else if (screen === 'ending' && state.ending) {
+      setAmbience(null)
+      setDrone(droneForEnding(state.ending))
+    } else {
+      setAmbience(ambienceForScreen(screen))
+      setDrone(null)
+    }
+  }, [audioOn, screen, sceneId, scene?.weather, scene?.chapter, scene?.location, state.ending])
+
   const startNew = () => {
+    if (audioOn) void unlockAudio()
     const fresh = createState()
     runCurtain(
       () => {
@@ -219,6 +299,7 @@ export default function App() {
   }
 
   const resume = () => {
+    if (audioOn) void unlockAudio()
     const saved = load()
     if (saved) {
       setState(saved)
@@ -233,13 +314,24 @@ export default function App() {
     if (!scene?.choices) return
     const choice = scene.choices.find((item) => item.id === choiceId)
     if (!choice) return
-    fireBurst(burstKindFor(choice), event?.clientX, event?.clientY)
+    const burstKind = burstKindFor(choice)
+    fireBurst(burstKind, event?.clientX, event?.clientY)
+    if (audioOn) {
+      if (!isAudioUnlocked()) void unlockAudio()
+      playSfx(clickSoundFor(burstKind))
+    }
     const next = choose(state, choice.id, choice.outcome, choice.next, choice.ending ?? null)
     setState(next)
     save(next)
   }
 
   const onAdvance = () => {
+    if (!state.pendingNext) return
+    if (audioOn) playSfx('page-turn')
+    advanceScene()
+  }
+
+  const advanceScene = () => {
     const nextId = state.pendingNext
     if (!nextId) return
     const finishing = state.ending !== null
@@ -351,7 +443,7 @@ export default function App() {
     const hasOutcome = state.pendingOutcome !== null
 
     return (
-      <div className="scene" data-scene={scene.id}>
+      <div className={`scene ${show3d ? 'scene-in-3d' : ''}`} data-scene={scene.id}>
         <header className="scene-head">
           <span className="chapter">{scene.chapter}</span>
           <h1>{scene.title}</h1>
@@ -362,18 +454,33 @@ export default function App() {
               {scene.location}
             </p>
           )}
+          {scene3dSpec && canUse3D() && (
+            <button
+              type="button"
+              className={`view3d-toggle ${show3d ? 'on' : ''}`}
+              aria-pressed={show3d}
+              onClick={() => setView3d((value) => !value)}
+            >
+              {show3d ? '回到 2.5D' : '3D 视角'}
+            </button>
+          )}
         </header>
 
-        {(() => {
-          const imageId = scene.image ?? SCENE_IMAGES[scene.id]
-          if (!imageId) return null
-          return (
-            <figure className="scene-image">
-              <img src={artSrc(imageId)} alt={scene.imageCaption ?? scene.title} loading="lazy" />
-              {scene.imageCaption && <figcaption>{scene.imageCaption}</figcaption>}
-            </figure>
-          )
-        })()}
+        {show3d && (
+          <p className="scene-3d-hint">这是真 3D 场景：移动鼠标或拖动画面可以换视角。点击右上角回到 2.5D。</p>
+        )}
+
+        {!show3d &&
+          (() => {
+            const imageId = scene.image ?? SCENE_IMAGES[scene.id]
+            if (!imageId) return null
+            return (
+              <figure className="scene-image">
+                <img src={artSrc(imageId)} alt={scene.imageCaption ?? scene.title} loading="lazy" />
+                {scene.imageCaption && <figcaption>{scene.imageCaption}</figcaption>}
+              </figure>
+            )
+          })()}
 
         <div className="scene-body">
           {renderParagraphs(hasOutcome ? state.pendingOutcome!.paragraphs : scene.paragraphs)}
@@ -579,8 +686,8 @@ export default function App() {
       </p>
       <ul className="menu-facts">
         <li>从通城到上海，从四行仓库到孤军营，再到七十年后的寻访——一百四十个场景</li>
-        <li>六个结局，没有好坏，只有「什么被留下」</li>
-        <li>正文约十一万字；单周目约 2—3 小时，读完全部内容约 6 小时</li>
+        <li>九个结局，没有好坏，只有「什么被留下」</li>
+        <li>正文约 11.3 万字；单周目约 2—3 小时，读完全部内容约 6 小时</li>
         <li>七十六张史料卡（已核对六十三张），每个史实都能点开看出处</li>
       </ul>
       <div className="menu-actions">
@@ -928,7 +1035,18 @@ export default function App() {
     <main className={`app-shell ${screen === 'game' ? 'in-game' : ''}`}>
       {screen === 'menu' && renderMenu()}
       {screen === 'game' && (
-        <Stage background={scene?.background ?? 'warehouse'} weather={scene?.weather ?? 'none'}>
+        <Stage
+          background={scene?.background ?? 'warehouse'}
+          weather={scene?.weather ?? 'none'}
+          mode3d={show3d}
+          scene3d={
+            show3d && scene3dSpec ? (
+              <Suspense fallback={null}>
+                <Scene3D variant={scene3dSpec.variant} />
+              </Suspense>
+            ) : null
+          }
+        >
           {renderScene()}
         </Stage>
       )}
@@ -948,6 +1066,15 @@ export default function App() {
         <EndingFinale key={finaleKey} kind={state.ending} onDone={() => setFinaleDone(true)} />
       )}
       {renderSourcePanel()}
+      <button
+        type="button"
+        className={`audio-toggle ${audioOn ? 'on' : ''}`}
+        aria-pressed={audioOn}
+        aria-label={audioOn ? '关闭声音' : '打开声音'}
+        onClick={toggleAudio}
+      >
+        {audioOn ? '声音 开' : '声音 关'}
+      </button>
     </main>
   )
 }

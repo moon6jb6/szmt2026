@@ -6,6 +6,10 @@ type Props = {
   background: BackgroundKey
   weather: Weather
   children: React.ReactNode
+  /** 真 3D 切片（只有部分场景有）；存在时由调用方决定是否启用 */
+  scene3d?: React.ReactNode
+  /** 3D 模式：隐去 2.5D 分层，让 3D 背景透出来 */
+  mode3d?: boolean
 }
 
 /**
@@ -22,7 +26,7 @@ const LAYERS = [
 
 const KNOWN_BACKGROUNDS = ['office', 'warehouse', 'river', 'flag', 'bridge', 'dawn']
 
-export function Stage({ background, weather, children }: Props) {
+export function Stage({ background, weather, children, scene3d, mode3d = false }: Props) {
   const ref = useRef<HTMLDivElement | null>(null)
   const [reduceMotion, setReduceMotion] = useState(false)
   // 扩写卷会有很多新场景名，没有对应 CSS 渐变时回退到 warehouse，避免黑屏
@@ -75,7 +79,7 @@ export function Stage({ background, weather, children }: Props) {
   }, [reduceMotion])
 
   return (
-    <div ref={ref} className={`stage bg-${background}`}>
+    <div ref={ref} className={`stage bg-${background} ${mode3d ? 'stage-3d' : ''}`}>
       <div className="stage-tilt" aria-hidden="true">
         {LAYERS.map((layer) => (
           <div
@@ -87,6 +91,8 @@ export function Stage({ background, weather, children }: Props) {
           </div>
         ))}
       </div>
+
+      {scene3d && <div className="stage-3d-layer" aria-hidden="true">{scene3d}</div>}
 
       <div className="stage-grade" aria-hidden="true" />
       <Particles weather={weather} reduceMotion={reduceMotion} />

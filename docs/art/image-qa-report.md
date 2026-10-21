@@ -1,4 +1,4 @@
-# 生成图质检报告（image-qa-report.md）
+﻿# 生成图质检报告（image-qa-report.md）
 
 > 质检对象：**入屏图**（scene-001…128 + ending-001…030，共 158 张）。其余 342 张为美术总谱素材（moment/artifact/figure/atmo/ui），本轮不全部上屏，未做逐张 VLM 复核，仅做人工抽查。
 > 质检模型：Qwen3-VL-2B-Instruct（本地，bf16），四维 0—5 分：prompt 符合度 / 时代准确性 / 画面瑕疵 / 危险元素（清晰人脸、可读文字、现代物、旗帜图案错误）。
@@ -27,7 +27,7 @@
 |---|---|---|
 | 场景插画 | **124 张**（128 个场景中 4 个缺图） | 经 `docs/art/scene-map.json` 映射到 v0-01…v5-10，由 `src/game/content/sceneImages.ts` 自动挂载 |
 | 结局插画 | **6 张** | ending-001…006 分别用于名册/家书/旗/照片/口述/口信 |
-| 美术总谱素材 | 496 − 124 − 6 = **366 张** | moment/artifact/figure/atmo/ui 与结局变体，随 `public/art/` 一起交付，供后续扩展 |
+| 美术总谱素材 | 496 − 124 − 30 = **342 张** | moment/artifact/figure/atmo/ui 与结局变体，随 `public/art/` 一起交付，供后续扩展 |
 | 合计落盘（public/art） | **496 张** | 4 张被剔除后不再进入 dist |
 
 ## 三、抽查与红线
