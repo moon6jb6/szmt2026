@@ -1,11 +1,13 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+﻿import { useEffect, useMemo, useRef, useState } from 'react'
 import { InkCurtain, type CurtainHandle, type CurtainOpts } from './game/components/InkCurtain'
 import { Stage } from './game/components/Stage'
+import { ChoiceBurst, type BurstHandle, type BurstKind } from './game/components/ChoiceBurst'
+import { EndingFinale, FINALE_LABEL } from './game/components/EndingFinale'
 import { getScene } from './game/content/registry'
 import { SCENE_IMAGES } from './game/content/sceneImages'
 import { VOLUME4 } from './game/content/volume4'
 import { VOLUME5 } from './game/content/volume5'
-import { ENDINGS, ENDING_ORDER } from './game/content/endings'
+import { COMPOSITE_ORDER, COMPOSITE_REQUIRES, ENDINGS, ENDING_ORDER } from './game/content/endings'
 import {
   NEEDED_SOURCES,
   PENDING_SOURCES,
@@ -25,7 +27,7 @@ import {
   load,
   save,
 } from './game/engine'
-import type { GameState, MemoryKind, Scene, SceneId } from './game/types'
+import type { Choice, EndingKind, GameState, MemoryKind, Scene, SceneId } from './game/types'
 
 type Screen = 'menu' | 'game' | 'ending' | 'gallery' | 'about' | 'sources' | 'people' | 'later'
 
@@ -40,6 +42,17 @@ const ENDING_IMAGE: Record<string, string> = {
   photo: 'ending-004',
   testimony: 'ending-005',
   message: 'ending-006',
+  // 合成结局复用最接近的两张（各自已过质检）
+  archive: 'ending-001',
+  relics: 'ending-002',
+  wordofmouth: 'ending-003',
+}
+
+/** 合成结局的解锁条件说明（图鉴用） */
+const COMPOSITE_HINT: Record<string, string> = {
+  archive: '带走名册与口述，两样一起交',
+  relics: '带走家书与照片，两样一起交',
+  wordofmouth: '带走旗样与那句口信，两样一起交',
 }
 
 const CURTAIN_CHAPTER: CurtainOpts = { coverMs: 1200, holdMs: 320, revealMs: 1300 }
@@ -67,18 +80,18 @@ const AFTERWORD: { text: string; sourceIds: string[] }[] = [
   },
 ]
 
-function loadUnlocked(): MemoryKind[] {
+function loadUnlocked(): EndingKind[] {
   try {
     const raw = localStorage.getItem(UNLOCK_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? (parsed as MemoryKind[]) : []
+    return Array.isArray(parsed) ? (parsed as EndingKind[]) : []
   } catch {
     return []
   }
 }
 
-function saveUnlocked(list: MemoryKind[]) {
+function saveUnlocked(list: EndingKind[]) {
   try {
     localStorage.setItem(UNLOCK_KEY, JSON.stringify(list))
   } catch {
@@ -102,12 +115,43 @@ const MEMORY_NAMES: Record<MemoryKind, string> = {
 export default function App() {
   const [screen, setScreen] = useState<Screen>('menu')
   const [state, setState] = useState<GameState>(() => load() ?? createState())
-  const [unlocked, setUnlocked] = useState<MemoryKind[]>(() => loadUnlocked())
+  const [unlocked, setUnlocked] = useState<EndingKind[]>(() => loadUnlocked())
   const [sourcePanel, setSourcePanel] = useState<string | null>(null)
   const [resumeAvailable, setResumeAvailable] = useState(false)
   const [personId, setPersonId] = useState<string | null>(null)
   const [laterId, setLaterId] = useState<string | null>(null)
+  const [finaleDone, setFinaleDone] = useState(true)
+  const [finaleKey, setFinaleKey] = useState(0)
   const curtain = useRef<CurtainHandle>(null)
+  const burst = useRef<BurstHandle>(null)
+
+  /** 点击效果的种类：结局 > 记忆载体 > 场景天气兜底，保证每次点击的动效都不同 */
+  const burstKindFor = (choice?: Choice): BurstKind => {
+    if (!choice) return 'quiet'
+    if (choice.ending) return choice.ending
+    const gain = choice.outcome.gain ?? {}
+    const keys = Object.keys(gain).filter((key) => (gain[key as MemoryKind] ?? 0) > 0)
+    if (keys.length > 1) return 'archive'
+    return (keys[0] as BurstKind | undefined) ?? 'quiet'
+  }
+
+  const fireBurst = (kind: BurstKind, x?: number, y?: number) => {
+    const seedBase = `${state.sceneId}:${kind}`
+    let seed = 0
+    for (let i = 0; i < seedBase.length; i += 1) seed = (seed * 31 + seedBase.charCodeAt(i)) >>> 0
+    burst.current?.fire(
+      x ?? window.innerWidth / 2,
+      y ?? window.innerHeight * 0.62,
+      kind,
+      seed,
+    )
+  }
+
+  /** 结局页第一次出现时播放"终极画面" */
+  const beginFinale = () => {
+    setFinaleDone(false)
+    setFinaleKey((value) => value + 1)
+  }
 
   /** 所有换场都过墨迹幕：换场动作在全黑那一帧执行，遮住图片解码与重排抖动 */
   const runCurtain = (swap: () => void, opts?: CurtainOpts) => {
@@ -133,8 +177,7 @@ export default function App() {
       if (!Number.isNaN(index) && index >= 1 && index <= (scene.choices?.length ?? 0)) {
         event.preventDefault()
         onChoose(scene.choices![index - 1].id)
-      }
-    }
+      }    }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   })
@@ -179,16 +222,18 @@ export default function App() {
     const saved = load()
     if (saved) {
       setState(saved)
+      setFinaleDone(true) // 续玩直接看正文，不重播结局画面
       setScreen(saved.finishedAt ? 'ending' : 'game')
     } else {
       startNew()
     }
   }
 
-  const onChoose = (choiceId: string) => {
+  const onChoose = (choiceId: string, event?: { clientX?: number; clientY?: number }) => {
     if (!scene?.choices) return
     const choice = scene.choices.find((item) => item.id === choiceId)
     if (!choice) return
+    fireBurst(burstKindFor(choice), event?.clientX, event?.clientY)
     const next = choose(state, choice.id, choice.outcome, choice.next, choice.ending ?? null)
     setState(next)
     save(next)
@@ -204,10 +249,11 @@ export default function App() {
         setState(next)
         save(next)
         if (finishing && state.ending) {
-          const merged = Array.from(new Set([...unlocked, state.ending]))
+          const merged = Array.from(new Set<EndingKind>([...unlocked, state.ending]))
           setUnlocked(merged)
           saveUnlocked(merged)
           setScreen('ending')
+          beginFinale()
         }
       },
       finishing ? CURTAIN_ENDING : undefined,
@@ -341,26 +387,37 @@ export default function App() {
 
           {!hasOutcome && scene.choices && scene.choices.length > 0 && (
             <div className="choices" role="list">
-              {scene.choices.map((choice, index) => (
-                <button
-                  key={choice.id}
-                  className="choice"
-                  role="listitem"
-                  data-choice={choice.id}
-                  onClick={() => onChoose(choice.id)}
-                >
-                  <span className="choice-index">{index + 1}</span>
-                  <span className="choice-text">
-                    <strong>{choice.label}</strong>
-                    {choice.hint && <em>{choice.hint}</em>}
-                  </span>
-                </button>
-              ))}
+              {scene.choices.map((choice, index) => {
+                const kind = burstKindFor(choice)
+                return (
+                  <button
+                    key={choice.id}
+                    className="choice"
+                    role="listitem"
+                    data-choice={choice.id}
+                    data-kind={kind}
+                    style={{ ['--i' as string]: String(index) }}
+                    onClick={(event) => onChoose(choice.id, event)}
+                  >
+                    <span className="choice-index">{index + 1}</span>
+                    <span className="choice-text">
+                      <strong>{choice.label}</strong>
+                      {choice.hint && <em>{choice.hint}</em>}
+                    </span>
+                  </button>
+                )
+              })}
             </div>
           )}
 
           {hasOutcome && (
-            <button className="primary-button continue" onClick={onAdvance}>
+            <button
+              className="primary-button continue"
+              onClick={(event) => {
+                fireBurst('continue', event.clientX, event.clientY)
+                onAdvance()
+              }}
+            >
               {state.ending ? '把东西交出去' : '继续'}
             </button>
           )}
@@ -397,6 +454,28 @@ export default function App() {
         )}
         {renderParagraphs(ending.paragraphs, 'prose prose-ending')}
         <p className="ending-coda">{ending.coda}</p>
+
+        {(() => {
+          const carried = (Object.keys(state.ledger) as MemoryKind[]).filter((kind) => state.ledger[kind] > 0)
+          const compositeLine: Record<string, string> = {
+            archive: '这一次交出去的不是一样东西。名字和话放在同一个匣子里，纸和口述互相作了证。',
+            relics: '这一次交出去的是字和人。信还在，照片还在，圈里的两个名字还是没有。',
+            wordofmouth: '这一次交出去的，一个给眼睛，一个给耳朵。图样收进了匣子，话留在了人嘴里。',
+          }
+          const line = compositeLine[ending.kind]
+            ? compositeLine[ending.kind]
+            : carried.length >= 4
+              ? '你带出去的不止一样，最后只交出去一样。剩下的几样，各自留在了别处。'
+              : carried.length === 1
+                ? '你只带走了一样。剩下的，留在那间厢房里。'
+                : '你带走了几样，最后只交出去一样。'
+          return (
+            <div className="ending-echo">
+              <span className="eyebrow">余波</span>
+              <p>{line}</p>
+            </div>
+          )
+        })()}
 
         <section className="afterword">
           <span className="eyebrow">后记 · 史实</span>
@@ -458,8 +537,17 @@ export default function App() {
           <button className="primary-button" onClick={restart}>
             再走一遍
           </button>
+          <button
+            className="quiet-button"
+            onClick={() => {
+              setFinaleDone(false)
+              setFinaleKey((value) => value + 1)
+            }}
+          >
+            重看结局画面 · {FINALE_LABEL[ending.kind]}
+          </button>
           <button className="quiet-button" onClick={() => setScreen('gallery')}>
-            看看六个结局
+            看看所有结局
           </button>
           <button className="quiet-button" onClick={toMenu}>
             回到开头
@@ -544,9 +632,12 @@ export default function App() {
 
   const renderGallery = () => (
     <div className="gallery">
-      <span className="eyebrow">六个结局</span>
+      <span className="eyebrow">九个结局</span>
       <h1>哪一种记忆被留下</h1>
-      <p className="gallery-lead">已解锁 {unlocked.length} / 6。每个结局都写着同一句话。</p>
+      <p className="gallery-lead">
+        已解锁 {unlocked.length} / 9。六个主结局对应六种记忆载体；三个合成结局只在你同时带走两样东西时出现。
+        每个结局都写着同一句话。
+      </p>
       <div className="gallery-grid">
         {ENDING_ORDER.map((kind) => {
           const ending = ENDINGS[kind]
@@ -555,6 +646,17 @@ export default function App() {
             <article key={kind} className={`gallery-card ${open ? 'open' : 'locked'}`}>
               <h2>{open ? ending.title : '？？'}</h2>
               <p className="gallery-sub">{open ? ending.subtitle : '尚未走到'}</p>
+              {open && <p className="gallery-coda">{ending.coda}</p>}
+            </article>
+          )
+        })}
+        {COMPOSITE_ORDER.map((kind) => {
+          const ending = ENDINGS[kind]
+          const open = unlocked.includes(kind)
+          return (
+            <article key={kind} className={`gallery-card composite ${open ? 'open' : 'locked'}`}>
+              <h2>{open ? ending.title : '？？'}</h2>
+              <p className="gallery-sub">{open ? ending.subtitle : COMPOSITE_HINT[kind]}</p>
               {open && <p className="gallery-coda">{ending.coda}</p>}
             </article>
           )
@@ -816,6 +918,12 @@ export default function App() {
     )
   }
 
+  const weatherVariant = (): 'ink' | 'rain' | 'snow' | 'ash' | 'smoke' => {
+    const weather = scene?.weather ?? 'none'
+    if (weather === 'rain' || weather === 'snow' || weather === 'ash' || weather === 'smoke') return weather
+    return 'ink'
+  }
+
   return (
     <main className={`app-shell ${screen === 'game' ? 'in-game' : ''}`}>
       {screen === 'menu' && renderMenu()}
@@ -834,7 +942,11 @@ export default function App() {
       {screen === 'sources' && renderSources()}
       {screen === 'people' && (personId ? renderPerson() : renderPeople())}
       {screen === 'later' && (laterId ? renderLaterScene() : renderLater())}
-      <InkCurtain ref={curtain} variant={scene?.weather === 'rain' ? 'rain' : 'ink'} />
+      <InkCurtain ref={curtain} variant={weatherVariant()} />
+      <ChoiceBurst ref={burst} />
+      {screen === 'ending' && state.ending && !finaleDone && (
+        <EndingFinale key={finaleKey} kind={state.ending} onDone={() => setFinaleDone(true)} />
+      )}
       {renderSourcePanel()}
     </main>
   )

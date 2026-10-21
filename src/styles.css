@@ -1056,3 +1056,146 @@ button {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ============ 交互反馈：点击粒子 / 结局终极画面 / 选项差异 ============ */
+
+.choice-burst {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+}
+
+.finale {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: #0b0907;
+  opacity: 1;
+  transition: opacity 520ms var(--ease);
+  cursor: pointer;
+}
+
+.finale-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.finale-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.finale-skip {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: rgba(237, 230, 216, 0.42);
+  animation: skipPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes skipPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.7; }
+}
+
+.choice {
+  position: relative;
+  overflow: hidden;
+  --accent: rgba(200, 160, 99, 0.55);
+  animation: choiceIn 520ms var(--ease) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+@keyframes choiceIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+.choice[data-kind='roster'] { --accent: #c8a063; }
+.choice[data-kind='letters'] { --accent: #d8c9a8; }
+.choice[data-kind='flag'] { --accent: #c0442f; }
+.choice[data-kind='photo'] { --accent: #9aa7a4; }
+.choice[data-kind='testimony'] { --accent: #8fb3b0; }
+.choice[data-kind='message'] { --accent: #e5dccb; }
+.choice[data-kind='archive'],
+.choice[data-kind='relics'],
+.choice[data-kind='wordofmouth'] { --accent: #e0a15a; }
+
+.choice::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 0;
+  background: var(--accent);
+  transition: width 420ms var(--ease);
+}
+
+.choice:hover,
+.choice:focus-visible {
+  border-color: var(--accent);
+  background: linear-gradient(90deg, rgba(200, 160, 99, 0.14), rgba(200, 160, 99, 0.02) 65%, transparent);
+}
+
+.choice:hover::after,
+.choice:focus-visible::after { width: 100%; }
+
+.choice[data-kind='roster']:hover,
+.choice[data-kind='roster']:focus-visible { transform: translateX(4px); }
+.choice[data-kind='letters']:hover,
+.choice[data-kind='letters']:focus-visible { transform: translateY(-2px); }
+.choice[data-kind='flag']:hover,
+.choice[data-kind='flag']:focus-visible { transform: translateX(6px) skewX(-0.4deg); }
+.choice[data-kind='photo']:hover,
+.choice[data-kind='photo']:focus-visible { transform: scale(1.008); }
+.choice[data-kind='testimony']:hover,
+.choice[data-kind='testimony']:focus-visible { transform: translateX(-3px); }
+.choice[data-kind='message']:hover,
+.choice[data-kind='message']:focus-visible { transform: translateY(2px); }
+.choice[data-kind='archive']:hover,
+.choice[data-kind='relics']:hover,
+.choice[data-kind='wordofmouth']:hover { transform: translateX(3px) scale(1.004); }
+
+.choice:hover .choice-index,
+.choice:focus-visible .choice-index {
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.choice:active { transform: scale(0.995); }
+
+.prose p:nth-child(3n + 2) { animation-name: fadeUpLeft; }
+
+@keyframes fadeUpLeft {
+  from { opacity: 0; transform: translate3d(-6px, 6px, 0); }
+  to { opacity: 1; transform: none; }
+}
+
+.ending-echo {
+  margin: 28px 0 8px;
+  padding: 18px 22px;
+  border-left: 2px solid var(--gold);
+  background: rgba(200, 160, 99, 0.06);
+}
+
+.ending-echo p {
+  margin: 8px 0 0;
+  color: var(--paper-dim);
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.gallery-card.composite { border-style: dashed; }
+.gallery-card.composite.open { border-color: rgba(200, 160, 99, 0.6); }
+
+@media (prefers-reduced-motion: reduce) {
+  .choice-burst,
+  .finale-canvas { display: none; }
+  .choice { animation: none; }
+}

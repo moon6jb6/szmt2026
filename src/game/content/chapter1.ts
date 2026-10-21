@@ -1,4 +1,5 @@
-import type { Choice, Ledger, Scene, SceneId } from '../types'
+import type { Choice, CompositeKind, Ledger, Scene, SceneId } from '../types'
+import { COMPOSITE_ORDER, COMPOSITE_REQUIRES } from './endings'
 
 /**
  * 第一章正文（单章深挖）
@@ -976,6 +977,22 @@ export function buildEpilogue(ledger: Ledger): Scene {
     ending: kind,
   }))
 
+  // 合成结局：两个载体同时在场时出现，表现"记忆互相作证"
+  for (const kind of COMPOSITE_ORDER) {
+    const [a, b] = COMPOSITE_REQUIRES[kind]
+    if (ledger[a] > 0 && ledger[b] > 0) {
+      const meta = COMPOSITE_LABELS[kind]
+      choices.push({
+        id: `epi-${kind}`,
+        label: meta.label,
+        hint: meta.hint,
+        outcome: { paragraphs: COMMIT_COMPOSITE[kind] },
+        next: `ending_${kind}`,
+        ending: kind,
+      })
+    }
+  }
+
   // 兜底：什么都没留下时，至少允许交那句话
   if (choices.length === 0) {
     choices.push({
@@ -989,6 +1006,40 @@ export function buildEpilogue(ledger: Ledger): Scene {
   }
 
   return { ...EPILOGUE_BASE, choices }
+}
+
+/** 合成结局的选项文案与"交出去"的过程 */
+const COMPOSITE_LABELS: Record<CompositeKind, { label: string; hint: string }> = {
+  archive: { label: '交名册和口述', hint: '名字和话放在一起，才互相作证' },
+  relics: { label: '交家书和照片', hint: '一件是字，一件是人' },
+  wordofmouth: { label: '交旗样和那句话', hint: '一个给眼睛，一个给耳朵' },
+}
+
+const COMMIT_COMPOSITE: Record<CompositeKind, string[]> = {
+  archive: [
+    '他把名册和那沓口述记录叠在一起，推过去。',
+    '参议员问：「这是两样。」',
+    '他说：「一样。」',
+    '参议员看了很久，把两摞纸合成一摞，用布条捆了两道：「名字能查，话不能查。你放在一起，是想让话替名字作证。」',
+    '他没有答。',
+    '参议员把捆好的纸放进稿匣，匣盖压下去的时候纸角还翘着，他用茶杯压住。',
+  ],
+  relics: [
+    '他把十二封家书和那张照片一起推过去。',
+    '参议员翻了翻信，又拿起照片，问：「这张上的人，你认得几个？」',
+    '他说：「九个。」',
+    '参议员把照片翻过来看背面的日期，又翻回去：「这两个圈起来的呢？」',
+    '他说：「没认出来。」',
+    '参议员把照片夹进信里，用纸袋装好，在纸袋上写了两个字：待考。',
+  ],
+  wordofmouth: [
+    '他把画着旗样的那页纸推过去，然后开口说了一句话。',
+    '参议员把纸举到窗口看了看，说：「图样能收。」',
+    '陈望生说：「还有一句话。」',
+    '参议员拿起笔，等了一会儿，说：「你说。」',
+    '「我们是通城人。」',
+    '参议员把这六个字写在纸的最下面，写完把私章盖在纸角，红印压住了半个「城」字。',
+  ],
 }
 
 export const SCENES: Record<string, Scene> = {

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>AI 工具使用情况说明</title>
+<title>AI使用说明</title>
 <style>
 @page { size: A4; margin: 20mm 17mm 18mm 17mm; }
 * { box-sizing: border-box; }
@@ -44,7 +44,7 @@ a { color: #8a2b22; text-decoration: none; }
 </style>
 </head><body><div class="sheet">
 <div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
-<h1 id="ai">AI 工具使用情况说明</h1>
+<p>﻿# AI 工具使用情况说明</p>
 <blockquote>
 <p>参赛团队参考模板对应材料。按《参赛作品材料提交规范》第九部分要求填写。</p>
 </blockquote>
@@ -89,13 +89,13 @@ a { color: #8a2b22; text-decoration: none; }
 </tbody>
 </table>
 <h2 id="_3">三、代表性环节一：场景插画生成与逐张质检</h2>
-<h3 id="ai_1">AI 输入</h3>
+<h3 id="ai">AI 输入</h3>
 <ul>
 <li>统一视觉圣经（色板、镜头语言、禁止项）与 500 条图片总谱（<code>docs/art/image-manifest.json</code>）：每条含场景 id、prompt、negative、seed、尺寸、用途；</li>
 <li>提示词示例（四行仓库内景）：<code>cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty concrete warehouse interior, burlap sandbags, dust in light shaft, no people, no text</code>；</li>
 <li>参数：本地 SDXL + Lightning 4 步、固定 seed、CPU offload（8GB 显存）、逐张记录参数与耗时。</li>
 </ul>
-<h3 id="ai_2">AI 输出</h3>
+<h3 id="ai_1">AI 输出</h3>
 <p>场景/关键瞬间/文物/人物剪影/结局插画候选图。</p>
 <h3 id="_4">团队后续处理</h3>
 <ol>
@@ -107,13 +107,13 @@ a { color: #8a2b22; text-decoration: none; }
 <h3 id="_5">最终成果中的使用</h3>
 <p>场景页横幅插画、人物志与「后来」读者页配图。图片不作为史料证据。</p>
 <h2 id="110020">四、代表性环节二：分区写作 + 双轨审计（110,020 字）</h2>
-<h3 id="ai_3">AI 输入</h3>
+<h3 id="ai_2">AI 输入</h3>
 <ul>
 <li>已确定的故事大纲、人物设定、叙事圣经与硬性约束（不虚构真实人物台词、不写伤亡数字、第三人称限知、禁用套话清单、每段必须有具体物与动作）；</li>
 <li>已核实的 76 张史料卡与逐场挂卡要求；</li>
 <li>分区任务：序卷+卷一、卷二（四行五夜）、卷三+卷四（孤军营/记忆线）、支线人物志。</li>
 </ul>
-<h3 id="ai_4">AI 输出</h3>
+<h3 id="ai_3">AI 输出</h3>
 <p>各卷场景数据（TypeScript 数据文件：场景、段落、抉择、结果、史料卡引用）。</p>
 <h3 id="_6">团队后续处理</h3>
 <ol>
@@ -123,14 +123,15 @@ a { color: #8a2b22; text-decoration: none; }
 <li><strong>集成校验</strong>：构建、场景链可达性、史料卡引用存在性、严格字数统计全部用脚本复现。</li>
 </ol>
 <h3 id="_7">最终成果中的使用</h3>
-<p>游戏正文与附加读者页。审计结论：文学 P0 = 0、不合格 0 / 146 单元、加权均分 4.59；史实 P0 = 0；严格正文 110,020 字（<code>tools/count-words-strict.mjs</code> 可复现）。</p>
+<p>游戏正文与附加读者页。审计结论：文学 P0 = 0、不合格 0 / 146 单元、加权均分 4.59；史实 P0 = 0；严格正文 113,138 字（<code>tools/count-words-strict.mjs</code> 可复现）。</p>
+<p><strong>补充说明（如实披露）</strong>：六个主结局经过完整双轨审计；之后新增的三个合成结局（档案 / 遗物 / 口耳，约 3,100 字）与点击/结局画面交互代码，是在审计冻结后新增的，只做了人工自查（真实人物零台词、无伤亡数字、第三人称、事实只用已核卡），没有独立审计员的第二轮评分。详见 <code>docs/audit/2026-10-21-ending-expansion-note.md</code>。</p>
 <h2 id="_8">五、代表性环节三：代码辅助</h2>
-<h3 id="ai_5">AI 输入</h3>
+<h3 id="ai_4">AI 输入</h3>
 <ul>
 <li>数据模型与状态机设计（由团队确定）</li>
 <li>组件职责划分与约束（无后端、无外部字体、首屏体积目标）</li>
 </ul>
-<h3 id="ai_6">AI 输出</h3>
+<h3 id="ai_5">AI 输出</h3>
 <p>TypeScript 组件与样式初稿。</p>
 <h3 id="_9">团队后续处理</h3>
 <ol>
@@ -146,7 +147,7 @@ a { color: #8a2b22; text-decoration: none; }
 <li>未使用任何未公开的个人信息、声音或肖像数据。</li>
 <li>AI 生成内容已在作品材料中如实披露，未隐瞒使用情况。</li>
 </ul>
-<h2 id="ai_7">七、AI 不参与的部分（团队原创贡献）</h2>
+<h2 id="ai_6">七、AI 不参与的部分（团队原创贡献）</h2>
 <ul>
 <li>选题与切入角度（「把名字留下来」）</li>
 <li>记忆载体机制与六个结局的结构</li>

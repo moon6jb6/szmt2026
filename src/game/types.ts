@@ -29,6 +29,15 @@ export const EMPTY_LEDGER: Ledger = {
 export type MemoryGain = Partial<Ledger>
 
 /**
+ * 合成结局：两个记忆载体同时被留下来时才会出现，
+ * 表现"记忆互相作证"，不属于六个主结局的序列。
+ */
+export type CompositeKind = 'archive' | 'relics' | 'wordofmouth'
+
+/** 结局种类：六个主结局（记忆载体）+ 三个合成结局 */
+export type EndingKind = MemoryKind | CompositeKind
+
+/**
  * 背景键：扩写卷会用到更多场景名（smoke/street/yard…）。
  * Stage 只认识 6 个有 CSS 渐变的键，未知键自动回退到 warehouse，不会白屏。
  */
@@ -100,7 +109,7 @@ export type Choice = {
   outcome: Outcome
   next: SceneId
   /** 尾声专用：选择把哪一样交给县志，直接决定结局 */
-  ending?: MemoryKind
+  ending?: EndingKind
 }
 
 export type Scene = {
@@ -143,13 +152,13 @@ export type GameState = {
   pendingNext: SceneId | null
   /** 已选过的选项 id，避免同一场景重复加值 */
   picked: Record<string, string>
-  ending: MemoryKind | null
+  ending: EndingKind | null
   startedAt: number
   finishedAt: number | null
 }
 
 export type Ending = {
-  kind: MemoryKind
+  kind: EndingKind
   title: string
   subtitle: string
   paragraphs: string[]

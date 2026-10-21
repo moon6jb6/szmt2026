@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 /**
  * 交付版截图（10 张，1600×1000）。
- * 通过 localStorage 注入 GameState 直达指定场景，避免每次从头走。
+ * 通过 localStorage 注入 GameState 直达指定场景；结局一段走完整流程，先拍"终极画面"，再拍结局页。
  */
 const url = process.argv[2] ?? 'http://127.0.0.1:4173/'
 const OUT = path.join(fileURLToPath(new URL('../', import.meta.url)), 'docs', 'deliverables', 'screenshots')
@@ -31,20 +31,20 @@ page.on('console', (msg) => {
   if (msg.type() === 'error') errors.push(msg.text())
 })
 
+async function clearSave() {
+  await page.goto(url, { waitUntil: 'networkidle' })
+  await page.evaluate(() => localStorage.clear())
+  await page.reload({ waitUntil: 'networkidle' })
+  await page.waitForTimeout(400)
+}
+
 async function inject(state) {
   await page.goto(url, { waitUntil: 'networkidle' })
   await page.evaluate(({ key, value }) => localStorage.setItem(key, JSON.stringify(value)), { key: SAVE_KEY, value: state })
   await page.reload({ waitUntil: 'networkidle' })
   await page.waitForTimeout(400)
-  await page.getByRole('button', { name: '继续上次' }).click().catch(() => {})
+  await page.getByRole('button', { name: '继续上次' }).click()
   await page.waitForTimeout(2400)
-}
-
-async function clearAndMenu() {
-  await page.goto(url, { waitUntil: 'networkidle' })
-  await page.evaluate(() => localStorage.clear())
-  await page.reload({ waitUntil: 'networkidle' })
-  await page.waitForTimeout(900)
 }
 
 const shots = []
@@ -54,7 +54,7 @@ async function shot(name) {
 }
 
 // 00 菜单
-await clearAndMenu()
+await clearSave()
 await shot('00-menu.png')
 
 // 01 序卷第一场（带插画）
@@ -69,50 +69,54 @@ await shot('02-scene-night1.png')
 await inject({ ...base, sceneId: 'night3' })
 await shot('03-scene-night3.png')
 
-// 04 第五夜后（缴械前）
-await inject({ ...base, sceneId: 'night5b' })
-await shot('04-scene-night5b.png')
+// 04 尾声（造册，9 个结局选项）—— 滚到选项处截图
+await inject({ ...base, sceneId: 'epilogue' })
+await page.locator('.choices').scrollIntoViewIfNeeded().catch(() => {})
+await page.waitForTimeout(700)
+await shot('04-epilogue-choices.png')
 
-// 05 结局页（名册）
-await inject({ ...base, sceneId: 'epilogue', ending: 'roster', finishedAt: Date.now() - 60_000 })
-await page.waitForTimeout(1200)
-await shot('05-ending-names.png')
+// 05 结局终极画面：从尾声选第一个结局，点"把东西交出去"，抓拍画面后段（名字落成册页）
+await page.locator('.choice').first().click()
+await page.waitForTimeout(500)
+await page.getByRole('button', { name: '把东西交出去' }).click()
+await page.waitForTimeout(5200)
+await shot('05-finale-roster.png')
 
-// 06 人物志清单
-await clearAndMenu()
+// 06 结局页（跳过终极画面后）
+await page.locator('.finale').click({ position: { x: 400, y: 300 } }).catch(() => {})
+for (let i = 0; i < 30; i += 1) {
+  if (await page.locator('.ending').isVisible().catch(() => false)) break
+  await page.waitForTimeout(250)
+}
+await page.waitForTimeout(500)
+await shot('06-ending-names.png')
+
+// 07 人物志
+await clearSave()
 await page.getByRole('button', { name: '人物志' }).click()
 await page.waitForTimeout(600)
-await shot('06-people.png')
+await shot('07-people.png')
 
-// 07 后来清单
+// 08 后来
 await page.getByRole('button', { name: '返回' }).click()
 await page.waitForTimeout(400)
 await page.getByRole('button', { name: '后来' }).click()
 await page.waitForTimeout(600)
-await shot('07-later.png')
+await shot('08-later.png')
 
-// 08 史料库
+// 09 史料库
 await page.getByRole('button', { name: '返回' }).click()
 await page.waitForTimeout(400)
 await page.getByRole('button', { name: '史料库' }).click()
 await page.waitForTimeout(600)
-await shot('08-sources.png')
+await shot('09-sources.png')
 
-// 09 人物志正文
-await page.getByRole('button', { name: '返回' }).click()
-await page.waitForTimeout(400)
-await page.getByRole('button', { name: '人物志' }).click()
-await page.waitForTimeout(500)
-await page.locator('.people-card').first().click()
-await page.waitForTimeout(800)
-await shot('09-people-reader.png')
-
-// 10 移动端菜单（390×844）
+// 10 移动端菜单
 const mobile = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 1 })
 await mobile.goto(url, { waitUntil: 'networkidle' })
 await mobile.evaluate(() => localStorage.clear())
 await mobile.reload({ waitUntil: 'networkidle' })
-await mobile.waitForTimeout(900)
+await mobile.waitForTimeout(800)
 await mobile.screenshot({ path: path.join(OUT, '10-mobile-menu.png') })
 shots.push('10-mobile-menu.png')
 

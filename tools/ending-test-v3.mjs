@@ -1,10 +1,10 @@
 import { chromium } from 'playwright'
 
 /**
- * 六结局快速可达性测试：
- * 直接注入一个「已走到 epilogue」的存档（engine 的 localStorage 格式就是 GameState JSON），
- * 点「继续上次」→ 在 epilogue 选第 k 个结局 → 断言结局页标题。
- * 比从头走 6 遍快 30 倍，且覆盖同一个结局判定代码路径。
+ * 九结局快速可达性测试：
+ * 注入「已走到 epilogue」的存档（localStorage 的 GameState JSON），
+ * 点「继续上次」→ 在 epilogue 依次选择第 k 个结局 → 跳过结局终极画面 → 断言结局页标题。
+ * 6 个主结局 + 3 个合成结局（需要两种载体同时在账本里，测试存档全部置 2）。
  */
 const url = process.argv[2] ?? 'http://127.0.0.1:4173/'
 const SAVE_KEY = 'names-ledger-v1'
@@ -29,13 +29,13 @@ const saveTemplate = {
   finishedAt: null,
 }
 
+const EXPECTED = ['名册', '家书', '旗', '照片', '口述', '口信', '档案', '遗物', '口耳']
 const results = []
-for (let k = 0; k < 6; k += 1) {
+
+for (let k = 0; k < 9; k += 1) {
   await page.goto(url, { waitUntil: 'networkidle' })
   await page.evaluate(
-    ({ key, state }) => {
-      localStorage.setItem(key, JSON.stringify(state))
-    },
+    ({ key, state }) => localStorage.setItem(key, JSON.stringify(state)),
     { key: SAVE_KEY, state: saveTemplate },
   )
   await page.reload({ waitUntil: 'networkidle' })
@@ -45,18 +45,23 @@ for (let k = 0; k < 6; k += 1) {
 
   const choices = page.locator('.choice')
   const count = await choices.count()
-  if (count < 6) {
+  if (count < 9) {
     results.push({ index: k + 1, title: '', error: `epilogue choices=${count}` })
     continue
   }
   await choices.nth(k).click()
-  await page.waitForTimeout(400)
+  await page.waitForTimeout(500)
   const cont = page.locator('.continue')
   if (await cont.isVisible().catch(() => false)) {
     await cont.click({ timeout: 3000 }).catch(() => {})
-    await page.waitForTimeout(800)
   }
-  for (let wait = 0; wait < 20; wait += 1) {
+
+  // 结局终极画面（6 秒）：出现后点击跳过
+  await page.waitForTimeout(1200)
+  if (await page.locator('.finale').isVisible().catch(() => false)) {
+    await page.locator('.finale').click({ position: { x: 400, y: 300 } })
+  }
+  for (let wait = 0; wait < 30; wait += 1) {
     if (await page.locator('.ending').isVisible().catch(() => false)) break
     await page.waitForTimeout(250)
   }
@@ -66,8 +71,8 @@ for (let k = 0; k < 6; k += 1) {
 }
 
 const titles = results.map((item) => item.title)
-const ok = titles.every(Boolean) && new Set(titles).size === 6
-console.log('\nPASS:', ok ? '6/6' : 'FAIL')
+const ok = titles.length === 9 && titles.every((title) => title) && titles.join('|') === EXPECTED.join('|')
+console.log('\nPASS:', ok ? `9/9` : 'FAIL')
 console.log('endings:', titles.join(' / '))
 console.log('errors:', errors.length ? errors.slice(0, 5) : 'none')
 await browser.close()

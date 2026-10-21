@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>测试记录（自动化）</title>
+<title>测试记录</title>
 <style>
 @page { size: A4; margin: 20mm 17mm 18mm 17mm; }
 * { box-sizing: border-box; }
@@ -44,11 +44,11 @@ a { color: #8a2b22; text-decoration: none; }
 </style>
 </head><body><div class="sheet">
 <div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
-<h1 id="_1">测试记录（自动化）</h1>
+<p>﻿# 测试记录（自动化）</p>
 <blockquote>
 <p>生成时间：2026-10-21 凌晨。所有数字均可用仓库内脚本复现。</p>
 </blockquote>
-<h2 id="_2">一、环境</h2>
+<h2 id="_1">一、环境</h2>
 <table>
 <thead>
 <tr>
@@ -75,33 +75,28 @@ a { color: #8a2b22; text-decoration: none; }
 </tr>
 </tbody>
 </table>
-<h2 id="_3">二、全流程走路测试（主链可达性）</h2>
-<pre><code>steps: 301
+<h2 id="_2">二、全流程走路测试（主链可达性）</h2>
+<pre><code>steps: 319
 unique scenes visited: 115
 ending: 名册
-elapsed seconds: 157
+elapsed seconds: 146
 errors: none
 </code></pre>
 <ul>
 <li>策略：从 v0-01 开始，每步选第一个选项 / 点继续，直到结局页。</li>
-<li>覆盖：序卷 8 场、序幕、卷一 25 场、四行五夜 13 + 45 场、孤军营 25 场、尾声、结局。</li>
 <li>结论：主链无断链，无控制台错误，<code>check-volumes.mjs</code> 校验 next 全部有效。</li>
 </ul>
-<h2 id="_4">三、六结局可达性测试</h2>
-<p><code>node tools/ending-test-v3.mjs &lt;url&gt;</code>：注入「已走到 epilogue」的存档（localStorage 的 GameState JSON），
-在 epilogue 依次选择 1—6 个结局，断言结局页标题互不相同。</p>
-<pre><code>route 1: 名册
-route 2: 家书
-route 3: 旗
-route 4: 照片
-route 5: 口述
-route 6: 口信
+<h2 id="_3">三、结局可达性测试（九个结局）</h2>
+<p><code>node tools/ending-test-v3.mjs &lt;url&gt;</code>：注入「已走到 epilogue」的存档，依次选择第 1—9 个结局，跳过终极画面后断言结局页标题。</p>
+<pre><code>route 1: 名册   route 2: 家书   route 3: 旗
+route 4: 照片   route 5: 口述   route 6: 口信
+route 7: 档案   route 8: 遗物   route 9: 口耳
 
-PASS: 6/6
+PASS: 9/9
 errors: none
 </code></pre>
-<p>（另有一个从 v0-01 全程走到结局的慢速版本 <code>ending-test-v2.mjs</code>；因为 140 场景 × 6 遍太慢且墨迹幕换场会 detach 元素，终测采用存档注入法，覆盖同一结局判定代码路径。）</p>
-<h2 id="_5">四、扩展页面冒烟测试</h2>
+<p>（6 个主结局来自六种记忆载体；3 个合成结局需要两种载体同时在账本里，测试存档把六种都置 2。）</p>
+<h2 id="_4">四、扩展页面冒烟测试</h2>
 <p><code>node tools/ui-smoke.mjs &lt;url&gt;</code>：</p>
 <pre><code>peopleCards: 10          # 人物志清单 10 篇
 peopleTitle: 收水        # 第一篇正文可打开
@@ -114,7 +109,7 @@ sceneImage: 1            # 场景插画已挂载
 firstImageWidth: 768     # 插画实际加载成功（768×432）
 errors: none
 </code></pre>
-<h2 id="_6">五、结构与字数校验</h2>
+<h2 id="_5">五、结构与字数校验</h2>
 <table>
 <thead>
 <tr>
@@ -129,7 +124,7 @@ errors: none
 </tr>
 <tr>
 <td><code>node tools/count-words-strict.mjs</code></td>
-<td>严格正文 <strong>110,020</strong> 汉字（只统计玩家读到的 paragraphs）</td>
+<td>严格正文 <strong>113,138</strong> 汉字（只统计玩家读到的 paragraphs）</td>
 </tr>
 <tr>
 <td><code>npx tsc -p tsconfig.app.json --noEmit</code></td>
@@ -141,7 +136,7 @@ errors: none
 </tr>
 </tbody>
 </table>
-<h2 id="_7">六、构建体积</h2>
+<h2 id="_6">六、构建体积</h2>
 <table>
 <thead>
 <tr>
@@ -158,23 +153,23 @@ errors: none
 </tr>
 <tr>
 <td>CSS</td>
-<td>14.48 kB</td>
-<td>4.05 kB</td>
+<td>17.33 kB</td>
+<td>4.68 kB</td>
 </tr>
 <tr>
-<td>JS（含 11 万字正文与 76 张史料卡数据）</td>
-<td>801.29 kB</td>
-<td>284.98 kB</td>
+<td>JS（含 11.3 万字正文、9 个结局、76 张史料卡与交互组件）</td>
+<td>832.97 kB</td>
+<td>295.20 kB</td>
 </tr>
 <tr>
-<td>dist 总计（含 500 张场景插画与 8 张背景图）</td>
-<td>519 个文件 / 17.6 MB</td>
+<td>dist 总计（含 496 张场景插画与 8 张背景图）</td>
+<td>515 个文件 / 17.5 MB</td>
 <td>—</td>
 </tr>
 </tbody>
 </table>
 <p>无外部字体、无 CDN、无后端请求，断网可运行。</p>
-<h2 id="_8">七、图片质检</h2>
+<h2 id="_7">七、图片质检</h2>
 <p>见 <code>docs/art/image-qa-report.md</code>：</p>
 <table>
 <thead>
@@ -211,10 +206,10 @@ errors: none
 </tbody>
 </table>
 <p>人工抽查记录见 <code>docs/art/spot-check.md</code>（每 50 抽 10，含 r1→r6 的 prompt 迭代闭环）。</p>
-<h2 id="_9">七、已知限制（如实记录）</h2>
+<h2 id="_8">七、已知限制（如实记录）</h2>
 <ul>
 <li>单周目 2—3 小时，走路测试用了「连点继续」的机械策略，不代表真实阅读速度。</li>
-<li>volume3/volume4 的严格字数低于规划目标（12,816 / 4,819 vs 20,000 / 12,000），属取舍：总量 110,020 已达标，质量审计优先。</li>
+<li>volume3/volume4 的严格字数低于规划目标（12,816 / 4,819 vs 20,000 / 12,000），属取舍：总量 113,138 已达标，质量审计优先。</li>
 <li>volume2 的文学评分采用「全量扫描 + 代表场抽读」，未逐场五维重评。</li>
 <li>场景插画为本地生成，非历史照片；图片不承担史实表述。</li>
 </ul>

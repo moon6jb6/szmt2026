@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
+﻿import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 
 export type CurtainOpts = {
   /** 墨合拢 */
@@ -14,8 +14,8 @@ export type CurtainHandle = {
 }
 
 type Props = {
-  /** rain：在墨上叠一层雨幕，用于雨夜场景 */
-  variant?: 'ink' | 'rain'
+  /** 按天气给转场叠不同的"场"：ink 纯墨、rain 雨、snow 雪、ash 灰、smoke 烟 */
+  variant?: 'ink' | 'rain' | 'snow' | 'ash' | 'smoke'
 }
 
 const INK = '#16130f'
@@ -105,6 +105,55 @@ function makeRainTile(w = 640, h = 640): HTMLCanvasElement {
   return tile
 }
 
+/** 雪 / 灰 / 烟：一次性烘成纹理，运行时只做整片平移 */
+function makeFlakeTile(color: string, count: number, minR: number, maxR: number, streak = 0): HTMLCanvasElement {
+  const w = 640
+  const tile = document.createElement('canvas')
+  tile.width = w
+  tile.height = w
+  const ctx = tile.getContext('2d')
+  if (!ctx) return tile
+  for (let i = 0; i < count; i += 1) {
+    const x = Math.random() * w
+    const y = Math.random() * w
+    const r = minR + Math.random() * (maxR - minR)
+    ctx.fillStyle = color
+    ctx.beginPath()
+    if (streak > 0) {
+      ctx.ellipse(x, y, r, r * (1 + streak), Math.random() * 0.8, 0, Math.PI * 2)
+    } else {
+      ctx.arc(x, y, r, 0, Math.PI * 2)
+    }
+    ctx.fill()
+  }
+  return tile
+}
+
+function makeSmokeTile(): HTMLCanvasElement {
+  const w = 512
+  const tile = document.createElement('canvas')
+  tile.width = w
+  tile.height = w
+  const ctx = tile.getContext('2d')
+  if (!ctx) return tile
+  try {
+    ctx.filter = 'blur(22px)'
+  } catch {
+    /* ignore */
+  }
+  for (let i = 0; i < 22; i += 1) {
+    const x = Math.random() * w
+    const y = Math.random() * w
+    const r = 40 + Math.random() * 90
+    ctx.fillStyle = `rgba(120,116,108,${0.07 + Math.random() * 0.12})`
+    ctx.beginPath()
+    ctx.arc(x, y, r, 0, Math.PI * 2)
+    ctx.fill()
+  }
+  ctx.filter = 'none'
+  return tile
+}
+
 export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
   { variant = 'ink' },
   ref,
@@ -112,6 +161,9 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const tilesRef = useRef<HTMLCanvasElement[] | null>(null)
   const rainRef = useRef<HTMLCanvasElement | null>(null)
+  const snowRef = useRef<HTMLCanvasElement | null>(null)
+  const ashRef = useRef<HTMLCanvasElement | null>(null)
+  const smokeRef = useRef<HTMLCanvasElement | null>(null)
   const runningRef = useRef(false)
   const sizeRef = useRef({ dpr: 1, w: 0, h: 0 })
 
@@ -129,6 +181,9 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
   useEffect(() => {
     tilesRef.current = [makeInkTile(), makeInkTile(), makeInkTile()]
     rainRef.current = makeRainTile()
+    snowRef.current = makeFlakeTile('rgba(236,242,246,0.75)', 150, 1, 2.6)
+    ashRef.current = makeFlakeTile('rgba(196,192,184,0.5)', 120, 0.8, 2.2, 0.6)
+    smokeRef.current = makeSmokeTile()
     resize()
     window.addEventListener('resize', resize)
 
@@ -210,16 +265,27 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
           ctx.globalAlpha = 1
         }
 
-        const drawRain = (phase: number, strength: number) => {
-          const tile = rainRef.current
-          if (!tile || variant !== 'rain') return
+        const drawWeather = (phase: number, strength: number) => {
+          if (variant === 'ink') return
+          const tile =
+            variant === 'rain'
+              ? rainRef.current
+              : variant === 'snow'
+                ? snowRef.current
+                : variant === 'ash'
+                  ? ashRef.current
+                  : smokeRef.current
+          if (!tile) return
           const s = tile.width * dpr
-          const offset = ((phase * 220 * dpr) % s + s) % s
-          ctx.globalAlpha = 0.55 * strength
-          ctx.globalCompositeOperation = 'lighter'
+          const vx = variant === 'ash' ? -Math.round(s * 0.28) : variant === 'smoke' ? Math.round(s * 0.09) : 0
+          const vy = variant === 'smoke' ? Math.round(s * 0.05) : Math.round(s * 0.35)
+          const offsetX = (((phase * vx) % s) + s) % s
+          const offsetY = (((phase * vy) % s) + s) % s
+          ctx.globalAlpha = (variant === 'smoke' ? 0.5 : 0.62) * strength
+          if (variant === 'rain') ctx.globalCompositeOperation = 'lighter'
           for (let y = -s; y < H + s; y += s) {
             for (let x = -s; x < W + s; x += s) {
-              ctx.drawImage(tile, x, y + offset, s, s)
+              ctx.drawImage(tile, x + offsetX, y + offsetY, s, s)
             }
           }
           ctx.globalCompositeOperation = 'source-over'
@@ -245,7 +311,7 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
               const p = easeOutCubic(elapsed / coverMs)
               drawInk(lerp(0.1, 1.3, p), 1)
               root.style.setProperty('--push', String(1 + 0.045 * p))
-              drawRain(p, p)
+              drawWeather(p, p)
               if (p > 0.999) {
                 ctx.fillStyle = INK
                 ctx.fillRect(0, 0, W, H)
@@ -253,7 +319,7 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
             } else if (elapsed < coverMs + holdMs) {
               ctx.fillStyle = INK
               ctx.fillRect(0, 0, W, H)
-              drawRain((elapsed - coverMs) / holdMs, 1)
+              drawWeather((elapsed - coverMs) / holdMs, 1)
               if (!swapped) {
                 swap()
                 root.style.setProperty('--push', '1.04')
@@ -267,7 +333,7 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
               drawInk(lerp(0.55, 3.2, q), 1)
               ctx.globalCompositeOperation = 'source-over'
               root.style.setProperty('--push', String(lerp(1.04, 1, easeOutCubic(q))))
-              drawRain(q, 1 - q)
+              drawWeather(q, 1 - q)
             } else {
               finish()
               return
