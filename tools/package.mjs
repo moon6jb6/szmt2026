@@ -114,6 +114,16 @@ const ENTRY_SPEC = [
   // ---- 06 / 07 说明 ----
   { to: '06_第三方资源说明/第三方资源说明.pdf', from: 'docs/deliverables/第三方资源说明.pdf', required: true },
   { to: '07_AI工具使用补充说明/AI使用说明.pdf', from: 'docs/deliverables/AI使用说明.pdf', required: true },
+  {
+    to: '07_AI工具使用补充说明/人工智能工具使用情况说明_460737.docx',
+    from: 'docs/deliverables/人工智能工具使用情况说明_460737.docx',
+    required: true,
+  },
+  {
+    to: '07_AI工具使用补充说明/人工智能工具使用情况说明.pdf',
+    from: 'docs/deliverables/人工智能工具使用情况说明.pdf',
+    required: true,
+  },
 ];
 
 // PDF → 源 md（新鲜度核对：PDF 必须晚于 md，否则说明改了文档没重出 PDF）
