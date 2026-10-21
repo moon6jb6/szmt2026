@@ -1,4 +1,4 @@
-import {
+﻿import {
   Component,
   lazy,
   Suspense,
@@ -21,14 +21,18 @@ import { getScene3D } from './game/content/scene3d'
 import {
   ambienceForScene,
   ambienceForScreen,
-  clickSoundFor,
+  carrierEvent,
   droneForEnding,
   isAudioUnlocked,
   isMuted,
+  playAccentForScene,
+  playEvent,
   playSfx,
+  playTransition,
   setAmbience,
   setDrone,
   setMuted,
+  uiEventForScreen,
   unlockAudio,
 } from './game/audio'
 import { CarryTray } from './game/components/CarryTray'
@@ -220,7 +224,9 @@ export default function App() {
     const next = !audioOn
     setAudioOn(next)
     setMuted(!next)
-    if (next) void unlockAudio()
+    if (next) {
+      void unlockAudio().then(() => playEvent('ui:audio:on'))
+    }
   }
 
   // 换场景天然回落 2.5D：view3dScene 只对当时那个场景有效，不做晚一拍的 effect 复位
@@ -300,11 +306,13 @@ export default function App() {
   /** 结局页第一次出现时播放"终极画面" */
   const beginFinale = () => {
     setFinaleDone(false)
+    playEvent('ending:finale:start')
     setFinaleKey((value) => value + 1)
   }
 
   /** 所有换场都过墨迹幕：换场动作在全黑那一帧执行，遮住图片解码与重排抖动 */
   const runCurtain = (swap: () => void, opts?: CurtainOpts) => {
+    playTransition(weatherVariant())
     if (curtain.current) {
       void curtain.current.play(swap, opts)
     } else {
@@ -376,15 +384,59 @@ export default function App() {
       setDrone(null)
     } else if (screen === 'ending' && state.ending) {
       setAmbience(null)
-      setDrone(droneForEnding(state.ending))
+      setDrone(droneForEnding(state.ending), { fadeInMs: finaleDone ? 1600 : 3000 })
     } else {
       setAmbience(ambienceForScreen(screen))
       setDrone(null)
     }
-  }, [audioOn, screen, sceneId, scene?.weather, scene?.chapter, scene?.location, state.ending])
+  }, [audioOn, screen, sceneId, scene?.weather, scene?.chapter, scene?.location, state.ending, finaleDone])
+
+  // 场景点缀（关键词规则 + 冷却）、页面事件、史料卡开合、悬停 tick
+  useEffect(() => {
+    if (!audioOn || screen !== 'game' || !scene) return
+    playAccentForScene(scene.id, scene.paragraphs.join(''))
+  }, [audioOn, screen, sceneId])
+  const prevScreenRef = useRef(screen)
+  useEffect(() => {
+    if (screen === prevScreenRef.current) return
+    prevScreenRef.current = screen
+    const event = uiEventForScreen(screen)
+    if (event) playEvent(event)
+  }, [screen])
+  useEffect(() => {
+    if (personId) playEvent('ui:person:open')
+  }, [personId])
+  useEffect(() => {
+    if (laterId) playEvent('ui:later:open')
+  }, [laterId])
+  const prevSourcePanel = useRef<string | null>(null)
+  useEffect(() => {
+    if (!audioOn) {
+      prevSourcePanel.current = sourcePanel
+      return
+    }
+    if (sourcePanel && !prevSourcePanel.current) playEvent('ui:source:open')
+    if (!sourcePanel && prevSourcePanel.current) playEvent('ui:source:close')
+    prevSourcePanel.current = sourcePanel
+  }, [sourcePanel, audioOn])
+  useEffect(() => {
+    if (window.matchMedia('(pointer: coarse)').matches) return
+    let last = 0
+    const onOver = (event: PointerEvent) => {
+      const target = event.target as HTMLElement | null
+      if (!target?.closest('button, .choice, .chip, .gallery-card, .people-card')) return
+      const now = Date.now()
+      if (now - last < 240) return
+      last = now
+      playEvent('ui:hover')
+    }
+    document.addEventListener('pointerover', onOver, { passive: true })
+    return () => document.removeEventListener('pointerover', onOver)
+  }, [])
 
   const startNew = () => {
     if (audioOn) void unlockAudio()
+    playEvent('menu:click')
     const fresh = createState()
     runCurtain(
       () => {
@@ -399,6 +451,7 @@ export default function App() {
 
   const resume = () => {
     if (audioOn) void unlockAudio()
+    playEvent('menu:click')
     const saved = load()
     if (saved) {
       setState(saved)
@@ -417,7 +470,8 @@ export default function App() {
     fireBurst(burstKind, event?.clientX, event?.clientY)
     if (audioOn) {
       if (!isAudioUnlocked()) void unlockAudio()
-      playSfx(clickSoundFor(burstKind))
+      if (burstKind === 'continue' || burstKind === 'quiet') playSfx(burstKind === 'continue' ? 'page-turn' : 'paper')
+      else playEvent(carrierEvent(burstKind))
     }
     const next = choose(state, choice.id, choice.outcome, choice.next, choice.ending ?? null)
     setState(next)
@@ -426,7 +480,7 @@ export default function App() {
 
   const onAdvance = () => {
     if (!state.pendingNext) return
-    if (audioOn) playSfx('page-turn')
+    if (audioOn) playEvent('page:advance')
     advanceScene()
   }
 
@@ -444,6 +498,7 @@ export default function App() {
           setUnlocked(merged)
           saveUnlocked(merged)
           setScreen('ending')
+          playEvent('ending:enter')
           beginFinale()
         }
       },
@@ -679,7 +734,11 @@ export default function App() {
                   type="button"
                   className={`view3d-toggle ${show3d ? 'on' : ''}`}
                   aria-pressed={show3d}
-                  onClick={() => setView3dScene((current) => (current === sceneId ? null : sceneId))}
+                  onClick={() => {
+                    const next = view3dScene === sceneId ? null : sceneId
+                    playEvent(next ? 'ui:3d:on' : 'ui:3d:off')
+                    setView3dScene(next)
+                  }}
                 >
                   {show3d ? '回到 2.5D' : '3D 视角'}
                 </button>
@@ -1254,7 +1313,14 @@ export default function App() {
       <InkCurtain ref={curtain} variant={weatherVariant()} />
       <ChoiceBurst ref={burst} />
       {screen === 'ending' && state.ending && !finaleDone && (
-        <EndingFinale key={finaleKey} kind={state.ending} onDone={() => setFinaleDone(true)} />
+        <EndingFinale
+          key={finaleKey}
+          kind={state.ending}
+          onDone={() => {
+            setFinaleDone(true)
+            playEvent('ending:finale:end')
+          }}
+        />
       )}
       {exploreVariant && (
         <div

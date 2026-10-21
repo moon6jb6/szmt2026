@@ -188,8 +188,8 @@ genderOf(text): 'male' | 'female'
 
 ```bash
 cd frontend/2026数字媒体
-node tools/beats-test.mjs            # 自起 dev server（4301 起），82 项 / 17 图
-node tools/beats-test.mjs appcss     # 再挂一次 App 的 styles.css，85 项 / 18 图
+node tools/beats-test.mjs            # 自起 dev server（4301 起），84 项 / 17 图
+node tools/beats-test.mjs appcss     # 再挂一次 App 的 styles.css，87 项 / 18 图
 node tools/beats-test.mjs http://127.0.0.1:5199/tools/beats-harness.html   # 对着已有 server 跑
 ```
 
@@ -198,26 +198,26 @@ node tools/beats-test.mjs http://127.0.0.1:5199/tools/beats-harness.html   # 对
 - 每个页面都挂 `framenavigated` 计数并断言 `navigations ≤ 1`：仓库里同时有别人在改文件，一旦 HMR 整页重载，状态会被清空、后面的断言全不作数——这条会直接把它抓出来（自起 server 关掉 HMR 之后恒为 1）。
 - 输出：控制台 `PASS/FAIL` + `tools/shots/beats/summary.json`。
 
-**结果：默认 82/82、挂 App CSS 85/85，单轮约 33—40s；连跑 4 轮全绿。**
+**结果：默认 84/84、挂 App CSS 87/87，单轮约 33—40s；连跑 5 轮全绿（其中两轮在别人改文件、dev server 被重载的情况下抓出过整页重载，见下面「全局」那两条）。**
 
 | 组 | 项数 | 覆盖 |
 | --- | --- | --- |
 | 首屏 | 6 | 7 段分 3 组 / 首组判 scene / 三枚墨点且第一个实心 / 有按钮无 footer / `onBeatChange` 首帧 / Stage 拿到 scene |
-| 换组 | 8 | memory 组判词与纸纹 / 无人不出剪影 / 墨点跟随 / Stage 换底色 / 人物组判词 / 剪影出现 / 男/女变体 |
-| 剪影 | 8 | computed opacity ∈ [0.08,0.2]、`data-opacity` ∈ [0.10,0.16]、blur 1—2px、`aria-hidden`、`pointer-events:none`、z-index 在正文下、卡片 α 0.84 |
-| 正文 | 2 | 12 个采样点命中测试都不是剪影；正文仍是纸白 + 多一层压深 scrim |
-| 收尾 | 6 | `done=true`、footer 出现且 `data-done=true`、按钮收起、三次回执、音效 `ink ink paper`、页面未重载 |
+| 换组 | 6 | memory 组判词与纸纹 / 无人不出剪影 / 墨点跟随 / Stage 换底色 / 人物组判词 / 男性剪影出现 |
+| 剪影 | 9 | computed opacity ∈ [0.08,0.2]、`data-opacity` ∈ [0.10,0.16]、blur 1—2px、`aria-hidden`、`pointer-events:none`、z-index 在正文下、卡片 α 0.84、女性变体、女性 opacity |
+| 正文 | 3 | 12 个采样点命中测试都不是剪影；正文仍是纸白；人物组多一层压深 scrim |
+| 收尾与音效 | 5 | `done=true`、footer 出现且 `data-done=true`、按钮收起、三次回执、音效 `ink ink paper`（一次 evaluate 取原子快照，避免读到新旧混值） |
 | 分组矩阵 | 16 | 7/9/12/15 各 4 项：分 3 组、组大小 3-2-2/3-3-3/4-4-4/5-5-5、逐组读回顺序不变不丢段、读完收起按钮 |
-| 判词样例 | 6 | 4 个样例 mood 逐个断言 + 女性剪影变体 + 女性 opacity 区间 |
-| 边界 | 5 | ≤6 段只 1 组/直接 done/无按钮/选项区立刻出现；273 字单段切 2 段且逐字不丢、不额外分组 |
+| 判词样例 | 4 | 人名+回忆 → figure-male、含「她」→ figure-female、纯环境 → scene、纯回忆 → memory |
+| 边界 | 7 | ≤6 段只 1 组/直接 done/无按钮/选项区立刻出现；273 字单段切 2 段且逐字不丢、不额外分组；8 段×303 字 → 16 块 → 6/5/5；切块仍能拼回原文 |
 | 键盘 | 3 | Enter 推进（不必先聚焦按钮）、空格再推进、只推进当前实例 |
 | 连点 | 2 | 同步连发 8 次只前进 1 组；鼠标双击只前进 1 组 |
-| 降级 | 9 | 跟随系统 + 强制开启两条路径：标记、无动画、直接可见、无过渡、仍能推进、无擦除层、footer 正常 |
+| 降级 | 8 | 跟随系统 + 强制开启两条路径：标记、无动画、直接可见、无过渡、仍能推进、无擦除层、footer 正常 |
 | 390px | 7 | 页面/卡片无横向溢出、正文可读、剪影出血 ≤9% 且被 stage 裁切、底部淡出 mask、移动端透明度更低、剪影仍在 |
 | 扁平接入 | 4 | 仍分 3 组、无第二层卡片（无底色/边框/内边距）、宽度跟随 `.scene` 内容盒、人物组照样出剪影 |
 | 过渡 | 1 | 切组瞬间擦除层 + 墨带 + 新组三层同屏（舞台高度锁 162px） |
 | 接入 App CSS | 3 | 挂上 `styles.css` 后卡片仍 ≤760px、无横向溢出、剪影仍在 |
-| 全局 | 2 | 两次 `navigations ≤ 1`；全程无 console error / pageerror |
+| 全局 | 3 | 两次 `navigations ≤ 1`（panel-main / matrix）；全程无 console error / pageerror |
 
 另：`npx tsc -b`（strict，含 `src` 全部文件）**通过，零错误**。
 
@@ -358,8 +358,8 @@ if (pending) {
 
 ```bash
 cd frontend/2026数字媒体
-node tools/beats-test.mjs            # 82/82 + 17 张图 + summary.json
-node tools/beats-test.mjs appcss     # 85/85（多一张 with-app-css.png）
+node tools/beats-test.mjs            # 84/84 + 17 张图 + summary.json
+node tools/beats-test.mjs appcss     # 87/87（多一张 with-app-css.png）
 npx tsc -b                           # 零错误
 ```
 

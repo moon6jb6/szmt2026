@@ -12,7 +12,7 @@
 | 项 | 结果 |
 |---|---|
 | 事件表 | **42 个事件**全部重建，事件名与 `docs/audio/README.md` §二 逐字一致（脚本逐条比对，0 缺 0 多） |
-| 素材覆盖 | 54 条 layer，引用 28 条素材中的 22 条；余下 6 条是结局 drone（`droneForEnding`）→ **28 条无死条** |
+| 素材覆盖 | 54 条 layer；事件表直接引用 19 条素材，另 3 条只走床选择器（rain-heavy / river / room-tone），余下 6 条是结局 drone（`droneForEnding`）→ **28 条无死条** |
 | 四总线 | master 0.900 / sfx 0.600 / ambience 0.625 / drone 0.882 / accent 0.279，`master → tanh 软削波 → destination` |
 | 逐条补偿 | 15 条循环素材按 `audit-loudness.json` 的 `trims_db` 补齐（room-tone +3.2、radio-static +6.2、tape-hiss +10.2、drone-ending-message +3.0，其余 ≈0） |
 | 混响 | sfx 并联 0.5s 衰减噪声 IR（`ConvolverNode`，程序化生成，湿声 0.14） |
@@ -178,7 +178,7 @@ node tools/audio/verify-events.mjs http://127.0.0.1:5199/    # 32/32
 ```
 PASS  探针在（dev only）
 PASS  AUDIO_EVENT_MAP = 42 事件、每事件非空、id 全在清单 — 54 层 / 28 条素材
-PASS  28 条素材无死条 — 事件表 22 + 床选择器 6 + drone 6
+PASS  28 条素材无死条 — 事件层 19 条 + 仅床 3 条 + drone 6 条 = 28
 PASS  混音 / 补偿 / 混响参数 — master 0.9 / wet 0.14 / IR 0.5s / tanh 2x
 PASS  默认静音，点「声音」后解锁 running
 PASS  悬停限流 8 → 1
