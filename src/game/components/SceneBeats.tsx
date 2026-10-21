@@ -491,7 +491,7 @@ export function SceneBeats({ paragraphs, footer, onBeatChange, onSound, reduceMo
       ref={rootRef}
       className={`beats${className ? ` ${className}` : ''}`}
       role="group"
-      aria-label="正文，分三段阅读"
+      aria-label={total > 1 ? '正文，分三段阅读' : '正文'}
       data-testid="beats"
       data-mood={beat?.mood ?? 'scene'}
       data-has-person={beat?.hasPerson ? 'true' : 'false'}

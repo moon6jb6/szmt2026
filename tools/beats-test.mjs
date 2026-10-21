@@ -1,17 +1,19 @@
 import { chromium } from 'playwright'
 import { mkdir, readdir, rm, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
+import { createServer } from 'vite'
 
 /**
  * SceneBeats（长段落分三段 + 氛围 + 人物剪影）验收
  *
  * 用法：
- *   node tools/beats-test.mjs                      # 默认 http://127.0.0.1:5199/tools/beats-harness.html
- *   node tools/beats-test.mjs <harness-url>
+ *   node tools/beats-test.mjs                      # 自己起一个 dev server（4301—4304 挑空闲端口，关 HMR）
+ *   node tools/beats-test.mjs <harness-url>        # 对着已经开着的 dev server 跑
  *   node tools/beats-test.mjs <harness-url> appcss # 额外跑一遍挂 App styles.css 的场景
  *
- * 说明：本项目 4173 是 Lead/玩家正在试玩的 preview，本脚本**不起也不重启任何服务**，
- * 只打开已经存在的 dev server 上的验证页（5173 / 5199 都行，用第一个参数指定）。
+ * 进程边界：**绝不起也不重启 4173**（玩家正在试玩 preview），也不碰别人的 5199。
+ * 自己起的 server 只服务这一个验证页、跑完就 close；HMR 关掉，
+ * 因为仓库里同时有别的 agent 在改文件，HMR 的整页重载会把测试状态冲掉。
  *
  * 必过项：
  *   分组：7/9/12/15 段都分 3 组，组大小 3-2-2 / 3-3-3 / 4-4-4 / 5-5-5，总段数与顺序不变；
@@ -23,16 +25,47 @@ import { fileURLToPath } from 'node:url'
  *         scene 组没有；pointer-events:none、z-index 在正文之下、不拦截正文命中测试。
  *   reduced-motion：无动画/无过渡仍能推进，footer 正常出现。
  *   390px：无横向溢出、正文可读。
- *   全程无 console error / pageerror。
+ *   扁平接入：className="beats--flat" 嵌进 .scene 时不再画第二层卡片。
+ *   全程无 console error / pageerror；页面不被整页重载。
  *
  * 产出：tools/shots/beats/*.png + summary.json；任一断言失败 exitCode=1。
  */
 
-const baseUrl = process.argv[2] ?? 'http://127.0.0.1:5199/tools/beats-harness.html'
-const alsoAppCss = process.argv.includes('appcss') || process.argv[3] === 'appcss'
+const root = fileURLToPath(new URL('..', import.meta.url))
+const OUT = fileURLToPath(new URL('./shots/beats/', import.meta.url))
+
+/** 自起 dev server（与 4173/5199 无关）：关 HMR，端口被占就换下一个 */
+async function startDevServer() {
+  const ports = [4301, 4302, 4303, 4304]
+  for (const port of ports) {
+    try {
+      const server = await createServer({
+        root,
+        cacheDir: 'node_modules/.vite-beats',
+        logLevel: 'error',
+        server: { host: '127.0.0.1', port, strictPort: true, hmr: false },
+      })
+      await server.listen()
+      const base = server.resolvedUrls?.local?.[0] ?? `http://127.0.0.1:${port}/`
+      return { server, url: new URL('tools/beats-harness.html', base).href }
+    } catch (error) {
+      if (!/EADDRINUSE|already in use|strictPort/i.test(String(error))) throw error
+    }
+  }
+  throw new Error(`找不到空闲端口（${ports.join(' / ')}）`)
+}
+
+let devServer = null
+// 只认 http(s) 开头的那一个参数当 URL：省得 `node tools/beats-test.mjs appcss` 把 appcss 当网址
+let baseUrl = process.argv.slice(2).find((value) => /^https?:\/\//i.test(value))
+if (!baseUrl) {
+  const started = await startDevServer()
+  devServer = started.server
+  baseUrl = started.url
+}
+const alsoAppCss = process.argv.includes('appcss')
 const appCssUrl = baseUrl.includes('?') ? `${baseUrl}&appcss=1` : `${baseUrl}?appcss=1`
 
-const OUT = fileURLToPath(new URL('./shots/beats/', import.meta.url))
 await mkdir(OUT, { recursive: true })
 const stale = await readdir(OUT).catch(() => [])
 await Promise.all(
@@ -136,10 +169,23 @@ const gone = async (locator, timeout = 1500) => {
 async function openPage({ viewport = { width: 1280, height: 1000 }, reducedMotion = 'no-preference', label, url = baseUrl }) {
   const page = await browser.newPage({ viewport, reducedMotion })
   errorsOf(page, label)
+  // 记录主框架导航：Vite 一旦因为别处改动整页重载，测试状态会被清空，必须能看见
+  let navigations = 0
+  page.on('framenavigated', (frame) => {
+    if (frame === page.mainFrame()) navigations += 1
+  })
+  page.__navigations = () => navigations
   await page.goto(url, { waitUntil: 'load' })
   await page.locator('[data-testid="panel-main"] [data-testid="beats"]').waitFor({ state: 'visible' })
   await page.waitForFunction(() => Boolean(window.__BEATS__))
   return page
+}
+
+/** 每次 open 之后都要断言「页面没被 HMR 重载过」，否则后面的断言都不作数 */
+const assertSingleNavigation = (page, label) => {
+  const navigations = page.__navigations()
+  check(`页面稳定（无 HMR 整页重载）· ${label}`, navigations <= 1, `navigations=${navigations}`)
+  return navigations
 }
 
 const CN = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '十一', '十二', '十三', '十四', '十五']
@@ -298,21 +344,36 @@ console.log(`harness: ${baseUrl}\n`)
 
   /* ---- 最后一组再点一次 → footer ---- */
   await next(page, card)
-  const done = await stateOf(card)
-  const footer = card.locator('[data-testid="beats-footer"]')
-  check('收尾：读完最后一组后 done=true', done.done === 'true', `done=${done.done}`)
-  check('收尾：footer 出现且 done=true', (await footer.count()) === 1 && (await footer.getAttribute('data-done')) === 'true')
-  check('收尾：「继续读」收起', await gone(card.locator('[data-testid="beats-next"]')))
+  await gone(card.locator('[data-testid="beats-next"]'))
+  // 一次 evaluate 取完整快照：避免 count / getAttribute 之间发生任何重渲染导致读到新旧混着的值
+  const finish = await page.evaluate(() => {
+    const card = document.querySelector('[data-testid="panel-main"] [data-testid="beats"]')
+    const footer = card.querySelector('[data-testid="beats-footer"]')
+    return {
+      done: card.getAttribute('data-done'),
+      index: card.getAttribute('data-beat-index'),
+      total: card.getAttribute('data-beat-total'),
+      button: card.querySelectorAll('[data-testid="beats-next"]').length,
+      footer: card.querySelectorAll('[data-testid="beats-footer"]').length,
+      footerDone: footer ? footer.getAttribute('data-done') : null,
+      log: document.querySelector('[data-testid="beat-log"]').textContent,
+      cues: document.querySelector('[data-testid="sound-log"]').textContent,
+    }
+  })
+  check('收尾：读完最后一组后 done=true', finish.done === 'true', JSON.stringify(finish))
+  check(
+    '收尾：footer 出现且 done=true',
+    finish.footer === 1 && finish.footerDone === 'true',
+    `footer=${finish.footer} footerDone=${finish.footerDone}`,
+  )
+  check('收尾：「继续读」收起', finish.button === 0, `button=${finish.button}`)
   check(
     '收尾：onBeatChange 三次回执正确',
-    (await page.locator('[data-testid="beat-log"]').innerText()) === '#0 scene · #1 memory · #2 figure-male+person',
-    await page.locator('[data-testid="beat-log"]').innerText(),
+    finish.log === '#0 scene · #1 memory · #2 figure-male+person',
+    String(finish.log),
   )
-  check(
-    '音效：普通组 paper、回忆/人物组 ink',
-    (await page.locator('[data-testid="sound-log"]').innerText()) === 'ink ink paper',
-    await page.locator('[data-testid="sound-log"]').innerText(),
-  )
+  check('音效：普通组 paper、回忆/人物组 ink', finish.cues === 'ink ink paper', String(finish.cues))
+  assertSingleNavigation(page, 'panel-main')
   await shotEl(page, '[data-testid="panel-main"] [data-testid="beats"]', 'card-done-footer')
   await page.close()
 }
@@ -354,6 +415,7 @@ console.log(`harness: ${baseUrl}\n`)
     await next(page, cell)
     check(`分组 ${count} 段：读完收起按钮`, await gone(cell.locator('[data-testid="beats-next"]')))
   }
+  assertSingleNavigation(page, 'matrix')
   await page.close()
 }
 
@@ -419,6 +481,25 @@ console.log(`harness: ${baseUrl}\n`)
   check('超长单段：一个字都没丢', longTexts.join('') === fixture, `${longTexts.join('').length} / ${fixture.length}`)
   check('超长单段：不额外分组（仍是 1 组）', longState.total === 1, `total=${longState.total}`)
   await shotEl(page, '[data-testid="cell-long"]', 'card-long-paragraph')
+
+  // 纯函数联动：8 段 × 303 字 → 每段切 2 块 → 16 块 → 6/5/5（先切长段、再按块数分组）
+  const chained = await page.evaluate(() => {
+    const api = window.__BEATS__
+    const groups = api.groupParagraphs(api.fixtures.eightLong)
+    const chunks = api.splitLongParagraph(api.fixtures.long303)
+    return {
+      sizes: groups.map((group) => group.length),
+      chunks: chunks.length,
+      kept: chunks.join('') === api.fixtures.long303,
+      blocks: groups.flat().length,
+    }
+  })
+  check(
+    '长段联动：8 段 × 303 字 → 每段 2 块 → 16 块 → 6/5/5',
+    chained.chunks === 2 && chained.sizes.join('/') === '6/5/5' && chained.blocks === 16,
+    `chunks=${chained.chunks} sizes=${chained.sizes.join('/')} blocks=${chained.blocks}`,
+  )
+  check('长段联动：切块后仍逐字拼回原文', chained.kept)
   await page.close()
 }
 
@@ -696,6 +777,7 @@ check(
 )
 
 await browser.close()
+if (devServer) await devServer.close()
 
 const passed = checks.filter((item) => item.ok).length
 const failed = checks.filter((item) => !item.ok)

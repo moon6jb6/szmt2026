@@ -1495,3 +1495,30 @@ padding-bottom:72px}
 width:min(620px,92%)}
 }
 
+
+/* 场景头两个入口按钮（场景探索 / 3D 视角）并排显示，不再各自绝对定位 */
+.scene-head .view3d-toggle { position: static; top: auto; right: auto; }
+
+
+/* 长段落分段阅读时的整页氛围（SceneBeats 的 mood；剪影在卡片内，这里只调背景层） */
+.app-shell:has(.scene[data-beat-mood='memory']) .stage-grade {
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(122, 62, 46, 0.42), transparent 62%),
+    linear-gradient(180deg, rgba(8, 6, 4, 0.55), transparent 30%, transparent 70%, rgba(8, 6, 4, 0.6));
+}
+.app-shell:has(.scene[data-beat-mood='figure-male']) .stage-grade,
+.app-shell:has(.scene[data-beat-mood='figure-female']) .stage-grade {
+  background:
+    radial-gradient(120% 90% at 62% 45%, rgba(20, 16, 12, 0.35), transparent 55%),
+    linear-gradient(180deg, rgba(6, 5, 4, 0.62), transparent 28%, transparent 70%, rgba(6, 5, 4, 0.68));
+}
+/* 嵌入 .scene 时不要出现双层卡 */
+.scene-body .beats--flat {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}

@@ -57,6 +57,10 @@ const LONG =
   '墙角的水缸见了底，缸壁上挂着一圈白痕，是水退下去留下的。' +
   '沙袋后面有一双草鞋，鞋底朝上，钉子磨得发亮，鞋带还系着。'
 
+/* 8 段 × 303 字：验证「先切长段、再按块数分组」的联动（8 段 × 2 块 = 16 块 → 6/5/5） */
+const LONG_303 = `${LONG}桌角上还压着半张旧报纸。`
+const EIGHT_LONG: string[] = Array.from({ length: 8 }, () => LONG_303)
+
 /* 判词样例：人名+回忆 / 含「她」 / 纯环境 / 纯回忆 */
 type Sample = { id: string; label: string; expect: Mood; paragraphs: string[] }
 
@@ -329,7 +333,7 @@ const api: Record<string, unknown> = {
   buildBeats,
   genderOf,
   paragraphHasPerson,
-  fixtures: { seven: SEVEN, long: LONG, four: FOUR, samples: SAMPLES },
+  fixtures: { seven: SEVEN, long: LONG, long303: LONG_303, eightLong: EIGHT_LONG, four: FOUR, samples: SAMPLES },
 }
 ;(window as unknown as Record<string, unknown>).__BEATS__ = api
 

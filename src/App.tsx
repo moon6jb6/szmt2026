@@ -34,6 +34,8 @@ import {
 import { CarryTray } from './game/components/CarryTray'
 import { SpotlightFind } from './game/components/SpotlightFind'
 import { FlagRaise } from './game/components/FlagRaise'
+import SceneHotspots, { SCENE_HOTSPOTS } from './game/components/SceneHotspots'
+import { SceneBeats } from './game/components/SceneBeats'
 
 /** 真 3D 切片按需加载：不进主包，只有点「3D 视角」才拉取 */
 const Scene3D = lazy(() => import('./game/components/Scene3D'))
@@ -236,6 +238,7 @@ export default function App() {
   }
   useEffect(() => {
     scrollCurrentToTop(false)
+    setExploreVariant(null)
   }, [screen, sceneId, personId, laterId])
   useEffect(() => {
     if (state.pendingOutcome) scrollCurrentToTop(true)
@@ -244,6 +247,10 @@ export default function App() {
   // 两个「签名时刻」：第一夜灯下找名字、第三夜升旗。每局一次，Esc 可跳过。
   const [signatureDone, setSignatureDone] = useState<('spot' | 'flag')[]>([])
   const [signature, setSignature] = useState<'spot' | 'flag' | null>(null)
+  // 「场景探索」：背景图 + 热点；与真 3D 视角是两个独立入口
+  const [exploreVariant, setExploreVariant] = useState<keyof typeof SCENE_HOTSPOTS | null>(null)
+  /** 长段落分段阅读时的情绪（场景/回忆/人物剪影），用来微调背景 */
+  const [beatMood, setBeatMood] = useState<'scene' | 'memory' | 'figure-male' | 'figure-female'>('scene')
   const finishSignature = (kind: 'spot' | 'flag') => {
     setSignatureDone((prev) => (prev.includes(kind) ? prev : [...prev, kind]))
     setSignature(null)
@@ -446,13 +453,15 @@ export default function App() {
 
   // 键盘操作：1-9 选择，Enter/空格 继续。
   // 监听器只挂一次，用 ref 读最新状态，避免每次 render 重挂。
-  const keyState = useRef({ screen, scene, pending: state.pendingOutcome, onAdvance, onChoose, signature })
-  keyState.current = { screen, scene, pending: state.pendingOutcome, onAdvance, onChoose, signature }
+  const keyState = useRef({ screen, scene, pending: state.pendingOutcome, onAdvance, onChoose, signature, exploreVariant })
+  keyState.current = { screen, scene, pending: state.pendingOutcome, onAdvance, onChoose, signature, exploreVariant }
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      const { screen, scene, pending, onAdvance, onChoose, signature } = keyState.current
-      if (signature) return
+      const { screen, scene, pending, onAdvance, onChoose, signature, exploreVariant } = keyState.current
+      if (signature || exploreVariant) return
       if (screen !== 'game' || !scene) return
+      // 分段阅读组件还在推进中时，键盘归它
+      if (document.querySelector('.beats[data-done="false"]')) return
       if (pending) {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault()
@@ -560,12 +569,84 @@ export default function App() {
     </>
   )
 
+  const renderChoices = () => {
+    if (!scene?.choices || scene.choices.length === 0) return null
+    if (scene.id === 'epilogue') {
+      return (
+        <CarryTray
+          choices={scene.choices}
+          onChoose={(id) => onChoose(id)}
+          onSound={() => {
+            if (audioOn) playSfx('paper')
+          }}
+        />
+      )
+    }
+    return (
+      <div className="choices">
+        {scene.choices.map((choice, index) => {
+          const kind = burstKindFor(choice)
+          return (
+            <button
+              key={choice.id}
+              className="choice"
+              data-choice={choice.id}
+              data-kind={kind}
+              style={{ ['--i' as string]: String(index) }}
+              onClick={(event) => onChoose(choice.id, event)}
+            >
+              <span className="choice-index">{index + 1}</span>
+              <span className="choice-text">
+                <strong>{choice.label}</strong>
+                {choice.hint && <em>{choice.hint}</em>}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+    )
+  }
+
+  const renderContinue = () => {
+    if (state.pendingOutcome === null) return null
+    return (
+      <button
+        className="primary-button continue"
+        onClick={(event) => {
+          fireBurst('continue', event.clientX, event.clientY)
+          onAdvance()
+        }}
+      >
+        {state.ending ? '把东西交出去' : '继续'}
+      </button>
+    )
+  }
+
+  const renderBody = () => {
+    if (!scene) return null
+    const hasOutcome = state.pendingOutcome !== null
+    const paras = hasOutcome ? state.pendingOutcome!.paragraphs : scene.paragraphs
+    if (paras.length <= 6) return renderParagraphs(paras)
+    return (
+      <SceneBeats
+        className="beats--flat"
+        paragraphs={paras}
+        reduceMotion={window.matchMedia('(prefers-reduced-motion: reduce)').matches}
+        onSound={(cue) => {
+          if (audioOn) playSfx(cue)
+        }}
+        onBeatChange={(info) => setBeatMood(info.mood)}
+        footer={() => (hasOutcome ? renderContinue() : renderChoices())}
+      />
+    )
+  }
+
   const renderScene = () => {
     if (!scene) return null
     const hasOutcome = state.pendingOutcome !== null
 
     return (
-      <div key={scene.id} className={`scene ${show3d ? 'scene-in-3d' : ''}`} data-scene={scene.id}>
+      <div key={scene.id} className={`scene ${show3d ? 'scene-in-3d' : ''}`} data-scene={scene.id} data-beat-mood={beatMood}>
         <p className="sr-only" aria-live="polite">
           {`${scene.chapter} · ${scene.title}`}
         </p>
@@ -581,15 +662,29 @@ export default function App() {
               {scene.location}
             </p>
           )}
-          {scene3dSpec && canUse3D() && (
-            <button
-              type="button"
-              className={`view3d-toggle ${show3d ? 'on' : ''}`}
-              aria-pressed={show3d}
-              onClick={() => setView3dScene((current) => (current === sceneId ? null : sceneId))}
-            >
-              {show3d ? '回到 2.5D' : '3D 视角'}
-            </button>
+          {scene3dSpec && (
+            <div style={{ position: 'absolute', top: 0, right: 0, display: 'flex', gap: 8 }}>
+              <button
+                type="button"
+                className={`view3d-toggle ${exploreVariant ? 'on' : ''}`}
+                aria-pressed={Boolean(exploreVariant)}
+                onClick={() =>
+                  setExploreVariant((current) => (current === scene3dSpec.variant ? null : scene3dSpec.variant))
+                }
+              >
+                {exploreVariant ? '回到正文' : '场景探索'}
+              </button>
+              {canUse3D() && (
+                <button
+                  type="button"
+                  className={`view3d-toggle ${show3d ? 'on' : ''}`}
+                  aria-pressed={show3d}
+                  onClick={() => setView3dScene((current) => (current === sceneId ? null : sceneId))}
+                >
+                  {show3d ? '回到 2.5D' : '3D 视角'}
+                </button>
+              )}
+            </div>
           )}
         </header>
 
@@ -610,7 +705,7 @@ export default function App() {
           })()}
 
         <div className="scene-body">
-          {renderParagraphs(hasOutcome ? state.pendingOutcome!.paragraphs : scene.paragraphs)}
+          {renderBody()}
 
           {hasOutcome && state.pendingOutcome?.quote && (
             <blockquote className="quote-card">
@@ -619,50 +714,9 @@ export default function App() {
             </blockquote>
           )}
 
-          {!hasOutcome && scene.choices && scene.choices.length > 0 &&
-            (scene.id === 'epilogue' ? (
-              <CarryTray
-                choices={scene.choices}
-                onChoose={(id) => onChoose(id)}
-                onSound={(id) => {
-                  if (audioOn) playSfx('paper')
-                }}
-              />
-            ) : (
-              <div className="choices">
-              {scene.choices.map((choice, index) => {
-                const kind = burstKindFor(choice)
-                return (
-                  <button
-                    key={choice.id}
-                    className="choice"
-                    data-choice={choice.id}
-                    data-kind={kind}
-                    style={{ ['--i' as string]: String(index) }}
-                    onClick={(event) => onChoose(choice.id, event)}
-                  >
-                    <span className="choice-index">{index + 1}</span>
-                    <span className="choice-text">
-                      <strong>{choice.label}</strong>
-                      {choice.hint && <em>{choice.hint}</em>}
-                    </span>
-                  </button>
-                )
-              })}
-              </div>
-            ))}
+          {!hasOutcome && scene.choices && scene.choices.length > 0 && renderChoices()}
 
-          {hasOutcome && (
-            <button
-              className="primary-button continue"
-              onClick={(event) => {
-                fireBurst('continue', event.clientX, event.clientY)
-                onAdvance()
-              }}
-            >
-              {state.ending ? '把东西交出去' : '继续'}
-            </button>
-          )}
+          {hasOutcome && (state.pendingOutcome?.paragraphs.length ?? 0) <= 6 && renderContinue()}
         </div>
 
         {scene.aside && <p className="scene-aside">{scene.aside}</p>}
@@ -1201,6 +1255,27 @@ export default function App() {
       <ChoiceBurst ref={burst} />
       {screen === 'ending' && state.ending && !finaleDone && (
         <EndingFinale key={finaleKey} kind={state.ending} onDone={() => setFinaleDone(true)} />
+      )}
+      {exploreVariant && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 70,
+            background: '#0a0806',
+          }}
+        >
+          <SceneHotspots
+            variant={exploreVariant}
+            hotspots={SCENE_HOTSPOTS[exploreVariant]}
+            reduceMotion={window.matchMedia('(prefers-reduced-motion: reduce)').matches}
+            onSound={(cue) => {
+              if (audioOn) playSfx(cue === 'thud' ? 'distant-thud' : cue)
+            }}
+            onOpenSource={(id) => setSourcePanel(id)}
+            onExit={() => setExploreVariant(null)}
+          />
+        </div>
       )}
       {signature && (
         <div

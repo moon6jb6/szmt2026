@@ -427,6 +427,18 @@ try {
     // ---- 2.12 全景 + 标题区亮度 ----
     await page.evaluate(() => window.__sceneHotspots.remount())
     await wait(420)
+    // 墨点在 6%—14% 之间呼吸：等它走到接近峰值的相位再截，否则截图正好落在低谷，
+    // 看上去像「页面上没有热点」（这只是一次对相位的等待，不改任何样式）
+    await page
+      .waitForFunction(
+        () => {
+          const spot = document.querySelector('.sh-spot')
+          return spot ? Number(getComputedStyle(spot).opacity) >= 0.128 : true
+        },
+        null,
+        { timeout: 8000, polling: 'raf' },
+      )
+      .catch(() => {})
     const wide = await shot(page, `${variant}-wide`)
     shots.push(wide)
     const luma = await regionLuma(auxPage, await readFile(wide.file), { x: 8, y: 6, w: 168, h: 16 })

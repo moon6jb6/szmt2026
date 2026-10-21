@@ -190,21 +190,23 @@
   outline-offset: 3px;
 }
 
-/* 墨点：未发现时呼吸 opacity 6%→14% */
+/* 墨点：未发现时呼吸 opacity 6%→14%。点子做得比 8px 略大一圈（10px），
+   否则在亮背景（楼顶的天光和旗面）上 10% 的亮度差基本读不出来；
+   透明度仍严格压在 6%—14%，不违背「不刺眼」。 */
 .sh-spot {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 8px;
-  height: 8px;
-  margin: -4px 0 0 -4px;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
   border-radius: 50%;
   border: 1px solid rgba(200, 160, 99, 0);
   background: radial-gradient(
     circle at 50% 50%,
-    rgba(237, 230, 216, 0.95) 0 22%,
-    rgba(200, 160, 99, 0.7) 46%,
-    rgba(200, 160, 99, 0) 74%
+    rgba(255, 247, 232, 0.98) 0 26%,
+    rgba(200, 160, 99, 0.78) 48%,
+    rgba(200, 160, 99, 0) 76%
   );
   opacity: 0.1;
   animation: sh-breathe 4.6s ease-in-out infinite;
