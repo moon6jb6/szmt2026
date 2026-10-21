@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>anim-lab 02 · 2.5D 视差（因子隔离实验）</title>
+<style>
+  /* ============================================================
+     anim-lab/02-parallax-stage.html
+
+     目的：把「2.5D 视差」的候选开销拆成可开关的因子，
+           在真实浏览器里量出每个因子各吃掉多少帧。
+
+     因子（body 上的 data-* 控制）：
+       data-tilt      1 = 父层 rotateX/rotateY 真 3D 倾斜
+                      0 = 子层各自做 2D translate（无 3D 上下文）
+       data-blur      baked    = CSS filter 恒定（模糊烘焙一次）
+                      animated = 每帧改 blur 半径（对照组）
+                      none     = 完全不用 filter，景深只靠 opacity
+       data-ambient   1 = 环境呼吸光：120vmax 径向渐变 + mix-blend + 逐帧位移
+       data-glow      1 = 指针微光：全屏 mix-blend: screen + 逐帧 opacity
+       data-backdrop  1 = 卡片 backdrop-filter: blur(14px)
+
+     实测结论见 docs/research/web-animation-skills.md
+     ============================================================ */
+  :root {
+    --ink: #16130f;
+    --paper: #ede6d8;
+    --paper-dim: #bdb3a2;
+    --gold: #c8a063;
+    --red: #a32b2b;
+    --serif: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+    --sans: 'Source Han Sans SC', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  }
+
+  @property --rx { syntax: '<number>'; inherits: true; initial-value: 0; }
+  @property --ry { syntax: '<number>'; inherits: true; initial-value: 0; }
+  @property --glow { syntax: '<number>'; inherits: true; initial-value: 0; }
+  @property --par { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--ink); color: var(--paper);
+    font-family: var(--sans); overflow: hidden;
+  }
+
+  .stage {
+    position: fixed; inset: 0; overflow: hidden;
+    background: var(--ink);
+    perspective: 1100px;
+    perspective-origin: 50% 46%;
+    contain: strict;
+  }
+
+  .tilt {
+    position: absolute; inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(calc(var(--rx) * -2.2deg)) rotateY(calc(var(--ry) * 2.6deg));
+    will-change: transform;
+  }
+  body[data-tilt='0'] .tilt { transform-style: flat; transform: none; }
+
+  .layer {
+    position: absolute; inset: -6%;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  /* 3D 模式：translateZ 拉开景深，透视自动给出尺度差 */
+  body[data-tilt='1'] .layer.far  { transform: translateZ(-260px) scale(1.30); }
+  body[data-tilt='1'] .layer.mid  { transform: translateZ(-60px)  scale(1.14); }
+  body[data-tilt='1'] .layer.near { transform: translateZ(140px)  scale(1.20); }
+  /* 2D 模式：同样的位移差，但每层自己的 transform 逐帧变化 */
+  body[data-tilt='0'] .layer.far  { transform: scale(1.06) translate3d(calc(var(--par) * -8px),  calc(var(--par) * -5px), 0); }
+  body[data-tilt='0'] .layer.mid  { transform: scale(1.12) translate3d(calc(var(--par) * -18px), calc(var(--par) * -11px), 0); }
+  body[data-tilt='0'] .layer.near { transform: scale(1.20) translate3d(calc(var(--par) * -34px), calc(var(--par) * -20px), 0); }
+
+  .layer > .bg {
+    position: absolute; inset: 0;
+    background-position: center; background-size: cover; background-repeat: no-repeat;
+    background-image:
+      url('../../public/bg/warehouse.jpg'),
+      radial-gradient(70% 60% at 70% 18%, rgba(180,160,130,.28), transparent 70%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,.22) 0 2px, transparent 2px 46px),
+      linear-gradient(180deg, #3a332c 0%, #241f1b 60%, #14100e 100%);
+  }
+
+  /* 景深：filter 恒定量，栅格化一次 */
+  .layer.far  > .bg { filter: blur(3.4px) brightness(0.66) saturate(0.82); opacity: .92; }
+  .layer.mid  > .bg { filter: blur(1.1px) brightness(0.88); opacity: .80; }
+  .layer.near > .bg { filter: brightness(1.04); opacity: .42; }
+
+  /* 对照组：每帧改 blur 半径 */
+  body[data-blur='animated'] .layer.far > .bg {
+    filter: blur(calc(1px + var(--dof) * 5px)) brightness(0.66) saturate(0.82);
+  }
+  body[data-blur='animated'] .layer.mid > .bg {
+    filter: blur(calc(0.4px + var(--dof) * 2.2px)) brightness(0.88);
+  }
+
+  /* 对照组：完全不用 filter，景深只靠 opacity */
+  body[data-blur='none'] .layer.far  > .bg { filter: none; opacity: .62; }
+  body[data-blur='none'] .layer.mid  > .bg { filter: none; opacity: .74; }
+  body[data-blur='none'] .layer.near > .bg { filter: none; opacity: .40; }
+
+  .glow {
+    position: absolute; inset: 0; pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: calc(0.10 + var(--glow) * 0.30);
+    background: radial-gradient(
+      28% 24% at calc(50% + var(--ry) * 34%) calc(46% + var(--rx) * 34%),
+      rgba(255,214,150,.55), transparent 70%);
+    will-change: opacity;
+  }
+  body[data-glow='0'] .glow { display: none; }
+
+  .ambient {
+    position: absolute; left: 50%; top: 50%;
+    width: 120vmax; height: 120vmax; margin: -60vmax 0 0 -60vmax;
+    pointer-events: none;
+    mix-blend-mode: screen; opacity: .16;
+    background: radial-gradient(closest-side, rgba(255,190,120,.55), transparent 70%);
+    animation: drift 26s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  body[data-ambient='0'] .ambient { display: none; }
+  @keyframes drift {
+    from { transform: translate3d(-6%, -3%, 0) scale(1); }
+    to   { transform: translate3d(7%, 4%, 0) scale(1.12); }
+  }
+
+  .vignette {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(120% 90% at 50% 45%, transparent 38%, rgba(5,4,3,.74) 100%),
+      linear-gradient(180deg, rgba(5,4,3,.55), transparent 22%, transparent 74%, rgba(5,4,3,.84));
+  }
+  .grain {
+    position: absolute; inset: 0; pointer-events: none;
+    opacity: .14; mix-blend-mode: overlay;
+    background-image: repeating-conic-gradient(
+      from 0deg, rgba(255,255,255,.05) 0deg .6deg, transparent .6deg 1.2deg);
+  }
+
+  .content { position: absolute; inset: 0; display: grid; place-items: center; z-index: 4; }
+  .card {
+    width: min(680px, 88vw);
+    padding: clamp(22px, 3.4vw, 40px);
+    background: var(--card-bg, rgba(22,19,15,.78));
+    border: 1px solid rgba(237,230,216,.16);
+    border-radius: 2px;
+    backdrop-filter: blur(14px) saturate(1.1);
+    box-shadow: 0 30px 80px rgba(0,0,0,.45);
+  }
+  body[data-backdrop='0'] .card {
+    --card-bg: rgba(20,17,14,.97);
+    backdrop-filter: none;
+  }
+  .eyebrow {
+    display: inline-block; font-size: 12px; letter-spacing: .32em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .card h1 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(26px, 4vw, 40px); line-height: 1.2;
+    letter-spacing: .06em; margin: 10px 0 14px;
+  }
+  .card p {
+    margin: 0 0 12px; font-size: 16px; line-height: 1.9;
+    color: var(--paper-dim); text-align: justify;
+  }
+
+  .controls {
+    position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%);
+    z-index: 30; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    max-width: 94vw; padding: 10px 14px;
+    background: rgba(10,8,7,.72); border: 1px solid rgba(237,230,216,.14);
+    border-radius: 999px; backdrop-filter: blur(10px); font-size: 12.5px;
+  }
+  .controls button {
+    font: inherit; color: var(--paper); background: transparent;
+    border: 1px solid rgba(237,230,216,.22); border-radius: 999px;
+    padding: 6px 13px; cursor: pointer;
+    transition: border-color 180ms, color 180ms;
+  }
+  .controls button:hover { border-color: var(--gold); color: var(--gold); }
+  .controls button[aria-pressed='true'] { border-color: var(--red); color: #e8b48c; }
+  .controls .sep { color: rgba(237,230,216,.25); }
+
+  .hud {
+    position: fixed; right: 12px; top: 12px; z-index: 30;
+    font: 11px/1.5 ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    color: var(--paper-dim); background: rgba(10,8,7,.62);
+    border: 1px solid rgba(237,230,216,.12); padding: 8px 10px;
+    border-radius: 4px; white-space: pre; pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) { .ambient { animation: none; } }
+</style>
+</head>
+<body data-tilt="1" data-blur="baked" data-ambient="1" data-backdrop="1" data-glow="1">
+
+<div class="stage" id="stage">
+  <div class="tilt" id="tilt">
+    <div class="layer far"><div class="bg"></div></div>
+    <div class="layer mid"><div class="bg"></div></div>
+    <div class="layer near"><div class="bg"></div></div>
+  </div>
+  <div class="ambient" aria-hidden="true"></div>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="content">
+    <article class="card">
+      <span class="eyebrow">第四夜</span>
+      <h1>河对岸的灯</h1>
+      <p>你把灯举到窗口。对岸的人也在举灯，一盏、两盏，然后是一排。他们不知道你叫什么，但他们知道你还在。</p>
+      <p>后半夜下起雨。雨点打在铁皮上，像有人在数数。</p>
+    </article>
+  </div>
+</div>
+
+<div class="controls">
+  <button id="btn-tilt" type="button" aria-pressed="true">3D 倾斜</button>
+  <button id="btn-blur" type="button" aria-pressed="false">逐帧模糊</button>
+  <button id="btn-ambient" type="button" aria-pressed="true">呼吸光</button>
+  <button id="btn-glow" type="button" aria-pressed="true">指针微光</button>
+  <button id="btn-backdrop" type="button" aria-pressed="true">毛玻璃</button>
+  <span class="sep">|</span>
+  <button id="btn-auto" type="button" aria-pressed="false">自动摆镜</button>
+</div>
+
+<div class="hud" id="hud">fps —</div>
+
+<script>
+/* ============================================================================
+   1. 采样器
+   ============================================================================ */
+const hudEl = document.getElementById('hud')
+const frames = []
+let rec = null
+let lastTs = 0
+
+function sample(ts) {
+  if (lastTs) {
+    const d = ts - lastTs
+    frames.push(d)
+    if (rec) rec.push(d)
+  }
+  lastTs = ts
+  if (frames.length > 600) frames.shift()
+  if (frames.length >= 30) {
+    const tail = [...frames].slice(-60).sort((a, b) => a - b)
+    const med = tail[Math.floor(tail.length / 2)]
+    hudEl.textContent =
+      `fps ${(1000 / med).toFixed(1)}\n` +
+      `p95 ${tail[Math.floor(tail.length * .95)].toFixed(1)}ms\n` +
+      `long ${frames.filter((d) => d > 20).length}`
+  }
+  requestAnimationFrame(sample)
+}
+requestAnimationFrame(sample)
+
+function stats(list) {
+  if (!list.length) return { frames: 0 }
+  const s = [...list].sort((a, b) => a - b)
+  const sum = list.reduce((a, b) => a + b, 0)
+  const q = (p) => s[Math.min(s.length - 1, Math.floor(s.length * p))]
+  return {
+    frames: list.length,
+    avgFps: +(1000 / (sum / list.length)).toFixed(1),
+    p50ms: +q(.5).toFixed(2),
+    p95ms: +q(.95).toFixed(2),
+    maxMs: +s[s.length - 1].toFixed(2),
+    longFrames: list.filter((d) => d > 20).length,
+    droppedPct: +((list.filter((d) => d > 20).length / list.length) * 100).toFixed(1),
+  }
+}
+
+/* ============================================================================
+   2. 视差驱动：每帧只写根节点 4 个注册型自定义属性
+   ============================================================================ */
+const stage = document.getElementById('stage')
+const body = document.body
+const reduceQuery = matchMedia('(prefers-reduced-motion: reduce)')
+let reduceMotion = reduceQuery.matches
+reduceQuery.addEventListener('change', (e) => { reduceMotion = e.matches })
+
+let target = { x: 0, y: 0 }
+let current = { x: 0, y: 0 }
+let prev = { x: 0, y: 0 }
+let vel = 0
+let lastFrameTs = performance.now()
+
+stage.addEventListener('pointermove', (e) => {
+  const r = stage.getBoundingClientRect()
+  target.x = ((e.clientX - r.left) / r.width - 0.5) * 2
+  target.y = ((e.clientY - r.top) / r.height - 0.5) * 2
+})
+stage.addEventListener('pointerleave', () => { target.x = 0; target.y = 0 })
+
+function loop(now) {
+  const dt = Math.min(64, now - lastFrameTs)
+  lastFrameTs = now
+
+  const k = 1 - Math.exp(-dt / (reduceMotion ? 42 : 140))
+  if (reduceMotion) { current.x += (0 - current.x) * k; current.y += (0 - current.y) * k }
+  else { current.x += (target.x - current.x) * k; current.y += (target.y - current.y) * k }
+
+  const d = Math.hypot(current.x - prev.x, current.y - prev.y)
+  prev.x = current.x; prev.y = current.y
+  vel += (Math.min(1, d * 26) - vel) * 0.10
+
+  stage.style.setProperty('--rx', current.x.toFixed(4))
+  stage.style.setProperty('--ry', current.y.toFixed(4))
+  stage.style.setProperty('--glow', vel.toFixed(3))
+  stage.style.setProperty('--par', current.x.toFixed(4))
+  if (body.dataset.blur === 'animated') {
+    stage.style.setProperty('--dof', (vel * 0.9 + 0.1).toFixed(3))
+  }
+  requestAnimationFrame(loop)
+}
+requestAnimationFrame(loop)
+
+/* ============================================================================
+   3. UI
+   ============================================================================ */
+const btns = {
+  tilt: document.getElementById('btn-tilt'),
+  blur: document.getElementById('btn-blur'),
+  ambient: document.getElementById('btn-ambient'),
+  glow: document.getElementById('btn-glow'),
+  backdrop: document.getElementById('btn-backdrop'),
+}
+const bind = (btn, key) => {
+  btn.addEventListener('click', () => {
+    body.dataset[key] = body.dataset[key] === '1' ? '0' : '1'
+    btn.setAttribute('aria-pressed', String(body.dataset[key] === '1'))
+  })
+}
+bind(btns.tilt, 'tilt')
+bind(btns.ambient, 'ambient')
+bind(btns.glow, 'glow')
+bind(btns.backdrop, 'backdrop')
+btns.blur.addEventListener('click', () => {
+  body.dataset.blur = body.dataset.blur === 'animated' ? 'baked' : 'animated'
+  btns.blur.setAttribute('aria-pressed', String(body.dataset.blur === 'animated'))
+})
+
+const btnAuto = document.getElementById('btn-auto')
+let autoRaf = 0
+btnAuto.addEventListener('click', () => {
+  const on = btnAuto.getAttribute('aria-pressed') !== 'true'
+  btnAuto.setAttribute('aria-pressed', String(on))
+  cancelAnimationFrame(autoRaf)
+  if (!on) return
+  const a0 = performance.now()
+  const spin = (now) => {
+    const t = (now - a0) / 1000
+    target.x = Math.sin(t * 0.9) * 0.9
+    target.y = Math.cos(t * 0.62) * 0.75
+    autoRaf = requestAnimationFrame(spin)
+  }
+  autoRaf = requestAnimationFrame(spin)
+})
+
+/* ============================================================================
+   4. bench：单因子隔离
+   ============================================================================ */
+const params = new URLSearchParams(location.search)
+if (params.has('bench')) {
+  const ms = Number(params.get('ms')) || 2600
+
+  const sweep = (durationMs) => new Promise((resolve) => {
+    cancelAnimationFrame(autoRaf)
+    const s0 = performance.now()
+    const step = (now) => {
+      const t = (now - s0) / durationMs
+      if (t >= 1) { target.x = 0; target.y = 0; resolve(); return }
+      target.x = Math.sin(t * Math.PI * 3.2) * 0.92
+      target.y = Math.cos(t * Math.PI * 2.1) * 0.78
+      autoRaf = requestAnimationFrame(step)
+    }
+    autoRaf = requestAnimationFrame(step)
+  })
+
+  const BASE = { tilt: '1', blur: 'baked', ambient: '1', backdrop: '1', glow: '1' }
+
+  const measure = async (label, cfg, durationMs) => {
+    Object.assign(body.dataset, BASE, cfg)
+    if (body.dataset.blur === 'animated') stage.style.setProperty('--dof', '0.1')
+    await new Promise((r) => setTimeout(r, 340))
+    rec = []
+    await sweep(durationMs)
+    const st = stats(rec)
+    rec = null
+    return { label, cfg: { ...cfg }, ...st }
+  }
+
+  ;(async () => {
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
+    // 统一预热：合成器 / 栅格缓存 / JIT 就绪后再测，消除"跑序漂移"
+    await sweep(1800)
+    await new Promise((r) => setTimeout(r, 450))
+
+    const results = []
+    results.push(await measure('W 漂移基准（后段首次测量，用于校准）', { ambient: '0', glow: '0' }, ms))
+    results.push(await measure('A 全开：3D倾斜+烘焙模糊+呼吸光+微光+毛玻璃', {}, ms))
+    results.push(await measure('B 去掉呼吸光（120vmax + mix-blend + 逐帧位移）', { ambient: '0' }, ms))
+    results.push(await measure('C 再去掉指针微光（全屏 screen 混合）', { ambient: '0', glow: '0' }, ms))
+    results.push(await measure('D 3D 倾斜 → 每层各自 2D 位移（保留模糊）', { ambient: '0', glow: '0', tilt: '0' }, ms))
+    results.push(await measure('E 回到 3D，逐帧改 blur 半径', { ambient: '0', glow: '0', blur: 'animated' }, ms))
+    results.push(await measure('F 3D + 完全不用 filter', { ambient: '0', glow: '0', blur: 'none' }, ms))
+    results.push(await measure('G 2D 位移 + 完全不用 filter', { ambient: '0', glow: '0', blur: 'none', tilt: '0' }, ms))
+    results.push(await measure('H 重复 C（漂移复检）', { ambient: '0', glow: '0' }, ms))
+
+    Object.assign(body.dataset, BASE)
+    window.__report = {
+      demo: '02-parallax-stage',
+      reduceMotion,
+      results,
+      perspective: getComputedStyle(stage).perspective,
+      layers: [...document.querySelectorAll('.layer')].map((el) => ({
+        cls: el.className,
+        transform: getComputedStyle(el).transform.slice(0, 54),
+        filter: getComputedStyle(el.querySelector('.bg')).filter,
+      })),
+      supports: {
+        registerProperty: typeof CSS.registerProperty === 'function',
+        scrollDrivenCSS: CSS.supports('animation-timeline', 'scroll()'),
+        viewTransition: typeof document.startViewTransition === 'function',
+        maskImage: CSS.supports('mask-image', 'linear-gradient(#000,#000)'),
+        mixBlendMode: CSS.supports('mix-blend-mode', 'screen'),
+        backdropFilter: CSS.supports('backdrop-filter', 'blur(1px)'),
+      },
+      viewport: { w: innerWidth, h: innerHeight, dpr: devicePixelRatio },
+    }
+  })()
+}
+</script>
+</body>
+</html>

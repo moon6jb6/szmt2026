@@ -1,0 +1,285 @@
+{
+  "generated_at": "2026-10-21 03:55:30",
+  "model": "Qwen3-VL-2B-Instruct (bf16, local)",
+  "model_dir": "C:\\Users\\26298\\OneDrive\\Desktop\\AI大模型\\Qwen3-VL-2B-Instruct",
+  "load_s": 7.372,
+  "wall_s": 88.41,
+  "thresholds": {
+    "prompt_fit": 3,
+    "period_fit": 3,
+    "cleanliness": 3,
+    "safety": 4
+  },
+  "summary": {
+    "total": 8,
+    "scored": 8,
+    "pass": 4,
+    "retry": 0,
+    "reject": 4,
+    "error": 0,
+    "pass_rate": 0.5,
+    "retry_rate": 0.0,
+    "reject_rate": 0.5,
+    "mean_scores": {
+      "prompt_fit": 2.12,
+      "period_fit": 2.25,
+      "cleanliness": 3.0,
+      "safety": 4.38
+    },
+    "fail_types": {
+      "prompt_fit_low": 4,
+      "period_fit_low": 3,
+      "cleanliness_low": 3,
+      "safety_low": 1
+    }
+  },
+  "items": [
+    {
+      "id": "scene-056",
+      "image": "D:/AI大模型/art-work/scene-056.jpg",
+      "category": "scene",
+      "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, A wet cloth bundle on a warehouse doorstep at night, string tied twice, river lamplight beyond the gate",
+      "scores": {
+        "prompt_fit": 0,
+        "period_fit": 0,
+        "cleanliness": 0,
+        "safety": 5
+      },
+      "flags": {
+        "faces": "none",
+        "text_any": false,
+        "text_legible": false,
+        "modern_objects": false,
+        "flag_error": false,
+        "gore": false,
+        "danger_notes": "",
+        "reason": "图片未呈现提示词中的关键物件，如仓库门口的湿布包、绳结、河灯等，且场景为1937年上海四行仓库，但画面中无任何现代物品或危险元素。"
+      },
+      "verdict": "reject",
+      "fail_types": [
+        "prompt_fit_low",
+        "period_fit_low",
+        "cleanliness_low"
+      ],
+      "reasons": [
+        "严重崩坏: prompt_fit=0/period_fit=0/cleanliness=0"
+      ],
+      "elapsed_s": 14.066,
+      "width": 768,
+      "height": 432
+    },
+    {
+      "id": "scene-060",
+      "image": "D:/AI大模型/art-work/scene-060.jpg",
+      "category": "scene",
+      "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, A tin cup and a folded blanket beside a warehouse parapet, pale smoke sky above, bare bamboo pole",
+      "scores": {
+        "prompt_fit": 0,
+        "period_fit": 0,
+        "cleanliness": 0,
+        "safety": 0
+      },
+      "flags": {
+        "faces": "none",
+        "text_any": false,
+        "text_legible": false,
+        "modern_objects": false,
+        "flag_error": false,
+        "gore": false,
+        "danger_notes": "",
+        "reason": "提示词中要求的物品与场景未呈现，画面为模糊的空旷场景，无任何关键元素。"
+      },
+      "verdict": "reject",
+      "fail_types": [
+        "prompt_fit_low",
+        "period_fit_low",
+        "cleanliness_low",
+        "safety_low"
+      ],
+      "reasons": [
+        "严重崩坏: prompt_fit=0/period_fit=0/cleanliness=0/safety=0"
+      ],
+      "elapsed_s": 9.547,
+      "width": 768,
+      "height": 432
+    },
+    {
+      "id": "scene-062",
+      "image": "D:/AI大模型/art-work/scene-062.jpg",
+      "category": "scene",
+      "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, The middle of a wet bridge at night, abandoned gear and a single dropped cloth shoe on the road, distant lights",
+      "scores": {
+        "prompt_fit": 4,
+        "period_fit": 3,
+        "cleanliness": 5,
+        "safety": 5
+      },
+      "flags": {
+        "faces": "none",
+        "text_any": false,
+        "text_legible": false,
+        "modern_objects": false,
+        "flag_error": false,
+        "gore": false,
+        "danger_notes": "",
+        "reason": "画面呈现1937年四行仓库场景，桥上空无一人，符合提示词要求，构图与色调真实，无现代元素，无危险元素。"
+      },
+      "verdict": "pass",
+      "fail_types": [],
+      "reasons": [],
+      "elapsed_s": 10.709,
+      "width": 768,
+      "height": 432
+    },
+    {
+      "id": "scene-070",
+      "image": "D:/AI大模型/art-work/scene-070.jpg",
+      "category": "scene",
+      "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, A written order on a crate under a lamp at nine at night, sandbags behind, deep shadow, cold concrete",
+      "scores": {
+        "prompt_fit": 4,
+        "period_fit": 4,
+        "cleanliness": 5,
+        "safety": 5
+      },
+      "flags": {
+        "faces": "none",
+        "text_any": false,
+        "text_legible": false,
+        "modern_objects": false,
+        "flag_error": false,
+        "gore": false,
+        "danger_notes": "",
+        "reason": "画面符合提示词，场景、色调、构图、人物剪影、沙袋、灯下订单等元素齐全，无现代物品、文字、危险元素，整体干净清晰。"
+      },
+      "verdict": "pass",
+      "fail_types": [],
+      "reasons": [],
+      "elapsed_s": 11.021,
+      "width": 768,
+      "height": 432
+    },
+    {
+      "id": "scene-085",
+      "image": "D:/AI大模型/art-work/scene-085.jpg",
+      "category": "scene",
+      "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, Rough soap bars drying on wooden boards in a workshop, pale rectangles, dust, window light",
+      "scores": {
+        "prompt_fit": 4,
+        "period_fit": 4,
+        "cleanliness": 5,
+        "safety": 5
+      },
+      "flags": {
+        "faces": "none",
+        "text_any": false,
+        "text_legible": false,
+        "modern_objects": false,
+        "flag_error": false,
+        "gore": false,
+        "danger_notes": "",
+        "reason": "画面符合提示词，场景、色调、构图、无人物、无文字、无现代物品，细节真实，无危险元素。"
+      },
+      "verdict": "pass",
+      "fail_types": [],
+      "reasons": [],
+      "elapsed_s": 9.726,
+      "width": 768,
+      "height": 432
+    },
+    {
+      "id": "scene-110",
+      "image": "D:/AI大模型/art-work/scene-110.jpg",
+      "category": "scene",
+      "prompt": "cinematic film still, China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, A farmhouse main room in summer, a long table with copybooks and pencils, a hand cranked fan blurred, window light",
+      "scores": {
+        "prompt_fit": 1,
+        "period_fit": 3,
+        "cleanliness": 4,
+        "safety": 5
+      },
+      "flags": {
+        "faces": "none",
+        "text_any": false,
+        "text_legible": false,
+        "modern_objects": false,
+        "flag_error": false,
+        "gore": false,
+        "danger_notes": "",
+        "reason": "画面符合提示词，场景为1930年代上海，无现代物品，无危险元素，构图与光影真实。"
+      },
+      "verdict": "reject",
+      "fail_types": [
+        "prompt_fit_low"
+      ],
+      "reasons": [
+        "严重崩坏: prompt_fit=1"
+      ],
+      "elapsed_s": 9.745,
+      "width": 768,
+      "height": 432
+    },
+    {
+      "id": "scene-123",
+      "image": "D:/AI大模型/art-work/scene-123.jpg",
+      "category": "scene",
+      "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, A folded newspaper on a warehouse doorstep, blurred headline block, rain, a spent shell casing beside it",
+      "scores": {
+        "prompt_fit": 0,
+        "period_fit": 0,
+        "cleanliness": 0,
+        "safety": 5
+      },
+      "flags": {
+        "faces": "none",
+        "text_any": false,
+        "text_legible": false,
+        "modern_objects": false,
+        "flag_error": false,
+        "gore": false,
+        "danger_notes": "",
+        "reason": "图片为1937年四行仓库场景，但未出现任何人物、文字、现代物品或危险元素，符合历史题材要求。"
+      },
+      "verdict": "reject",
+      "fail_types": [
+        "prompt_fit_low",
+        "period_fit_low",
+        "cleanliness_low"
+      ],
+      "reasons": [
+        "严重崩坏: prompt_fit=0/period_fit=0/cleanliness=0"
+      ],
+      "elapsed_s": 13.98,
+      "width": 768,
+      "height": 432
+    },
+    {
+      "id": "ending-002",
+      "image": "D:/AI大模型/art-work/ending-002.jpg",
+      "category": "ending",
+      "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no text, A single folded letter pushed through a gap under a wooden door, fallen leaves on the doorstep, afternoon light, quiet",
+      "scores": {
+        "prompt_fit": 4,
+        "period_fit": 4,
+        "cleanliness": 5,
+        "safety": 5
+      },
+      "flags": {
+        "faces": "none",
+        "text_any": false,
+        "text_legible": false,
+        "modern_objects": false,
+        "flag_error": false,
+        "gore": false,
+        "danger_notes": "",
+        "reason": "画面符合提示词，构图与氛围准确，无现代元素，无危险元素，细节真实。"
+      },
+      "verdict": "pass",
+      "fail_types": [],
+      "reasons": [],
+      "elapsed_s": 9.212,
+      "width": 768,
+      "height": 432
+    }
+  ]
+}

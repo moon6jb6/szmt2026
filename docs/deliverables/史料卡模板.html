@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>史料卡模板与接入说明</title>
+<style>
+@page { size: A4; margin: 20mm 17mm 18mm 17mm; }
+* { box-sizing: border-box; }
+body {
+  font-family: "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 10.5pt; line-height: 1.8; color: #1b1b1b; margin: 0;
+}
+h1 {
+  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  font-size: 22pt; line-height: 1.35; margin: 0 0 6mm; color: #16130f;
+  border-bottom: 2px solid #a32b2b; padding-bottom: 3mm; letter-spacing: 0.04em;
+}
+h2 {
+  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  font-size: 15pt; margin: 7mm 0 2.5mm; color: #8a2b22; letter-spacing: 0.03em;
+  page-break-after: avoid;
+}
+h3 { font-size: 12pt; margin: 5mm 0 2mm; color: #2a2a2a; page-break-after: avoid; }
+p { margin: 0 0 3.2mm; text-align: justify; text-justify: inter-ideograph; }
+ul, ol { margin: 0 0 3.5mm; padding-left: 7mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 3mm 0 4mm; font-size: 9.5pt; }
+th, td { border: 1px solid #cfc7b8; padding: 2mm 2.5mm; vertical-align: top; text-align: left; }
+th { background: #f3eee4; font-weight: 600; }
+blockquote {
+  margin: 3mm 0; padding: 2.5mm 4mm; border-left: 3px solid #a32b2b;
+  background: #faf7f1; color: #3a3a3a;
+}
+blockquote p:last-child { margin-bottom: 0; }
+code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; background: #f2f0ea; padding: 0.4mm 1.2mm; }
+pre { background: #f6f4ee; border: 1px solid #e2dccf; padding: 3mm; overflow-x: auto; page-break-inside: avoid; }
+pre code { background: none; padding: 0; }
+hr { border: none; border-top: 1px solid #d8d0c1; margin: 6mm 0; }
+strong { font-weight: 700; }
+a { color: #8a2b22; text-decoration: none; }
+.sheet { max-width: 100%; }
+.doc-meta {
+  font-size: 9pt; color: #6b6358; letter-spacing: 0.06em;
+  margin: 0 0 8mm; padding-bottom: 2mm; border-bottom: 1px solid #e2dccf;
+}
+</style>
+</head><body><div class="sheet">
+<div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
+<h1 id="_1">史料卡模板与接入说明</h1>
+<blockquote>
+<p>目标：以后拿到任何文献，只改 <code>src/game/content/sources.ts</code> 一个文件，UI 自动生效，不用碰组件。
+当前：14 条（已核对 8 / 待接入 6），覆盖 8 个场景。</p>
+</blockquote>
+<hr>
+<h2 id="_2">一、一张卡长什么样</h2>
+<pre><code class="language-ts">{
+  id: 's-baibai',
+  type: 'book',                 // book | news | archive | museum | interview
+  status: 'needed',             // verified | pending | needed
+  work: '八百壮士：中国孤军营上海抗战纪实',   // 所属文献标题，史料库按它分组
+  author: '陈立人',
+  publisher: '团结出版社',
+  year: 2024,
+  edition: 'ISBN 9787802149298',
+  claim: '四行仓库守军编成、五夜战况、租界缴械与孤军营始末。',  // 这条依据支持什么
+  excerpt: '……',              // verified 必填：可直接引用的原句
+  locator: '第 2 章《孤堡》，p.45',  // verified 必填：页码/章节；needed 写成「待补：…」
+  note: '微信读书可搜到，优先补第 2 章',    // 内部备注，玩家也能看到
+  scenes: ['night2', 'night3'], // 用在哪些场景；needed 阶段可以为空
+  tags: ['四行仓库', '守军'],     // 检索标签，最多显示 3 个
+}
+</code></pre>
+<hr>
+<h2 id="_3">二、三种状态</h2>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>含义</th>
+<th>能否进正文</th>
+<th>UI 表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>verified</code></td>
+<td>已拿到原文并核对页码</td>
+<td>✅ 可以</td>
+<td>页脚出现卡片；点开显示「原句 + 页码」</td>
+</tr>
+<tr>
+<td><code>pending</code></td>
+<td>有出处但原文/页码没核</td>
+<td>⚠️ 只可概述</td>
+<td>点开显示「待核对」，正文不应引用</td>
+</tr>
+<tr>
+<td><code>needed</code></td>
+<td>文献还没到手</td>
+<td>❌ 不可以</td>
+<td>只出现在「待接入文献」区，写明缺哪章</td>
+</tr>
+</tbody>
+</table>
+<p><strong>自检规则（开发环境启动时自动跑）：</strong>
+- <code>verified</code> 卡缺 <code>excerpt</code> 或 <code>locator</code> → 控制台报错；
+- <code>needed</code> 卡的 <code>locator</code> 不以「待补」开头 → 报错；
+- 场景引用了不存在的卡、或引用了非 <code>verified</code> 卡 → 报错；
+- 卡片 <code>scenes</code> 里写了不存在的场景 id → 报错。</p>
+<p>控制台输出示例：</p>
+<pre><code>[史料卡校验] 通过：14 条（已核对 8 / 待接入 6），覆盖 8 个场景
+</code></pre>
+<hr>
+<h2 id="4">三、接入一本书的完整流程（4 步）</h2>
+<p>以《八百壮士》第 2 章为例：</p>
+<p><strong>第 1 步：改卡</strong>
+把 <code>sources.ts</code> 里 <code>s-baibai</code> 的：</p>
+<pre><code class="language-ts">status: 'needed',
+locator: '待补：第 2 章《孤堡》…',
+</code></pre>
+<p>改成：</p>
+<pre><code class="language-ts">status: 'verified',
+excerpt: '（从书里抄的原句）',
+locator: '第 2 章《孤堡》，p.45',
+</code></pre>
+<p><strong>第 2 步：挂到场景</strong>
+在 <code>chapter1.ts</code> 对应场景加 id：</p>
+<pre><code class="language-ts">const NIGHT2: Scene = {
+  ...
+  sources: ['s-tongcheng', 's-baibai'],   // 加在这里
+}
+</code></pre>
+<p><strong>第 3 步：跑起来看</strong>
+- 场景页脚自动多一张卡；
+- 点开就是「原句 + 章页 + 书名/作者/出版社/年份」；
+- 「史料库」页自动从「待接入」挪到「已核对」。</p>
+<p><strong>第 4 步：跑一次回归</strong></p>
+<pre><code class="language-bash">npm run build
+node tools/ending-test.mjs http://127.0.0.1:4173/
+</code></pre>
+<p>确认 6 个结局仍然全通、控制台无报错。</p>
+<hr>
+<h2 id="_4">四、写作规范（避免踩坑）</h2>
+<ol>
+<li><strong>一条卡只支持一个陈述</strong>。一句话说不清就拆两张。</li>
+<li><strong>原句不改字</strong>。要删节用「……」；不要意译。</li>
+<li><strong>页码必须是真的</strong>。电子书用「章节 + 位置」也行，但要能在平台上复现。</li>
+<li><strong>真实人物不虚构台词</strong>。卡里的 <code>excerpt</code> 只能是文献原文，不能是团队写的。</li>
+<li><strong>拿不到就保持 <code>needed</code></strong>。宁可空着，不要用「据说」「有记载」含糊带过。</li>
+<li><strong>同一本书的卡共用 <code>work</code></strong>，史料库会自动分组。</li>
+</ol>
+<hr>
+<h2 id="6">五、当前待接入的 6 个槽位</h2>
+<table>
+<thead>
+<tr>
+<th>卡 id</th>
+<th>需要的书</th>
+<th>位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>s-baibai</code></td>
+<td>陈立人《八百壮士》</td>
+<td>第 2 章《孤堡》、第 6 章、第 18 章</td>
+</tr>
+<tr>
+<td><code>s-flag-source</code></td>
+<td>陈立人《八百壮士》</td>
+<td>第 3 章《血醒租借地》</td>
+</tr>
+<tr>
+<td><code>s-shanghai-war</code></td>
+<td>余子道等《上海抗日战争史》</td>
+<td>淞沪会战相关章节</td>
+</tr>
+<tr>
+<td><code>s-xie-bio</code></td>
+<td>戴胜德、谭元亨《挥剑四行：谢晋元传》</td>
+<td>四行仓库章节</td>
+</tr>
+<tr>
+<td><code>s-xie-diary</code></td>
+<td>谢继民《我的父亲谢晋元将军》</td>
+<td>日记摘抄（检索「点名」「名册」）</td>
+</tr>
+<tr>
+<td><code>s-tongcheng-arch</code></td>
+<td>《通城县抗战史料》1947</td>
+<td>档案馆原件；大概率拿不到</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>拿到哪本补哪张。补完把该场景的 <code>sources</code> 加上 id，其他什么都不用改。</p>
+</blockquote>
+</div></body></html>

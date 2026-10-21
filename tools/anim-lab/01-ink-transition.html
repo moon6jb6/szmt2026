@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>anim-lab 01 · 墨迹 / 雨幕 场景转场</title>
+<style>
+  /* ============================================================
+     anim-lab/01-ink-transition.html
+     验证方案：Canvas 2D 全屏「墨迹幕」转场（cover → swap → reveal）
+     · 零依赖、零外部资源（背景图走相对路径，可离线）
+     · 转场期间只有 canvas 在动，DOM 场景完全静止 → 合成层极轻
+     · prefers-reduced-motion: reduce → 退化为 180ms 交叉淡入
+     ============================================================ */
+  :root {
+    --ink: #16130f;
+    --paper: #ede6d8;
+    --paper-dim: #bdb3a2;
+    --gold: #c8a063;
+    --red: #a32b2b;
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --serif: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+    --sans: 'Source Han Sans SC', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--sans);
+    overflow: hidden;
+  }
+
+  /* ---------- 场景堆栈 ---------- */
+  .viewport { position: fixed; inset: 0; overflow: hidden; }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    visibility: hidden;
+    /* 推镜：转场期间由 --push 驱动，只有 transform 在动 */
+    transform: scale(var(--push, 1));
+    will-change: transform, opacity;
+  }
+  .scene[data-active='1'] { opacity: 1; visibility: visible; }
+
+  .scene-bg {
+    position: absolute;
+    inset: -4%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .scene[data-bg='warehouse'] .scene-bg {
+    background-image:
+      url('../../public/bg/warehouse.jpg'),
+      radial-gradient(70% 60% at 70% 18%, rgba(180,160,130,.28), transparent 70%),
+      linear-gradient(180deg, #3a332c 0%, #241f1b 60%, #14100e 100%);
+  }
+  .scene[data-bg='dawn'] .scene-bg {
+    background-image:
+      url('../../public/bg/dawn.jpg'),
+      radial-gradient(55% 50% at 50% 30%, rgba(255,214,150,.42), transparent 72%),
+      linear-gradient(180deg, #3a2f26 0%, #6a4d38 38%, #241b15 100%);
+  }
+  .vignette {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(120% 90% at 50% 45%, transparent 40%, rgba(5,4,3,.72) 100%),
+      linear-gradient(180deg, rgba(5,4,3,.55), transparent 22%, transparent 74%, rgba(5,4,3,.82));
+  }
+
+  .card {
+    position: relative;
+    width: min(680px, 88vw);
+    padding: clamp(22px, 3.4vw, 40px);
+    background: rgba(22,19,15,.78);
+    border: 1px solid rgba(237,230,216,.16);
+    border-radius: 2px;
+    backdrop-filter: blur(14px) saturate(1.1);
+    box-shadow: 0 30px 80px rgba(0,0,0,.45);
+  }
+  .eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .card h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(26px, 4vw, 40px);
+    line-height: 1.2;
+    letter-spacing: .06em;
+    margin: 10px 0 14px;
+  }
+  .card p {
+    margin: 0 0 14px;
+    font-size: 16px;
+    line-height: 1.9;
+    color: var(--paper-dim);
+    text-align: justify;
+  }
+  .card p:first-of-type::first-letter {
+    font-family: var(--serif);
+    font-size: 2.1em;
+    float: left;
+    line-height: 1;
+    padding: 6px 10px 0 0;
+    color: var(--gold);
+  }
+
+  /* ---------- 墨迹幕 ---------- */
+  #ink {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;              /* 静息时不参与合成 */
+    contain: strict;
+  }
+  #ink[data-live='1'] { opacity: 1; }
+
+  /* 无 canvas 时的兜底：纯 CSS 幕布 */
+  @supports not (background: paint(x)) {
+    .no-canvas-fallback {
+      position: absolute; inset: 0; z-index: 10;
+      background: var(--ink);
+      transform: scaleY(0);
+      transform-origin: top;
+      pointer-events: none;
+    }
+  }
+
+  /* ---------- 控制条 ---------- */
+  .controls {
+    position: fixed;
+    left: 50%;
+    bottom: 20px;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(10,8,7,.72);
+    border: 1px solid rgba(237,230,216,.14);
+    border-radius: 999px;
+    backdrop-filter: blur(10px);
+    font-size: 13px;
+  }
+  .controls button {
+    font: inherit;
+    color: var(--paper);
+    background: transparent;
+    border: 1px solid rgba(237,230,216,.22);
+    border-radius: 999px;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: border-color 180ms, color 180ms;
+  }
+  .controls button:hover { border-color: var(--gold); color: var(--gold); }
+  .controls button[aria-pressed='true'] { border-color: var(--red); color: #e8b48c; }
+  .controls .sep { color: rgba(237,230,216,.25); }
+
+  .hud {
+    position: fixed;
+    right: 12px;
+    top: 12px;
+    z-index: 30;
+    font: 11px/1.5 ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    color: var(--paper-dim);
+    background: rgba(10,8,7,.62);
+    border: 1px solid rgba(237,230,216,.12);
+    padding: 8px 10px;
+    border-radius: 4px;
+    white-space: pre;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="viewport">
+  <!-- 场景 A -->
+  <section class="scene" data-bg="warehouse" data-scene="night3" data-active="1">
+    <div class="scene-bg"></div>
+    <div class="vignette"></div>
+    <article class="card">
+      <span class="eyebrow">第三夜</span>
+      <h1>旗的图样</h1>
+      <p>仓库的西墙被打穿了一个洞。风从洞里进来，把煤油灯吹得只剩一小截火苗。谢晋元说，明天天亮之前，旗要挂上去。</p>
+      <p>你把布铺在地上，用粉笔画了一个方块。四个角，你数了三遍。</p>
+    </article>
+  </section>
+
+  <!-- 场景 B -->
+  <section class="scene" data-bg="dawn" data-scene="epilogue">
+    <div class="scene-bg"></div>
+    <div class="vignette"></div>
+    <article class="card">
+      <span class="eyebrow">尾声</span>
+      <h1>天亮以前</h1>
+      <p>雪停了。苏州河上有雾，对岸的霓虹还亮着，像什么都没发生。你把名册贴在胸口，纸被汗浸软了。</p>
+      <p>四天四夜之后，四百二十个人的名字，只找回来八十七个。</p>
+    </article>
+  </section>
+
+  <canvas id="ink" aria-hidden="true"></canvas>
+</div>
+
+<div class="controls">
+  <button id="go" type="button">切到下一场</button>
+  <span class="sep">|</span>
+  <button id="mode-ink" type="button" aria-pressed="true">墨迹</button>
+  <button id="mode-rain" type="button" aria-pressed="false">雨幕</button>
+</div>
+
+<div class="hud" id="hud">fps —</div>
+
+<script>
+/* ============================================================================
+   1. 采样器：帧率 / 长帧（供人眼与 bench.mjs 共用）
+   ============================================================================ */
+const hudEl = document.getElementById('hud')
+const frames = []            // HUD 用的滚动窗口
+let rec = null               // bench 用的无上限记录器
+let lastTs = 0
+let sampling = true
+
+function sample(ts) {
+  if (lastTs) {
+    const d = ts - lastTs
+    frames.push(d)
+    if (rec) rec.push(d)
+  }
+  lastTs = ts
+  if (frames.length > 240) frames.shift()
+
+  if (frames.length >= 30) {
+    const sorted = [...frames].slice(-60).sort((a, b) => a - b)
+    const median = sorted[Math.floor(sorted.length / 2)]
+    const fps = 1000 / median
+    hudEl.textContent =
+      `fps ${fps.toFixed(1)}\n` +
+      `p95 ${sorted[Math.floor(sorted.length * 0.95)].toFixed(1)}ms\n` +
+      `long ${frames.filter((d) => d > 20).length}`
+  }
+  if (sampling) requestAnimationFrame(sample)
+}
+requestAnimationFrame(sample)
+
+function stats(list) {
+  if (!list.length) return { frames: 0 }
+  const sorted = [...list].sort((a, b) => a - b)
+  const sum = list.reduce((a, b) => a + b, 0)
+  const q = (p) => sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))]
+  return {
+    frames: list.length,
+    avgFps: +(1000 / (sum / list.length)).toFixed(1),
+    p50ms: +q(0.5).toFixed(2),
+    p95ms: +q(0.95).toFixed(2),
+    maxMs: +sorted[sorted.length - 1].toFixed(2),
+    longFrames: list.filter((d) => d > 20).length,
+    droppedPct: +((list.filter((d) => d > 20).length / list.length) * 100).toFixed(1),
+  }
+}
+
+/* ============================================================================
+   2. 墨迹纹理：一次性预生成，运行时只 drawImage（避免每帧 filter）
+   ============================================================================ */
+const INK = '#16130f'
+
+function makeInkTile(size, seedBlobs = 170) {
+  const shape = document.createElement('canvas')
+  shape.width = shape.height = size
+  const sx = shape.getContext('2d')
+  sx.fillStyle = '#000'
+
+  const c = size / 2
+  // 核心实心
+  sx.beginPath()
+  sx.arc(c, c, size * 0.30, 0, Math.PI * 2)
+  sx.fill()
+  // 边缘不规则：外圈一堆随机小圆
+  for (let i = 0; i < seedBlobs; i++) {
+    const a = Math.random() * Math.PI * 2
+    const d = size * (0.30 + Math.random() * 0.13)
+    const r = size * (0.014 + Math.random() * 0.05)
+    sx.beginPath()
+    sx.arc(c + Math.cos(a) * d, c + Math.sin(a) * d, r, 0, Math.PI * 2)
+    sx.fill()
+  }
+  // 内部留一点透明"呼吸"，像墨没吃饱
+  sx.globalCompositeOperation = 'destination-out'
+  for (let i = 0; i < 40; i++) {
+    const a = Math.random() * Math.PI * 2
+    const d = Math.random() * size * 0.3
+    const r = size * (0.008 + Math.random() * 0.03)
+    sx.beginPath()
+    sx.arc(c + Math.cos(a) * d, c + Math.sin(a) * d, r, 0, Math.PI * 2)
+    sx.fill()
+  }
+  sx.globalCompositeOperation = 'source-over'
+
+  // 只 blur 一次（离屏），运行时零 filter
+  const out = document.createElement('canvas')
+  out.width = out.height = size
+  const ox = out.getContext('2d')
+  if (typeof ox.filter === 'string' || 'filter' in ox) {
+    try { ox.filter = `blur(${Math.round(size * 0.035)}px)` } catch { /* 老浏览器忽略 */ }
+  }
+  ox.drawImage(shape, 0, 0)
+  ox.filter = 'none'
+  return out
+}
+
+// 三张不同种子，避免同一张纹理重复感
+const INK_TILES = [makeInkTile(512), makeInkTile(512), makeInkTile(512)]
+
+/* 雨幕线条纹理：一次性预渲染成一格，运行时平移即可 */
+function makeRainTile(w, h) {
+  const t = document.createElement('canvas')
+  t.width = w; t.height = h
+  const x = t.getContext('2d')
+  for (let i = 0; i < 90; i++) {
+    const px = Math.random() * w
+    const py = Math.random() * h
+    const len = 18 + Math.random() * 70
+    const a = 0.05 + Math.random() * 0.20
+    x.strokeStyle = `rgba(198,214,226,${a})`
+    x.lineWidth = 0.6 + Math.random() * 1.1
+    x.beginPath()
+    x.moveTo(px, py)
+    x.lineTo(px - 6, py + len)
+    x.stroke()
+  }
+  return t
+}
+const RAIN_TILE = makeRainTile(640, 640)
+
+/* ============================================================================
+   3. 转场控制器
+   ============================================================================ */
+const canvas = document.getElementById('ink')
+const ctx = canvas.getContext('2d', { alpha: true })
+const scenes = [...document.querySelectorAll('.scene')]
+const reduceQuery = matchMedia('(prefers-reduced-motion: reduce)')
+let reduceMotion = reduceQuery.matches
+reduceQuery.addEventListener('change', (e) => { reduceMotion = e.matches })
+
+let dpr = 1
+let W = 0, H = 0
+function resize() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2)   // 上限 2，避免 4K 屏爆帧
+  W = canvas.width = Math.round(canvas.clientWidth * dpr)
+  H = canvas.height = Math.round(canvas.clientHeight * dpr)
+  ctx.imageSmoothingEnabled = true
+}
+resize()
+addEventListener('resize', resize)
+
+let activeIndex = 0
+let mode = 'ink'            // 'ink' | 'rain'
+let running = false
+
+// 锚点：从画面四边 + 四角 + 中心推进，形成不规则的墨front
+const ANCHORS = [
+  { x: 0.00, y: 0.00 }, { x: 0.50, y: -0.06 }, { x: 1.00, y: 0.00 },
+  { x: -0.05, y: 0.55 }, { x: 1.05, y: 0.50 },
+  { x: 0.20, y: 1.05 }, { x: 0.82, y: 1.05 },
+]
+
+const easeOut = (t) => 1 - Math.pow(1 - t, 3)
+const easeIn = (t) => t * t * t
+const lerp = (a, b, t) => a + (b - a) * t
+
+function drawInkFrame(anchors, scaleMul, alpha) {
+  const base = Math.max(W, H) * 0.62 * scaleMul
+  ctx.globalAlpha = alpha
+  for (let i = 0; i < anchors.length; i++) {
+    const a = anchors[i]
+    const blob = base * (0.86 + ((i * 37) % 29) / 100)
+    ctx.drawImage(
+      INK_TILES[i % INK_TILES.length],
+      a.x * W - blob / 2,
+      a.y * H - blob / 2,
+      blob, blob,
+    )
+  }
+  ctx.globalAlpha = 1
+}
+
+function drawRain(phase, strength) {
+  // 雨幕：向下平移的条纹，叠加在墨上增加"雨"的质感
+  const s = RAIN_TILE.width * dpr
+  const off = (phase * 220 * dpr) % s
+  ctx.globalAlpha = 0.55 * strength
+  ctx.globalCompositeOperation = 'lighter'
+  for (let y = -s; y < H + s; y += s) {
+    for (let x = -s; x < W + s; x += s) {
+      ctx.drawImage(RAIN_TILE, x, y + off, s, s)
+    }
+  }
+  ctx.globalCompositeOperation = 'source-over'
+  ctx.globalAlpha = 1
+}
+
+function swapScene() {
+  scenes[activeIndex].removeAttribute('data-active')
+  activeIndex = (activeIndex + 1) % scenes.length
+  scenes[activeIndex].setAttribute('data-active', '1')
+}
+
+/* 预热：把三张纹理先上传一次，避免第一次转场首帧卡顿
+   （实测有 / 无预热的差别见 report 的 perRun[0].maxMs） */
+function warmup() {
+  canvas.setAttribute('data-live', '1')
+  drawInkFrame(ANCHORS.map((a) => ({ ...a })), 1.30, 0.01)
+  if (mode === 'rain') drawRain(0.5, 1)
+  ctx.clearRect(0, 0, W, H)
+  canvas.setAttribute('data-live', '0')
+}
+
+// 页面加载即预热一次；resize 后画布重建，需要再预热
+warmup()
+let warmTimer = 0
+addEventListener('resize', () => { clearTimeout(warmTimer); warmTimer = setTimeout(warmup, 200) })
+
+/* 主转场
+   coverMs  墨合拢    holdMs 全黑驻留（此时换场）
+   revealMs 墨退开
+   返回 Promise，便于串联与 bench 计时                              */
+function transition({ coverMs = 900, holdMs = 240, revealMs = 950 } = {}) {
+  if (running) return Promise.resolve(false)
+  running = true
+
+  // —— 无障碍：直接换场 + 短交叉淡入，不动 canvas ——
+  if (reduceMotion) {
+    const from = scenes[activeIndex]
+    from.style.transition = 'opacity 180ms linear'
+    from.style.opacity = '0'
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        from.style.opacity = ''
+        from.style.transition = ''
+        from.removeAttribute('data-active')
+        activeIndex = (activeIndex + 1) % scenes.length
+        scenes[activeIndex].setAttribute('data-active', '1')
+        scenes[activeIndex].style.transition = 'opacity 180ms linear'
+        running = false
+        resolve(true)
+      }, 180)
+    })
+  }
+
+  canvas.setAttribute('data-live', '1')
+  const t0 = performance.now()
+  const anchors = ANCHORS.map((a) => ({ ...a }))
+  const tintA = mode === 'rain' ? 0.94 : 1
+
+  return new Promise((resolve) => {
+    let swapped = false
+    let done = false
+
+    function frame(now) {
+      const el = now - t0
+      ctx.clearRect(0, 0, W, H)
+
+      if (el < coverMs) {
+        // ---- cover：墨从边缘与中心长满 ----
+        const p = easeOut(el / coverMs)
+        drawInkFrame(anchors, lerp(0.10, 1.30, p), tintA)
+        // 推镜：场景缓慢推近 4.5%
+        scenes[activeIndex].style.setProperty('--push', String(1 + 0.045 * p))
+        if (mode === 'rain') drawRain(p, p)
+        // 未满时补一层随进度加深的底，保证闭合瞬间无缝
+        if (p > 0.999) { ctx.fillStyle = INK; ctx.fillRect(0, 0, W, H) }
+      } else if (el < coverMs + holdMs) {
+        // ---- hold：纯墨驻留，换场就发生在这里 ----
+        ctx.fillStyle = INK
+        ctx.fillRect(0, 0, W, H)
+        if (mode === 'rain') drawRain((el - coverMs) / holdMs, 1)
+        if (!swapped) {
+          swapScene()
+          scenes[activeIndex].style.setProperty('--push', '1.04')
+          swapped = true
+        }
+      } else if (el < coverMs + holdMs + revealMs) {
+        // ---- reveal：墨被反相吃掉，新场景露出 ----
+        const q = easeIn((el - coverMs - holdMs) / revealMs)
+        ctx.fillStyle = INK
+        ctx.fillRect(0, 0, W, H)
+        ctx.globalCompositeOperation = 'destination-out'
+        drawInkFrame(anchors, lerp(0.55, 3.20, q), 1)
+        ctx.globalCompositeOperation = 'source-over'
+        // 新场景从 1.04 缓缓落回 1（推镜回位）
+        scenes[activeIndex].style.setProperty('--push', String(lerp(1.04, 1, easeOut(q))))
+        if (mode === 'rain') drawRain(q, 1 - q)
+      } else {
+        if (!done) {
+          done = true
+          ctx.clearRect(0, 0, W, H)
+          scenes[activeIndex].style.setProperty('--push', '1')
+          canvas.setAttribute('data-live', '0')
+          running = false
+          resolve(true)
+        }
+        return
+      }
+      requestAnimationFrame(frame)
+    }
+    requestAnimationFrame(frame)
+  })
+}
+
+/* ============================================================================
+   4. UI 绑定
+   ============================================================================ */
+const goBtn = document.getElementById('go')
+const inkBtn = document.getElementById('mode-ink')
+const rainBtn = document.getElementById('mode-rain')
+
+goBtn.addEventListener('click', () => transition())
+
+function setMode(m) {
+  mode = m
+  inkBtn.setAttribute('aria-pressed', String(m === 'ink'))
+  rainBtn.setAttribute('aria-pressed', String(m === 'rain'))
+}
+inkBtn.addEventListener('click', () => setMode('ink'))
+rainBtn.addEventListener('click', () => setMode('rain'))
+
+addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); transition() }
+})
+
+/* ============================================================================
+   5. bench 模式：?bench=N 自动跑 N 次转场并回报统计
+      —— 供 tools/anim-lab/bench.mjs 用真实浏览器取数
+   ============================================================================ */
+const params = new URLSearchParams(location.search)
+if (params.has('bench')) {
+  const runs = Number(params.get('bench')) || 4
+  if (params.get('mode') === 'rain') setMode('rain')
+  const perRun = []
+  ;(async () => {
+    // 预热两帧 + 纹理上传，避免首帧 JIT / 纹理上传污染统计
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)))
+    warmup()
+    const all = []
+    for (let i = 0; i < runs; i++) {
+      rec = []
+      await transition()
+      perRun.push(stats(rec))
+      all.push(...rec)
+      rec = null
+      await new Promise((r) => setTimeout(r, 140))
+    }
+    window.__report = {
+      demo: '01-ink-transition',
+      mode,
+      runs,
+      reduceMotion,
+      perRun,
+      overall: stats(all),
+      canvas: { w: canvas.width, h: canvas.height, dpr },
+      supports: {
+        canvasFilter: typeof ctx.filter === 'string' || 'filter' in ctx,
+        offscreenCanvas: typeof OffscreenCanvas !== 'undefined',
+        viewTransition: typeof document.startViewTransition === 'function',
+        scrollDrivenCSS: CSS.supports('animation-timeline', 'scroll()'),
+        viewTransitionName: CSS.supports('view-transition-name', 'none'),
+        registerProperty: typeof CSS.registerProperty === 'function',
+        maskImage: CSS.supports('mask-image', 'linear-gradient(#000,#000)'),
+        backdropFilter: CSS.supports('backdrop-filter', 'blur(1px)'),
+      },
+    }
+  })()
+}
+</script>
+</body>
+</html>

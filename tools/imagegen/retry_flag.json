@@ -1,0 +1,8 @@
+[
+  {
+    "prompt": "Rooftop parapet of a concrete warehouse at dawn, 1937, a small torn flag hanging limp on a bamboo pole, backlit, completely dark silhouette with no visible pattern, smoke and ash in the bright sky, low angle, embers drifting, cinematic, muted, no people",
+    "negative": "american flag, stars and stripes, flag pattern, emblem, logo, text, watermark, modern skyline, skyscrapers, cartoon, anime, 3d render, oversaturated",
+    "seed": 193710281,
+    "out": "../../public/bg/flag.jpg"
+  }
+]

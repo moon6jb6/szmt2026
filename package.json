@@ -1,0 +1,25 @@
+{
+  "name": "red-banner-history-game",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "worldgen": "node --env-file=.env tools/worldgen/server.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "tencentcloud-sdk-nodejs": "^4.1.303"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "@vitejs/plugin-react": "6.1.1",
+    "typescript": "7.0.2",
+    "vite": "8.2.2"
+  }
+}

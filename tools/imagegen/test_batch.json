@@ -1,0 +1,17 @@
+[
+  {
+    "prompt": "1937 Shanghai shikumen longtang alley at dawn, narrow lane of grey brick and red brick facades, carved stone gateway with lintel, wet stone pavement reflecting pale morning sky, laundry and bamboo poles strung overhead, wooden shutters, a coal stove and wooden stool by a doorway, thin mist and low sunbeams slanting across the alley, deep vanishing perspective",
+    "seed": 1937,
+    "out": "out/01_shikumen_dawn.png"
+  },
+  {
+    "prompt": "Night rain over Suzhou Creek in 1937 Shanghai, dark choppy water with rain rings, silhouette of a corrugated iron warehouse across the river, wooden wharf piles and mooring ropes in the foreground, gas lamp glow and dim lit windows reflecting on wet planks, distant city skyline lost in haze on the right, heavy rain streaks backlit by a single street lamp, wide cinematic establishing shot",
+    "seed": 2025,
+    "out": "out/02_suzhou_creek_night_rain.png"
+  },
+  {
+    "prompt": "Interior of a 1937 Chinese riverside warehouse, tall stacked sandbag barricades and wooden crates piled to the ceiling, exposed timber roof trusses, dust motes floating in shafts of light from high broken windows, straw scattered on the concrete floor, a wooden ladder and coiled rope, dim warm light from one hanging bulb, deep recession with foreground crates out of focus",
+    "seed": 8161,
+    "out": "out/03_warehouse_interior.png"
+  }
+]

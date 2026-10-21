@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>提交材料清单与状态</title>
+<style>
+@page { size: A4; margin: 20mm 17mm 18mm 17mm; }
+* { box-sizing: border-box; }
+body {
+  font-family: "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 10.5pt; line-height: 1.8; color: #1b1b1b; margin: 0;
+}
+h1 {
+  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  font-size: 22pt; line-height: 1.35; margin: 0 0 6mm; color: #16130f;
+  border-bottom: 2px solid #a32b2b; padding-bottom: 3mm; letter-spacing: 0.04em;
+}
+h2 {
+  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  font-size: 15pt; margin: 7mm 0 2.5mm; color: #8a2b22; letter-spacing: 0.03em;
+  page-break-after: avoid;
+}
+h3 { font-size: 12pt; margin: 5mm 0 2mm; color: #2a2a2a; page-break-after: avoid; }
+p { margin: 0 0 3.2mm; text-align: justify; text-justify: inter-ideograph; }
+ul, ol { margin: 0 0 3.5mm; padding-left: 7mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 3mm 0 4mm; font-size: 9.5pt; }
+th, td { border: 1px solid #cfc7b8; padding: 2mm 2.5mm; vertical-align: top; text-align: left; }
+th { background: #f3eee4; font-weight: 600; }
+blockquote {
+  margin: 3mm 0; padding: 2.5mm 4mm; border-left: 3px solid #a32b2b;
+  background: #faf7f1; color: #3a3a3a;
+}
+blockquote p:last-child { margin-bottom: 0; }
+code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; background: #f2f0ea; padding: 0.4mm 1.2mm; }
+pre { background: #f6f4ee; border: 1px solid #e2dccf; padding: 3mm; overflow-x: auto; page-break-inside: avoid; }
+pre code { background: none; padding: 0; }
+hr { border: none; border-top: 1px solid #d8d0c1; margin: 6mm 0; }
+strong { font-weight: 700; }
+a { color: #8a2b22; text-decoration: none; }
+.sheet { max-width: 100%; }
+.doc-meta {
+  font-size: 9pt; color: #6b6358; letter-spacing: 0.06em;
+  margin: 0 0 8mm; padding-bottom: 2mm; border-bottom: 1px solid #e2dccf;
+}
+</style>
+</head><body><div class="sheet">
+<div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
+<h1 id="_1">提交材料清单与状态</h1>
+<blockquote>
+<p>对应《参赛作品材料提交规范》14 项。状态更新到 2026-10-21。
+报名系统栏目与容量以官网为准；本表用于团队内部核对。</p>
+</blockquote>
+<h2 id="_2">一、必交项</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>材料</th>
+<th>状态</th>
+<th>位置 / 说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>参赛报名信息（系统填写）</td>
+<td>⏳ 待填</td>
+<td>需团队负责人登录 cmit.cn 填写：作品名称、赛道赛项、团队、简介、运行条件、AI 使用情况</td>
+</tr>
+<tr>
+<td>2</td>
+<td>参赛承诺书（盖章）</td>
+<td>⏳ 待办</td>
+<td>系统生成后核对信息 → 盖章 → 上传</td>
+</tr>
+<tr>
+<td>3</td>
+<td>作品截图（≤10 张）</td>
+<td>✅ 已重拍</td>
+<td><code>docs/deliverables/screenshots/</code> 共 10 张，1600×1000：菜单、序卷（含插画）、第一夜、第三夜升旗、第五夜缴械、结局页、人物志、后来、史料库、移动端菜单</td>
+</tr>
+<tr>
+<td>4</td>
+<td>作品评审视频（≤5 分钟，1080P，MP4）</td>
+<td>⏳ 脚本已备</td>
+<td><code>docs/deliverables/评审视频脚本.md</code>（v1.0，已按 140 场景/11 万字更新）；需录屏 + 旁白 + 字幕</td>
+</tr>
+<tr>
+<td>5</td>
+<td>作品汇报 PPT（与 #4 二选一）</td>
+<td>⏳ 未做</td>
+<td>若时间不够，优先保视频；PPT 可作为备用</td>
+</tr>
+<tr>
+<td>6</td>
+<td>参赛打包文件（ZIP/RAR/7Z，≤10GB）</td>
+<td>⏳ 待打包</td>
+<td>见下方目录结构</td>
+</tr>
+<tr>
+<td>7</td>
+<td>作品及成果文件（包内必含）</td>
+<td>✅ 已构建</td>
+<td><code>dist/</code>（index.html + assets + art + bg），519 个文件 / 17.6 MB</td>
+</tr>
+<tr>
+<td>8</td>
+<td>作品展示视频（按需）</td>
+<td>⏳ 可选</td>
+<td>可与评审视频复用素材</td>
+</tr>
+<tr>
+<td>9</td>
+<td>作品介绍文档（建议 PDF）</td>
+<td>✅ 已出</td>
+<td><code>docs/deliverables/作品介绍.pdf</code>（扩写后已更新）</td>
+</tr>
+<tr>
+<td>10</td>
+<td>运行或使用说明（按需）</td>
+<td>✅ 已出</td>
+<td><code>docs/deliverables/运行说明.pdf</code></td>
+</tr>
+<tr>
+<td>11</td>
+<td>补充成果材料（按需）</td>
+<td>✅ 已备</td>
+<td>截图、走路测试记录（301 步到结局）、六结局 6/6 测试、110,020 字严格字数统计、140 场景结构校验、76 张史料卡、双轨审计报告（<code>docs/audit/</code>）、500 条图片总谱与质检报告（<code>docs/art/image-qa-report.md</code>：入屏图 158 张 VLM 质检、96% 可用）</td>
+</tr>
+<tr>
+<td>12</td>
+<td>第三方资源说明（涉及时）</td>
+<td>✅ 已出</td>
+<td><code>docs/deliverables/第三方资源说明.pdf</code></td>
+</tr>
+<tr>
+<td>13</td>
+<td>人工智能工具使用情况说明</td>
+<td>✅ 已出</td>
+<td><code>docs/deliverables/AI使用说明.pdf</code>；系统内也需如实勾选</td>
+</tr>
+<tr>
+<td>14</td>
+<td>学籍证明等专项材料</td>
+<td>—</td>
+<td>本赛项不适用（非国际专项赛）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">二、参赛打包文件目录（建议）</h2>
+<pre><code>作品名称_作品编号/
+├─ 01_作品及成果文件（必含）/
+│   ├─ index.html
+│   ├─ assets/
+│   ├─ art/                   # 场景插画（按 scene id 命名 + 同名参数 JSON）
+│   └─ bg/                    # 2.5D 分层的 8 张基准背景图 + 参数 JSON
+├─ 02_作品展示视频/            # 按需，可复用评审视频素材
+├─ 03_作品介绍文档/
+│   └─ 作品介绍.pdf
+├─ 04_运行或使用说明/
+│   └─ 运行说明.pdf
+├─ 05_补充成果材料/
+│   ├─ screenshots/           # 10 张作品截图
+│   ├─ 测试记录.md            # 走路测试 + 六结局测试 + 字数/结构校验
+│   ├─ 审计报告/              # FINAL-fact / FINAL-literary 等
+│   └─ 美术报告/              # visual-bible、manifest 说明、质检报告
+├─ 06_第三方资源说明/
+│   └─ 第三方资源说明.pdf
+└─ 07_AI 工具使用补充说明/
+    └─ AI使用说明.pdf
+</code></pre>
+<h2 id="_4">三、匿名化检查</h2>
+<ul>
+<li>[ ] 截图、视频、PDF、PPT 内不出现学校、姓名、指导教师</li>
+<li>[ ] 压缩包目录名不含身份信息</li>
+<li>[ ] 作品名称与目录命名一致</li>
+<li>[ ] 承诺书、学籍材料走身份审核渠道，不混入专家评审材料</li>
+</ul>
+<h2 id="_5">四、提交前技术检查</h2>
+<ul>
+<li>[ ] <code>npm run build</code> 零报错</li>
+<li>[ ] <code>node tools/walk-test.mjs &lt;dev-url&gt;</code> 到达结局、0 控制台错误</li>
+<li>[ ] <code>node tools/check-volumes.mjs</code> 通过（140 场景、next 全部有效、史料卡引用全部存在）</li>
+<li>[ ] <code>node tools/count-words-strict.mjs</code> 严格正文 ≥100,000（当前 110,020）</li>
+<li>[ ] 六结局全部可达（结局页面复测）</li>
+<li>[ ] 本地静态服务器打开 dist/index.html 可正常运行</li>
+<li>[ ] 手机宽度（390px）下布局正常</li>
+<li>[ ] 关闭动效（系统设置减少动态效果）后仍可完整游玩</li>
+<li>[ ] 场景插画加载正常（抽 10 张）；缺失图走渐变回退不报错</li>
+<li>[ ] 无控制台错误</li>
+</ul>
+<h2 id="_6">五、关键时间</h2>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>报名及作品提交截止</td>
+<td><strong>2026-10-23 23:59:59</strong></td>
+</tr>
+<tr>
+<td>校级初赛</td>
+<td>10-24 至 10-28</td>
+</tr>
+<tr>
+<td>赛区选拔赛</td>
+<td>11-02 至 11-15</td>
+</tr>
+<tr>
+<td>全国总决赛</td>
+<td>11-27 至 11-29</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_7">六、待用户确认</h2>
+<ul>
+<li>[ ] 作品编号（报名后由系统生成）</li>
+<li>[ ] 团队人数与分工署名（评审材料匿名，系统内需真实）</li>
+<li>[ ] 指导教师信息</li>
+<li>[ ] 承诺书盖章进度</li>
+</ul>
+</div></body></html>

@@ -1,0 +1,841 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { InkCurtain, type CurtainHandle, type CurtainOpts } from './game/components/InkCurtain'
+import { Stage } from './game/components/Stage'
+import { getScene } from './game/content/registry'
+import { SCENE_IMAGES } from './game/content/sceneImages'
+import { VOLUME4 } from './game/content/volume4'
+import { VOLUME5 } from './game/content/volume5'
+import { ENDINGS, ENDING_ORDER } from './game/content/endings'
+import {
+  NEEDED_SOURCES,
+  PENDING_SOURCES,
+  SOURCE_MAP,
+  SOURCES,
+  VERIFIED_SOURCES,
+  groupByWork,
+  statusLabel,
+} from './game/content/sources'
+import { sourceCoverage, validateSources } from './game/content/validate'
+import {
+  advance,
+  choose,
+  clearSave,
+  createState,
+  formatDuration,
+  load,
+  save,
+} from './game/engine'
+import type { GameState, MemoryKind, Scene, SceneId } from './game/types'
+
+type Screen = 'menu' | 'game' | 'ending' | 'gallery' | 'about' | 'sources' | 'people' | 'later'
+
+/** 插画地址：sceneImages.ts 里是 "/art/scene-001.jpg"，场景数据里可能只写 "scene-001" */
+const artSrc = (id?: string): string => (!id ? '' : id.startsWith('/') ? id : `/art/${id}.jpg`)
+
+/** 结局页插画：每个结局取 manifest 里该结局的第 1 张（ending-0xx，见 docs/art/image-manifest.json） */
+const ENDING_IMAGE: Record<string, string> = {
+  roster: 'ending-001',
+  letters: 'ending-002',
+  flag: 'ending-003',
+  photo: 'ending-004',
+  testimony: 'ending-005',
+  message: 'ending-006',
+}
+
+const CURTAIN_CHAPTER: CurtainOpts = { coverMs: 1200, holdMs: 320, revealMs: 1300 }
+const CURTAIN_ENDING: CurtainOpts = { coverMs: 1500, holdMs: 600, revealMs: 1600 }
+
+const UNLOCK_KEY = 'names-endings-v1'
+
+/** 结局后的「后记 · 史实」：把精神与红色属性落在可核查的事实上 */
+const AFTERWORD: { text: string; sourceIds: string[] }[] = [
+  {
+    text: '1941 年 4 月 24 日晨，谢晋元在孤军营被汪伪收买的叛兵刺杀，年 37 岁。',
+    sourceIds: ['auto-a-10'],
+  },
+  {
+    text: '2015 年，四行仓库抗战纪念馆开馆，英名墙刻下 323 个名字；到 2025 年，是 354 个。',
+    sourceIds: ['auto-c-02'],
+  },
+  {
+    text: '1938 年 10 月，毛泽东在《论新阶段》中说：八百壮士是「英勇抗战，为国捐躯的民族革命典型」。',
+    sourceIds: ['auto-d-01'],
+  },
+  {
+    text: '抗战精神：天下兴亡、匹夫有责的爱国情怀；视死如归、宁死不屈的民族气节；不畏强暴、血战到底的英雄气概；百折不挠、坚忍不拔的必胜信念。',
+    sourceIds: ['auto-f-01'],
+  },
+]
+
+function loadUnlocked(): MemoryKind[] {
+  try {
+    const raw = localStorage.getItem(UNLOCK_KEY)
+    if (!raw) return []
+    const parsed = JSON.parse(raw)
+    return Array.isArray(parsed) ? (parsed as MemoryKind[]) : []
+  } catch {
+    return []
+  }
+}
+
+function saveUnlocked(list: MemoryKind[]) {
+  try {
+    localStorage.setItem(UNLOCK_KEY, JSON.stringify(list))
+  } catch {
+    /* noop */
+  }
+}
+
+function hasSave(): boolean {
+  return load() !== null && load()?.sceneId !== undefined
+}
+
+const MEMORY_NAMES: Record<MemoryKind, string> = {
+  roster: '名册页',
+  letters: '家书',
+  flag: '旗的图样',
+  photo: '照片',
+  testimony: '口述',
+  message: '口信',
+}
+
+export default function App() {
+  const [screen, setScreen] = useState<Screen>('menu')
+  const [state, setState] = useState<GameState>(() => load() ?? createState())
+  const [unlocked, setUnlocked] = useState<MemoryKind[]>(() => loadUnlocked())
+  const [sourcePanel, setSourcePanel] = useState<string | null>(null)
+  const [resumeAvailable, setResumeAvailable] = useState(false)
+  const [personId, setPersonId] = useState<string | null>(null)
+  const [laterId, setLaterId] = useState<string | null>(null)
+  const curtain = useRef<CurtainHandle>(null)
+
+  /** 所有换场都过墨迹幕：换场动作在全黑那一帧执行，遮住图片解码与重排抖动 */
+  const runCurtain = (swap: () => void, opts?: CurtainOpts) => {
+    if (curtain.current) {
+      void curtain.current.play(swap, opts)
+    } else {
+      swap()
+    }
+  }
+
+  // 键盘操作：1-4 选择，Enter/空格 继续
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (screen !== 'game' || !scene) return
+      if (state.pendingOutcome) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onAdvance()
+        }
+        return
+      }
+      const index = Number.parseInt(event.key, 10)
+      if (!Number.isNaN(index) && index >= 1 && index <= (scene.choices?.length ?? 0)) {
+        event.preventDefault()
+        onChoose(scene.choices![index - 1].id)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  })
+
+  useEffect(() => {
+    setResumeAvailable(hasSave())
+  }, [])
+
+  // 开发环境自检：史料卡数据填错会直接报在控制台
+  useEffect(() => {
+    if (!import.meta.env.DEV) return
+    const errors = validateSources()
+    if (errors.length > 0) {
+      console.warn('[史料卡校验] 发现', errors.length, '个问题', errors)
+    } else {
+      const coverage = sourceCoverage()
+      console.info(
+        `[史料卡校验] 通过：${coverage.total} 条（已核对 ${coverage.verified} / 待接入 ${coverage.needed}），覆盖 ${coverage.scenes} 个场景`,
+      )
+    }
+  }, [])
+
+  const scene: Scene | null = useMemo(() => {
+    if (screen !== 'game') return null
+    return getScene(state.sceneId, state.ledger)
+  }, [screen, state.sceneId, state.ledger])
+
+  const startNew = () => {
+    const fresh = createState()
+    runCurtain(
+      () => {
+        setState(fresh)
+        save(fresh)
+        setScreen('game')
+        setSourcePanel(null)
+      },
+      CURTAIN_CHAPTER,
+    )
+  }
+
+  const resume = () => {
+    const saved = load()
+    if (saved) {
+      setState(saved)
+      setScreen(saved.finishedAt ? 'ending' : 'game')
+    } else {
+      startNew()
+    }
+  }
+
+  const onChoose = (choiceId: string) => {
+    if (!scene?.choices) return
+    const choice = scene.choices.find((item) => item.id === choiceId)
+    if (!choice) return
+    const next = choose(state, choice.id, choice.outcome, choice.next, choice.ending ?? null)
+    setState(next)
+    save(next)
+  }
+
+  const onAdvance = () => {
+    const nextId = state.pendingNext
+    if (!nextId) return
+    const finishing = state.ending !== null
+    runCurtain(
+      () => {
+        const next = advance(state, nextId, finishing)
+        setState(next)
+        save(next)
+        if (finishing && state.ending) {
+          const merged = Array.from(new Set([...unlocked, state.ending]))
+          setUnlocked(merged)
+          saveUnlocked(merged)
+          setScreen('ending')
+        }
+      },
+      finishing ? CURTAIN_ENDING : undefined,
+    )
+  }
+
+  const restart = () => {
+    clearSave()
+    startNew()
+  }
+
+  const toMenu = () => {
+    setScreen('menu')
+    setSourcePanel(null)
+  }
+
+  const renderParagraphs = (paragraphs: string[], className = 'prose') => (
+    <div className={className}>
+      {paragraphs.map((text, index) => (
+        <p key={index} style={{ animationDelay: `${Math.min(index * 90, 540)}ms` }}>
+          {text}
+        </p>
+      ))}
+    </div>
+  )
+
+  const renderSourcePanel = () => {
+    if (!sourcePanel) return null
+    const card = SOURCE_MAP.get(sourcePanel)
+    if (!card) return null
+    const meta = [card.author, card.publisher, card.year ? `${card.year} 年` : '']
+      .filter(Boolean)
+      .join(' · ')
+    return (
+      <aside className="source-panel" role="dialog" aria-modal="false" aria-label="史料卡">
+        <div className="source-panel-head">
+          <span className="eyebrow">史料卡</span>
+          <button className="text-button" onClick={() => setSourcePanel(null)}>
+            关闭
+          </button>
+        </div>
+        <h3>{card.work}</h3>
+        <p className="source-claim">{card.claim}</p>
+        {card.excerpt ? (
+          <blockquote className="source-quote">
+            <p>「{card.excerpt}」</p>
+            {card.locator && <cite>{card.locator}</cite>}
+          </blockquote>
+        ) : (
+          <p className="source-warn">这一条还在等文献：{card.locator ?? '原文与页码待补'}。</p>
+        )}
+        {meta && <p className="source-origin">{meta}</p>}
+        {card.note && <p className="source-note">{card.note}</p>}
+        <span className={`badge ${card.status === 'verified' ? 'ok' : 'pending'}`}>
+          {statusLabel(card)}
+        </span>
+      </aside>
+    )
+  }
+
+  /** 场景页脚上的小标签：用 claim 的前半句，比书名更好认 */
+  const chipLabel = (claim: string) => (claim.length > 18 ? `${claim.slice(0, 18)}…` : claim)
+
+  /** 某个场景/结局页可用的史料卡：显式引用的 + 自动回填里登记到该场景的 */
+  const cardsFor = (target: string, extraIds: string[] = []) => {
+    const map = new Map<string, (typeof SOURCES)[number]>()
+    for (const id of extraIds) {
+      const card = SOURCE_MAP.get(id)
+      if (card) map.set(card.id, card)
+    }
+    for (const card of SOURCES) {
+      if ((card.scenes as string[]).includes(target)) map.set(card.id, card)
+    }
+    return [...map.values()]
+  }
+
+  /** 最多展示 limit 张，其余收进「另有 N 条」 */
+  const renderChips = (cards: (typeof SOURCES)[number][], limit = 4) => (
+    <>
+      {cards.slice(0, limit).map((card) => (
+        <button key={card.id} className="chip" onClick={() => setSourcePanel(card.id)}>
+          {chipLabel(card.claim)}
+        </button>
+      ))}
+      {cards.length > limit && (
+        <button className="chip chip-more" onClick={() => setScreen('sources')}>
+          另有 {cards.length - limit} 条史料
+        </button>
+      )}
+    </>
+  )
+
+  const renderScene = () => {
+    if (!scene) return null
+    const hasOutcome = state.pendingOutcome !== null
+
+    return (
+      <div className="scene" data-scene={scene.id}>
+        <header className="scene-head">
+          <span className="chapter">{scene.chapter}</span>
+          <h1>{scene.title}</h1>
+          {(scene.date || scene.location) && (
+            <p className="scene-meta">
+              {scene.date}
+              {scene.date && scene.location ? ' · ' : ''}
+              {scene.location}
+            </p>
+          )}
+        </header>
+
+        {(() => {
+          const imageId = scene.image ?? SCENE_IMAGES[scene.id]
+          if (!imageId) return null
+          return (
+            <figure className="scene-image">
+              <img src={artSrc(imageId)} alt={scene.imageCaption ?? scene.title} loading="lazy" />
+              {scene.imageCaption && <figcaption>{scene.imageCaption}</figcaption>}
+            </figure>
+          )
+        })()}
+
+        <div className="scene-body">
+          {renderParagraphs(hasOutcome ? state.pendingOutcome!.paragraphs : scene.paragraphs)}
+
+          {hasOutcome && state.pendingOutcome?.quote && (
+            <blockquote className="quote-card">
+              <p>{state.pendingOutcome.quote.text}</p>
+              <cite>{state.pendingOutcome.quote.attribution}</cite>
+            </blockquote>
+          )}
+
+          {!hasOutcome && scene.choices && scene.choices.length > 0 && (
+            <div className="choices" role="list">
+              {scene.choices.map((choice, index) => (
+                <button
+                  key={choice.id}
+                  className="choice"
+                  role="listitem"
+                  data-choice={choice.id}
+                  onClick={() => onChoose(choice.id)}
+                >
+                  <span className="choice-index">{index + 1}</span>
+                  <span className="choice-text">
+                    <strong>{choice.label}</strong>
+                    {choice.hint && <em>{choice.hint}</em>}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {hasOutcome && (
+            <button className="primary-button continue" onClick={onAdvance}>
+              {state.ending ? '把东西交出去' : '继续'}
+            </button>
+          )}
+        </div>
+
+        {scene.aside && <p className="scene-aside">{scene.aside}</p>}
+
+        {(() => {
+          const cards = cardsFor(scene.id, scene.sources ?? [])
+          if (cards.length === 0) return null
+          return (
+            <footer className="source-row">
+              <span className="eyebrow">史料卡 · {cards.length}</span>
+              {renderChips(cards)}
+            </footer>
+          )
+        })()}
+      </div>
+    )
+  }
+
+  const renderEnding = () => {
+    if (!state.ending) return null
+    const ending = ENDINGS[state.ending]
+    return (
+      <div className="ending">
+        <span className="eyebrow">结局</span>
+        <h1>{ending.title}</h1>
+        <p className="ending-sub">{ending.subtitle}</p>
+        {ENDING_IMAGE[state.ending] && (
+          <figure className="scene-image">
+            <img src={artSrc(ENDING_IMAGE[state.ending])} alt={ending.title} loading="lazy" />
+          </figure>
+        )}
+        {renderParagraphs(ending.paragraphs, 'prose prose-ending')}
+        <p className="ending-coda">{ending.coda}</p>
+
+        <section className="afterword">
+          <span className="eyebrow">后记 · 史实</span>
+          <ul>
+            {AFTERWORD.map((item) => (
+              <li key={item.text}>
+                <span className="afterword-text">{item.text}</span>
+                {renderChips(cardsFor('afterword', item.sourceIds), 1)}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <div className="ledger">
+          <span className="eyebrow">你带出来的</span>
+          <ul>
+            {(Object.keys(state.ledger) as MemoryKind[])
+              .filter((kind) => state.ledger[kind] > 0)
+              .map((kind) => (
+                <li key={kind}>
+                  {MEMORY_NAMES[kind]} × {state.ledger[kind]}
+                </li>
+              ))}
+          </ul>
+        </div>
+
+        {(VOLUME4.length > 0 || VOLUME5.length > 0) && (
+          <section className="afterword">
+            <span className="eyebrow">后来</span>
+            <p className="afterword-text">结局之后，这些名字又走了七十年。可以接着读：</p>
+            <div className="ending-actions">
+              {VOLUME4.length > 0 && (
+                <button
+                  className="quiet-button"
+                  onClick={() => {
+                    setLaterId(null)
+                    setScreen('later')
+                  }}
+                >
+                  读「后来」（15 篇）
+                </button>
+              )}
+              {VOLUME5.length > 0 && (
+                <button
+                  className="quiet-button"
+                  onClick={() => {
+                    setPersonId(null)
+                    setScreen('people')
+                  }}
+                >
+                  读「人物志」（10 篇）
+                </button>
+              )}
+            </div>
+          </section>
+        )}
+
+        <div className="ending-actions">
+          <button className="primary-button" onClick={restart}>
+            再走一遍
+          </button>
+          <button className="quiet-button" onClick={() => setScreen('gallery')}>
+            看看六个结局
+          </button>
+          <button className="quiet-button" onClick={toMenu}>
+            回到开头
+          </button>
+        </div>
+        {(() => {
+          const cards = cardsFor(`ending_${ending.kind}`, ending.sourceIds)
+          if (cards.length === 0) return null
+          return (
+            <footer className="source-row">
+              <span className="eyebrow">史料出处 · {cards.length}</span>
+              {renderChips(cards)}
+            </footer>
+          )
+        })()}
+        <p className="playtime">本次用时 {formatDuration((state.finishedAt ?? Date.now()) - state.startedAt)}</p>
+      </div>
+    )
+  }
+
+  const renderMenu = () => (
+    <div className="menu">
+      <span className="eyebrow">红色之旅 · 追梦铸魂</span>
+      <h1 className="title">把名字留下来</h1>
+      <p className="subtitle">四行仓库 · 一九三七</p>
+      <p className="menu-lead">
+        四行仓库里守了四天四夜的，是四百多个中国兵，其中两百多人来自湖北通城。
+        他们的名字，后来只找回来八十七个。你是其中识字的那个，负责把名字记下来。
+      </p>
+      <ul className="menu-facts">
+        <li>从通城到上海，从四行仓库到孤军营，再到七十年后的寻访——一百四十个场景</li>
+        <li>六个结局，没有好坏，只有「什么被留下」</li>
+        <li>正文约十一万字；单周目约 2—3 小时，读完全部内容约 6 小时</li>
+        <li>七十六张史料卡（已核对六十三张），每个史实都能点开看出处</li>
+      </ul>
+      <div className="menu-actions">
+        {resumeAvailable && (
+          <button className="primary-button" onClick={resume}>
+            继续上次
+          </button>
+        )}
+        <button className={resumeAvailable ? 'quiet-button' : 'primary-button'} onClick={startNew}>
+          从头开始
+        </button>
+        <button className="quiet-button" onClick={() => setScreen('gallery')}>
+          结局一览
+        </button>
+        <button className="quiet-button" onClick={() => setScreen('sources')}>
+          史料库
+        </button>
+        {VOLUME5.length > 0 && (
+          <button
+            className="quiet-button"
+            onClick={() => {
+              setPersonId(null)
+              setScreen('people')
+            }}
+          >
+            人物志
+          </button>
+        )}
+        {VOLUME4.length > 0 && (
+          <button
+            className="quiet-button"
+            onClick={() => {
+              setLaterId(null)
+              setScreen('later')
+            }}
+          >
+            后来
+          </button>
+        )}
+        <button className="quiet-button" onClick={() => setScreen('about')}>
+          关于与史料
+        </button>
+      </div>
+      <p className="content-note">
+        内容提示：本作涉及战争与死亡，不表现血腥场面。人物陈望生为复合型虚构角色，史实依据见文内「史料卡」。
+      </p>
+    </div>
+  )
+
+  const renderGallery = () => (
+    <div className="gallery">
+      <span className="eyebrow">六个结局</span>
+      <h1>哪一种记忆被留下</h1>
+      <p className="gallery-lead">已解锁 {unlocked.length} / 6。每个结局都写着同一句话。</p>
+      <div className="gallery-grid">
+        {ENDING_ORDER.map((kind) => {
+          const ending = ENDINGS[kind]
+          const open = unlocked.includes(kind)
+          return (
+            <article key={kind} className={`gallery-card ${open ? 'open' : 'locked'}`}>
+              <h2>{open ? ending.title : '？？'}</h2>
+              <p className="gallery-sub">{open ? ending.subtitle : '尚未走到'}</p>
+              {open && <p className="gallery-coda">{ending.coda}</p>}
+            </article>
+          )
+        })}
+      </div>
+      <button className="quiet-button" onClick={toMenu}>
+        返回
+      </button>
+    </div>
+  )
+
+  const renderAbout = () => (
+    <div className="about">
+      <span className="eyebrow">关于</span>
+      <h1>这不是一个打仗的游戏</h1>
+      <p>
+        它讲的是记录：一个识字的兵，在四行仓库的五天里，每一次只能把一样东西带过苏州河。
+        名册、家书、旗、照片、口述、口信——你带出去什么，什么就活下来。
+      </p>
+      <h2>史实</h2>
+      <p>
+        「八百壮士」实际约四百余人；湖北通城籍二百人以上。1947 年通城县参议会编《通城县抗战史料》，
+        留下《通城县参加上海四行孤军四十九壮士姓名一览表》。此后数十年寻访，查实姓名者仅八十七人。
+      </p>
+      <h2>虚构与边界</h2>
+      <p>
+        主角陈望生为复合型虚构角色。谢晋元等真实人物只以可查证的事实出现，不虚构其台词。
+        场景中的天气、对话细节为叙事重构；可核对的史实均标注来源。
+      </p>
+      <h2>技术</h2>
+      <p>
+        React 19 + TypeScript + Vite。2.5D 视差由同一张图的多尺度分层与指针位移实现；粒子为 Canvas 绘制。
+        无后端，存档在本地浏览器。
+      </p>
+      <button className="quiet-button" onClick={toMenu}>
+        返回
+      </button>
+    </div>
+  )
+
+  const renderSourceGroup = (
+    list: typeof SOURCES,
+    heading: string,
+    lead: string,
+  ) => (
+    <section className="source-group">
+      <h2>{heading}</h2>
+      <p className="gallery-lead">{lead}</p>
+      {[...groupByWork(list)].map(([work, cards]) => {
+        const first = cards[0]
+        const meta = [first.author, first.publisher, first.year ? `${first.year} 年` : '']
+          .filter(Boolean)
+          .join(' · ')
+        return (
+          <div key={work} className="work-group">
+            <h3>{work}</h3>
+            {meta && <p className="work-meta">{meta}</p>}
+            {cards.map((card) => (
+              <article key={card.id} className="source-entry">
+                <p className="source-claim">{card.claim}</p>
+                {card.excerpt ? (
+                  <blockquote className="source-quote">
+                    <p>「{card.excerpt}」</p>
+                    {card.locator && <cite>{card.locator}</cite>}
+                  </blockquote>
+                ) : (
+                  <p className="source-warn">
+                    待补：{card.locator ?? '原文与页码'}
+                    {card.note ? ` —— ${card.note}` : ''}
+                  </p>
+                )}
+                <div className="source-entry-foot">
+                  <span className={`badge ${card.status === 'verified' ? 'ok' : 'pending'}`}>
+                    {statusLabel(card)}
+                  </span>
+                  {card.scenes.length > 0 && (
+                    <span className="source-scenes">用于 {card.scenes.length} 个场景</span>
+                  )}
+                  {card.tags.slice(0, 3).map((tag) => (
+                    <span key={tag} className="source-tag">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+        )
+      })}
+    </section>
+  )
+
+  const renderSources = () => (
+    <div className="sources-page">
+      <span className="eyebrow">史料库</span>
+      <h1>每一条都写了出处</h1>
+      <p className="gallery-lead">
+        游戏正文只使用「已核对」的条目，每条都能点开看到原句与页码。
+        还在等文献的条目单独列出，不进入正文。新增文献只需改 <code>sources.ts</code> 一个文件。
+      </p>
+      <p className="source-coverage">
+        当前 {SOURCES.length} 条 · 已核对 {VERIFIED_SOURCES.length} · 待核对 {PENDING_SOURCES.length} · 待接入{' '}
+        {NEEDED_SOURCES.length}
+      </p>
+      {renderSourceGroup(
+        VERIFIED_SOURCES,
+        `已核对 ${VERIFIED_SOURCES.length} 条`,
+        '这些条目已经可以直接引用，正文中的「史料卡」就是它们。',
+      )}
+      {PENDING_SOURCES.length > 0 &&
+        renderSourceGroup(
+          PENDING_SOURCES,
+          `待核对 ${PENDING_SOURCES.length} 条`,
+          '有出处，但存在多种说法或原文未完全核对，因此不进入正文，只作研究记录。',
+        )}
+      {renderSourceGroup(
+        NEEDED_SOURCES,
+        `待接入文献 ${NEEDED_SOURCES.length} 条`,
+        '每一条都写清了「需要哪本书、哪一章、补什么」。拿到文献后填原句与页码即可转为「已核对」。',
+      )}
+      <h2>这是什么意思</h2>
+      <p className="gallery-lead">
+        换一本书、补一页页码，只需要在 <code>src/game/content/sources.ts</code> 里改一条数据：
+        填上 excerpt 与 locator、把 status 改成 verified，再把卡片 id 加进目标场景的 sources。
+        界面、分组、「用于几个场景」都会自动更新，不需要改任何组件代码。
+      </p>
+      <button className="quiet-button" onClick={toMenu}>
+        返回
+      </button>
+    </div>
+  )
+
+  const renderPeople = () => (
+    <div className="people">
+      <span className="eyebrow">人物志</span>
+      <h1>十个人，和一册没有名字的名单</h1>
+      <p className="gallery-lead">
+        人物志独立于主线存档，随时可读。真实人物只写可查证的事实；群像为叙事重构，已在文末标注。
+      </p>
+      <div className="people-list">
+        {VOLUME5.map((scene) => (
+          <button key={scene.id} className="people-card" onClick={() => setPersonId(scene.id)}>
+            <span className="people-meta">
+              {scene.date}
+              {scene.location ? ` · ${scene.location}` : ''}
+            </span>
+            <strong>{scene.title}</strong>
+            <span className="people-preview">{scene.paragraphs[0]?.slice(0, 64) ?? ''}…</span>
+          </button>
+        ))}
+      </div>
+      <button className="quiet-button" onClick={toMenu}>
+        返回
+      </button>
+    </div>
+  )
+
+  const renderPerson = () => {
+    const scene = VOLUME5.find((item) => item.id === personId)
+    if (!scene) return null
+    const cards = cardsFor(scene.id, scene.sources ?? [])
+    return (
+      <div className="person-reader">
+        <header className="scene-head">
+          <span className="chapter">{scene.chapter}</span>
+          <h1>{scene.title}</h1>
+          {(scene.date || scene.location) && (
+            <p className="scene-meta">
+              {scene.date}
+              {scene.date && scene.location ? ' · ' : ''}
+              {scene.location}
+            </p>
+          )}
+        </header>
+        {(() => {
+          const imageId = scene.image ?? SCENE_IMAGES[scene.id]
+          if (!imageId) return null
+          return (
+            <figure className="scene-image">
+              <img src={artSrc(imageId)} alt={scene.title} loading="lazy" />
+            </figure>
+          )
+        })()}
+        {renderParagraphs(scene.paragraphs)}
+        {scene.aside && <p className="scene-aside">{scene.aside}</p>}
+        {cards.length > 0 && (
+          <footer className="source-row">
+            <span className="eyebrow">史料卡 · {cards.length}</span>
+            {renderChips(cards)}
+          </footer>
+        )}
+        <button className="quiet-button" onClick={() => setPersonId(null)}>
+          返回人物志
+        </button>
+      </div>
+    )
+  }
+
+  const renderLater = () => (
+    <div className="people">
+      <span className="eyebrow">后来</span>
+      <h1>名字之后的事</h1>
+      <p className="gallery-lead">
+        1947 年造册之后，这些名字又走了七十年。这一组是结局之后的读者页，独立于主线存档。
+      </p>
+      <div className="people-list">
+        {VOLUME4.map((scene, index) => (
+          <button key={scene.id} className="people-card" onClick={() => setLaterId(scene.id)}>
+            <span className="people-meta">
+              {String(index + 1).padStart(2, '0')} · {scene.date}
+              {scene.location ? ` · ${scene.location}` : ''}
+            </span>
+            <strong>{scene.title}</strong>
+            <span className="people-preview">{scene.paragraphs[0]?.slice(0, 64) ?? ''}…</span>
+          </button>
+        ))}
+      </div>
+      <button className="quiet-button" onClick={toMenu}>
+        返回
+      </button>
+    </div>
+  )
+
+  const renderLaterScene = () => {
+    const scene = VOLUME4.find((item) => item.id === laterId)
+    if (!scene) return null
+    const cards = cardsFor(scene.id, scene.sources ?? [])
+    const imageId = scene.image ?? SCENE_IMAGES[scene.id]
+    return (
+      <div className="person-reader">
+        <header className="scene-head">
+          <span className="chapter">{scene.chapter}</span>
+          <h1>{scene.title}</h1>
+          {(scene.date || scene.location) && (
+            <p className="scene-meta">
+              {scene.date}
+              {scene.date && scene.location ? ' · ' : ''}
+              {scene.location}
+            </p>
+          )}
+        </header>
+        {imageId && (
+          <figure className="scene-image">
+            <img src={artSrc(imageId)} alt={scene.title} loading="lazy" />
+          </figure>
+        )}
+        {renderParagraphs(scene.paragraphs)}
+        {scene.aside && <p className="scene-aside">{scene.aside}</p>}
+        {cards.length > 0 && (
+          <footer className="source-row">
+            <span className="eyebrow">史料卡 · {cards.length}</span>
+            {renderChips(cards)}
+          </footer>
+        )}
+        <button className="quiet-button" onClick={() => setLaterId(null)}>
+          返回「后来」
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <main className={`app-shell ${screen === 'game' ? 'in-game' : ''}`}>
+      {screen === 'menu' && renderMenu()}
+      {screen === 'game' && (
+        <Stage background={scene?.background ?? 'warehouse'} weather={scene?.weather ?? 'none'}>
+          {renderScene()}
+        </Stage>
+      )}
+      {screen === 'ending' && (
+        <Stage background="dawn" weather="snow">
+          {renderEnding()}
+        </Stage>
+      )}
+      {screen === 'gallery' && renderGallery()}
+      {screen === 'about' && renderAbout()}
+      {screen === 'sources' && renderSources()}
+      {screen === 'people' && (personId ? renderPerson() : renderPeople())}
+      {screen === 'later' && (laterId ? renderLaterScene() : renderLater())}
+      <InkCurtain ref={curtain} variant={scene?.weather === 'rain' ? 'rain' : 'ink'} />
+      {renderSourcePanel()}
+    </main>
+  )
+}

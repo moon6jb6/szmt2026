@@ -1,0 +1,642 @@
+{
+  "v0-01": {
+    "image": "public/art/scene-001.jpg",
+    "id": "scene-001",
+    "usage": "序卷·便条：雪晨，便条压在木凳上"
+  },
+  "v0-02": {
+    "image": "public/art/scene-002.jpg",
+    "id": "scene-002",
+    "usage": "序卷·半本册子：后半夜，灯下的木箱与蓝布"
+  },
+  "v0-03": {
+    "image": "public/art/scene-003.jpg",
+    "id": "scene-003",
+    "usage": "序卷·灶前：清晨，锅盖上的白气"
+  },
+  "v0-04": {
+    "image": "public/art/scene-004.jpg",
+    "id": "scene-004",
+    "usage": "序卷·烘笼：沙堆村口，手笼里的炭火"
+  },
+  "v0-05": {
+    "image": "public/art/scene-005.jpg",
+    "id": "scene-005",
+    "usage": "序卷·城门口：县城门洞，卖炭的扁担"
+  },
+  "v0-06": {
+    "image": "public/art/scene-006.jpg",
+    "id": "scene-006",
+    "usage": "序卷·廊下：县参议会黑漆门，铜环缺了一只"
+  },
+  "v0-07": {
+    "image": "public/art/scene-007.jpg",
+    "id": "scene-007",
+    "usage": "序卷·第四十九个：廊下写名单，最后一行还空着"
+  },
+  "v0-08": {
+    "image": "public/art/scene-008.jpg",
+    "id": "scene-008",
+    "usage": "序卷·推门：厢房门缝里的灯光，落在砖地上"
+  },
+  "v1-01": {
+    "image": "public/art/scene-009.jpg",
+    "id": "scene-009",
+    "usage": "卷一·公函：八月，保安大队部桌上的公函"
+  },
+  "v1-02": {
+    "image": "public/art/scene-010.jpg",
+    "id": "scene-010",
+    "usage": "卷一·代笔：城门洞里支起的矮桌，桌脚垫着瓦片"
+  },
+  "v1-03": {
+    "image": "public/art/scene-011.jpg",
+    "id": "scene-011",
+    "usage": "卷一·点名：九月，操场上的点名板"
+  },
+  "v1-04": {
+    "image": "public/art/scene-012.jpg",
+    "id": "scene-012",
+    "usage": "卷一·擦枪：操场草席上排开的枪，油布和破布"
+  },
+  "v1-05": {
+    "image": "public/art/scene-013.jpg",
+    "id": "scene-013",
+    "usage": "卷一·三双鞋：陈家坳门槛上，纸包的三双布鞋"
+  },
+  "v1-06": {
+    "image": "public/art/scene-014.jpg",
+    "id": "scene-014",
+    "usage": "卷一·编队：县立小学操场，课桌堆在墙根"
+  },
+  "v1-07": {
+    "image": "public/art/scene-015.jpg",
+    "id": "scene-015",
+    "usage": "卷一·出发前夜：城西祠堂，雨里的地铺与枪架"
+  },
+  "v1-08": {
+    "image": "public/art/scene-016.jpg",
+    "id": "scene-016",
+    "usage": "卷一·离城：九月末，出城的官道和车辙"
+  },
+  "v1-09": {
+    "image": "public/art/scene-017.jpg",
+    "id": "scene-017",
+    "usage": "卷一·公署门前：蒲圻专员公署，石狮与告示牌"
+  },
+  "v1-10": {
+    "image": "public/art/scene-018.jpg",
+    "id": "scene-018",
+    "usage": "卷一·车上：蒲圻至武昌道上，卡车后厢的帆布边"
+  },
+  "v1-11": {
+    "image": "public/art/scene-019.jpg",
+    "id": "scene-019",
+    "usage": "卷一·卓刀泉：武昌营房外的老井与石栏"
+  },
+  "v1-12": {
+    "image": "public/art/scene-020.jpg",
+    "id": "scene-020",
+    "usage": "卷一·铅条：江边印刷所，铅字条排在木盘里"
+  },
+  "v1-13": {
+    "image": "public/art/scene-021.jpg",
+    "id": "scene-021",
+    "usage": "卷一·开拔令：卓刀泉营房，桌上的命令与打好捆的行李"
+  },
+  "v1-14": {
+    "image": "public/art/scene-022.jpg",
+    "id": "scene-022",
+    "usage": "卷一·车厢：闷罐车厢，稻草和一线一线的光"
+  },
+  "v1-15": {
+    "image": "public/art/scene-023.jpg",
+    "id": "scene-023",
+    "usage": "卷一·夜行：江苏土路，夜里雨，灯在泥里照出一片"
+  },
+  "v1-16": {
+    "image": "public/art/scene-024.jpg",
+    "id": "scene-024",
+    "usage": "卷一·干粮袋：歇脚处，打开的干粮袋与搪瓷杯"
+  },
+  "v1-17": {
+    "image": "public/art/scene-025.jpg",
+    "id": "scene-025",
+    "usage": "卷一·破鞋：收容点旁堆着的破鞋"
+  },
+  "v1-18": {
+    "image": "public/art/scene-026.jpg",
+    "id": "scene-026",
+    "usage": "卷一·到上海：外围兵站，煤烟与货栈"
+  },
+  "v1-19": {
+    "image": "public/art/scene-027.jpg",
+    "id": "scene-027",
+    "usage": "卷一·补进一营：兵站营房，一排草铺"
+  },
+  "v1-20": {
+    "image": "public/art/scene-028.jpg",
+    "id": "scene-028",
+    "usage": "卷一·钢盔：木凳上的一排钢盔，都是凹的"
+  },
+  "v1-21": {
+    "image": "public/art/scene-029.jpg",
+    "id": "scene-029",
+    "usage": "卷一·第一页：兵营里新册子翻到第一页"
+  },
+  "v1-22": {
+    "image": "public/art/scene-030.jpg",
+    "id": "scene-030",
+    "usage": "卷一·空铺：叠好的被子，留下一顶钢盔"
+  },
+  "v1-23": {
+    "image": "public/art/scene-031.jpg",
+    "id": "scene-031",
+    "usage": "卷一·苏州河：北岸看河，雨点落在水里"
+  },
+  "v1-24": {
+    "image": "public/art/scene-032.jpg",
+    "id": "scene-032",
+    "usage": "卷一·命令：十月二十六日夜，桌上的命令纸，外面下雨"
+  },
+  "v1-25": {
+    "image": "public/art/scene-033.jpg",
+    "id": "scene-033",
+    "usage": "卷一·铁门：十月二十七日凌晨，四行仓库铁门焊死"
+  },
+  "v2-01": {
+    "image": "public/art/scene-034.jpg",
+    "id": "scene-034",
+    "usage": "卷二·交钥匙：铁门外，钥匙和口令交接"
+  },
+  "v2-02": {
+    "image": "public/art/scene-035.jpg",
+    "id": "scene-035",
+    "usage": "卷二·四路进场：凌晨，底楼大厅四路纵队"
+  },
+  "v2-03": {
+    "image": "public/art/scene-036.jpg",
+    "id": "scene-036",
+    "usage": "卷二·枪：底楼西墙，枪一捆一捆解开"
+  },
+  "v2-04": {
+    "image": "public/art/scene-037.jpg",
+    "id": "scene-037",
+    "usage": "卷二·粮食包：底楼窗口码起的粮包"
+  },
+  "v2-05": {
+    "image": "public/art/scene-038.jpg",
+    "id": "scene-038",
+    "usage": "卷二·地下室：黑，积水，和一股潮味"
+  },
+  "v2-06": {
+    "image": "public/art/scene-039.jpg",
+    "id": "scene-039",
+    "usage": "卷二·裁纸：方柱下把纸裁成名册大小"
+  },
+  "v2-07": {
+    "image": "public/art/scene-040.jpg",
+    "id": "scene-040",
+    "usage": "卷二·籍贯：一个一个问是哪里人"
+  },
+  "v2-08": {
+    "image": "public/art/scene-041.jpg",
+    "id": "scene-041",
+    "usage": "卷二·外号：名字旁边添上了外号"
+  },
+  "v2-09": {
+    "image": "public/art/scene-042.jpg",
+    "id": "scene-042",
+    "usage": "卷二·第一声炮：拂晓，门口第一次炮击"
+  },
+  "v2-10": {
+    "image": "public/art/scene-043.jpg",
+    "id": "scene-043",
+    "usage": "卷二·抬上楼：傍晚，担架沿着楼梯往上"
+  },
+  "v2-11": {
+    "image": "public/art/scene-044.jpg",
+    "id": "scene-044",
+    "usage": "卷二·断水：夜，水缸见了底"
+  },
+  "v2-12": {
+    "image": "public/art/scene-045.jpg",
+    "id": "scene-045",
+    "usage": "卷二·止血：伤兵房，绷带和石灰桶"
+  },
+  "v2-13": {
+    "image": "public/art/scene-046.jpg",
+    "id": "scene-046",
+    "usage": "卷二·代笔：窗下，替不识字的人写家书"
+  },
+  "v2-14": {
+    "image": "public/art/scene-047.jpg",
+    "id": "scene-047",
+    "usage": "卷二·手印：墙上和纸上留下的手印"
+  },
+  "v2-15": {
+    "image": "public/art/scene-048.jpg",
+    "id": "scene-048",
+    "usage": "卷二·遗书：深夜写好的一页纸"
+  },
+  "v2-16": {
+    "image": "public/art/scene-049.jpg",
+    "id": "scene-049",
+    "usage": "卷二·煤油灯：灯芯被捻到最小，怕被看见"
+  },
+  "v2-17": {
+    "image": "public/art/scene-050.jpg",
+    "id": "scene-050",
+    "usage": "卷二·水的味道：水里有砖灰和煤油味"
+  },
+  "v2-18": {
+    "image": "public/art/scene-051.jpg",
+    "id": "scene-051",
+    "usage": "卷二·探照灯：窗口外，光柱扫过河面"
+  },
+  "v2-19": {
+    "image": "public/art/scene-052.jpg",
+    "id": "scene-052",
+    "usage": "卷二·西墙：28 日上午，墙上的弹痕与新土"
+  },
+  "v2-20": {
+    "image": "public/art/scene-053.jpg",
+    "id": "scene-053",
+    "usage": "卷二·顶钢板：西墙内侧用钢板和木梁撑住"
+  },
+  "v2-21": {
+    "image": "public/art/scene-054.jpg",
+    "id": "scene-054",
+    "usage": "卷二·绑弹：五楼楼梯口，帆布带与手榴弹"
+  },
+  "v2-22": {
+    "image": "public/art/scene-055.jpg",
+    "id": "scene-055",
+    "usage": "卷二·空出来的位置：五楼墙角，一支枪一顶盔"
+  },
+  "v2-23": {
+    "image": "public/art/scene-056.jpg",
+    "id": "scene-056",
+    "usage": "卷二·布包：门口，湿的布包和扎紧的绳"
+  },
+  "v2-24": {
+    "image": "public/art/scene-057.jpg",
+    "id": "scene-057",
+    "usage": "卷二·旗太小：楼顶，小红旗、尺子与粉笔线"
+  },
+  "v2-25": {
+    "image": "public/art/scene-058.jpg",
+    "id": "scene-058",
+    "usage": "卷二·光柱：夜里楼顶，探照灯扫过天空"
+  },
+  "v2-26": {
+    "image": "public/art/scene-059.jpg",
+    "id": "scene-059",
+    "usage": "卷二·最密的一小时：地下室，灰从裂缝里落下来"
+  },
+  "v2-27": {
+    "image": "public/art/scene-060.jpg",
+    "id": "scene-060",
+    "usage": "卷二·等天亮：楼顶，搪瓷杯和一条叠好的毯子"
+  },
+  "v2-28": {
+    "image": "public/art/scene-061.jpg",
+    "id": "scene-061",
+    "usage": "卷二·抬下去：楼梯拐角，担架和叠好的毯子"
+  },
+  "v2-29": {
+    "image": "public/art/scene-062.jpg",
+    "id": "scene-062",
+    "usage": "卷二·桥中间：夜里的桥面，装备和一只鞋"
+  },
+  "v2-30": {
+    "image": "public/art/scene-063.jpg",
+    "id": "scene-063",
+    "usage": "卷二·同乡会：桥南堍，一张桌子与扎好的信"
+  },
+  "v2-31": {
+    "image": "public/art/scene-064.jpg",
+    "id": "scene-064",
+    "usage": "卷二·通城话：桥栏上压着的那张名单"
+  },
+  "v2-32": {
+    "image": "public/art/scene-065.jpg",
+    "id": "scene-065",
+    "usage": "卷二·报摊：30 日拂晓，报纸头版虚成一块黑"
+  },
+  "v2-33": {
+    "image": "public/art/scene-066.jpg",
+    "id": "scene-066",
+    "usage": "卷二·慰问信：桥南堍，一捆捆信靠在栏杆上"
+  },
+  "v2-34": {
+    "image": "public/art/scene-067.jpg",
+    "id": "scene-067",
+    "usage": "卷二·回库：上午，底楼地上的泥脚印"
+  },
+  "v2-35": {
+    "image": "public/art/scene-068.jpg",
+    "id": "scene-068",
+    "usage": "卷二·桥上的雾：午后，桥面只剩前半段"
+  },
+  "v2-36": {
+    "image": "public/art/scene-069.jpg",
+    "id": "scene-069",
+    "usage": "卷二·三十日的册子：西墙边，摊开的册子和墙洞"
+  },
+  "v2-37": {
+    "image": "public/art/scene-070.jpg",
+    "id": "scene-070",
+    "usage": "卷二·九点：撤退令到了，桌上一盏灯和一张纸"
+  },
+  "v2-38": {
+    "image": "public/art/scene-071.jpg",
+    "id": "scene-071",
+    "usage": "卷二·不肯走：楼梯口留下的一副担架和一顶盔"
+  },
+  "v2-39": {
+    "image": "public/art/scene-072.jpg",
+    "id": "scene-072",
+    "usage": "卷二·收拾：大厅里捆好的行李和码起的枪"
+  },
+  "v2-40": {
+    "image": "public/art/scene-073.jpg",
+    "id": "scene-073",
+    "usage": "卷二·不能动的：二楼担架与叠好的毯子"
+  },
+  "v2-41": {
+    "image": "public/art/scene-074.jpg",
+    "id": "scene-074",
+    "usage": "卷二·包册子：布包、绳子、册子，压在手边"
+  },
+  "v2-42": {
+    "image": "public/art/scene-075.jpg",
+    "id": "scene-075",
+    "usage": "卷二·铁门：十点半，铁门打开一道缝"
+  },
+  "v2-43": {
+    "image": "public/art/scene-076.jpg",
+    "id": "scene-076",
+    "usage": "卷二·桥头：北堍，队伍还没动，雨在下"
+  },
+  "v2-44": {
+    "image": "public/art/scene-077.jpg",
+    "id": "scene-077",
+    "usage": "卷二·过桥：凌晨的桥面，雨、灯、移动的影子"
+  },
+  "v2-45": {
+    "image": "public/art/scene-078.jpg",
+    "id": "scene-078",
+    "usage": "卷二·南堍：租界一侧，枪堆与湿的台阶"
+  },
+  "v3-01": {
+    "image": "public/art/scene-079.jpg",
+    "id": "scene-079",
+    "usage": "卷三·三百五十五：晨雨里清点人数"
+  },
+  "v3-02": {
+    "image": "public/art/scene-080.jpg",
+    "id": "scene-080",
+    "usage": "卷三·网眼：临街铁丝网，网眼里是上海"
+  },
+  "v3-03": {
+    "image": "public/art/scene-081.jpg",
+    "id": "scene-081",
+    "usage": "卷三·点数：操场上，一列一列数过去"
+  },
+  "v3-04": {
+    "image": "public/art/scene-082.jpg",
+    "id": "scene-082",
+    "usage": "卷三·砚台：谢晋元办公室桌上的一方砚"
+  },
+  "v3-05": {
+    "image": "public/art/scene-083.jpg",
+    "id": "scene-083",
+    "usage": "卷三·空竹竿：操场边靠着一根空竹竿"
+  },
+  "v3-06": {
+    "image": "public/art/scene-084.jpg",
+    "id": "scene-084",
+    "usage": "卷三·一锅粥：灶房，一锅稀粥分成几份"
+  },
+  "v3-07": {
+    "image": "public/art/scene-085.jpg",
+    "id": "scene-085",
+    "usage": "卷三·皂：工场里做出来的肥皂，码在木板上"
+  },
+  "v3-08": {
+    "image": "public/art/scene-086.jpg",
+    "id": "scene-086",
+    "usage": "卷三·黑板：营房西头的黑板，字擦了一半"
+  },
+  "v3-09": {
+    "image": "public/art/scene-087.jpg",
+    "id": "scene-087",
+    "usage": "卷三·墙外的人：铁丝网外的街，只有雨和车轨"
+  },
+  "v3-10": {
+    "image": "public/art/scene-088.jpg",
+    "id": "scene-088",
+    "usage": "卷三·歌：营房里唱歌，声音从窗口出去"
+  },
+  "v3-11": {
+    "image": "public/art/scene-089.jpg",
+    "id": "scene-089",
+    "usage": "卷三·一周年：操场上升旗，布被风吹直"
+  },
+  "v3-12": {
+    "image": "public/art/scene-090.jpg",
+    "id": "scene-090",
+    "usage": "卷三·退回来的信：盖了戳又退回来的信"
+  },
+  "v3-13": {
+    "image": "public/art/scene-091.jpg",
+    "id": "scene-091",
+    "usage": "卷三·雪：营房外落雪，门框积了一条白"
+  },
+  "v3-14": {
+    "image": "public/art/scene-092.jpg",
+    "id": "scene-092",
+    "usage": "卷三·报上的名字：桌上报纸，名字虚成灰块"
+  },
+  "v3-15": {
+    "image": "public/art/scene-093.jpg",
+    "id": "scene-093",
+    "usage": "卷三·礼帽：营门口地上落下的一顶礼帽"
+  },
+  "v3-16": {
+    "image": "public/art/scene-094.jpg",
+    "id": "scene-094",
+    "usage": "卷三·兄弟：卡在铁丝网口的那张纸"
+  },
+  "v3-17": {
+    "image": "public/art/scene-095.jpg",
+    "id": "scene-095",
+    "usage": "卷三·断粮：灶房，空了的粮袋翻着口"
+  },
+  "v3-18": {
+    "image": "public/art/scene-096.jpg",
+    "id": "scene-096",
+    "usage": "卷三·相机：架在铁丝网口的老式相机"
+  },
+  "v3-19": {
+    "image": "public/art/scene-097.jpg",
+    "id": "scene-097",
+    "usage": "卷三·委任状：营门口沙袋上放着的一封信"
+  },
+  "v3-20": {
+    "image": "public/art/scene-098.jpg",
+    "id": "scene-098",
+    "usage": "卷三·空位：营房西头空出来的一个铺位"
+  },
+  "v3-21": {
+    "image": "public/art/scene-099.jpg",
+    "id": "scene-099",
+    "usage": "卷三·空格：名册上留出的一格，一直没填"
+  },
+  "v3-22": {
+    "image": "public/art/scene-100.jpg",
+    "id": "scene-100",
+    "usage": "卷三·最后一夜：四月二十三日夜，办公室的灯"
+  },
+  "v3-23": {
+    "image": "public/art/scene-101.jpg",
+    "id": "scene-101",
+    "usage": "卷三·四月二十四日：操场，翻倒的椅子与一顶军帽"
+  },
+  "v3-24": {
+    "image": "public/art/scene-102.jpg",
+    "id": "scene-102",
+    "usage": "卷三·灵堂：营房改为灵堂，白布与一盏灯"
+  },
+  "v3-25": {
+    "image": "public/art/scene-103.jpg",
+    "id": "scene-103",
+    "usage": "卷三·五月八日：操场，队列空着的位置"
+  },
+  "v4-01": {
+    "image": "public/art/scene-104.jpg",
+    "id": "scene-104",
+    "usage": "卷四·蓝布包：1950 年冬，蓝布包着的册子在箱底"
+  },
+  "v4-02": {
+    "image": "public/art/scene-105.jpg",
+    "id": "scene-105",
+    "usage": "卷四·墙洞：1966 年冬，抽掉一块砖藏东西"
+  },
+  "v4-03": {
+    "image": "public/art/scene-106.jpg",
+    "id": "scene-106",
+    "usage": "卷四·一九八〇年春：雨里的旧屋，册子摊在桌上"
+  },
+  "v4-04": {
+    "image": "public/art/scene-107.jpg",
+    "id": "scene-107",
+    "usage": "卷四·录音带 A-017：1982 年秋，老录音机与三盘磁带"
+  },
+  "v4-05": {
+    "image": "public/art/scene-108.jpg",
+    "id": "scene-108",
+    "usage": "卷四·广播里的歌：1985 年夏，窗外的广播喇叭"
+  },
+  "v4-06": {
+    "image": "public/art/scene-109.jpg",
+    "id": "scene-109",
+    "usage": "卷四·木盒：1990 年冬，木盒里放着册子和照片"
+  },
+  "v4-07": {
+    "image": "public/art/scene-110.jpg",
+    "id": "scene-110",
+    "usage": "卷四·六个学生：1991 年夏，堂屋里抄名字的桌面"
+  },
+  "v4-08": {
+    "image": "public/art/scene-111.jpg",
+    "id": "scene-111",
+    "usage": "卷四·跪：2005 年 8 月 13 日，铜像前的空地与花"
+  },
+  "v4-09": {
+    "image": "public/art/scene-112.jpg",
+    "id": "scene-112",
+    "usage": "卷四·撒网：2009 年夏，乡镇土路与行囊"
+  },
+  "v4-10": {
+    "image": "public/art/scene-113.jpg",
+    "id": "scene-113",
+    "usage": "卷四·去重：2013—2014，档案局桌上摊开的三份名单"
+  },
+  "v4-11": {
+    "image": "public/art/scene-114.jpg",
+    "id": "scene-114",
+    "usage": "卷四·三二三个名字：2015 年，纪念馆石墙刻痕"
+  },
+  "v4-12": {
+    "image": "public/art/scene-115.jpg",
+    "id": "scene-115",
+    "usage": "卷四·拍下来：2015 年冬，手机屏照亮旧册页"
+  },
+  "v4-13": {
+    "image": "public/art/scene-116.jpg",
+    "id": "scene-116",
+    "usage": "卷四·看电影：2020 年秋，县城影院门口的海报架"
+  },
+  "v4-14": {
+    "image": "public/art/scene-117.jpg",
+    "id": "scene-117",
+    "usage": "卷四·三百五十四：2025 年 8 月，石墙新增的几行"
+  },
+  "v4-15": {
+    "image": "public/art/scene-118.jpg",
+    "id": "scene-118",
+    "usage": "卷四·留白：2025 年 10 月，柳堤公园的长椅与河"
+  },
+  "v5-01": {
+    "image": "public/art/scene-119.jpg",
+    "id": "scene-119",
+    "usage": "卷五·收水：一楼，把雨水接进桶里"
+  },
+  "v5-02": {
+    "image": "public/art/scene-120.jpg",
+    "id": "scene-120",
+    "usage": "卷五·团附：二楼，一个人的背影与一张地图"
+  },
+  "v5-03": {
+    "image": "public/art/scene-121.jpg",
+    "id": "scene-121",
+    "usage": "卷五·五楼的窗口：10 月 28 日，空窗与烟"
+  },
+  "v5-04": {
+    "image": "public/art/scene-122.jpg",
+    "id": "scene-122",
+    "usage": "卷五·六尺长，四尺阔：旗的尺寸被量出来"
+  },
+  "v5-05": {
+    "image": "public/art/scene-123.jpg",
+    "id": "scene-123",
+    "usage": "卷五·八百：门口，报道里的人数与报纸"
+  },
+  "v5-06": {
+    "image": "public/art/scene-124.jpg",
+    "id": "scene-124",
+    "usage": "卷五·挂号信：租界邮局，盖戳的挂号信"
+  },
+  "v5-07": {
+    "image": "public/art/scene-125.jpg",
+    "id": "scene-125",
+    "usage": "卷五·按手印的那一页：保安大队院子，红泥与名册"
+  },
+  "v5-08": {
+    "image": "public/art/scene-126.jpg",
+    "id": "scene-126",
+    "usage": "卷五·卓刀泉：1991 年冬，乡下堂屋里的旧地图"
+  },
+  "v5-09": {
+    "image": "public/art/scene-127.jpg",
+    "id": "scene-127",
+    "usage": "卷五·团长啊：2005 年，四行仓库楼下的跪像与花"
+  },
+  "v5-10": {
+    "image": "public/art/scene-128.jpg",
+    "id": "scene-128",
+    "usage": "卷五·88D：2025 年，纪念馆展柜里的旗"
+  }
+}

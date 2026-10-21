@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>运行与使用说明</title>
+<style>
+@page { size: A4; margin: 20mm 17mm 18mm 17mm; }
+* { box-sizing: border-box; }
+body {
+  font-family: "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 10.5pt; line-height: 1.8; color: #1b1b1b; margin: 0;
+}
+h1 {
+  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  font-size: 22pt; line-height: 1.35; margin: 0 0 6mm; color: #16130f;
+  border-bottom: 2px solid #a32b2b; padding-bottom: 3mm; letter-spacing: 0.04em;
+}
+h2 {
+  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
+  font-size: 15pt; margin: 7mm 0 2.5mm; color: #8a2b22; letter-spacing: 0.03em;
+  page-break-after: avoid;
+}
+h3 { font-size: 12pt; margin: 5mm 0 2mm; color: #2a2a2a; page-break-after: avoid; }
+p { margin: 0 0 3.2mm; text-align: justify; text-justify: inter-ideograph; }
+ul, ol { margin: 0 0 3.5mm; padding-left: 7mm; }
+li { margin-bottom: 1.2mm; }
+table { border-collapse: collapse; width: 100%; margin: 3mm 0 4mm; font-size: 9.5pt; }
+th, td { border: 1px solid #cfc7b8; padding: 2mm 2.5mm; vertical-align: top; text-align: left; }
+th { background: #f3eee4; font-weight: 600; }
+blockquote {
+  margin: 3mm 0; padding: 2.5mm 4mm; border-left: 3px solid #a32b2b;
+  background: #faf7f1; color: #3a3a3a;
+}
+blockquote p:last-child { margin-bottom: 0; }
+code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; background: #f2f0ea; padding: 0.4mm 1.2mm; }
+pre { background: #f6f4ee; border: 1px solid #e2dccf; padding: 3mm; overflow-x: auto; page-break-inside: avoid; }
+pre code { background: none; padding: 0; }
+hr { border: none; border-top: 1px solid #d8d0c1; margin: 6mm 0; }
+strong { font-weight: 700; }
+a { color: #8a2b22; text-decoration: none; }
+.sheet { max-width: 100%; }
+.doc-meta {
+  font-size: 9pt; color: #6b6358; letter-spacing: 0.06em;
+  margin: 0 0 8mm; padding-bottom: 2mm; border-bottom: 1px solid #e2dccf;
+}
+</style>
+</head><body><div class="sheet">
+<div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
+<h1 id="_1">运行与使用说明</h1>
+<h2 id="_2">一、运行环境</h2>
+<table>
+<thead>
+<tr>
+<th>项</th>
+<th>要求</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>浏览器</td>
+<td>Chrome / Edge / Firefox 最近两年版本</td>
+</tr>
+<tr>
+<td>分辨率</td>
+<td>桌面 1280×720 及以上；兼容平板与手机</td>
+</tr>
+<tr>
+<td>网络</td>
+<td><strong>无需联网</strong>。无外部字体、无 CDN、无后端请求</td>
+</tr>
+<tr>
+<td>其他</td>
+<td>需要启用 JavaScript 与 localStorage（存档用）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">二、评审期快速启动（推荐）</h2>
+<h3 id="a">方式 A：直接打开构建产物</h3>
+<ol>
+<li>解压参赛打包文件。</li>
+<li>进入 <code>01_作品及成果文件/</code>，双击 <code>index.html</code>。</li>
+</ol>
+<blockquote>
+<p>注意：部分浏览器对 <code>file://</code> 协议下的模块脚本有限制。若打开后白屏，请改用方式 B。</p>
+</blockquote>
+<h3 id="b">方式 B：本地静态服务器（最稳）</h3>
+<p>在 <code>01_作品及成果文件/</code> 目录下执行任意一种：</p>
+<pre><code class="language-bash"># Python 3
+python -m http.server 8080
+
+# Node.js
+npx serve -l 8080
+
+# PHP
+php -S 127.0.0.1:8080
+</code></pre>
+<p>浏览器打开 <a href="http://127.0.0.1:8080/">http://127.0.0.1:8080/</a>。</p>
+<h3 id="c">方式 C：源码开发模式</h3>
+<pre><code class="language-bash">npm install
+npm run dev        # 开发预览
+npm run build      # 产出 dist/
+npm run preview    # 预览构建产物
+</code></pre>
+<h2 id="_4">三、操作方式</h2>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>鼠标 / 触摸</th>
+<th>键盘</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>选择</td>
+<td>点击选项</td>
+<td><code>1</code> <code>2</code> <code>3</code> <code>4</code></td>
+</tr>
+<tr>
+<td>继续</td>
+<td>点击「继续」</td>
+<td><code>Enter</code> 或 <code>空格</code></td>
+</tr>
+<tr>
+<td>展开史料卡</td>
+<td>点击页脚卡片</td>
+<td>Tab 聚焦后 Enter</td>
+</tr>
+<tr>
+<td>存档</td>
+<td>自动</td>
+<td>自动</td>
+</tr>
+<tr>
+<td>删除存档</td>
+<td>菜单「从头开始」会覆盖</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>存档位置：浏览器 <code>localStorage</code>，键名 <code>names-ledger-v1</code>。</li>
+<li>结局图鉴：键名 <code>names-endings-v1</code>。</li>
+<li>清除方式：浏览器设置里清除该站点数据即可。</li>
+</ul>
+<h2 id="_5">四、内容与时长</h2>
+<ul>
+<li>正文：110,020 字（严格口径），140 个场景，6 个结局</li>
+<li>单周目：约 2—3 小时；可分段阅读，存档自动</li>
+<li>全部内容（六结局 + 10 篇人物志 + 15 篇「后来」+ 76 张史料卡）：约 6 小时</li>
+<li>无失败状态，可随时关闭，下次从上次的位置继续</li>
+</ul>
+<h2 id="_6">五、附加内容入口</h2>
+<table>
+<thead>
+<tr>
+<th>入口</th>
+<th>内容</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>菜单 →「人物志」</td>
+<td>10 篇人物志（杨瑞符、谢晋元、陈树生、杨惠敏、战地记者、同乡会、通城群像、樊城、周福其、无名兵）</td>
+<td>独立于主线存档，随时可读</td>
+</tr>
+<tr>
+<td>菜单 →「后来」</td>
+<td>15 篇记忆线（1949—2025：修县志、寻访、周福其跪像、英名墙 323→354）</td>
+<td>结局之后的读者页</td>
+</tr>
+<tr>
+<td>菜单 →「史料库」</td>
+<td>76 张史料卡，按文献分组</td>
+<td>每张含原句、出处、页码、状态</td>
+</tr>
+<tr>
+<td>菜单 →「结局一览」</td>
+<td>六个结局的解锁情况</td>
+<td>每个结局附同一句 coda</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_7">五、无障碍</h2>
+<ul>
+<li>全流程键盘可达，焦点有可见描边</li>
+<li>支持 <code>prefers-reduced-motion</code>：系统开启「减少动态效果」后，视差与粒子自动降级</li>
+<li>正文字号可随浏览器缩放（<code>Ctrl/Cmd + +/-</code>）</li>
+<li>无闪烁、无高频动画</li>
+</ul>
+<h2 id="_8">六、内容提示</h2>
+<p>本作涉及战争与死亡，但不表现血腥场面，不出现真实人物肖像。虚构主角陈望生在首次出场处标注为「复合型虚构角色」。全部史实条目在游戏内「史料库」中列出来源。</p>
+<h2 id="_9">七、常见问题</h2>
+<p><strong>Q：打开后是白屏？</strong>
+A：用方式 B 起一个本地服务器；或确认浏览器未禁用 JavaScript。</p>
+<p><strong>Q：没有声音？</strong>
+A：本版暂未加入音乐与音效，属明确的取舍，不是故障。</p>
+<p><strong>Q：背景图是渐变不是照片？</strong>
+A：若拿到的是「无图版」，说明插画素材未随包分发；以渐变占位版亦可完整游玩，叙事与结局不受影响。完整包内含 <code>public/art/</code> 下的场景插画。</p>
+<p><strong>Q：如何只看结局？</strong>
+A：菜单 →「结局一览」，已解锁的结局会显示标题与副标题。</p>
+<h2 id="_10">八、目录结构</h2>
+<pre><code>作品名_作品编号/
+├─ 01_作品及成果文件/      # 构建产物（index.html + assets/）
+├─ 02_作品展示视频/        # 按需
+├─ 03_作品介绍文档/        # 作品介绍.pdf
+├─ 04_运行或使用说明/      # 本文件
+├─ 05_补充成果材料/        # 截图、测试记录
+├─ 06_第三方资源说明/      # 字体、模型、库
+└─ 07_AI工具使用补充说明/  # AI 使用说明.pdf
+</code></pre>
+</div></body></html>

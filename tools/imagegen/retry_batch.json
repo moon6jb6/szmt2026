@@ -1,0 +1,17 @@
+[
+  {
+    "prompt": "Night rain on Suzhou Creek, Shanghai 1937, dark choppy water, rain rings, silhouette of a low concrete warehouse across the water, wooden wharf piles and ropes in the foreground, gas lamp glow on wet planks, low-rise city lost in fog, cinematic, muted, no people",
+    "seed": 19371027,
+    "out": "../../public/bg/river.jpg"
+  },
+  {
+    "prompt": "Rooftop parapet of a concrete warehouse at dawn, 1937, a small torn flag in silhouette on a bamboo pole, smoke and ash in the sky, low angle, embers drifting, indistinct flag shape, cinematic, muted, no people, no skyline",
+    "seed": 19371028,
+    "out": "../../public/bg/flag.jpg"
+  },
+  {
+    "prompt": "Interior of a 1937 concrete warehouse fortress, tan burlap sandbags stacked into barricades, wooden crates, exposed pillars, dust in shafts of light from broken high windows, straw on floor, one dim bulb, cinematic, muted, no people",
+    "seed": 19371026,
+    "out": "../../public/bg/warehouse.jpg"
+  }
+]

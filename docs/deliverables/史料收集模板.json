@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "project": "《把名字留下来》· 四行仓库单章",
+    "version": "1.0",
+    "created": "2026-10-20",
+    "total_slots": 56,
+    "how_to_use": "把本文件连同《史料收集字典.md》一起交给收集用的 AI，让它按 slots 逐条填写，输出回填 JSON。",
+    "output_schema": {
+      "slot_id": "对应 slots[].id，如 B-05",
+      "status": "found | not_found | ambiguous",
+      "fact": "一句话事实（可直接写进游戏正文的表述）",
+      "quote": "原文摘句，没有就留空字符串",
+      "source": {
+        "type": "book | news | archive | museum | interview",
+        "work": "书名 / 文章标题 / 档案名",
+        "author": "作者 / 编者 / 发布机构",
+        "publisher": "出版社 / 媒体 / 馆藏机构",
+        "year": 0,
+        "url": "可点击链接（book 可为空）",
+        "locator": "页码 / 章节 / 段落 / 版次"
+      },
+      "confidence": "high | medium | low",
+      "note": "存疑点、版本差异、找不到的原因"
+    }
+  },
+  "sources_policy": {
+    "accept_priority": [
+      "1. 官方档案、博物馆/纪念馆展陈与官网",
+      "2. 中央与地方主流媒体（新华社、人民日报、光明日报、央视、地方党报）",
+      "3. 学术专著与期刊（出版社、社科文献、学报）",
+      "4. 当事人回忆、口述史、日记（需注明版本）"
+    ],
+    "reject": [
+      "百科全书、维基、百度百科等聚合型条目（可作线索，不可作最终出处）",
+      "自媒体、公众号、短视频文案、论坛帖子",
+      "AI 生成的总结或转述",
+      "影视剧情、小说、未经核实的演义"
+    ],
+    "rules": [
+      "每条必须能定位：给 URL 或 书名+页码/章节；两者都没有则视为未找到",
+      "原文摘句必须逐字，删节用「……」；不允许意译后加引号",
+      "同一事实存在多种说法时，status 填 ambiguous，quote 里并列各版本",
+      "找不到就填 not_found，并在 note 写清楚查了哪些来源、为什么找不到",
+      "不允许编造页码、书名、作者、数字",
+      "数字类事实必须同时给出出处与统计口径"
+    ]
+  },
+  "slots": [
+    { "id": "A-01", "group": "A 编成与人物", "priority": "P0", "kind": "fact", "needQuote": false, "scenes": ["night1"], "question": "88 师 524 团一营的营长是谁？职务与履历是什么？", "accept": ["archive", "museum", "news", "book"] },
+    { "id": "A-02", "group": "A 编成与人物", "priority": "P0", "kind": "fact", "needQuote": false, "scenes": ["night1"], "question": "谢晋元在四行仓库保卫战时的准确职务（团附？中校团附？）与隶属关系。", "accept": ["archive", "museum", "news", "book"] },
+    { "id": "A-03", "group": "A 编成与人物", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night1"], "question": "524 团团长是谁？与一营、与谢晋元的关系。", "accept": ["archive", "museum", "book"] },
+    { "id": "A-04", "group": "A 编成与人物", "priority": "P0", "kind": "fact", "needQuote": true, "scenes": ["night1", "night4"], "question": "「八百壮士」这个称呼是怎么来的？当时记者采访的原始记载或当事人回忆原文。", "accept": ["news", "book", "archive"] },
+    { "id": "A-05", "group": "A 编成与人物", "priority": "P0", "kind": "fact", "needQuote": false, "scenes": ["prologue", "night1"], "question": "通城籍士兵的部队番号、整编过程（通城县保安大队 → 湖北保安五团 → 88 师 524 团一营）。", "accept": ["archive", "museum", "news", "book"] },
+    { "id": "A-06", "group": "A 编成与人物", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["prologue", "epilogue"], "question": "1947 年《通城县抗战史料》的编纂背景：谁主持、为什么编、四十九壮士名单怎么来的。", "accept": ["archive", "museum", "book", "news"] },
+    { "id": "A-07", "group": "A 编成与人物", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night1", "night5"], "question": "谢晋元生平关键节点：出生、黄埔几期、淞沪前职务、遇刺时间与安葬地。", "accept": ["museum", "news", "book", "archive"] },
+    { "id": "A-08", "group": "A 编成与人物", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night3"], "question": "杨惠敏的身份，以及「送旗」一事有哪些不同版本的说法。", "accept": ["museum", "news", "book", "archive"] },
+    { "id": "A-09", "group": "A 编成与人物", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night5b"], "question": "孤军营被软禁的具体地点、起止时间、人员规模。", "accept": ["museum", "news", "book", "archive"] },
+    { "id": "A-10", "group": "A 编成与人物", "priority": "P2", "kind": "fact", "needQuote": false, "scenes": ["night5b"], "question": "1941 年 4 月 24 日谢晋元遇刺的经过与凶手结局。", "accept": ["museum", "news", "book", "archive"] },
+
+    { "id": "B-01", "group": "B 五夜战况", "priority": "P0", "kind": "fact", "needQuote": false, "scenes": ["night1"], "question": "1937 年 10 月 26 日夜间进驻四行仓库的时间、部队序列与布防情况。", "accept": ["archive", "museum", "book", "news"] },
+    { "id": "B-02", "group": "B 五夜战况", "priority": "P0", "kind": "fact", "needQuote": false, "scenes": ["night1", "night3b"], "question": "四行仓库的建筑参数：层数、结构、墙厚、朝向、与苏州河/新垃圾桥/公共租界的距离。", "accept": ["museum", "archive", "book"] },
+    { "id": "B-03", "group": "B 五夜战况", "priority": "P0", "kind": "fact", "needQuote": false, "scenes": ["night2"], "question": "10 月 27 日日军首次进攻的时间、方式与守军应对。", "accept": ["archive", "book", "news"] },
+    { "id": "B-04", "group": "B 五夜战况", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night2"], "question": "10 月 27 日夜是否发生火攻、挖掘或夜袭？具体经过。", "accept": ["archive", "book"] },
+    { "id": "B-05", "group": "B 五夜战况", "priority": "P0", "kind": "quote", "needQuote": true, "scenes": ["night3"], "question": "10 月 28 日升旗的时间、旗的来源与尺寸；原始报道或回忆原文。", "accept": ["archive", "museum", "news", "book"] },
+    { "id": "B-06", "group": "B 五夜战况", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night3", "night3b"], "question": "10 月 28 日日军炮击与仓库受损情况（墙面、楼顶、伤亡）。", "accept": ["archive", "book"] },
+    { "id": "B-07", "group": "B 五夜战况", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night4"], "question": "10 月 29 日中外记者在南岸的观察位置、所在媒体与报道内容。", "accept": ["news", "book", "archive"] },
+    { "id": "B-08", "group": "B 五夜战况", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night4"], "question": "南岸市民支援的具体形式与记载（物资、旗帜、信件、救护）。", "accept": ["book", "news", "archive", "museum"] },
+    { "id": "B-09", "group": "B 五夜战况", "priority": "P0", "kind": "fact", "needQuote": false, "scenes": ["night5"], "question": "10 月 30—31 日撤退令的发出者、内容与传达方式。", "accept": ["archive", "book"] },
+    { "id": "B-10", "group": "B 五夜战况", "priority": "P0", "kind": "fact", "needQuote": false, "scenes": ["night5", "night5b"], "question": "10 月 31 日撤退的时间、路线、伤亡与租界缴械过程。", "accept": ["archive", "book", "museum"] },
+    { "id": "B-11", "group": "B 五夜战况", "priority": "P1", "kind": "number", "needQuote": false, "scenes": ["night3b", "epilogue"], "question": "守军阵亡/负伤人数、日军伤亡人数，各自的数字与统计口径。", "accept": ["archive", "book", "news"] },
+    { "id": "B-12", "group": "B 五夜战况", "priority": "P2", "kind": "fact", "needQuote": false, "scenes": ["night5b"], "question": "租界当局缴械与安置的经过、地点、国际法依据。", "accept": ["archive", "book"] },
+
+    { "id": "C-01", "group": "C 名册与口述", "priority": "P0", "kind": "quote", "needQuote": true, "scenes": ["night1", "night4"], "question": "谢晋元日记中关于点名、造册、部属姓名的原话。", "accept": ["book", "archive", "museum"] },
+    { "id": "C-02", "group": "C 名册与口述", "priority": "P0", "kind": "fact", "needQuote": false, "scenes": ["prologue", "epilogue"], "question": "一营的名册/花名册是否留存？现存何处（档案馆/纪念馆）？", "accept": ["archive", "museum", "book"] },
+    { "id": "C-03", "group": "C 名册与口述", "priority": "P0", "kind": "name", "needQuote": true, "scenes": ["prologue", "epilogue"], "question": "通城四十九壮士名单中的具体姓名，至少列出 10 个可引用的姓名与籍贯。", "accept": ["archive", "museum", "news", "book"] },
+    { "id": "C-04", "group": "C 名册与口述", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["epilogue"], "question": "87 人查实过程中 1—2 个代表性老兵的故事（姓名、部队、战后生活）。", "accept": ["news", "museum", "book"] },
+    { "id": "C-05", "group": "C 名册与口述", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["epilogue"], "question": "最后一位离世的周福其的生平与去世时间。", "accept": ["news", "museum", "archive"] },
+    { "id": "C-06", "group": "C 名册与口述", "priority": "P1", "kind": "quote", "needQuote": true, "scenes": ["night2", "ending_letters"], "question": "一封真实的家书或遗书原文（守军写给家人）。", "accept": ["book", "museum", "archive"] },
+    { "id": "C-07", "group": "C 名册与口述", "priority": "P2", "kind": "quote", "needQuote": true, "scenes": ["ending_testimony"], "question": "幸存者后来的口述史段落（1—2 段，含采访时间与出处）。", "accept": ["museum", "news", "book", "interview"] },
+    { "id": "C-08", "group": "C 名册与口述", "priority": "P2", "kind": "fact", "needQuote": false, "scenes": ["prologue"], "question": "1947 年通城造册的经办人与具体过程（谁去问、怎么记）。", "accept": ["archive", "book", "news"] },
+
+    { "id": "D-01", "group": "D 记忆与传播", "priority": "P0", "kind": "quote", "needQuote": true, "scenes": ["epilogue", "ending_message"], "question": "1938 年毛泽东在中共六届六中全会上把八百壮士称为「民族革命典型」的原文与出处。", "accept": ["archive", "book", "news", "museum"] },
+    { "id": "D-02", "group": "D 记忆与传播", "priority": "P1", "kind": "quote", "needQuote": true, "scenes": ["epilogue"], "question": "国民政府军事委员会对八百壮士的嘉奖令原文。", "accept": ["archive", "book", "museum"] },
+    { "id": "D-03", "group": "D 记忆与传播", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["ending_flag"], "question": "《歌八百壮士》的词曲作者、创作年代与流传情况。", "accept": ["news", "book", "museum"] },
+    { "id": "D-04", "group": "D 记忆与传播", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["ending_flag"], "question": "四行仓库抗战纪念馆的建馆时间、西墙保护方式与展陈重点。", "accept": ["museum", "news"] },
+    { "id": "D-05", "group": "D 记忆与传播", "priority": "P2", "kind": "fact", "needQuote": false, "scenes": ["epilogue"], "question": "通城方面的纪念设施、寻访组织与纪念活动。", "accept": ["news", "museum", "archive"] },
+    { "id": "D-06", "group": "D 记忆与传播", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["epilogue"], "question": "1980 年通城编修县志时如何从档案馆发现四十九壮士名单。", "accept": ["news", "archive", "book"] },
+    { "id": "D-07", "group": "D 记忆与传播", "priority": "P1", "kind": "number", "needQuote": false, "scenes": ["epilogue"], "question": "1991、2009、2013 三次寻访的组织者与新增姓名数字。", "accept": ["news", "archive", "book"] },
+    { "id": "D-08", "group": "D 记忆与传播", "priority": "P2", "kind": "fact", "needQuote": false, "scenes": ["about"], "question": "八百壮士题材影视与出版情况（仅用于差异化说明，不需要原文）。", "accept": ["news", "book"] },
+
+    { "id": "E-01", "group": "E 视觉与实物参考", "priority": "P1", "kind": "image-ref", "needQuote": false, "scenes": ["night3b"], "question": "四行仓库西墙现状与弹孔的历史照片/官方影像（仅作参考，不直接使用）。", "accept": ["museum", "news"] },
+    { "id": "E-02", "group": "E 视觉与实物参考", "priority": "P1", "kind": "image-ref", "needQuote": false, "scenes": ["night2", "night5"], "question": "1937 年苏州河、新垃圾桥（今西藏路桥）、公共租界的历史照片。", "accept": ["museum", "archive", "news"] },
+    { "id": "E-03", "group": "E 视觉与实物参考", "priority": "P1", "kind": "image-ref", "needQuote": false, "scenes": ["night1"], "question": "88 师军服、钢盔、臂章、步枪的准确参考。", "accept": ["museum", "book", "archive"] },
+    { "id": "E-04", "group": "E 视觉与实物参考", "priority": "P2", "kind": "image-ref", "needQuote": false, "scenes": ["night4"], "question": "1937 年上海公共租界街景、南岸建筑的历史照片。", "accept": ["archive", "museum"] },
+    { "id": "E-05", "group": "E 视觉与实物参考", "priority": "P2", "kind": "image-ref", "needQuote": false, "scenes": ["prologue"], "question": "1940 年代湖北通城的民居、县衙/参议会建筑参考。", "accept": ["archive", "museum", "news"] },
+    { "id": "E-06", "group": "E 视觉与实物参考", "priority": "P1", "kind": "image-ref", "needQuote": false, "scenes": ["night1"], "question": "谢晋元肖像与手迹的官方影像来源。", "accept": ["museum", "news", "archive"] },
+    { "id": "E-07", "group": "E 视觉与实物参考", "priority": "P2", "kind": "image-ref", "needQuote": false, "scenes": ["night5b"], "question": "孤军营时期的历史照片。", "accept": ["museum", "archive"] },
+    { "id": "E-08", "group": "E 视觉与实物参考", "priority": "P2", "kind": "image-ref", "needQuote": false, "scenes": ["night4"], "question": "当年《申报》《大公报》等报纸版面（仅作参考）。", "accept": ["archive", "museum", "news"] },
+
+    { "id": "F-01", "group": "F 红色属性与精神表述", "priority": "P0", "kind": "quote", "needQuote": true, "scenes": ["epilogue"], "question": "抗战精神的权威表述原文（2015 年 9 月 3 日讲话）。", "accept": ["news", "archive", "museum"] },
+    { "id": "F-02", "group": "F 红色属性与精神表述", "priority": "P0", "kind": "fact", "needQuote": false, "scenes": ["epilogue"], "question": "八百壮士在中共抗战叙事中的定位（民族革命典型、中流砥柱）。", "accept": ["archive", "news", "book"] },
+    { "id": "F-03", "group": "F 红色属性与精神表述", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night4"], "question": "上海地下党或救亡团体与四行仓库、孤军的联系（有就写，没有就写 not_found）。", "accept": ["archive", "book", "news"] },
+    { "id": "F-04", "group": "F 红色属性与精神表述", "priority": "P2", "kind": "quote", "needQuote": true, "scenes": ["epilogue"], "question": "2025 年抗战胜利 80 周年官方表述中与「铭记/名字/英烈」相关的句子。", "accept": ["news", "archive"] },
+    { "id": "F-05", "group": "F 红色属性与精神表述", "priority": "P2", "kind": "fact", "needQuote": false, "scenes": ["about"], "question": "四行仓库纪念馆官方展陈解说词的核心表述。", "accept": ["museum"] },
+
+    { "id": "G-01", "group": "G 校核项", "priority": "P1", "kind": "number", "needQuote": false, "scenes": ["night1"], "question": "「八百壮士」人数的各种说法（800 / 400 余 / 420 / 452）分别出自哪里？", "accept": ["news", "book", "archive", "museum"] },
+    { "id": "G-02", "group": "G 校核项", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night3"], "question": "升旗/送旗各版本说法的差异点（时间、路线、谁送的）。", "accept": ["book", "news", "archive", "museum"] },
+    { "id": "G-03", "group": "G 校核项", "priority": "P1", "kind": "fact", "needQuote": false, "scenes": ["night5"], "question": "撤退是「奉命」还是「被迫」？命令来源有哪些争议？", "accept": ["book", "archive", "news"] },
+    { "id": "G-04", "group": "G 校核项", "priority": "P2", "kind": "number", "needQuote": false, "scenes": ["epilogue"], "question": "击毙日军数字的不同说法与出处。", "accept": ["book", "archive", "news"] },
+    { "id": "G-05", "group": "G 校核项", "priority": "P2", "kind": "fact", "needQuote": false, "scenes": ["night5b"], "question": "谢晋元遇刺的凶手身份、幕后与后续处理。", "accept": ["book", "archive", "news", "museum"] }
+  ]
+}

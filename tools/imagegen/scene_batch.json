@@ -1,0 +1,42 @@
+[
+  {
+    "prompt": "Interior of a Chinese county government office room in 1947, winter dusk, wooden table with rough paper sheets and an ink brush, a charcoal brazier glowing, wooden lattice window with snow falling outside, dim warm light, empty chair, quiet atmosphere, wide shot",
+    "seed": 194712,
+    "out": "../../public/bg/office.jpg"
+  },
+  {
+    "prompt": "Interior of a massive 1937 concrete warehouse converted to a fortress, sandbag barricades and wooden crates stacked high, exposed concrete pillars, dust floating in shafts of light from broken high windows, straw on the concrete floor, a single hanging bulb, deep receding space",
+    "seed": 19371026,
+    "out": "../../public/bg/warehouse.jpg"
+  },
+  {
+    "prompt": "Night rain over a wide creek in 1937 Shanghai, dark choppy water with rain rings, silhouette of a large concrete warehouse across the water, wooden wharf piles and mooring ropes in the foreground, gas lamp glow reflecting on wet planks, distant city lights lost in haze, wide cinematic establishing shot",
+    "seed": 19371027,
+    "out": "../../public/bg/river.jpg"
+  },
+  {
+    "prompt": "Rooftop of a 1937 Shanghai warehouse at dawn, a small flag on a bamboo pole against a smoke-filled sky, low angle looking up, embers and ash drifting in the air, damaged concrete parapet in the foreground, red and charcoal palette",
+    "seed": 19371028,
+    "out": "../../public/bg/flag.jpg"
+  },
+  {
+    "prompt": "Wet asphalt bridge at night in 1937 Shanghai, rain streaks backlit by a single street lamp, iron railings and tram wires, empty bridge receding into fog, dim lights of the foreign concession beyond, no people, wide shot",
+    "seed": 19371030,
+    "out": "../../public/bg/bridge.jpg"
+  },
+  {
+    "prompt": "Empty paved yard in the Shanghai foreign concession at dawn, 1937, thin mist, water-stained concrete ground, distant western-style building silhouettes, cold blue-grey palette with a pale gold horizon, quiet and still, wide shot",
+    "seed": 19371031,
+    "out": "../../public/bg/dawn.jpg"
+  },
+  {
+    "prompt": "Shell damaged concrete wall of a 1937 Shanghai warehouse, a jagged hole letting daylight through, exposed rebar and broken brick, dust suspended in the beam of light, foreground sandbags, close shot",
+    "seed": 19371029,
+    "out": "../../public/bg/wallhole.jpg"
+  },
+  {
+    "prompt": "Second floor of a 1937 warehouse used as a field dressing station, wooden stretchers and rolled bandages, a single hanging light bulb, stained concrete floor, medical crates stacked along the wall, no people, dim and quiet",
+    "seed": 19371025,
+    "out": "../../public/bg/wounded.jpg"
+  }
+]
