@@ -1,0 +1,527 @@
+/* ==========================================================================
+   SceneHotspots —— 背景图 + 图上散布的热点
+   色板全部取 styles.css 的变量：墨 #16130f / 纸 #ede6d8 / 红 #a32b2b / 金 #c8a063。
+   类名一律 sh- 前缀，独立于 styles.css，可单独引入（落在哪一层由使用方决定）。
+   ========================================================================== */
+
+.sh {
+  /* 热点点击区：桌面 32px，≤480px 抬到 38px（要求 ≥36px） */
+  --sh-hit: 32px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
+  overflow: hidden;
+  border-radius: inherit;
+  background: var(--ink, #16130f);
+  color: var(--paper, #ede6d8);
+  font-family: var(--sans, 'Source Han Sans SC', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif);
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 窄卡与按钮的宽度都按「含内边距」算，否则 320px 的卡会变成 353px */
+.sh,
+.sh *,
+.sh *::before,
+.sh *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- 背景图：铺满 + 视差 ---------- */
+
+.sh-bgwrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sh-bg {
+  position: absolute;
+  /* 外扩 12px：视差平移 ±8px 时边缘不露底 */
+  inset: -12px;
+  width: calc(100% + 24px);
+  height: calc(100% + 24px);
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transform: translate3d(var(--sh-bgx, 0px), var(--sh-bgy, 0px), 0) scale(1.012);
+  transition: transform 140ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* 图挂了也不留黑洞：底色是墨，grade 照样在 */
+.sh[data-bg='fail'] .sh-bgwrap {
+  background:
+    radial-gradient(80% 70% at 62% 56%, rgba(122, 62, 46, 0.24), transparent 70%),
+    linear-gradient(180deg, #241e17, #16130f 62%, #100d0a);
+}
+
+/* ---------- grade：暗角 + 顶部压暗，保证白字可读 ---------- */
+
+.sh-grade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(118% 96% at 64% 60%, rgba(6, 5, 4, 0) 32%, rgba(6, 5, 4, 0.54) 92%),
+    linear-gradient(180deg, rgba(6, 5, 4, 0.54), rgba(6, 5, 4, 0.1) 24%, rgba(6, 5, 4, 0.14) 58%, rgba(6, 5, 4, 0.64)),
+    linear-gradient(90deg, rgba(6, 5, 4, 0.44), rgba(6, 5, 4, 0.08) 34%, rgba(6, 5, 4, 0) 54%);
+}
+
+/* ---------- 角落：计数 / 都看过了 / 返回正文 ---------- */
+
+.sh-count {
+  position: absolute;
+  left: clamp(14px, 2.4vw, 26px);
+  top: clamp(14px, 2.2vh, 22px);
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  color: var(--paper-dim, #bdb3a2);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 10px rgba(5, 4, 3, 0.8);
+  pointer-events: none;
+}
+
+.sh-count-n {
+  color: var(--paper, #ede6d8);
+}
+
+.sh-done {
+  position: absolute;
+  left: clamp(14px, 2.4vw, 26px);
+  top: calc(clamp(14px, 2.2vh, 22px) + 24px);
+  margin: 0;
+  font-family: var(--serif, 'Source Han Serif SC', 'Songti SC', serif);
+  font-size: 12.5px;
+  letter-spacing: 0.3em;
+  color: rgba(200, 160, 99, 0.9);
+  text-shadow: 0 1px 10px rgba(5, 4, 3, 0.8);
+  pointer-events: none;
+  animation: sh-done-in 700ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes sh-done-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sh-exit {
+  position: absolute;
+  right: clamp(12px, 2.2vw, 24px);
+  top: clamp(12px, 2.2vh, 20px);
+  z-index: 4;
+  padding: 7px 13px;
+  border: 1px solid rgba(237, 230, 216, 0.28);
+  border-radius: 2px;
+  background: rgba(22, 19, 15, 0.58);
+  color: var(--paper, #ede6d8);
+  font: inherit;
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  backdrop-filter: blur(2px);
+  transition:
+    background 160ms ease-out,
+    border-color 160ms ease-out,
+    color 160ms ease-out;
+}
+
+.sh-exit:hover {
+  background: rgba(163, 43, 43, 0.86);
+  border-color: rgba(200, 160, 99, 0.6);
+}
+
+.sh-exit:focus-visible {
+  outline: 2px solid rgba(200, 160, 99, 0.9);
+  outline-offset: 2px;
+  background: rgba(163, 43, 43, 0.86);
+  border-color: rgba(200, 160, 99, 0.6);
+}
+
+/* ---------- 热点层（视差幅度是背景的 0.45 倍） ---------- */
+
+.sh-fg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translate3d(var(--sh-fgx, 0px), var(--sh-fgy, 0px), 0);
+  transition: transform 140ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  z-index: 2;
+}
+
+.sh-dot {
+  position: absolute;
+  width: var(--sh-hit);
+  height: var(--sh-hit);
+  margin-left: calc(var(--sh-hit) / -2);
+  margin-top: calc(var(--sh-hit) / -2);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  font: inherit;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.sh-dot:focus {
+  outline: none;
+}
+
+.sh-dot:focus-visible {
+  outline: 2px solid rgba(200, 160, 99, 0.92);
+  outline-offset: 3px;
+}
+
+/* 墨点：未发现时呼吸 opacity 6%→14% */
+.sh-spot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 160, 99, 0);
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(237, 230, 216, 0.95) 0 22%,
+    rgba(200, 160, 99, 0.7) 46%,
+    rgba(200, 160, 99, 0) 74%
+  );
+  opacity: 0.1;
+  animation: sh-breathe 4.6s ease-in-out infinite;
+  /* 亮背景（楼顶的天光）上也要能看见：点本身很淡，靠一圈极弱的墨底托住 */
+  box-shadow: 0 0 5px 2px rgba(5, 4, 3, 0.34);
+  transition:
+    width 180ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    height 180ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    margin 180ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 180ms ease-out,
+    background 180ms ease-out,
+    border-color 180ms ease-out,
+    box-shadow 180ms ease-out;
+}
+
+@keyframes sh-breathe {
+  0%,
+  100% {
+    opacity: 0.06;
+  }
+  46% {
+    opacity: 0.14;
+  }
+}
+
+/* 点击的墨圈荡开 */
+.sh-ripple {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  border: 1px solid rgba(237, 230, 216, 0.55);
+  pointer-events: none;
+  animation: sh-ripple 620ms cubic-bezier(0.16, 0.84, 0.44, 1) forwards;
+}
+
+@keyframes sh-ripple {
+  from {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(6.5);
+  }
+}
+
+/* 标签：点上方浮出，最多两行 */
+.sh-label {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 1px);
+  transform: translate(-50%, 4px);
+  width: max-content;
+  max-width: 172px;
+  padding: 3px 8px 4px;
+  border: 1px solid rgba(200, 160, 99, 0.3);
+  border-radius: 2px;
+  background: rgba(22, 19, 15, 0.84);
+  color: var(--paper, #ede6d8);
+  font-size: 12.5px;
+  line-height: 1.45;
+  letter-spacing: 0.04em;
+  text-align: center;
+  white-space: normal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 160ms ease-out,
+    transform 160ms ease-out;
+}
+
+/* 已发现：淡金色小印点（不做呼吸） */
+.sh-dot[data-found='1'] .sh-spot {
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 1.5px;
+  border: 0;
+  background: rgba(200, 160, 99, 0.68);
+  box-shadow: 0 0 0 1px rgba(200, 160, 99, 0.22);
+  opacity: 1;
+  animation: none;
+}
+
+/* 悬停 / 键盘聚焦 / 已打开：墨圈 + 标签浮出
+   放在 data-found 规则之后——同特异性下后者生效，已发现的点悬停时同样有墨圈 */
+.sh-dot:hover .sh-spot,
+.sh-dot:focus-visible .sh-spot,
+.sh-dot[aria-expanded='true'] .sh-spot {
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  border-radius: 50%;
+  border: 1px solid rgba(237, 230, 216, 0.55);
+  background: rgba(22, 19, 15, 0.2);
+  box-shadow:
+    0 0 0 5px rgba(22, 19, 15, 0.22),
+    inset 0 0 12px rgba(200, 160, 99, 0.28);
+  opacity: 1;
+  animation: none;
+}
+
+.sh-dot:hover .sh-label,
+.sh-dot:focus-visible .sh-label,
+.sh-dot[aria-expanded='true'] .sh-label {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ---------- 窄卡：从底部滑出 ---------- */
+
+.sh-card {
+  position: absolute;
+  left: clamp(14px, 3vw, 32px);
+  bottom: clamp(14px, 3vh, 28px);
+  z-index: 3;
+  width: min(320px, calc(100% - 28px));
+  padding: 14px 15px 12px;
+  border: 1px solid rgba(200, 160, 99, 0.3);
+  border-left: 2px solid rgba(163, 43, 43, 0.78);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(28, 24, 19, 0.96), rgba(18, 15, 12, 0.97));
+  box-shadow:
+    0 18px 44px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(237, 230, 216, 0.07);
+  animation: sh-card-in 260ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes sh-card-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sh-card-label {
+  margin: 0 0 6px;
+  font-family: var(--serif, 'Source Han Serif SC', 'Songti SC', serif);
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  color: var(--paper, #ede6d8);
+}
+
+/* 红菱形：不用 emoji，纯 CSS 形状 */
+.sh-card-label::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 8px;
+  vertical-align: 2px;
+  background: var(--red, #a32b2b);
+  transform: rotate(45deg);
+}
+
+.sh-card-body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  color: var(--paper-dim, #bdb3a2);
+}
+
+.sh-card-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 11px;
+}
+
+.sh-card-src {
+  padding: 4px 10px;
+  border: 1px solid rgba(200, 160, 99, 0.45);
+  border-radius: 2px;
+  background: rgba(200, 160, 99, 0.1);
+  color: var(--gold, #c8a063);
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition:
+    background 160ms ease-out,
+    border-color 160ms ease-out;
+}
+
+.sh-card-src:hover {
+  background: rgba(200, 160, 99, 0.2);
+  border-color: rgba(200, 160, 99, 0.7);
+}
+
+.sh-card-src:focus-visible {
+  outline: 2px solid rgba(200, 160, 99, 0.9);
+  outline-offset: 2px;
+}
+
+.sh-card-close {
+  margin-left: auto;
+  padding: 4px 9px;
+  border: 1px solid rgba(237, 230, 216, 0.2);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--paper-dim, #bdb3a2);
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition:
+    color 160ms ease-out,
+    border-color 160ms ease-out;
+}
+
+.sh-card-close:hover {
+  color: var(--paper, #ede6d8);
+  border-color: rgba(237, 230, 216, 0.42);
+}
+
+.sh-card-close:focus-visible {
+  outline: 2px solid rgba(200, 160, 99, 0.9);
+  outline-offset: 2px;
+}
+
+/* ---------- 移动端：点击区 ≥36px，窄卡改底部通栏 ---------- */
+
+@media (max-width: 480px) {
+  .sh {
+    --sh-hit: 38px;
+  }
+
+  .sh-label {
+    max-width: 132px;
+    font-size: 12px;
+  }
+
+  .sh-card {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: none;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+    border-left: 0;
+    border-top: 1px solid rgba(200, 160, 99, 0.36);
+    animation-name: sh-card-up;
+  }
+
+  @keyframes sh-card-up {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ---------- reduced motion：去掉视差、呼吸、滑动 ---------- */
+
+.sh[data-reduce='1'] .sh-spot {
+  animation: none;
+  opacity: 0.12;
+}
+
+.sh[data-reduce='1'] .sh-bg,
+.sh[data-reduce='1'] .sh-fg,
+.sh[data-reduce='1'] .sh-spot,
+.sh[data-reduce='1'] .sh-label {
+  transition: none;
+}
+
+.sh[data-reduce='1'] .sh-ripple {
+  display: none;
+}
+
+.sh[data-reduce='1'] .sh-card,
+.sh[data-reduce='1'] .sh-done {
+  animation: none;
+}
+
+/* 系统级 reduced-motion：即使使用方忘了传 reduceMotion 也不动 */
+@media (prefers-reduced-motion: reduce) {
+  .sh-spot {
+    animation: none;
+    opacity: 0.12;
+  }
+
+  .sh-bg,
+  .sh-fg,
+  .sh-spot,
+  .sh-label {
+    transition: none;
+  }
+
+  .sh-ripple {
+    display: none;
+  }
+
+  .sh-card,
+  .sh-done {
+    animation: none;
+  }
+}

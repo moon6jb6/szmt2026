@@ -1,0 +1,27 @@
+[
+  {
+    "prompt": "Interior of a massive 1937 Shanghai concrete warehouse basement at night, five floors of concrete slab overhead, thick square pillars on the left, sandbag stacks and wooden crates along the right wall, a single kerosene lamp glowing warm on a pillar, a rusted half-open iron door far back, dust in the air, deep shadows, wide establishing shot, no people, no text",
+    "seed": 19371026,
+    "out": "../../public/scene-bg-sdxl/warehouse-int.jpg"
+  },
+  {
+    "prompt": "Exterior west wall of a 1937 Shanghai concrete warehouse at night, shell-damaged and bullet-pocked facade, a heavy rusted iron gate at the lower center, sandbags piled at its base, roof parapet and broken windows, cold moonlight from the left, distant searchlight haze, wide shot, no people, no text",
+    "seed": 19371027,
+    "out": "../../public/scene-bg-sdxl/warehouse-ext.jpg"
+  },
+  {
+    "prompt": "Rooftop of a 1937 Shanghai warehouse at night, a torn red flag on a bamboo pole at the right third, low concrete parapet, sandbag emplacements, a far faint Shanghai skyline lit by fire glow, cold blue sky with drifting smoke, cinematic wide shot, no people, no text",
+    "seed": 19371028,
+    "out": "../../public/scene-bg-sdxl/rooftop.jpg"
+  },
+  {
+    "prompt": "Wet stone bridge over the Suzhou River in 1937 Shanghai at night, iron railing and worn stone slabs in the foreground, dark water with rain rings and lantern reflections, a huge concrete warehouse silhouette across the river on the right, fog and cold mist, wide shot, no people, no text",
+    "seed": 19371029,
+    "out": "../../public/scene-bg-sdxl/bridge.jpg"
+  },
+  {
+    "prompt": "Interior of a quiet Chinese county government office room in 1947 winter, a wooden table on the right with a chipped inkstone, an ink brush and a stack of rough rice paper, a cloth-wrapped ledger, a charcoal brazier glowing dim on the left, wooden lattice window with snow outside, empty chair, warm lamp light against cold blue shadows, wide shot, no people, no text",
+    "seed": 19471200,
+    "out": "../../public/scene-bg-sdxl/office-1947.jpg"
+  }
+]

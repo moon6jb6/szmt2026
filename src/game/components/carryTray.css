@@ -1,0 +1,1056 @@
+/* ==========================================================================
+   CarryTray —— 尾声「把东西交进匣子」
+   1947 年冬夜的一张桌子 + 一只旧木匣。全部用 CSS 形状/纹理/阴影画，不用图片。
+   色板取 styles.css 的 CSS 变量：墨 #16130f / 纸 #ede6d8 / 红 #a32b2b / 金 #c8a063。
+   所有类名以 carry- 前缀，独立于 styles.css，可单独引入。
+   ========================================================================== */
+
+.carry-tray {
+  --carry-w: 110px;
+  --carry-obj-h: 82px;
+  --carry-wood-1: #2a1e15;
+  --carry-wood-2: #1d150f;
+  --carry-wood-3: #3a2919;
+  position: relative;
+  display: block;
+  margin: 30px 0 6px;
+  padding: 20px 16px 14px;
+  border: 1px solid rgba(200, 160, 99, 0.18);
+  border-radius: 3px;
+  color: var(--paper, #ede6d8);
+  font-family: var(--sans, 'Source Han Sans SC', system-ui, sans-serif);
+  background:
+    radial-gradient(78% 60% at 50% -4%, rgba(214, 172, 108, 0.2), transparent 62%),
+    radial-gradient(66% 62% at 50% 112%, rgba(0, 0, 0, 0.52), transparent 68%),
+    linear-gradient(180deg, #3b2a1b 0%, #2c2015 42%, #1e160f 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(237, 230, 216, 0.09),
+    inset 0 -26px 44px rgba(0, 0, 0, 0.4),
+    0 16px 36px rgba(0, 0, 0, 0.42);
+  isolation: isolate;
+  /* 不裁剪：拖拽时物件要能拖出桌沿；完整 label 浮层隐藏时 display:none，不撑宽页面 */
+  overflow: visible;
+}
+
+/* 木纹：横向细纹 + 竖向拼板缝 */
+.carry-tray::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(179deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 9px),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 74px);
+  opacity: 0.62;
+  z-index: 0;
+}
+
+.carry-tray > * {
+  position: relative;
+  z-index: 1;
+}
+
+.carry-tray p {
+  margin: 0;
+}
+
+.carry-tray button {
+  font: inherit;
+  color: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ---------- 抬头小字 ---------- */
+
+.carry-head {
+  margin: 0 0 14px;
+}
+
+.carry-eyebrow {
+  font-size: 11.5px;
+  letter-spacing: 0.22em;
+  color: var(--gold, #c8a063);
+  opacity: 0.88;
+}
+
+.carry-lede {
+  margin-top: 6px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  letter-spacing: 0.02em;
+  color: var(--paper-dim, #bdb3a2);
+  max-width: 46em;
+}
+
+.carry-lede-2 {
+  opacity: 0.78;
+}
+
+/* ---------- 匣子（目标区） ---------- */
+
+/* 匣子 + 进度环的外壳：自身不建层叠上下文，环才能压到拖拽中的物件之上 */
+.carry-bin-slot {
+  position: relative;
+  width: min(300px, 84%);
+  margin: 0 auto 24px;
+  z-index: auto;
+}
+
+.carry-bin {
+  position: relative;
+  /* 平时匣子在物件后面：拖过来的物件挡住匣子口，看起来是"举在匣子上方" */
+  z-index: 0;
+  width: 100%;
+  padding-top: 24px;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.55));
+  transition: filter 320ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+/* 落定：匣子抬到物件之上，正在缩小的东西被箱子盖住 */
+.carry-bin[data-lit='true'] {
+  z-index: 14;
+}
+
+/* 掀开的盖：直接压在箱体上沿，两枚铜铰链 */
+.carry-bin-lid {
+  position: absolute;
+  left: 1px;
+  right: 3px;
+  top: 0;
+  height: 25px;
+  border-radius: 3px 3px 1px 1px;
+  background: linear-gradient(180deg, #58412b 0%, #3f2d1d 62%, #2a1d13 100%);
+  border: 1px solid rgba(200, 160, 99, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(237, 230, 216, 0.16),
+    inset 0 -6px 8px rgba(0, 0, 0, 0.35),
+    0 3px 6px rgba(0, 0, 0, 0.45);
+  transform: rotate(-2.2deg);
+  transform-origin: 8% 100%;
+}
+
+.carry-bin-lid::before,
+.carry-bin-lid::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  width: 16px;
+  height: 7px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #a6863f, #6f5527);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 244, 214, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.carry-bin-lid::before {
+  left: 26px;
+}
+
+.carry-bin-lid::after {
+  right: 26px;
+}
+
+.carry-bin-body {
+  position: relative;
+  height: 94px;
+  border-radius: 2px 2px 5px 5px;
+  background:
+    repeating-linear-gradient(178deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 7px),
+    linear-gradient(180deg, #4e3722 0%, #3a2919 32%, #2a1d13 100%);
+  border: 1px solid rgba(200, 160, 99, 0.3);
+  border-top-color: rgba(200, 160, 99, 0.44);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.35),
+    inset 0 -16px 22px rgba(0, 0, 0, 0.36),
+    inset 0 10px 18px rgba(0, 0, 0, 0.42);
+  transition: border-color 280ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+/* 开口：一条深进去的缝，缝底压着旧墨迹 */
+.carry-bin-mouth {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 8px;
+  height: 27px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #060504 0%, #0d0a08 62%, #17110c 100%);
+  box-shadow:
+    inset 0 9px 12px rgba(0, 0, 0, 0.95),
+    inset 0 -2px 0 rgba(200, 160, 99, 0.14),
+    0 1px 0 rgba(200, 160, 99, 0.16);
+}
+
+.carry-bin-ink {
+  position: absolute;
+  left: 8px;
+  right: 12px;
+  bottom: -7px;
+  height: 18px;
+  border-radius: 46% 54% 38% 62% / 62% 46% 54% 38%;
+  background:
+    radial-gradient(60% 70% at 32% 42%, rgba(7, 6, 5, 0.95), rgba(7, 6, 5, 0) 72%),
+    radial-gradient(70% 80% at 72% 52%, rgba(7, 6, 5, 0.9), rgba(7, 6, 5, 0) 70%);
+  filter: blur(1.2px);
+  opacity: 0.9;
+}
+
+/* 匣子里原本压着的一叠稿纸，从口沿露出一点纸边 */
+.carry-bin-mouth::after {
+  content: '';
+  position: absolute;
+  right: 17%;
+  bottom: -1px;
+  width: 27%;
+  height: 9px;
+  border-radius: 1px 1px 0 0;
+  background: linear-gradient(180deg, #e6ddc8, #c6b99d);
+  opacity: 0.26;
+  transform: rotate(-1.8deg);
+  box-shadow: inset 0 -3px 4px rgba(0, 0, 0, 0.45);
+}
+
+.carry-bin-cue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 6px;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-indent: 0.28em;
+  color: rgba(237, 230, 216, 0.34);
+  transition: color 220ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)), opacity 220ms;
+}
+
+.carry-bin[data-over='true'] .carry-bin-cue {
+  opacity: 0;
+}
+
+/* 匣子正面贴的一方小纸条 */
+.carry-bin-label {
+  position: absolute;
+  left: 16px;
+  bottom: 14px;
+  padding: 2px 7px;
+  font-family: var(--serif, 'Songti SC', serif);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: #3a2b1c;
+  background: linear-gradient(174deg, #ded3bb, #c4b697);
+  border-radius: 1px;
+  transform: rotate(-1.4deg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  opacity: 0.88;
+}
+
+.carry-bin-clasp {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  width: 26px;
+  height: 12px;
+  margin-left: -13px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #b9944f, #8a6a34 60%, #6d5227);
+  box-shadow: inset 0 1px 0 rgba(255, 240, 210, 0.32), 0 1px 3px rgba(0, 0, 0, 0.6);
+  transition: background 280ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)), box-shadow 280ms;
+}
+
+/* 拖到匣子上方：整只匣子提亮、贴纸边透出金光 */
+.carry-bin[data-over='true'] {
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 20px rgba(200, 160, 99, 0.22));
+}
+
+.carry-bin[data-over='true'] .carry-bin-body {
+  border-color: rgba(200, 160, 99, 0.62);
+}
+
+/* 落定：匣子亮一下 */
+.carry-bin[data-lit='true'] {
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 26px rgba(200, 160, 99, 0.45));
+}
+
+.carry-bin[data-lit='true'] .carry-bin-clasp {
+  background: linear-gradient(180deg, #f0d49c, #d9b878 58%, #b28c4a);
+  box-shadow: 0 0 12px rgba(200, 160, 99, 0.85), inset 0 1px 0 rgba(255, 250, 232, 0.6);
+}
+
+/* 墨晕：一圈墨迹从匣子口散开（描一圈暖金细边，深色木箱上也看得见） */
+.carry-bloom {
+  position: absolute;
+  left: 50%;
+  top: 34px;
+  width: 30px;
+  height: 30px;
+  margin-left: -15px;
+  border: 1px solid rgba(200, 160, 99, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(circle, rgba(6, 5, 4, 0.95) 0 28%, rgba(6, 5, 4, 0.6) 44%, rgba(6, 5, 4, 0) 70%),
+    radial-gradient(circle, rgba(200, 160, 99, 0.18) 0 42%, rgba(200, 160, 99, 0) 72%);
+  transform: scale(0.5);
+}
+
+.carry-bin[data-lit='true'] .carry-bloom {
+  animation: carry-bloom 640ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)) forwards;
+}
+
+@keyframes carry-bloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  26% {
+    opacity: 0.82;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(5.4);
+  }
+}
+
+/* 长按进度环（手印）：在物件之上、匣子之上，落定后才淡出 */
+.carry-ring {
+  --hold: 0;
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  z-index: 15;
+  width: 94px;
+  height: 94px;
+  margin-left: -47px;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 180ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)), transform 220ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+.carry-bin[data-holding='true'] + .carry-ring {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.carry-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from -90deg,
+    var(--gold, #c8a063) calc(var(--hold) * 360deg),
+    rgba(237, 230, 216, 0.14) 0
+  );
+  -webkit-mask: radial-gradient(circle, transparent 0 33px, #000 33px);
+  mask: radial-gradient(circle, transparent 0 33px, #000 33px);
+}
+
+.carry-ring-text {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  font-family: var(--serif, 'Songti SC', serif);
+  font-size: 10.5px;
+  line-height: 1.42;
+  letter-spacing: 0.12em;
+  color: var(--paper, #ede6d8);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* ---------- 桌面与物件 ---------- */
+
+.carry-desk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px 12px;
+  margin: 0;
+  padding: 2px 2px 6px;
+  list-style: none;
+}
+
+.carry-slot {
+  width: var(--carry-w);
+  margin-top: calc(var(--lift, 0) * 1px);
+}
+
+.carry-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  padding: 7px 6px 6px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  cursor: grab;
+  text-align: center;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 220ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)),
+    background 200ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)),
+    border-color 200ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)),
+    box-shadow 220ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)),
+    opacity 200ms linear;
+  will-change: transform;
+}
+
+.carry-item:focus {
+  outline: none;
+}
+
+.carry-item:focus-visible {
+  outline: 2px solid var(--gold, #c8a063);
+  outline-offset: 3px;
+}
+
+.carry-item:hover,
+.carry-item:focus-visible {
+  background: rgba(200, 160, 99, 0.07);
+  border-color: rgba(200, 160, 99, 0.34);
+}
+
+.carry-slot:hover .carry-mat {
+  transform: rotate(calc(var(--tilt, 0) * 1deg)) translateY(-3px);
+}
+
+.carry-item.is-selected,
+.carry-item[aria-pressed='true'] {
+  transform: translateY(-4px);
+  border-color: rgba(200, 160, 99, 0.82);
+  background: rgba(200, 160, 99, 0.1);
+  box-shadow:
+    0 0 0 1px rgba(200, 160, 99, 0.28),
+    0 12px 20px rgba(0, 0, 0, 0.42);
+}
+
+.carry-item.is-selected .carry-cap,
+.carry-item[aria-pressed='true'] .carry-cap {
+  color: var(--paper, #ede6d8);
+}
+
+/* 拖拽中：跟手、抬起、放大一点，投影更深 */
+.carry-item.is-dragging {
+  z-index: 9;
+  cursor: grabbing;
+  transition: none;
+  background: rgba(200, 160, 99, 0.04);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.carry-item.is-dragging .carry-obj {
+  filter: drop-shadow(18px 26px 16px rgba(0, 0, 0, 0.62));
+}
+
+.carry-item.is-over {
+  border-color: rgba(200, 160, 99, 0.9);
+  background: rgba(200, 160, 99, 0.12);
+}
+
+/* 拖到匣子上方时不要"选中框"：物件是举在匣子上方，不是被框住 */
+.carry-item.is-dragging.is-over {
+  border-color: transparent;
+  background: transparent;
+}
+
+/* 拖拽中收起桌面上的短标签，只留物件本身跟手 */
+.carry-item.is-dragging .carry-cap,
+.carry-item.is-sinking .carry-cap {
+  opacity: 0;
+}
+
+.carry-item.is-over .carry-obj {
+  filter: drop-shadow(0 0 12px rgba(200, 160, 99, 0.5)) drop-shadow(0 8px 14px rgba(0, 0, 0, 0.5));
+}
+
+/* 落定：缩进匣子（位移由 commit 时写进 --sink-x / --sink-y） */
+.carry-item.is-sinking {
+  transform: translate3d(var(--sink-x, 0px), var(--sink-y, 0px), 0) scale(0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 420ms cubic-bezier(0.45, 0, 0.65, 0.3),
+    opacity 420ms linear 40ms;
+}
+
+/* 降级下的落定：不飞、不淡出，只把物件压暗 */
+.carry-item[data-committed='true'] {
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+.carry-item.is-sinking[data-committed='true'] {
+  opacity: 0;
+}
+
+.carry-item:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.carry-num {
+  position: absolute;
+  top: 3px;
+  left: 4px;
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  font-family: var(--serif, 'Songti SC', serif);
+  font-size: 9.5px;
+  line-height: 1;
+  color: var(--gold, #c8a063);
+  background: rgba(8, 6, 5, 0.55);
+  border: 1px solid rgba(200, 160, 99, 0.34);
+  border-radius: 1px;
+  opacity: 0.82;
+}
+
+.carry-cap {
+  display: block;
+  width: 100%;
+  font-size: 11.5px;
+  line-height: 1.45;
+  letter-spacing: 0.03em;
+  color: var(--paper-dim, #bdb3a2);
+  transition: color 180ms linear;
+  overflow-wrap: anywhere;
+}
+
+/* 完整 label + hint：悬停/聚焦才出现（隐藏时 display:none，不参与布局、不撑宽页面） */
+.carry-full {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  z-index: 12;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  width: max-content;
+  max-width: 208px;
+  padding: 7px 10px;
+  border: 1px solid rgba(200, 160, 99, 0.45);
+  border-radius: 2px;
+  background: rgba(9, 7, 6, 0.97);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.6);
+  text-align: left;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 4px);
+}
+
+.carry-full strong {
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--paper, #ede6d8);
+}
+
+.carry-full em {
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--paper-dim, #bdb3a2);
+}
+
+.carry-item:hover .carry-full,
+.carry-item:focus-visible .carry-full {
+  display: flex;
+  animation: carry-tip-in 150ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)) both;
+}
+
+/* 拖拽时不弹完整 label：手在物件上，浮层会挡住匣子 */
+.carry-item.is-dragging .carry-full,
+.carry-item.is-sinking .carry-full {
+  display: none;
+}
+
+@keyframes carry-tip-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 5px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ---------- 六件实物 ---------- */
+
+.carry-mat {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: var(--carry-obj-h);
+  transform: rotate(calc(var(--tilt, 0) * 1deg));
+  transition: transform 240ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+}
+
+/* 桌面上的落影 */
+.carry-mat::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 68%;
+  height: 9px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.carry-obj {
+  position: relative;
+  display: block;
+  filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.5));
+}
+
+/* 名册：厚册，深褐封面 + 右侧纸口 + 烫金细线 */
+.carry-obj--roster {
+  width: 60px;
+  height: 74px;
+  border-radius: 1px 3px 3px 1px;
+  background:
+    linear-gradient(90deg, #170f0a 0 6px, #34251a 6px 9px, #241a12 9px 100%),
+    #241a12;
+  box-shadow:
+    inset 0 0 0 1px rgba(200, 160, 99, 0.2),
+    inset -8px 0 10px rgba(0, 0, 0, 0.5),
+    inset 0 -8px 10px rgba(0, 0, 0, 0.35);
+}
+
+.carry-obj--roster::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  width: 26px;
+  height: 1px;
+  background: rgba(200, 160, 99, 0.55);
+  box-shadow:
+    0 6px 0 rgba(200, 160, 99, 0.3),
+    0 12px 0 rgba(200, 160, 99, 0.22);
+}
+
+.carry-obj--roster::after {
+  content: '';
+  position: absolute;
+  right: 1px;
+  top: 5px;
+  bottom: 5px;
+  width: 6px;
+  border-radius: 0 2px 2px 0;
+  background: repeating-linear-gradient(180deg, #d9cdb4 0 1px, #b3a488 1px 2px);
+  opacity: 0.7;
+}
+
+/* 家书：米白信封，三角封口 + 一枚暗红邮票 */
+.carry-obj--letters {
+  width: 76px;
+  height: 52px;
+  border-radius: 1px;
+  background: linear-gradient(163deg, #f0e8d7 0%, #ddd2b9 62%, #c9bda2 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(93, 76, 52, 0.34),
+    inset 0 -1px 0 rgba(255, 252, 240, 0.5);
+  overflow: hidden;
+}
+
+.carry-obj--letters::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  clip-path: polygon(0 0, 50% 47%, 100% 0);
+  background: linear-gradient(178deg, #e7dcc5, #cfc2a6);
+  box-shadow: inset 0 -1px 0 rgba(93, 76, 52, 0.22);
+}
+
+.carry-obj--letters::after {
+  content: '';
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  width: 11px;
+  height: 13px;
+  background: rgba(163, 43, 43, 0.72);
+  border: 1px dashed rgba(237, 230, 216, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(60, 16, 16, 0.28);
+}
+
+/* 旗：红布，布纹 + 撕边 + 一块浅色补丁 */
+.carry-obj--flag {
+  width: 58px;
+  height: 72px;
+  background: linear-gradient(106deg, #a82d2d 0%, #8d2323 52%, #7a1c1c 100%);
+  clip-path: polygon(0 1%, 100% 0, 100% 85%, 78% 97%, 54% 88%, 30% 99%, 0 90%);
+  box-shadow: inset 0 0 22px rgba(52, 10, 10, 0.55);
+}
+
+.carry-obj--flag::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg, rgba(255, 230, 210, 0.06) 0 1px, transparent 1px 5px);
+  opacity: 0.9;
+}
+
+.carry-obj--flag::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  bottom: 18px;
+  width: 13px;
+  height: 11px;
+  background: rgba(237, 230, 216, 0.18);
+  border: 1px solid rgba(237, 230, 216, 0.22);
+  transform: rotate(-3deg);
+}
+
+/* 照片：灰白相纸，中间一张暗调小像，画着两个圈 */
+.carry-obj--photo {
+  width: 68px;
+  height: 58px;
+  border-radius: 1px;
+  background: linear-gradient(172deg, #efeade 0%, #d7d1c3 66%, #bcb6a8 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(70, 74, 70, 0.28),
+    0 1px 0 rgba(255, 255, 250, 0.4) inset;
+}
+
+.carry-obj--photo::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 5px;
+  bottom: 15px;
+  background:
+    radial-gradient(58% 70% at 30% 34%, rgba(237, 236, 226, 0.22), transparent 62%),
+    linear-gradient(158deg, #78837c 0%, #59635e 46%, #414a45 100%);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.45);
+}
+
+.carry-obj--photo::after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  right: 7px;
+  top: 8px;
+  bottom: 18px;
+  background:
+    radial-gradient(circle at 30% 44%, transparent 0 6.4px, rgba(237, 230, 216, 0.8) 6.4px 7.6px, transparent 7.6px),
+    radial-gradient(circle at 66% 58%, transparent 0 5.4px, rgba(237, 230, 216, 0.68) 5.4px 6.4px, transparent 6.4px);
+}
+
+/* 口述：墨绿磁带，两个轮 + 标签纸 */
+.carry-obj--testimony {
+  width: 78px;
+  height: 50px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #2f3f38 0%, #24332d 46%, #182420 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(200, 160, 99, 0.24),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.5);
+}
+
+.carry-obj--testimony::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 12px;
+  width: 56px;
+  height: 18px;
+  background:
+    radial-gradient(circle at 9px 9px, #0d1412 0 3.6px, #4d6357 3.6px 5.4px, #0d1412 5.4px 6.8px, transparent 6.8px),
+    radial-gradient(circle at 47px 9px, #0d1412 0 3.6px, #4d6357 3.6px 5.4px, #0d1412 5.4px 6.8px, transparent 6.8px);
+}
+
+.carry-obj--testimony::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  right: 9px;
+  bottom: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background: repeating-linear-gradient(90deg, #e2d8c4 0 2px, #c8bda5 2px 3px);
+  opacity: 0.82;
+  box-shadow: inset 0 0 0 1px rgba(22, 19, 15, 0.25);
+}
+
+/* 口信：一张撕过的纸条，几道手写线 */
+.carry-obj--message {
+  width: 54px;
+  height: 64px;
+  background: linear-gradient(176deg, #f1ebdd 0%, #ded5c1 68%, #c9bfa8 100%);
+  clip-path: polygon(1% 3%, 96% 0, 100% 95%, 6% 100%);
+  box-shadow: inset 0 0 0 1px rgba(93, 76, 52, 0.22);
+}
+
+.carry-obj--message::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 12px;
+  top: 15px;
+  height: 1px;
+  background: rgba(22, 19, 15, 0.42);
+  box-shadow:
+    0 8px 0 rgba(22, 19, 15, 0.3),
+    0 16px 0 rgba(22, 19, 15, 0.24),
+    0 24px 0 rgba(22, 19, 15, 0.16);
+}
+
+/* ---------- 三件「组合」：两件叠在一起 ---------- */
+
+.carry-mat--composite {
+  height: calc(var(--carry-obj-h) + 4px);
+}
+
+.carry-mat--composite > .carry-obj {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.carry-mat--composite > .carry-obj--under {
+  transform: translate(-62%, -52%) rotate(-9deg) scale(0.84);
+  opacity: 0.94;
+}
+
+.carry-mat--composite > .carry-obj--over {
+  transform: translate(-38%, -40%) rotate(6deg) scale(0.9);
+}
+
+.carry-item-tag {
+  position: absolute;
+  top: 4px;
+  right: 2px;
+  padding: 1px 4px;
+  font-size: 9px;
+  line-height: 1.5;
+  letter-spacing: 0.16em;
+  color: var(--gold, #c8a063);
+  background: rgba(8, 6, 5, 0.82);
+  border: 1px solid rgba(200, 160, 99, 0.45);
+  border-radius: 1px;
+}
+
+/* ---------- 底部动作条 ---------- */
+
+.carry-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(200, 160, 99, 0.14);
+}
+
+.carry-submit {
+  padding: 9px 22px;
+  font-size: 12.5px;
+  letter-spacing: 0.2em;
+  color: var(--paper, #ede6d8);
+  background: var(--red, #a32b2b);
+  border: 1px solid var(--red, #a32b2b);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 200ms var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)), border-color 200ms, opacity 200ms, transform 160ms;
+}
+
+.carry-submit:hover:not(:disabled) {
+  background: var(--red-deep, #6f1c1c);
+  border-color: var(--red-deep, #6f1c1c);
+}
+
+.carry-submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.carry-submit:focus-visible {
+  outline: 2px solid var(--gold, #c8a063);
+  outline-offset: 3px;
+}
+
+.carry-submit:disabled {
+  opacity: 0.42;
+  cursor: default;
+  background: rgba(163, 43, 43, 0.32);
+  border-color: rgba(200, 160, 99, 0.28);
+}
+
+.carry-actions-note {
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--paper-dim, #bdb3a2);
+  opacity: 0.85;
+}
+
+/* ---------- 屏幕阅读器专用 ---------- */
+
+.carry-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 降级：只留功能，不留动作 ---------- */
+
+.carry-tray[data-reduce='true'] .carry-item,
+.carry-tray[data-reduce='true'] .carry-mat,
+.carry-tray[data-reduce='true'] .carry-obj,
+.carry-tray[data-reduce='true'] .carry-bin,
+.carry-tray[data-reduce='true'] .carry-bin-body,
+.carry-tray[data-reduce='true'] .carry-ring,
+.carry-tray[data-reduce='true'] .carry-bin-cue,
+.carry-tray[data-reduce='true'] .carry-full {
+  transition: none;
+}
+
+.carry-tray[data-reduce='true'] .carry-slot:hover .carry-mat {
+  transform: rotate(calc(var(--tilt, 0) * 1deg));
+}
+
+.carry-tray[data-reduce='true'] .carry-bloom {
+  animation: none;
+  display: none;
+}
+
+.carry-tray[data-reduce='true'] .carry-item.is-sinking {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carry-tray .carry-bloom {
+    animation: none;
+    display: none;
+  }
+  .carry-tray .carry-item,
+  .carry-tray .carry-mat {
+    transition: none;
+  }
+}
+
+/* ---------- 窄屏：物件缩小、两行以上排布，不横向溢出 ---------- */
+
+@media (max-width: 760px) {
+  .carry-tray {
+    --carry-w: 100px;
+    --carry-obj-h: 74px;
+    margin-top: 24px;
+    padding: 16px 12px 12px;
+  }
+  .carry-desk {
+    gap: 6px 8px;
+  }
+  .carry-mat > .carry-obj {
+    scale: 0.88;
+  }
+  .carry-mat--composite > .carry-obj--under {
+    transform: translate(-60%, -51%) rotate(-8deg) scale(0.86);
+  }
+  .carry-mat--composite > .carry-obj--over {
+    transform: translate(-40%, -41%) rotate(6deg) scale(0.88);
+  }
+  .carry-cap {
+    font-size: 11px;
+  }
+  .carry-bin-slot {
+    width: min(262px, 88%);
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 430px) {
+  .carry-tray {
+    --carry-w: 82px;
+    --carry-obj-h: 66px;
+    padding: 14px 9px 10px;
+  }
+  .carry-desk {
+    gap: 4px 6px;
+  }
+  .carry-mat > .carry-obj {
+    scale: 0.78;
+  }
+  .carry-mat--composite > .carry-obj--under {
+    transform: translate(-56%, -50%) rotate(-8deg) scale(0.9);
+  }
+  .carry-mat--composite > .carry-obj--over {
+    transform: translate(-44%, -44%) rotate(6deg) scale(0.94);
+  }
+  .carry-num {
+    font-size: 9px;
+    width: 13px;
+    height: 13px;
+    left: 3px;
+    top: 3px;
+  }
+  .carry-cap {
+    font-size: 10.5px;
+    letter-spacing: 0;
+  }
+  .carry-full {
+    max-width: 168px;
+  }
+  .carry-bin-slot {
+    width: min(232px, 92%);
+    margin-bottom: 16px;
+  }
+  .carry-bin-body {
+    height: 82px;
+  }
+  .carry-ring {
+    width: 84px;
+    height: 84px;
+    margin-left: -42px;
+    top: 11px;
+  }
+  .carry-ring::before {
+    -webkit-mask: radial-gradient(circle, transparent 0 29px, #000 29px);
+    mask: radial-gradient(circle, transparent 0 29px, #000 29px);
+  }
+  .carry-bin-label {
+    left: 12px;
+    bottom: 12px;
+    font-size: 8.5px;
+  }
+  .carry-actions {
+    margin-top: 12px;
+    padding-top: 10px;
+  }
+  .carry-submit {
+    padding: 8px 18px;
+    font-size: 12px;
+  }
+}

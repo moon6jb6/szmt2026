@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta name="color-scheme" content="dark" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2316130f'/%3E%3C/svg%3E"
+    />
+    <title>SceneHotspots harness · 把名字留下来</title>
+    <style>
+      /* harness 自己的页面骨架。组件样式全部来自 src/game/components/sceneHotspots.css，
+         这里只补 :root 色板（与 src/styles.css 同一套）和两种模式的容器。 */
+      :root {
+        --ink: #16130f;
+        --ink-soft: #211b16;
+        --paper: #ede6d8;
+        --paper-dim: #bdb3a2;
+        --red: #a32b2b;
+        --red-deep: #6f1c1c;
+        --rust: #7a3e2e;
+        --gold: #c8a063;
+        --line: rgba(237, 230, 216, 0.16);
+        --serif: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'SimSun', 'STSong', serif;
+        --sans: 'Source Han Sans SC', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+        --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #0a0807;
+        color: var(--paper);
+        font-family: var(--sans);
+        overflow: hidden;
+      }
+
+      #root {
+        position: fixed;
+        inset: 0;
+      }
+
+      /* mode=bg：整屏一张 3D 渲染，按 query 做平移/缩放/调色 */
+      .h-bg {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        background: #0a0807;
+        /* 把颗粒层的混合限制在这一块里，别跟页面底色混 */
+        isolation: isolate;
+      }
+
+      .h-bg-stage {
+        position: absolute;
+        overflow: hidden;
+        transform-origin: 50% 50%;
+      }
+
+      /* 极细的胶片颗粒：给暗部一点结构，同时压住 JPG 在暗场里的色带 */
+      .h-grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-repeat: repeat;
+        background-size: 512px 512px;
+        mix-blend-mode: overlay;
+      }
+
+      /* 抬黑场：screen 一层极暗的噪声，纯黑处也有颗粒，暗部不会死成一块 */
+      .h-grain-screen {
+        mix-blend-mode: screen;
+      }
+
+      /* mode=hotspots：组件铺满容器（等价 App 里一块满屏的 .scene 区域） */
+      .h-sh {
+        position: absolute;
+        inset: 0;
+      }
+
+      .h-error {
+        position: absolute;
+        left: 16px;
+        bottom: 16px;
+        max-width: 60ch;
+        margin: 0;
+        padding: 10px 12px;
+        border: 1px solid rgba(163, 43, 43, 0.6);
+        background: rgba(22, 19, 15, 0.92);
+        color: #e8c9c9;
+        font-size: 12px;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        z-index: 9;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      只给 tools/render-scene-bg.mjs 与 tools/scene-hotspots-test.mjs 用的 harness 页面。
+      正式渲染路径（src/App.tsx）不引用这里，也不改 dist。
+
+      两种模式：
+        ?mode=bg&variant=warehouse-int&zoom=1&x=0&y=0&bright=1&contrast=1&sat=1
+            —— 用真实 Scene3D 渲染一张背景图（脚本截图 → public/scene-bg/*.jpg）
+        ?mode=hotspots&variant=rooftop[&reduce=1]
+            —— 挂真实 SceneHotspots + 真实热点数据，做交互验收
+    -->
+    <div id="root"></div>
+    <script type="module">
+      import { Component, createElement as h, useCallback, useEffect, useState } from 'react'
+      import { createRoot } from 'react-dom/client'
+      import Scene3D from '../src/game/components/Scene3D.tsx'
+      import SceneHotspots, { SCENE_HOTSPOTS } from '../src/game/components/SceneHotspots.tsx'
+      import { VERIFIED_SOURCES } from '../src/game/content/sources.ts'
+
+      const q = new URLSearchParams(location.search)
+      const num = (key, fallback) => {
+        const raw = q.get(key)
+        if (raw === null) return fallback
+        const value = Number(raw)
+        return Number.isFinite(value) ? value : fallback
+      }
+      const VARIANTS = ['warehouse-int', 'warehouse-ext', 'rooftop', 'bridge', 'office-1947']
+      const variant = VARIANTS.includes(q.get('variant')) ? q.get('variant') : 'warehouse-int'
+      const mode = q.get('mode') === 'hotspots' ? 'hotspots' : 'bg'
+      const reduce = q.get('reduce') === '1'
+
+      /**
+       * 程序化颗粒贴图（不引外部素材）：固定种子，256px 见方，铺成 512px 的格子。
+       * 两块：一块中间灰（overlay，给中间调加结构），一块极暗（screen，给黑场抬半口气）。
+       * 只在 mode=bg 的截图后处理里用；组件本身不依赖它。
+       */
+      function noiseTile(size, seed, amp, base) {
+        const canvas = document.createElement('canvas')
+        canvas.width = size
+        canvas.height = size
+        const g = canvas.getContext('2d')
+        const image = g.createImageData(size, size)
+        let state = seed >>> 0
+        const rand = () => {
+          state = (Math.imul(state, 1664525) + 1013904223) >>> 0
+          return state / 4294967296
+        }
+        for (let i = 0; i < image.data.length; i += 4) {
+          const value = Math.max(0, Math.min(255, base + Math.round((rand() * 2 - 1) * amp)))
+          image.data[i] = value
+          image.data[i + 1] = value
+          image.data[i + 2] = value
+          image.data[i + 3] = 255
+        }
+        g.putImageData(image, 0, 0)
+        return canvas.toDataURL('image/png')
+      }
+
+      const NOISE_OVERLAY = noiseTile(256, 1937, 15, 128)
+      const NOISE_SCREEN = noiseTile(256, 7717, 7, 11)
+
+      /** Playwright 钩子：声音、史料卡、退出次数、已核史料 id 清单 */
+      const hooks = {
+        mode,
+        variant,
+        reduce,
+        sounds: [],
+        sources: [],
+        exits: 0,
+        variants: VARIANTS,
+        hotspots: JSON.parse(JSON.stringify(SCENE_HOTSPOTS)),
+        verified: VERIFIED_SOURCES.map((card) => ({
+          id: card.id,
+          work: card.work,
+          year: card.year ?? null,
+          publisher: card.publisher ?? null,
+          claim: card.claim,
+        })),
+        remount: () => {},
+      }
+      window.__sceneHotspots = hooks
+
+      function ErrorBox({ text }) {
+        return h('p', { className: 'h-error' }, text)
+      }
+
+      /** mode=bg：Scene3D 铺在一块比视口略大的画布上，再按 query 平移/调色 */
+      function BgMode() {
+        const zoom = Math.min(1.4, Math.max(1, num('zoom', 1)))
+        const dx = num('x', 0)
+        const dy = num('y', 0)
+        const bright = num('bright', 1)
+        const contrast = num('contrast', 1)
+        const sat = num('sat', 1)
+        const grain = Math.min(1, Math.max(0, num('grain', 0.42)))
+        const lift = Math.min(1, Math.max(0, num('lift', 0.5)))
+
+        // 1920×1080 是截图目标尺寸；放大后仍是 16:9，相机取景不变，只是像素更密
+        const width = Math.round(1920 * zoom)
+        const height = Math.round(1080 * zoom)
+        const style = {
+          width: `${width}px`,
+          height: `${height}px`,
+          left: `calc(50% - ${width / 2}px + ${dx}px)`,
+          top: `calc(50% - ${height / 2}px + ${dy}px)`,
+          filter: `brightness(${bright}) contrast(${contrast}) saturate(${sat})`,
+        }
+
+        return h(
+          'div',
+          { className: 'h-bg', 'data-variant': variant },
+          h('div', { className: 'h-bg-stage', style }, h(Scene3D, { variant })),
+          grain > 0
+            ? h('div', {
+                className: 'h-grain',
+                style: { backgroundImage: `url(${NOISE_OVERLAY})`, opacity: grain },
+              })
+            : null,
+          lift > 0
+            ? h('div', {
+                className: 'h-grain h-grain-screen',
+                style: { backgroundImage: `url(${NOISE_SCREEN})`, opacity: lift },
+              })
+            : null,
+        )
+      }
+
+      /** mode=hotspots：真实组件 + 真实数据 */
+      function HotspotsMode() {
+        const [nonce, setNonce] = useState(0)
+        const hotspots = SCENE_HOTSPOTS[variant] ?? []
+
+        const onSound = useCallback((cue) => {
+          hooks.sounds.push(cue)
+        }, [])
+        const onOpenSource = useCallback((id) => {
+          hooks.sources.push(id)
+        }, [])
+        const onExit = useCallback(() => {
+          hooks.exits += 1
+        }, [])
+
+        useEffect(() => {
+          hooks.remount = () => {
+            hooks.sounds.length = 0
+            hooks.sources.length = 0
+            hooks.exits = 0
+            setNonce((value) => value + 1)
+          }
+          return () => {
+            hooks.remount = () => {}
+          }
+        }, [])
+
+        return h(
+          'div',
+          { className: 'h-sh' },
+          h(SceneHotspots, {
+            key: nonce,
+            variant,
+            hotspots,
+            onOpenSource,
+            onSound,
+            onExit,
+            reduceMotion: reduce,
+          }),
+        )
+      }
+
+      class Guard extends Component {
+        constructor(props) {
+          super(props)
+          this.state = { error: null }
+        }
+        static getDerivedStateFromError(error) {
+          return { error }
+        }
+        render() {
+          if (this.state.error) {
+            return h(ErrorBox, { text: `harness 渲染失败：${String(this.state.error?.message ?? this.state.error)}` })
+          }
+          return this.props.children
+        }
+      }
+
+      createRoot(document.getElementById('root')).render(
+        h(Guard, null, mode === 'hotspots' ? h(HotspotsMode, null) : h(BgMode, null)),
+      )
+    </script>
+  </body>
+</html>

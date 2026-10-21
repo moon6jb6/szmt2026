@@ -1,0 +1,1695 @@
+/* ==========================================================================
+   《把名字留下来》· 签名时刻交互样式
+   SpotLightFind（第一夜 · 灯下找名字） / FlagRaise（第三夜 · 升旗）
+   —— 只给这两个独立组件用；不改 styles.css，接入 App 时随组件 import 即可。
+   色板沿用项目：墨 #16130f / 纸 #ede6d8 / 红 #a32b2b / 金 #c8a063。
+   字体只走系统中文栈，变量来自项目 :root（--serif / --sans），这里做兜底。
+   ========================================================================== */
+
+.sig-spot,
+.sig-flag {
+  --sig-ink: var(--ink, #16130f);
+  --sig-paper: var(--paper, #ede6d8);
+  --sig-paper-dim: var(--paper-dim, #bdb3a2);
+  --sig-red: var(--red, #a32b2b);
+  --sig-red-deep: var(--red-deep, #6f1c1c);
+  --sig-gold: var(--gold, #c8a063);
+  --sig-serif: var(--serif, 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'SimSun', 'STSong', serif);
+  --sig-sans: var(--sans, 'Source Han Sans SC', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif);
+  --sig-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0;
+  color: var(--sig-paper);
+  font-family: var(--sig-sans);
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sig-spot *,
+.sig-flag * {
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   一、SpotLightFind —— 底楼，一盏煤油灯
+   ========================================================================== */
+
+.sig-spot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sig-spot__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #070605;
+  border: 1px solid rgba(237, 230, 216, 0.1);
+  box-shadow:
+    0 26px 60px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.6);
+  cursor: crosshair;
+  touch-action: none;
+  isolation: isolate;
+  user-select: none;
+}
+
+/* ---------- CSS 场景（全部是色块与渐变，没有图片） ---------- */
+
+.sig-spot__scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(70% 46% at 10% 8%, rgba(200, 160, 99, 0.09), transparent 62%),
+    radial-gradient(120% 90% at 50% 120%, rgba(122, 62, 46, 0.12), transparent 60%),
+    linear-gradient(180deg, #0e0b09 0%, #0d0a08 52%, #080605 100%);
+}
+
+/* 墙面：砖缝 + 受潮的斑 */
+.sig-spot__scene::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 24% 0;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(237, 230, 216, 0.028) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(90deg, rgba(237, 230, 216, 0.02) 0 1px, transparent 1px 96px),
+    radial-gradient(40% 30% at 62% 22%, rgba(122, 62, 46, 0.16), transparent 70%),
+    radial-gradient(30% 26% at 30% 60%, rgba(60, 46, 33, 0.5), transparent 70%);
+  opacity: 0.9;
+}
+
+/* 顶部梁影 */
+.sig-spot__scene::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 14%;
+  background: linear-gradient(180deg, #050403 12%, rgba(5, 4, 3, 0.55) 62%, transparent);
+  box-shadow: 0 1px 0 rgba(237, 230, 216, 0.05);
+}
+
+.sig-spot__beamShadow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 13%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(237, 230, 216, 0.07), transparent);
+}
+
+/* 方柱 */
+.sig-spot__column {
+  position: absolute;
+  left: 33%;
+  top: 0;
+  width: 7%;
+  height: 88%;
+  background: linear-gradient(90deg, #191410, #221b15 46%, #120e0b);
+  box-shadow:
+    inset 2px 0 0 rgba(237, 230, 216, 0.05),
+    12px 0 30px rgba(0, 0, 0, 0.55);
+}
+
+.sig-spot__column::before {
+  content: '';
+  position: absolute;
+  left: -22%;
+  right: -22%;
+  top: 0;
+  height: 4%;
+  background: linear-gradient(180deg, #241c15, #16110d);
+}
+
+/* 货架：立柱 + 三层板 + 罐子 + 木牌 */
+.sig-spot__shelf {
+  position: absolute;
+  left: 4%;
+  top: 27%;
+  width: 26%;
+  height: 58%;
+}
+
+.sig-spot__shelfPost {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 4px;
+  background: linear-gradient(90deg, #241c14, #3a2e20);
+  box-shadow: 1px 0 0 rgba(0, 0, 0, 0.5);
+}
+
+.sig-spot__shelfPost--b {
+  left: auto;
+  right: 0;
+}
+
+.sig-spot__plank {
+  position: absolute;
+  left: -2%;
+  right: -2%;
+  height: 7px;
+  background: linear-gradient(180deg, #3b2f21, #241b13 70%, #191209);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.55),
+    0 -1px 0 rgba(237, 230, 216, 0.06);
+}
+
+.sig-spot__plank--a {
+  top: 0;
+}
+
+.sig-spot__plank--b {
+  top: 39%;
+}
+
+.sig-spot__plank--c {
+  top: 79%;
+}
+
+.sig-spot__jar {
+  position: absolute;
+  width: 11%;
+  height: 15%;
+  background: linear-gradient(180deg, #262019, #14100c);
+  border-radius: 44% 44% 40% 40%;
+  box-shadow: inset 1px 0 0 rgba(237, 230, 216, 0.06);
+}
+
+.sig-spot__jar--a {
+  left: 12%;
+  top: 23%;
+}
+
+.sig-spot__jar--b {
+  left: 30%;
+  top: 27%;
+  height: 11%;
+  border-radius: 8% 8% 20% 20%;
+}
+
+.sig-spot__jar--c {
+  left: 62%;
+  top: 25%;
+  width: 16%;
+  height: 13%;
+  border-radius: 20%;
+}
+
+/* 第二层那块木牌：第一个名字就在这里 */
+.sig-spot__tag {
+  position: absolute;
+  left: 16%;
+  top: 41%;
+  width: 17%;
+  height: 8%;
+  background: linear-gradient(180deg, rgba(237, 230, 216, 0.11), rgba(237, 230, 216, 0.05));
+  border-radius: 1px;
+  transform: rotate(-3deg);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* 白铁皮文件箱 */
+.sig-spot__tinBox {
+  position: absolute;
+  left: 30.5%;
+  top: 63%;
+  width: 13%;
+  height: 15%;
+  background:
+    repeating-linear-gradient(90deg, rgba(237, 230, 216, 0.02) 0 1px, transparent 1px 7px),
+    linear-gradient(160deg, #15181a, #0e1112 58%, #080a0b);
+  border: 1px solid rgba(237, 230, 216, 0.06);
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(237, 230, 216, 0.05);
+}
+
+/* 箱盖缝 + 锁扣 */
+.sig-spot__tinBox::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 22%;
+  height: 1px;
+  background: rgba(237, 230, 216, 0.09);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.55);
+}
+
+.sig-spot__tinBox::after {
+  content: '';
+  position: absolute;
+  left: 42%;
+  top: 22%;
+  width: 16%;
+  height: 9%;
+  background: linear-gradient(180deg, rgba(200, 160, 99, 0.18), rgba(200, 160, 99, 0.04));
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* 木箱 */
+.sig-spot__crate {
+  position: absolute;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 1px, transparent 1px 12px),
+    linear-gradient(160deg, #352818, #261b10 70%, #160f08);
+  box-shadow:
+    inset 0 1px 0 rgba(237, 230, 216, 0.09),
+    inset 0 0 0 1px rgba(237, 230, 216, 0.05),
+    0 14px 30px rgba(0, 0, 0, 0.55);
+}
+
+.sig-spot__crate--a {
+  left: 45%;
+  top: 58%;
+  width: 12%;
+  height: 26%;
+}
+
+.sig-spot__crate--b {
+  left: 57.5%;
+  top: 68%;
+  width: 11%;
+  height: 18%;
+}
+
+.sig-spot__crateBoard {
+  position: absolute;
+  left: -1px;
+  right: -1px;
+  top: 34%;
+  height: 6px;
+  background: linear-gradient(180deg, #3d2f21, #241a11);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+.sig-spot__crateBrace {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 8%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(237, 230, 216, 0.14), transparent);
+}
+
+/* 墙钉 + 半张纸角 */
+.sig-spot__nails {
+  position: absolute;
+  left: 71%;
+  top: 25%;
+  width: 3%;
+  height: 9%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sig-spot__nails i {
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #6d6255, #2a241d 70%);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.7);
+}
+
+.sig-spot__paperScrap {
+  position: absolute;
+  left: 72.5%;
+  top: 31%;
+  width: 5.4%;
+  height: 8%;
+  background: linear-gradient(170deg, rgba(237, 230, 216, 0.16), rgba(237, 230, 216, 0.07));
+  transform: rotate(4deg);
+  clip-path: polygon(0 0, 100% 6%, 96% 100%, 4% 94%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* 麻袋 / 米包 */
+.sig-spot__sacks {
+  position: absolute;
+  left: 68%;
+  top: 70%;
+  width: 28%;
+  height: 26%;
+}
+
+.sig-spot__sack {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 46%;
+  height: 66%;
+  background: linear-gradient(165deg, #2b2419, #1a150e 70%);
+  border-radius: 52% 44% 10% 12%;
+  box-shadow:
+    inset 0 1px 0 rgba(237, 230, 216, 0.06),
+    0 10px 22px rgba(0, 0, 0, 0.45);
+}
+
+.sig-spot__sack--b {
+  left: 30%;
+  bottom: 4%;
+  width: 44%;
+  height: 58%;
+  border-radius: 46% 54% 12% 8%;
+}
+
+.sig-spot__sack--c {
+  left: 58%;
+  bottom: 0;
+  width: 42%;
+  height: 72%;
+  border-radius: 50% 40% 14% 10%;
+}
+
+.sig-spot__sack::after {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 22%;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(237, 230, 216, 0.18) 0 2px, transparent 2px 5px);
+}
+
+/* 西墙靠着一排枪 */
+.sig-spot__rifles {
+  position: absolute;
+  left: 84%;
+  top: 36%;
+  width: 14%;
+  height: 42%;
+}
+
+.sig-spot__rifles i {
+  position: absolute;
+  bottom: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, #1b1916, #2a2620 40%, #17140f);
+  transform-origin: bottom center;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.sig-spot__rifles i:nth-child(1) {
+  left: 6%;
+  transform: rotate(4deg);
+}
+
+.sig-spot__rifles i:nth-child(2) {
+  left: 32%;
+  transform: rotate(2.4deg);
+}
+
+.sig-spot__rifles i:nth-child(3) {
+  left: 58%;
+  transform: rotate(1.4deg);
+}
+
+.sig-spot__rifles i:nth-child(4) {
+  left: 82%;
+  transform: rotate(0.4deg);
+}
+
+/* 地面 */
+.sig-spot__floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 16%;
+  background:
+    linear-gradient(180deg, rgba(237, 230, 216, 0.05), transparent 26%),
+    linear-gradient(180deg, #16110c, #0b0806 72%);
+  box-shadow: inset 0 1px 0 rgba(237, 230, 216, 0.06);
+}
+
+.sig-spot__crack {
+  position: absolute;
+  left: 22%;
+  bottom: 5%;
+  width: 46%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(237, 230, 216, 0.14) 18%, rgba(237, 230, 216, 0.05) 60%, transparent);
+  transform: rotate(-0.4deg);
+}
+
+.sig-spot__crack::after {
+  content: '';
+  position: absolute;
+  left: 28%;
+  top: 1px;
+  width: 16%;
+  height: 1px;
+  background: rgba(237, 230, 216, 0.08);
+  transform: rotate(6deg);
+}
+
+/* 柱子上原来挂灯泡的地方，只剩一个灯座 */
+.sig-spot__socket {
+  position: absolute;
+  left: 34.9%;
+  top: 15%;
+  width: 10px;
+  height: 10%;
+  margin-left: -5px;
+}
+
+.sig-spot__socket::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 72%;
+  background: linear-gradient(180deg, transparent, rgba(237, 230, 216, 0.13));
+}
+
+.sig-spot__socket::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 22%;
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(180deg, #2c2419, #16110a);
+  box-shadow: 0 1px 0 rgba(237, 230, 216, 0.07);
+}
+
+/* 地上一个空弹壳 */
+.sig-spot__shell {
+  position: absolute;
+  left: 60.5%;
+  bottom: 6.5%;
+  width: 7px;
+  height: 3px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, #7a6844, #2b2318);
+  transform: rotate(-9deg);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+/* ---------- 灯：光斑 + 遮挡层 ---------- */
+
+.sig-spot__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    circle var(--lr, 140px) at var(--lx, 50%) var(--ly, 46%),
+    rgba(255, 220, 162, 0.26) 0%,
+    rgba(255, 190, 108, 0.13) 38%,
+    rgba(255, 168, 86, 0) 62%
+  );
+  mix-blend-mode: screen;
+  opacity: 0.92;
+}
+
+/* 遮挡层：mask 在光圈处开孔，整块仍然只画一张渐变 */
+.sig-spot__dark {
+  position: absolute;
+  inset: -2px;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(130% 120% at 50% 40%, #0a0806 0%, #050403 72%);
+  opacity: 0.95;
+  -webkit-mask-image: radial-gradient(
+    circle var(--lr, 140px) at var(--lx, 50%) var(--ly, 46%),
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 48%,
+    rgba(0, 0, 0, 0.58) 74%,
+    #000 96%
+  );
+  mask-image: radial-gradient(
+    circle var(--lr, 140px) at var(--lx, 50%) var(--ly, 46%),
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0) 48%,
+    rgba(0, 0, 0, 0.58) 74%,
+    #000 96%
+  );
+  transition: opacity 600ms var(--sig-ease);
+}
+
+.sig-spot__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 0.5px, transparent 0.6px);
+  background-size: 3px 3px;
+  mix-blend-mode: overlay;
+}
+
+/* 煤油灯本体：唯一常亮的东西，压在遮挡层之上 */
+.sig-spot__lamp {
+  position: absolute;
+  left: 7.5%;
+  top: 9%;
+  z-index: 4;
+  width: clamp(16px, 2.2%, 26px);
+  height: clamp(30px, 7%, 56px);
+  pointer-events: none;
+}
+
+.sig-spot__lamp::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 180px;
+  height: 180px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 208, 140, 0.3) 0%,
+    rgba(255, 176, 96, 0.13) 34%,
+    rgba(255, 160, 70, 0) 68%
+  );
+  animation: sig-lamp-breathe 6.4s ease-in-out infinite;
+}
+
+.sig-spot__lampBracket {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #2a2118, #4a3a25, #221a12);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.6);
+}
+
+.sig-spot__lampGlass {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: 3px;
+  height: 62%;
+  border-radius: 40% 40% 26% 26%;
+  background: linear-gradient(180deg, rgba(255, 214, 150, 0.34), rgba(255, 190, 110, 0.14) 60%, rgba(120, 80, 40, 0.1));
+  box-shadow: 0 0 14px rgba(255, 196, 120, 0.35);
+}
+
+.sig-spot__lampFlame {
+  position: absolute;
+  left: 50%;
+  bottom: 22%;
+  width: 44%;
+  height: 26%;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 48% 48% / 66% 66% 34% 34%;
+  background: radial-gradient(ellipse at 50% 70%, #fff2cf, #f2b969 52%, rgba(226, 140, 60, 0) 78%);
+  filter: blur(0.4px);
+  animation: sig-lamp-flicker 2.8s steps(4, end) infinite;
+}
+
+.sig-spot__lamp::after {
+  content: '';
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  bottom: 62%;
+  height: 1px;
+  background: rgba(237, 230, 216, 0.16);
+}
+
+@keyframes sig-lamp-breathe {
+  0%,
+  100% {
+    opacity: 0.82;
+  }
+  46% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.74;
+  }
+}
+
+@keyframes sig-lamp-flicker {
+  0% {
+    opacity: 0.92;
+    transform: translateX(-50%) scaleY(1);
+  }
+  25% {
+    opacity: 0.78;
+    transform: translateX(-50%) scaleY(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scaleY(1.06);
+  }
+  75% {
+    opacity: 0.86;
+    transform: translateX(-50%) scaleY(0.95);
+  }
+}
+
+/* ---------- 名册行 / 场景标记 ---------- */
+
+.sig-spot__hud {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 6;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  pointer-events: none;
+}
+
+.sig-spot__hud > span:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.sig-spot__stamp {
+  font-family: var(--sig-sans);
+  font-size: clamp(8px, 0.82vw, 11px);
+  letter-spacing: 0.14em;
+  color: rgba(237, 230, 216, 0.42);
+}
+
+.sig-spot__place {
+  font-family: var(--sig-sans);
+  font-size: clamp(8px, 0.78vw, 10px);
+  letter-spacing: 0.16em;
+  color: rgba(237, 230, 216, 0.24);
+}
+
+.sig-spot__tally {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-top: 2px;
+}
+
+.sig-spot__tallyLabel {
+  font-family: var(--sig-sans);
+  font-size: clamp(8px, 0.8vw, 10px);
+  letter-spacing: 0.18em;
+  color: rgba(237, 230, 216, 0.34);
+}
+
+.sig-spot__row {
+  display: block;
+  width: clamp(12px, 1.7vw, 22px);
+  height: 2px;
+  background: rgba(237, 230, 216, 0.14);
+  transform: skewX(-14deg);
+  transition: background 300ms linear, box-shadow 300ms linear;
+}
+
+.sig-spot__row.is-on {
+  background: var(--sig-gold);
+  box-shadow: 0 0 7px rgba(200, 160, 99, 0.55);
+}
+
+.sig-spot__tallyNum {
+  font-family: var(--sig-serif);
+  font-size: clamp(9px, 0.9vw, 12px);
+  letter-spacing: 0.08em;
+  color: rgba(237, 230, 216, 0.5);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 三个热点（真实 button） ---------- */
+
+.sig-spot__hot {
+  --near: 0;
+  position: absolute;
+  z-index: 5;
+  width: clamp(44px, 6.4%, 64px);
+  aspect-ratio: 1;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: crosshair;
+  transform: translate(-50%, -50%);
+  /* 只有光圈靠近才显形：--near 由 rAF 逐帧写入 */
+  opacity: calc(0.035 + 0.965 * var(--near, 0));
+}
+
+.sig-spot__hot:focus-visible {
+  outline: 1px dashed rgba(200, 160, 99, 0.8);
+  outline-offset: 2px;
+}
+
+.sig-spot__hotCore {
+  position: absolute;
+  inset: 16%;
+  border-radius: 50% 47% 52% 49%;
+  border: 1px solid rgba(200, 160, 99, 0.45);
+  background: radial-gradient(circle, rgba(255, 214, 150, 0.1), transparent 70%);
+  box-shadow: 0 0 14px rgba(200, 160, 99, 0.08);
+}
+
+.sig-spot__hot.is-lit {
+  opacity: 1;
+}
+
+/* 点亮后是铅笔圈，不是发光按钮 */
+.sig-spot__hot.is-lit .sig-spot__hotCore {
+  inset: 12%;
+  border: 1px dashed rgba(237, 230, 216, 0.5);
+  background: none;
+  box-shadow: none;
+  transform: rotate(-3deg);
+}
+
+.sig-spot__hot.is-lit .sig-spot__hotCore::after {
+  content: '';
+  position: absolute;
+  left: 46%;
+  top: 24%;
+  width: 9%;
+  height: 52%;
+  border-left: 1px solid rgba(237, 230, 216, 0.28);
+  transform: rotate(18deg);
+}
+
+/* 点亮后浮出的一行小字 */
+.sig-spot__slip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 6px);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: max-content;
+  max-width: min(240px, 52vw);
+  padding: 5px 9px 6px;
+  transform: translate(-50%, 4px);
+  border-left: 1px solid rgba(200, 160, 99, 0.5);
+  background: linear-gradient(100deg, rgba(237, 230, 216, 0.09), rgba(237, 230, 216, 0.02) 70%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 420ms var(--sig-ease), transform 420ms var(--sig-ease);
+}
+
+.sig-spot__hot[data-slip='down'] .sig-spot__slip {
+  bottom: auto;
+  top: calc(100% + 6px);
+  transform: translate(-50%, -4px);
+}
+
+.sig-spot__hot.is-lit .sig-spot__slip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.sig-spot__slipName {
+  font-family: var(--sig-serif);
+  font-size: clamp(13px, 1.35vw, 18px);
+  letter-spacing: 0.1em;
+  color: #f1eadd;
+  white-space: nowrap;
+  box-shadow: inset 0 -1px 0 rgba(200, 160, 99, 0.35);
+}
+
+.sig-spot__slipAge {
+  font-family: var(--sig-sans);
+  font-size: clamp(9px, 0.85vw, 11px);
+  letter-spacing: 0.14em;
+  color: rgba(200, 160, 99, 0.95);
+}
+
+.sig-spot__slipHome {
+  font-family: var(--sig-sans);
+  font-size: clamp(8px, 0.78vw, 10px);
+  letter-spacing: 0.1em;
+  color: rgba(237, 230, 216, 0.36);
+}
+
+.sig-spot__whisper {
+  position: absolute;
+  left: 12px;
+  bottom: 9px;
+  z-index: 6;
+  margin: 0;
+  font-family: var(--sig-sans);
+  font-size: clamp(9px, 0.86vw, 11px);
+  letter-spacing: 0.1em;
+  color: rgba(237, 230, 216, 0.32);
+  pointer-events: none;
+}
+
+/* ---------- 底部状态条 / 完成按钮 ---------- */
+
+.sig-spot__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  min-height: 38px;
+}
+
+.sig-spot__status {
+  margin: 0;
+  font-family: var(--sig-serif);
+  font-size: clamp(12px, 1.05vw, 14px);
+  letter-spacing: 0.06em;
+  color: rgba(237, 230, 216, 0.62);
+}
+
+.sig-spot__keys {
+  font-family: var(--sig-sans);
+  font-size: clamp(9px, 0.82vw, 11px);
+  letter-spacing: 0.12em;
+  color: rgba(237, 230, 216, 0.26);
+  white-space: nowrap;
+}
+
+.sig-spot__finish {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 9px 18px 10px;
+  border: 1px solid rgba(200, 160, 99, 0.45);
+  border-radius: 1px;
+  background: rgba(237, 230, 216, 0.04);
+  color: #f1eadd;
+  font-family: var(--sig-serif);
+  font-size: clamp(13px, 1.15vw, 15px);
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  animation: sig-spot-rise 620ms var(--sig-ease) both;
+  transition: background 240ms linear, border-color 240ms linear;
+}
+
+.sig-spot__finish::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 5px;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(200, 160, 99, 0.72) 0 3px, transparent 3px 5px);
+  opacity: 0.55;
+}
+
+.sig-spot__finish:hover {
+  background: rgba(200, 160, 99, 0.12);
+  border-color: rgba(200, 160, 99, 0.78);
+}
+
+@keyframes sig-spot-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 三个都找到后：整间屋子亮一层 */
+.sig-spot.is-done .sig-spot__dark {
+  opacity: 0.28;
+}
+
+.sig-spot.is-done .sig-spot__glow {
+  opacity: 1;
+}
+
+.sig-spot.is-done .sig-spot__scene {
+  filter: brightness(1.2) saturate(1.04);
+}
+
+/* ---------- 减少动效：光圈不跟随，热点直接给轮廓 ---------- */
+
+.sig-spot.is-reduce .sig-spot__dark {
+  opacity: 0.42;
+  -webkit-mask-image: none;
+  mask-image: none;
+  transition: none;
+}
+
+.sig-spot.is-reduce .sig-spot__glow {
+  opacity: 0.32;
+}
+
+.sig-spot.is-reduce .sig-spot__lamp::before,
+.sig-spot.is-reduce .sig-spot__lampFlame {
+  animation: none;
+}
+
+.sig-spot.is-reduce .sig-spot__hot {
+  opacity: 1;
+}
+
+.sig-spot.is-reduce .sig-spot__hotCore {
+  inset: 6%;
+  background: none;
+  border: 1px dashed rgba(200, 160, 99, 0.55);
+  box-shadow: 0 0 0 4px rgba(200, 160, 99, 0.05);
+}
+
+.sig-spot.is-reduce .sig-spot__hot::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(200, 160, 99, 0.7);
+}
+
+.sig-spot.is-reduce .sig-spot__slip,
+.sig-spot.is-reduce .sig-spot__row,
+.sig-spot.is-reduce .sig-spot__finish {
+  transition: none;
+  animation: none;
+}
+
+/* ==========================================================================
+   二、FlagRaise —— 楼顶，竹竿旗杆
+   ========================================================================== */
+
+.sig-flag {
+  position: relative;
+  width: 100%;
+  height: clamp(340px, 52vh, 520px);
+  overflow: hidden;
+  background: #08070a;
+  border: 1px solid rgba(237, 230, 216, 0.1);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.5);
+  isolation: isolate;
+  touch-action: none;
+  user-select: none;
+}
+
+/* ---------- 天 / 烟 / 探照灯 / 南岸 ---------- */
+
+.sig-flag__sky {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 26%;
+  background:
+    radial-gradient(80% 60% at 78% 88%, rgba(200, 160, 99, 0.14), transparent 66%),
+    radial-gradient(60% 44% at 20% 100%, rgba(122, 62, 46, 0.22), transparent 70%),
+    linear-gradient(180deg, #07070a 0%, #0d0b10 46%, #15111a 82%, #1b141c 100%);
+}
+
+.sig-flag__smoke {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: 8%;
+  height: 62%;
+  background:
+    radial-gradient(40% 50% at 24% 40%, rgba(120, 110, 104, 0.13), transparent 70%),
+    radial-gradient(36% 44% at 62% 62%, rgba(96, 88, 82, 0.12), transparent 72%),
+    radial-gradient(30% 36% at 44% 18%, rgba(150, 138, 128, 0.07), transparent 70%);
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}
+
+.sig-flag__searchlight {
+  position: absolute;
+  left: -16%;
+  top: -30%;
+  width: 74%;
+  height: 150%;
+  transform-origin: 8% 62%;
+  transform: rotate(17deg);
+  background: linear-gradient(94deg, rgba(214, 222, 226, 0.15), rgba(214, 222, 226, 0.04) 40%, transparent 58%);
+  mix-blend-mode: screen;
+  animation: sig-flag-sweep 16s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes sig-flag-sweep {
+  from {
+    transform: rotate(12deg);
+    opacity: 0.55;
+  }
+  to {
+    transform: rotate(24deg);
+    opacity: 1;
+  }
+}
+
+/* 南岸的灯：远处一排小亮点（放在女儿墙上方才看得见） */
+.sig-flag__bank {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 34%;
+  height: 5%;
+  background-image: radial-gradient(rgba(232, 196, 138, 0.55) 0.6px, transparent 0.8px);
+  background-size: 7px 5px;
+  opacity: 0.5;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 40%, #000 70%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 40%, #000 70%, transparent);
+}
+
+/* 楼顶 / 女儿墙 */
+
+.sig-flag__roof {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 27%;
+  background:
+    repeating-linear-gradient(0deg, rgba(237, 230, 216, 0.014) 0 1px, transparent 1px 26px),
+    radial-gradient(80% 60% at 30% 0%, rgba(237, 230, 216, 0.06), transparent 62%),
+    linear-gradient(180deg, #1a1512, #0d0a08 62%);
+  box-shadow: inset 0 1px 0 rgba(237, 230, 216, 0.08);
+}
+
+.sig-flag__roof::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 24%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(237, 230, 216, 0.09) 30%, rgba(237, 230, 216, 0.05) 70%, transparent);
+}
+
+.sig-flag__parapet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 25%;
+  height: 9%;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 46px),
+    linear-gradient(180deg, #241d18, #171210 74%);
+  box-shadow:
+    0 -1px 0 rgba(237, 230, 216, 0.1),
+    0 -6px 18px rgba(0, 0, 0, 0.55);
+}
+
+.sig-flag__parapet::after {
+  content: '';
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  bottom: -18%;
+  height: 46%;
+  background:
+    radial-gradient(14% 60% at 12% 40%, rgba(237, 230, 216, 0.06), transparent 70%),
+    radial-gradient(20% 70% at 40% 50%, rgba(237, 230, 216, 0.05), transparent 72%),
+    radial-gradient(16% 52% at 74% 38%, rgba(237, 230, 216, 0.05), transparent 70%);
+}
+
+/* 楼梯间：陈望生蹲在门后记东西的地方 */
+.sig-flag__stairwell {
+  position: absolute;
+  left: 4%;
+  bottom: 27%;
+  z-index: 1;
+  width: 19%;
+  height: 25%;
+  background:
+    linear-gradient(180deg, rgba(237, 230, 216, 0.06), transparent 4%),
+    linear-gradient(180deg, #171310, #0b0907 76%);
+  box-shadow:
+    inset 0 0 0 1px rgba(237, 230, 216, 0.03),
+    0 10px 26px rgba(0, 0, 0, 0.5);
+}
+
+.sig-flag__stairwell::before {
+  content: '';
+  position: absolute;
+  left: 16%;
+  top: 26%;
+  width: 15%;
+  height: 18%;
+  background: #050403;
+  box-shadow: inset 0 1px 0 rgba(237, 230, 216, 0.05);
+}
+
+.sig-flag__door {
+  position: absolute;
+  left: 56%;
+  bottom: 0;
+  width: 30%;
+  height: 46%;
+  background: linear-gradient(180deg, #0b0907, #050403);
+  box-shadow:
+    inset 0 1px 0 rgba(237, 230, 216, 0.07),
+    inset 1px 0 0 rgba(237, 230, 216, 0.03);
+}
+
+/* 女儿墙上的沙袋 */
+.sig-flag__sandbags {
+  position: absolute;
+  left: 29%;
+  right: 29%;
+  bottom: 30%;
+  z-index: 2;
+  height: 6%;
+  display: flex;
+  align-items: flex-end;
+}
+
+.sig-flag__sandbags i {
+  flex: 1;
+  height: 100%;
+  border-radius: 46% 46% 26% 26%;
+  background: linear-gradient(180deg, #3a3122, #201a10 76%);
+  box-shadow:
+    inset 0 1px 0 rgba(237, 230, 216, 0.09),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.sig-flag__sandbags i + i {
+  margin-left: -4px;
+}
+
+.sig-flag__sandbags i:nth-child(2) {
+  height: 84%;
+}
+
+.sig-flag__sandbags i:nth-child(3) {
+  height: 94%;
+}
+
+.sig-flag__sandbags i:nth-child(4) {
+  height: 78%;
+}
+
+/* 楼顶角落的弹药箱 */
+.sig-flag__ammo {
+  position: absolute;
+  left: 56%;
+  bottom: 2%;
+  z-index: 2;
+  width: 11%;
+  height: 9%;
+  background:
+    linear-gradient(180deg, rgba(237, 230, 216, 0.07), transparent 22%),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 6px),
+    linear-gradient(160deg, #2f2419, #1a130c);
+  box-shadow:
+    inset 0 0 0 1px rgba(237, 230, 216, 0.05),
+    0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.sig-flag__ammo::before {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 38%;
+  height: 1px;
+  background: rgba(237, 230, 216, 0.12);
+}
+
+/* ---------- 旗杆 ---------- */
+
+.sig-flag__pole {
+  position: absolute;
+  right: 21%;
+  bottom: 14%;
+  z-index: 3;
+  width: 7px;
+  height: 72%;
+  border-radius: 1px;
+  background: linear-gradient(90deg, #3a2e1c, #7d6741 42%, #4b3b25 78%, #241b10);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.55),
+    0 0 24px rgba(0, 0, 0, 0.5);
+}
+
+.sig-flag__poleCap {
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  top: -7px;
+  height: 8px;
+  border-radius: 44% 44% 20% 20%;
+  background: linear-gradient(180deg, #9a8154, #5b482b);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+}
+
+/* 杆脚：用绳子绑在楼顶的矮墩上，缠了几道 */
+.sig-flag__poleBase {
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 17px;
+  height: 13px;
+  margin-left: -8.5px;
+  border-radius: 1px;
+  background:
+    repeating-linear-gradient(56deg, rgba(237, 230, 216, 0.2) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #4c3b26, #241b10);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.35),
+    0 3px 8px rgba(0, 0, 0, 0.55);
+}
+
+.sig-flag__poleJoint {
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: 45%;
+  height: 7px;
+  background:
+    repeating-linear-gradient(58deg, rgba(237, 230, 216, 0.16) 0 1px, transparent 1px 4px),
+    linear-gradient(180deg, #2b2115, #59472c);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+.sig-flag__poleRope {
+  position: absolute;
+  right: 2px;
+  top: 4px;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(237, 230, 216, 0.3), rgba(237, 230, 216, 0.12));
+}
+
+/* 九成刻度：旗面上沿到 90% 的位置（travel 由 JS 写进 --travel） */
+.sig-flag__poleMark {
+  position: absolute;
+  right: 7px;
+  top: calc(var(--travel, 120px) * 0.1);
+  width: 26px;
+  height: 1px;
+}
+
+.sig-flag__poleMark i {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(200, 160, 99, 0.65) 0 3px, transparent 3px 5px);
+}
+
+.sig-flag__poleMark em {
+  position: absolute;
+  right: -4px;
+  top: -13px;
+  font-family: var(--sig-sans);
+  font-style: normal;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: rgba(200, 160, 99, 0.7);
+  white-space: nowrap;
+}
+
+.sig-flag__poleTop {
+  position: absolute;
+  right: -30px;
+  top: -4px;
+  font-family: var(--sig-sans);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: rgba(237, 230, 216, 0.3);
+  white-space: nowrap;
+}
+
+/* ---------- 旗面（跟着旗绳上下） ---------- */
+
+.sig-flag__wrap {
+  position: absolute;
+  right: calc(21% + 9px);
+  bottom: 14%;
+  z-index: 4;
+  width: var(--cloth-w, 150px);
+  height: var(--cloth-h, 92px);
+  transition: transform 420ms var(--sig-ease);
+  will-change: transform;
+}
+
+.sig-flag__wrap[data-dragging='1'] {
+  transition: none;
+}
+
+.sig-flag__cloth {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 16%),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0 1px, transparent 1px 3px),
+    linear-gradient(102deg, #8d2323 0%, #a32b2b 42%, #922525 74%, #7b1d1d 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.32),
+    inset 0 0 22px rgba(0, 0, 0, 0.28),
+    0 10px 26px rgba(0, 0, 0, 0.45);
+  cursor: grab;
+  touch-action: none;
+  transform-origin: right center;
+}
+
+.sig-flag__cloth:active {
+  cursor: grabbing;
+}
+
+/* 鼠标拖完不要留一圈焦点虚线：焦点环只在键盘输入时出现 */
+.sig-flag__cloth:focus {
+  outline: none;
+}
+
+.sig-flag[data-input='keyboard'] .sig-flag__cloth:focus-visible {
+  outline: 1px dashed rgba(200, 160, 99, 0.85);
+  outline-offset: 3px;
+}
+
+.sig-flag.is-holding .sig-flag__cloth {
+  box-shadow:
+    inset 0 0 0 1px rgba(200, 160, 99, 0.42),
+    inset 0 0 26px rgba(0, 0, 0, 0.24),
+    0 10px 26px rgba(0, 0, 0, 0.45);
+}
+
+.sig-flag__hem {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 7%;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.34));
+  box-shadow: inset 0 1px 0 rgba(237, 230, 216, 0.12);
+}
+
+.sig-flag__hem::after {
+  content: '';
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  top: 38%;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, rgba(237, 230, 216, 0.22) 0 2px, transparent 2px 6px);
+}
+
+.sig-flag__fold {
+  position: absolute;
+  top: 0;
+  bottom: 7%;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.26) 40%, rgba(0, 0, 0, 0.04));
+}
+
+.sig-flag__fold--a {
+  left: 34%;
+}
+
+.sig-flag__fold--b {
+  left: 67%;
+}
+
+/* 左下角那块补丁：旗角上有一小块补丁，针脚很密 */
+.sig-flag__patch {
+  position: absolute;
+  left: 8%;
+  bottom: 13%;
+  width: 27%;
+  height: 26%;
+  background:
+    repeating-linear-gradient(58deg, rgba(237, 230, 216, 0.12) 0 1px, transparent 1px 4px),
+    linear-gradient(170deg, rgba(164, 52, 44, 0.72), rgba(126, 34, 30, 0.72));
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+/* 套在旗绳上的布套 */
+.sig-flag__sleeve {
+  position: absolute;
+  right: -9px;
+  top: 0;
+  bottom: 0;
+  width: 9px;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 5px),
+    linear-gradient(90deg, #7b1d1d, #9a2727);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+}
+
+/* 到顶：旗面展开（transform-origin 在杆那一侧，像被风扯开），之后慢慢飘 */
+.sig-flag.is-raised .sig-flag__cloth {
+  animation:
+    sig-flag-unfurl 1150ms var(--sig-ease) both,
+    sig-flag-sway 4200ms 1280ms ease-in-out infinite;
+}
+
+@keyframes sig-flag-unfurl {
+  0% {
+    transform: scaleX(0.46) skewY(-2.4deg);
+    filter: brightness(1.12);
+  }
+  42% {
+    transform: scaleX(1.06) skewY(1.6deg);
+    filter: brightness(1.04);
+  }
+  68% {
+    transform: scaleX(0.98) skewY(-0.8deg);
+  }
+  86% {
+    transform: scaleX(1.01) skewY(0.4deg);
+  }
+  100% {
+    transform: scaleX(1) skewY(0deg);
+    filter: brightness(1);
+  }
+}
+
+@keyframes sig-flag-sway {
+  0%,
+  100% {
+    transform: scaleX(1) skewY(0deg);
+  }
+  34% {
+    transform: scaleX(0.994) skewY(-0.7deg);
+  }
+  68% {
+    transform: scaleX(1.004) skewY(0.55deg);
+  }
+}
+
+/* ---------- 文字层 ---------- */
+
+.sig-flag__caption {
+  position: absolute;
+  left: 16px;
+  top: 13px;
+  z-index: 6;
+  margin: 0;
+  max-width: 56%;
+  font-family: var(--sig-sans);
+  font-size: clamp(9px, 0.86vw, 11px);
+  letter-spacing: 0.14em;
+  color: rgba(237, 230, 216, 0.4);
+}
+
+.sig-flag__measure {
+  position: absolute;
+  left: 16px;
+  top: 33px;
+  z-index: 6;
+  margin: 0;
+  max-width: 56%;
+  font-family: var(--sig-sans);
+  font-size: clamp(9px, 0.84vw, 11px);
+  letter-spacing: 0.1em;
+  color: rgba(237, 230, 216, 0.26);
+}
+
+.sig-flag__pct {
+  margin-left: 8px;
+  font-family: var(--sig-serif);
+  font-size: clamp(10px, 0.95vw, 12px);
+  letter-spacing: 0.04em;
+  color: rgba(200, 160, 99, 0.78);
+  font-variant-numeric: tabular-nums;
+}
+
+.sig-flag__pct::after {
+  content: attr(data-pct) '%';
+}
+
+.sig-flag__hint {
+  position: absolute;
+  left: 16px;
+  bottom: 34px;
+  z-index: 6;
+  margin: 0;
+  max-width: 52%;
+  font-family: var(--sig-sans);
+  font-size: clamp(9px, 0.84vw, 11px);
+  letter-spacing: 0.1em;
+  line-height: 1.7;
+  color: rgba(237, 230, 216, 0.32);
+}
+
+.sig-flag__status {
+  position: absolute;
+  left: 16px;
+  bottom: 12px;
+  z-index: 6;
+  margin: 0;
+  max-width: 52%;
+  font-family: var(--sig-serif);
+  font-size: clamp(12px, 1.05vw, 14px);
+  letter-spacing: 0.06em;
+  color: rgba(237, 230, 216, 0.66);
+}
+
+.sig-flag.is-holding .sig-flag__status {
+  color: rgba(200, 160, 99, 0.92);
+}
+
+.sig-flag.is-raised .sig-flag__status {
+  color: rgba(237, 230, 216, 0.88);
+}
+
+.sig-flag__skip {
+  position: absolute;
+  right: 14px;
+  top: 11px;
+  z-index: 7;
+  padding: 2px 1px 3px;
+  border: 0;
+  border-bottom: 1px solid rgba(237, 230, 216, 0.22);
+  background: none;
+  color: rgba(237, 230, 216, 0.5);
+  font-family: var(--sig-sans);
+  font-size: clamp(10px, 0.86vw, 11px);
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color 200ms linear, border-color 200ms linear;
+}
+
+.sig-flag__skip:hover {
+  color: rgba(237, 230, 216, 0.85);
+  border-color: rgba(237, 230, 216, 0.5);
+}
+
+.sig-flag__skip:focus-visible {
+  outline: 1px dashed rgba(200, 160, 99, 0.8);
+  outline-offset: 3px;
+}
+
+/* ---------- 减少动效 ---------- */
+
+.sig-flag.is-reduce .sig-flag__searchlight {
+  animation: none;
+  opacity: 0.35;
+  transform: rotate(16deg);
+}
+
+.sig-flag.is-reduce .sig-flag__wrap {
+  transition: none;
+}
+
+.sig-flag.is-reduce.is-raised .sig-flag__cloth {
+  animation: none;
+}
+
+/* ==========================================================================
+   三、窄屏（390px 可用）
+   ========================================================================== */
+
+@media (max-width: 560px) {
+  .sig-spot {
+    gap: 8px;
+  }
+
+  .sig-spot__frame {
+    /* 16:9 在 390px 上只有 219px 高，给一点下限让热点和字放得下 */
+    min-height: 236px;
+  }
+
+  .sig-flag__ammo {
+    display: none;
+  }
+
+  .sig-spot__hud {
+    padding: 7px 9px;
+  }
+
+  .sig-spot__place {
+    display: none;
+  }
+
+  .sig-spot__whisper {
+    left: 9px;
+    bottom: 6px;
+  }
+
+  .sig-spot__status {
+    flex: 1 1 100%;
+  }
+
+  .sig-spot__bar {
+    gap: 6px 10px;
+  }
+
+  .sig-spot__finish {
+    margin-left: auto;
+  }
+
+  .sig-spot__slip {
+    max-width: 62vw;
+  }
+
+  .sig-flag {
+    height: clamp(320px, 54vh, 420px);
+  }
+
+  .sig-flag__pole {
+    right: 18%;
+  }
+
+  .sig-flag__wrap {
+    right: calc(18% + 9px);
+  }
+
+  .sig-flag__caption,
+  .sig-flag__measure {
+    left: 12px;
+    max-width: 62%;
+  }
+
+  .sig-flag__hint,
+  .sig-flag__status {
+    left: 12px;
+    max-width: 58%;
+  }
+
+  .sig-flag__skip {
+    right: 10px;
+    top: 9px;
+  }
+
+  .sig-flag__poleTop {
+    right: -26px;
+  }
+}

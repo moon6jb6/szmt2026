@@ -327,6 +327,11 @@ await save('night1')
 await page.reload({ waitUntil: 'load' })
 await wait(700)
 await page.getByRole('button', { name: '继续上次' }).click()
+  await page.waitForTimeout(1800)
+  if (await page.locator('.signature-overlay').isVisible().catch(() => false)) {
+    await page.keyboard.press('Escape')
+    await page.waitForTimeout(700)
+  }
 await wait(1800)
 const toggle3d = page.getByRole('button', { name: '3D 视角' })
 const toggleVisible = await toggle3d.isVisible().catch(() => false)
@@ -397,6 +402,11 @@ await page.evaluate(
 await page.reload({ waitUntil: 'load' })
 await wait(800)
 await page.getByRole('button', { name: '继续上次' }).click()
+  await page.waitForTimeout(1800)
+  if (await page.locator('.signature-overlay').isVisible().catch(() => false)) {
+    await page.keyboard.press('Escape')
+    await page.waitForTimeout(700)
+  }
 await wait(1900)
 await page.locator('.choice').nth(8).click()
 await wait(600)

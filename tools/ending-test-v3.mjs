@@ -43,14 +43,25 @@ for (let k = 0; k < 9; k += 1) {
   await page.getByRole('button', { name: '继续上次' }).click()
   await page.waitForTimeout(1600)
 
-  const choices = page.locator('.choice')
-  const count = await choices.count()
-  if (count < 9) {
-    results.push({ index: k + 1, title: '', error: `epilogue choices=${count}` })
+  // 尾声已改为 CarryTray：按 aria-label 里的结局名选中，再点「交出去」
+  const tray = page.locator('.carry-tray')
+  const items = page.locator('button[aria-label*="结局："]')
+  const count = await items.count()
+  if (!(await tray.isVisible().catch(() => false)) || count < 9) {
+    results.push({ index: k + 1, title: '', error: `tray=${await tray.isVisible().catch(() => false)} items=${count}` })
     continue
   }
-  await choices.nth(k).click()
-  await page.waitForTimeout(500)
+  const labels = await items.evaluateAll((els) => els.map((el) => el.getAttribute('aria-label') ?? ''))
+  const targetIndex = labels.findIndex((label) => label.includes(`结局：${EXPECTED[k]}`))
+  if (targetIndex < 0) {
+    results.push({ index: k + 1, title: '', error: `no item for ${EXPECTED[k]}` })
+    continue
+  }
+  await items.nth(targetIndex).click()
+  await page.waitForTimeout(400)
+  const commit = page.locator('.carry-tray button', { hasText: '交出去' }).first()
+  if (await commit.isVisible().catch(() => false)) await commit.click()
+  await page.waitForTimeout(600)
   const cont = page.locator('.continue')
   if (await cont.isVisible().catch(() => false)) {
     await cont.click({ timeout: 3000 }).catch(() => {})

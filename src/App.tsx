@@ -31,6 +31,9 @@ import {
   setMuted,
   unlockAudio,
 } from './game/audio'
+import { CarryTray } from './game/components/CarryTray'
+import { SpotlightFind } from './game/components/SpotlightFind'
+import { FlagRaise } from './game/components/FlagRaise'
 
 /** 真 3D 切片按需加载：不进主包，只有点「3D 视角」才拉取 */
 const Scene3D = lazy(() => import('./game/components/Scene3D'))
@@ -223,6 +226,48 @@ export default function App() {
   const scene3dSpec = useMemo(() => (screen === 'game' ? getScene3D(sceneId) : null), [screen, sceneId])
   const show3d = view3dScene === sceneId && Boolean(scene3dSpec)
 
+  /** 换页/换场后回到置顶：游戏内滚 .stage-content，菜单与读者页滚窗口。 */
+  const scrollCurrentToTop = (smooth: boolean) => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const behavior: ScrollBehavior = smooth && !reduce ? 'smooth' : 'auto'
+    const stage = document.querySelector<HTMLElement>('.stage-content')
+    if (stage) stage.scrollTo({ top: 0, behavior })
+    window.scrollTo({ top: 0, behavior })
+  }
+  useEffect(() => {
+    scrollCurrentToTop(false)
+  }, [screen, sceneId, personId, laterId])
+  useEffect(() => {
+    if (state.pendingOutcome) scrollCurrentToTop(true)
+  }, [state.pendingOutcome])
+
+  // 两个「签名时刻」：第一夜灯下找名字、第三夜升旗。每局一次，Esc 可跳过。
+  const [signatureDone, setSignatureDone] = useState<('spot' | 'flag')[]>([])
+  const [signature, setSignature] = useState<'spot' | 'flag' | null>(null)
+  const finishSignature = (kind: 'spot' | 'flag') => {
+    setSignatureDone((prev) => (prev.includes(kind) ? prev : [...prev, kind]))
+    setSignature(null)
+    if (audioOn) playSfx('paper')
+  }
+  useEffect(() => {
+    if (screen !== 'game') {
+      setSignature(null)
+      return
+    }
+    if (sceneId === 'night1' && !signatureDone.includes('spot')) setSignature('spot')
+    else if (sceneId === 'night3' && !signatureDone.includes('flag')) setSignature('flag')
+    else setSignature(null)
+  }, [screen, sceneId, signatureDone])
+  useEffect(() => {
+    if (!signature) return
+    const onEsc = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') finishSignature(signature)
+    }
+    window.addEventListener('keydown', onEsc)
+    return () => window.removeEventListener('keydown', onEsc)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [signature])
+
   /** 点击效果的种类：结局 > 记忆载体 > 场景天气兜底，保证每次点击的动效都不同 */
   const burstKindFor = (choice?: Choice): BurstKind => {
     if (!choice) return 'quiet'
@@ -401,11 +446,12 @@ export default function App() {
 
   // 键盘操作：1-9 选择，Enter/空格 继续。
   // 监听器只挂一次，用 ref 读最新状态，避免每次 render 重挂。
-  const keyState = useRef({ screen, scene, pending: state.pendingOutcome, onAdvance, onChoose })
-  keyState.current = { screen, scene, pending: state.pendingOutcome, onAdvance, onChoose }
+  const keyState = useRef({ screen, scene, pending: state.pendingOutcome, onAdvance, onChoose, signature })
+  keyState.current = { screen, scene, pending: state.pendingOutcome, onAdvance, onChoose, signature }
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      const { screen, scene, pending, onAdvance, onChoose } = keyState.current
+      const { screen, scene, pending, onAdvance, onChoose, signature } = keyState.current
+      if (signature) return
       if (screen !== 'game' || !scene) return
       if (pending) {
         if (event.key === 'Enter' || event.key === ' ') {
@@ -414,6 +460,8 @@ export default function App() {
         }
         return
       }
+      // 尾声的 1—9 / Enter 交给 CarryTray（需要选中 + 确认/按手印），这里让路
+      if (scene.id === 'epilogue') return
       const index = Number.parseInt(event.key, 10)
       if (!Number.isNaN(index) && index >= 1 && index <= (scene.choices?.length ?? 0)) {
         event.preventDefault()
@@ -571,8 +619,17 @@ export default function App() {
             </blockquote>
           )}
 
-          {!hasOutcome && scene.choices && scene.choices.length > 0 && (
-            <div className="choices">
+          {!hasOutcome && scene.choices && scene.choices.length > 0 &&
+            (scene.id === 'epilogue' ? (
+              <CarryTray
+                choices={scene.choices}
+                onChoose={(id) => onChoose(id)}
+                onSound={(id) => {
+                  if (audioOn) playSfx('paper')
+                }}
+              />
+            ) : (
+              <div className="choices">
               {scene.choices.map((choice, index) => {
                 const kind = burstKindFor(choice)
                 return (
@@ -592,8 +649,8 @@ export default function App() {
                   </button>
                 )
               })}
-            </div>
-          )}
+              </div>
+            ))}
 
           {hasOutcome && (
             <button
@@ -1144,6 +1201,48 @@ export default function App() {
       <ChoiceBurst ref={burst} />
       {screen === 'ending' && state.ending && !finaleDone && (
         <EndingFinale key={finaleKey} kind={state.ending} onDone={() => setFinaleDone(true)} />
+      )}
+      {signature && (
+        <div
+          className="signature-overlay"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 80,
+            display: 'grid',
+            placeItems: 'center',
+            padding: 'clamp(10px, 2vw, 28px)',
+            background: 'rgba(7, 5, 4, 0.96)',
+          }}
+        >
+          <button
+            type="button"
+            className="quiet-button"
+            onClick={() => finishSignature(signature)}
+            style={{ position: 'fixed', top: 16, right: 18, zIndex: 81, fontSize: 12 }}
+          >
+            跳过（Esc）
+          </button>
+          {signature === 'spot' ? (
+            <SpotlightFind
+              seed={4}
+              reduceMotion={window.matchMedia('(prefers-reduced-motion: reduce)').matches}
+              onSound={(cue) => {
+                if (audioOn) playSfx(cue)
+              }}
+              onComplete={() => finishSignature('spot')}
+            />
+          ) : (
+            <FlagRaise
+              reduceMotion={window.matchMedia('(prefers-reduced-motion: reduce)').matches}
+              onSound={(cue) => {
+                if (audioOn) playSfx(cue === 'rope' ? 'ink' : 'flag-flap')
+              }}
+              onComplete={() => finishSignature('flag')}
+              onSkip={() => finishSignature('flag')}
+            />
+          )}
+        </div>
       )}
       {renderSourcePanel()}
       <button

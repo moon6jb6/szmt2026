@@ -50,6 +50,16 @@ let struck = null
 const started = Date.now()
 
 for (let guard = 0; guard < 900; guard += 1) {
+  // 签名时刻覆盖层：走测试统一跳过
+  const sigOverlay = page.locator('.signature-overlay')
+  if (await sigOverlay.isVisible().catch(() => false)) {
+    const skip = page.getByRole('button', { name: '跳过（Esc）' })
+    if (await skip.isVisible().catch(() => false)) {
+      await skip.click()
+      await page.waitForTimeout(500)
+    }
+    continue
+  }
   if (await page.locator('.ending').isVisible().catch(() => false)) {
     endingTitle = await page.locator('.ending h1').innerText().catch(() => '')
     break
@@ -67,10 +77,26 @@ for (let guard = 0; guard < 900; guard += 1) {
       count = await page.locator('.choice').count()
       continueCount = await page.locator('.continue').count()
     }
-    if (count === 0 && continueCount === 0 && id) {
+    const hasTray = await page.locator('.carry-tray').isVisible().catch(() => false)
+    if (count === 0 && continueCount === 0 && !hasTray && id) {
       // 无选项、无继续 = 死路
       struck = { scene: id, reason: 'no choices / no continue' }
       break
+    }
+  }
+
+  // 尾声：CarryTray 桌上 9 件实物（选第一件 + 交出去）
+  const tray = page.locator('.carry-tray')
+  if (await tray.isVisible().catch(() => false)) {
+    const trayItem = page.locator('button[aria-label*="结局："]').first()
+    if (await trayItem.isVisible().catch(() => false)) {
+      await trayItem.click()
+      await page.waitForTimeout(350)
+      const commit = page.locator('.carry-tray button', { hasText: '交出去' }).first()
+      if (await commit.isVisible().catch(() => false)) await commit.click()
+      await page.waitForTimeout(600)
+      steps += 1
+      continue
     }
   }
 

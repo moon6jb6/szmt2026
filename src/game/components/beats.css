@@ -1,0 +1,477 @@
+/* ==========================================================================
+   SceneBeats · 长段落分三段 + 卡片氛围 + 人物剪影
+   --------------------------------------------------------------------------
+   这一份 CSS 自带 token 兜底（var(--ink, #16130f)），
+   接进 App 时直接继承 styles.css 的色板；单独在 tools/beats-harness.html 里跑也不缺色。
+
+   三个层次（全部 aria-hidden，纯氛围，不参与命中测试）：
+     .beats__atmos   回忆 → 暖褐 + 极淡纸纹；人物组 → 卡片底色加深 6%
+     .beats__figure  人物剪影，opacity 0.12—0.14（规范 0.10—0.16），blur 1.5px，
+                     正文在 z-index 1，剪影在 z-index 0，且 pointer-events: none
+     .beats__scrim   正文区左侧压深一点的半透明底，保证剪影出现时对比度不下降
+
+   动效预算：
+     旧组擦除 220ms（淡出 + 墨色横扫），新组每段错峰 60ms、上限 240ms；
+     prefers-reduced-motion 或 props.reduceMotion 时全部为 0（动画 none，直接替换）。
+   ========================================================================== */
+
+@property --beats-card-alpha {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0.78;
+}
+
+.beats {
+  --beats-ink: var(--ink, #16130f);
+  --beats-ink-soft: var(--ink-soft, #211b16);
+  --beats-paper: var(--paper, #ede6d8);
+  --beats-paper-dim: var(--paper-dim, #bdb3a2);
+  --beats-gold: var(--gold, #c8a063);
+  --beats-red: var(--red, #a32b2b);
+  --beats-line: var(--line, rgba(237, 230, 216, 0.16));
+  --beats-serif: var(--serif, 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'SimSun', 'STSong', serif);
+  --beats-sans: var(--sans, 'Source Han Sans SC', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif);
+  --beats-ease: var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1));
+
+  /* 卡片底色透明度：基础 0.78，人物组 +0.06 → 0.84（「半透明加深 6%」） */
+  --beats-card-alpha: 0.78;
+  /* 剪影目标透明度：由组件按 male / female 内联覆盖成 0.14 / 0.12 */
+  --fig-opacity: 0.14;
+  /* 移动端再压一档，让剪影退后一层 */
+  --fig-scale: 1;
+  --beats-fig-blur: 1.5px;
+
+  position: relative;
+  width: min(760px, 100%);
+  padding: clamp(20px, 4vw, 44px) clamp(20px, 4vw, 48px);
+  background: rgba(22, 19, 15, var(--beats-card-alpha));
+  border: 1px solid var(--beats-line);
+  border-radius: 2px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(14px) saturate(1.1);
+  color: var(--beats-paper);
+  font-family: var(--beats-sans);
+  font-size: 17px;
+  line-height: 1.85;
+  /* 不用 overflow: hidden —— 那会让里面的 position: sticky 失效（工具条要能贴底） */
+  transition:
+    --beats-card-alpha 520ms var(--beats-ease),
+    border-color 520ms var(--beats-ease);
+}
+
+/* 人物组：卡片底色再压深 6% */
+.beats[data-mood='figure-male'],
+.beats[data-mood='figure-female'] {
+  --beats-card-alpha: 0.84;
+}
+
+/* ---------- 嵌进已有卡片（App 的 .scene）时的扁平版 ----------
+   传 className="beats--flat"：去掉自己的底色/边框/投影/内边距，
+   只留分段、氛围、剪影与工具条 —— 不会在 .scene 里出现「卡中卡」。 */
+
+.beats--flat {
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+/* ---------- 氛围层 ---------- */
+
+.beats__atmos {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: transparent;
+  transition: opacity 560ms var(--beats-ease);
+}
+
+/* 回忆（或含回忆片段的人物组）：暖褐 + 极淡纸纹，像翻到一页旧纸 */
+.beats[data-memory='true'] .beats__atmos {
+  opacity: 1;
+  background:
+    radial-gradient(115% 88% at 16% 6%, rgba(122, 62, 46, 0.3), transparent 62%),
+    radial-gradient(92% 72% at 94% 98%, rgba(200, 160, 99, 0.1), transparent 70%),
+    linear-gradient(168deg, rgba(122, 62, 46, 0.2), rgba(48, 34, 24, 0.1) 58%, rgba(160, 120, 72, 0.08)),
+    repeating-linear-gradient(0deg, rgba(237, 230, 216, 0.032) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(92deg, rgba(237, 230, 216, 0.024) 0 1px, transparent 1px 5px);
+}
+
+/* 正文区半透明底：剪影出现时才亮起来，保证正文对比度不低于现状 */
+.beats__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 560ms var(--beats-ease);
+  background: linear-gradient(
+    94deg,
+    rgba(10, 8, 6, 0.44) 0%,
+    rgba(10, 8, 6, 0.28) 54%,
+    rgba(10, 8, 6, 0) 100%
+  );
+}
+
+.beats[data-has-person='true'] .beats__scrim {
+  opacity: 1;
+}
+
+/* ---------- 人物剪影 ---------- */
+
+.beats__figure {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  /* 按高度定尺：卡片高时封顶 300px，卡片矮时跟着缩，永远不越过卡片下沿 */
+  height: min(72%, 300px);
+  width: auto;
+  aspect-ratio: 200 / 260;
+  pointer-events: none;
+  color: var(--beats-paper);
+  opacity: calc(var(--fig-opacity) * var(--fig-scale));
+  filter: blur(var(--beats-fig-blur));
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 58%, transparent 97%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 58%, transparent 97%);
+  /* 0 → 目标透明度 800ms，同时向右下漂移 6px */
+  animation: beats-figure-rise 800ms var(--beats-ease) both;
+}
+
+.beats__figure .silhouette {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- 正文 ---------- */
+
+.beats__stage {
+  position: relative;
+  z-index: 1;
+  /* 擦除层的裁切盒：旧组比新组高时不会溢出到工具条上 */
+  overflow: hidden;
+}
+
+.beats__beat {
+  position: relative;
+}
+
+.beats__beat--current {
+  z-index: 1;
+}
+
+.beats__beat--leaving {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  pointer-events: none;
+  animation: beats-beat-erase 220ms var(--beats-ease) forwards;
+}
+
+.beats__para {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 18px;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  color: var(--beats-paper);
+}
+
+.beats__beat--current .beats__para {
+  opacity: 0;
+  animation: beats-para-in 520ms var(--beats-ease) both;
+}
+
+.beats__beat--current .beats__para:last-child {
+  margin-bottom: 0;
+}
+
+/* 只有第一组的第一段保留首字下沉，跟现在的正文观感对齐 */
+.beats[data-beat-index='0'] .beats__beat--current .beats__para:first-child::first-letter {
+  font-family: var(--beats-serif);
+  font-size: 2.1em;
+  float: left;
+  line-height: 1;
+  padding: 6px 10px 0 0;
+  color: var(--beats-gold);
+}
+
+/* 墨色横扫：一道墨带从上往下擦过去，扫完自己淡掉，不挡新组 */
+.beats__inkwipe {
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  top: 0;
+  z-index: 3;
+  height: 46%;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(22, 19, 15, 0) 0%,
+    rgba(22, 19, 15, 0.5) 44%,
+    rgba(22, 19, 15, 0.74) 76%,
+    rgba(22, 19, 15, 0) 100%
+  );
+  animation: beats-inkwipe 220ms var(--beats-ease) both;
+}
+
+/* ---------- 工具条：三枚墨点 + 继续读 ---------- */
+
+.beats__bar {
+  position: sticky;
+  bottom: 8px;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+  margin-top: 26px;
+  padding: 12px 2px 4px;
+  background: linear-gradient(
+    180deg,
+    rgba(22, 19, 15, 0) 0%,
+    rgba(22, 19, 15, 0.82) 38%,
+    rgba(22, 19, 15, 0.92) 100%
+  );
+}
+
+.beats__progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.beats__dot {
+  width: 6px;
+  height: 6px;
+  border: 1px solid rgba(237, 230, 216, 0.44);
+  border-radius: 50%;
+  background: transparent;
+  transition:
+    background 240ms var(--beats-ease),
+    border-color 240ms var(--beats-ease),
+    transform 240ms var(--beats-ease);
+}
+
+/* 当前组：实心墨点 */
+.beats__dot[data-current='true'] {
+  background: var(--beats-paper);
+  border-color: var(--beats-paper);
+  transform: scale(1.2);
+  box-shadow: 0 0 0 1px rgba(200, 160, 99, 0.4);
+}
+
+.beats__next {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 9px 20px;
+  font-family: var(--beats-sans);
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  color: var(--beats-ink);
+  background: var(--beats-paper);
+  border: 1px solid var(--beats-paper);
+  border-radius: 2px;
+  cursor: pointer;
+  transition:
+    background 200ms var(--beats-ease),
+    border-color 200ms var(--beats-ease),
+    color 200ms var(--beats-ease),
+    transform 120ms var(--beats-ease);
+}
+
+.beats__next:hover {
+  background: var(--beats-gold);
+  border-color: var(--beats-gold);
+}
+
+.beats__next:active {
+  transform: translateY(1px);
+}
+
+.beats__next:focus-visible {
+  outline: 2px solid var(--beats-gold);
+  outline-offset: 3px;
+}
+
+.beats__next-mark {
+  font-size: 11px;
+  opacity: 0.72;
+}
+
+/* ---------- 选项区（App 传进来的 footer） ---------- */
+
+.beats__footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 26px;
+  animation: beats-footer-in 420ms var(--beats-ease) both;
+}
+
+/* ---------- 读屏 ---------- */
+
+.beats__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 动效 ---------- */
+
+@keyframes beats-para-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes beats-beat-erase {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(2px);
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes beats-inkwipe {
+  from {
+    opacity: 0.55;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(217%);
+  }
+}
+
+@keyframes beats-figure-rise {
+  from {
+    opacity: 0;
+    transform: translate(-4px, -6px);
+  }
+  to {
+    opacity: calc(var(--fig-opacity) * var(--fig-scale));
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes beats-footer-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- 移动端：剪影挪到底部淡出，别挡字 ---------- */
+
+@media (max-width: 640px) {
+  .beats {
+    padding: 20px 18px;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  .beats__figure {
+    right: -6%;
+    height: min(56%, 240px);
+    --fig-scale: 0.82;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 58%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 24%, #000 58%, transparent 100%);
+  }
+
+  .beats[data-has-person='true'] .beats__scrim {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 8, 6, 0.34) 0%,
+      rgba(10, 8, 6, 0.5) 52%,
+      rgba(10, 8, 6, 0.62) 100%
+    );
+  }
+
+  .beats__bar {
+    bottom: 4px;
+    margin-top: 20px;
+  }
+
+  .beats__next {
+    padding: 9px 16px;
+    font-size: 14px;
+  }
+}
+
+/* ---------- 减少动效：一条不留，直接替换 ---------- */
+
+.beats[data-reduce-motion='true'] .beats__para,
+.beats[data-reduce-motion='true'] .beats__figure,
+.beats[data-reduce-motion='true'] .beats__footer,
+.beats[data-reduce-motion='true'] .beats__dot,
+.beats[data-reduce-motion='true'] .beats__next,
+.beats[data-reduce-motion='true'] .beats__atmos,
+.beats[data-reduce-motion='true'] .beats__scrim,
+.beats[data-reduce-motion='true'] {
+  animation: none !important;
+  transition: none !important;
+}
+
+.beats[data-reduce-motion='true'] .beats__para {
+  opacity: 1;
+  transform: none;
+}
+
+.beats[data-reduce-motion='true'] .beats__figure {
+  opacity: calc(var(--fig-opacity) * var(--fig-scale));
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beats .beats__para,
+  .beats .beats__figure,
+  .beats .beats__footer,
+  .beats .beats__dot,
+  .beats .beats__next,
+  .beats .beats__atmos,
+  .beats .beats__scrim,
+  .beats {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .beats .beats__para {
+    opacity: 1;
+    transform: none;
+  }
+
+  .beats .beats__figure {
+    opacity: calc(var(--fig-opacity) * var(--fig-scale));
+    transform: none;
+  }
+}
