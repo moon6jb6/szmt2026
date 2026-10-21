@@ -1,0 +1,82 @@
+[
+  {
+    "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, A wet cloth bundle on a warehouse doorstep at night, string tied twice, river lamplight beyond the gate",
+    "negative": "blurry, lowres, jpeg artifacts, watermark, text, logo, signature, cartoon, anime, 3d render, plastic skin, extra limbs, deformed, modern buildings, neon signs, cars, power lines, oversaturated, english letters, latin letters, chinese characters, calligraphy, legible text, printed words, numbers, faces, eyes, portrait, crowd, modern clothing, nylon, plastic, ballpoint pen, wristwatch, glasses, skyscraper, ferris wheel, motorcycle, airplane, fluorescent light, modern elements, emoji, flag emblem, star emblem, sun emblem, military insignia, rising sun flag, corpse, blood splatter, gore, violence, people, person, figures",
+    "seed": 920121072,
+    "steps": 4,
+    "guidance": 0,
+    "width": 768,
+    "height": 432,
+    "out": "D:/AI大模型/art-work/scene-056.jpg"
+  },
+  {
+    "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, A tin cup and a folded blanket beside a warehouse parapet, pale smoke sky above, bare bamboo pole",
+    "negative": "blurry, lowres, jpeg artifacts, watermark, text, logo, signature, cartoon, anime, 3d render, plastic skin, extra limbs, deformed, modern buildings, neon signs, cars, power lines, oversaturated, english letters, latin letters, chinese characters, calligraphy, legible text, printed words, numbers, faces, eyes, portrait, crowd, modern clothing, nylon, plastic, ballpoint pen, wristwatch, glasses, skyscraper, ferris wheel, motorcycle, airplane, fluorescent light, modern elements, emoji, flag emblem, star emblem, sun emblem, military insignia, rising sun flag, corpse, blood splatter, gore, violence, people, person, figures",
+    "seed": 1053849153,
+    "steps": 4,
+    "guidance": 0,
+    "width": 768,
+    "height": 432,
+    "out": "D:/AI大模型/art-work/scene-060.jpg"
+  },
+  {
+    "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, The middle of a wet bridge at night, abandoned gear and a single dropped cloth shoe on the road, distant lights",
+    "negative": "blurry, lowres, jpeg artifacts, watermark, text, logo, signature, cartoon, anime, 3d render, plastic skin, extra limbs, deformed, modern buildings, neon signs, cars, power lines, oversaturated, english letters, latin letters, chinese characters, calligraphy, legible text, printed words, numbers, faces, eyes, portrait, crowd, modern clothing, nylon, plastic, ballpoint pen, wristwatch, glasses, skyscraper, ferris wheel, motorcycle, airplane, fluorescent light, modern elements, emoji, flag emblem, star emblem, sun emblem, military insignia, rising sun flag, corpse, blood splatter, gore, violence, people, person, figures",
+    "seed": 1087404391,
+    "steps": 4,
+    "guidance": 0,
+    "width": 768,
+    "height": 432,
+    "out": "D:/AI大模型/art-work/scene-062.jpg"
+  },
+  {
+    "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, A written order on a crate under a lamp at nine at night, sandbags behind, deep shadow, cold concrete",
+    "negative": "blurry, lowres, jpeg artifacts, watermark, text, logo, signature, cartoon, anime, 3d render, plastic skin, extra limbs, deformed, modern buildings, neon signs, cars, power lines, oversaturated, english letters, latin letters, chinese characters, calligraphy, legible text, printed words, numbers, faces, eyes, portrait, crowd, modern clothing, nylon, plastic, ballpoint pen, wristwatch, glasses, skyscraper, ferris wheel, motorcycle, airplane, fluorescent light, modern elements, emoji, flag emblem, star emblem, sun emblem, military insignia, rising sun flag, corpse, blood splatter, gore, violence, people, person, figures",
+    "seed": 1154713548,
+    "steps": 4,
+    "guidance": 0,
+    "width": 768,
+    "height": 432,
+    "out": "D:/AI大模型/art-work/scene-070.jpg"
+  },
+  {
+    "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, Rough soap bars drying on wooden boards in a workshop, pale rectangles, dust, window light",
+    "negative": "blurry, lowres, jpeg artifacts, watermark, text, logo, signature, cartoon, anime, 3d render, plastic skin, extra limbs, deformed, modern buildings, neon signs, cars, power lines, oversaturated, english letters, latin letters, chinese characters, calligraphy, legible text, printed words, numbers, faces, eyes, portrait, crowd, modern clothing, nylon, plastic, ballpoint pen, wristwatch, glasses, skyscraper, ferris wheel, motorcycle, airplane, fluorescent light, modern elements, emoji, flag emblem, star emblem, sun emblem, military insignia, rising sun flag, corpse, blood splatter, gore, violence, people, person, figures",
+    "seed": 936111630,
+    "steps": 4,
+    "guidance": 0,
+    "width": 768,
+    "height": 432,
+    "out": "D:/AI大模型/art-work/scene-085.jpg"
+  },
+  {
+    "prompt": "cinematic film still, China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, A farmhouse main room in summer, a long table with copybooks and pencils, a hand cranked fan blurred, window light",
+    "negative": "blurry, lowres, jpeg artifacts, watermark, text, logo, signature, cartoon, anime, 3d render, plastic skin, extra limbs, deformed, modern buildings, neon signs, cars, power lines, oversaturated, english letters, latin letters, chinese characters, calligraphy, legible text, printed words, numbers, faces, eyes, portrait, crowd, modern clothing, nylon, plastic, ballpoint pen, wristwatch, glasses, skyscraper, ferris wheel, motorcycle, airplane, fluorescent light, modern elements, emoji, flag emblem, star emblem, sun emblem, military insignia, rising sun flag, corpse, blood splatter, gore, violence, people, person, figures",
+    "seed": 455445113,
+    "steps": 4,
+    "guidance": 0,
+    "width": 768,
+    "height": 432,
+    "out": "D:/AI大模型/art-work/scene-110.jpg"
+  },
+  {
+    "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no faces, no text, A folded newspaper on a warehouse doorstep, blurred headline block, rain, a spent shell casing beside it",
+    "negative": "blurry, lowres, jpeg artifacts, watermark, text, logo, signature, cartoon, anime, 3d render, plastic skin, extra limbs, deformed, modern buildings, neon signs, cars, power lines, oversaturated, english letters, latin letters, chinese characters, calligraphy, legible text, printed words, numbers, faces, eyes, portrait, crowd, modern clothing, nylon, plastic, ballpoint pen, wristwatch, glasses, skyscraper, ferris wheel, motorcycle, airplane, fluorescent light, modern elements, emoji, flag emblem, star emblem, sun emblem, military insignia, rising sun flag, corpse, blood splatter, gore, violence, people, person, figures",
+    "seed": 774661159,
+    "steps": 4,
+    "guidance": 0,
+    "width": 768,
+    "height": 432,
+    "out": "D:/AI大模型/art-work/scene-123.jpg"
+  },
+  {
+    "prompt": "cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty scene, no people, no text, A single folded letter pushed through a gap under a wooden door, fallen leaves on the doorstep, afternoon light, quiet",
+    "negative": "blurry, lowres, jpeg artifacts, watermark, text, logo, signature, cartoon, anime, 3d render, plastic skin, extra limbs, deformed, modern buildings, neon signs, cars, power lines, oversaturated, english letters, latin letters, chinese characters, calligraphy, legible text, printed words, numbers, faces, eyes, portrait, crowd, modern clothing, nylon, plastic, ballpoint pen, wristwatch, glasses, skyscraper, ferris wheel, motorcycle, airplane, fluorescent light, modern elements, emoji, flag emblem, star emblem, sun emblem, military insignia, rising sun flag, corpse, blood splatter, gore, violence, people, person, crowd",
+    "seed": 1144646924,
+    "steps": 4,
+    "guidance": 0,
+    "width": 768,
+    "height": 432,
+    "out": "D:/AI大模型/art-work/ending-002.jpg"
+  }
+]

@@ -17,6 +17,10 @@ type Particle = {
 
 const COUNT = 90
 
+/** 以 60fps 为基准的步长；重绘上限 30fps（见 tick 内注释） */
+const STEP_MS = 1000 / 30
+const BASE_STEP = 1000 / 60
+
 export function Particles({ weather, reduceMotion }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
 
@@ -36,8 +40,9 @@ export function Particles({ weather, reduceMotion }: Props) {
 
     let width = (canvas.width = canvas.offsetWidth)
     let height = (canvas.height = canvas.offsetHeight)
-    let frame = 0
     let raf = 0
+    let acc = 0
+    let last = performance.now()
 
     function spawn(w: number, h: number): Particle {
       return {
@@ -58,18 +63,36 @@ export function Particles({ weather, reduceMotion }: Props) {
       height = canvas.height = canvas.offsetHeight
     }
 
-    function tick() {
-      frame += 1
+    function tick(now: number) {
+      // 30fps 重绘：这层是整屏 canvas，每重绘一次都会让上层带 backdrop-filter 的
+      // 正文卡片重新取背景（实测：去掉这层，空闲帧率 64 → 231fps）。
+      // 雨/雪/灰/烟都是慢速氛围，位移按真实时间算，速度不变。
+      acc += Math.min(120, now - last)
+      last = now
+      if (acc < STEP_MS) {
+        raf = requestAnimationFrame(tick)
+        return
+      }
+      const step = Math.min(3, acc / BASE_STEP)
+      acc = 0
       ctx.clearRect(0, 0, width, height)
 
       for (const p of particles) {
-        p.drift += 0.01
-        p.x += p.vx + Math.sin(p.drift) * 0.3
-        p.y += p.vy
-
-        if (p.y > height + 4) {
-          p.y = -4
-          p.x = Math.random() * width
+        p.drift += 0.01 * step
+        p.x += (p.vx + Math.sin(p.drift) * 0.3) * step
+        if (weather === 'smoke') {
+          // 烟单独往上飘：旧写法用 (frame % 240) 当位移，所有粒子每 4 秒一起瞬移一次
+          p.y -= (0.35 + p.size * 0.12) * step
+          if (p.y < -30) {
+            p.y = height + 30
+            p.x = Math.random() * width
+          }
+        } else {
+          p.y += p.vy * step
+          if (p.y > height + 4) {
+            p.y = -4
+            p.x = Math.random() * width
+          }
         }
         if (p.x < -4) p.x = width + 4
         if (p.x > width + 4) p.x = -4
@@ -91,7 +114,7 @@ export function Particles({ weather, reduceMotion }: Props) {
           ctx.fill()
         } else {
           ctx.fillStyle = `rgba(120, 112, 100, ${p.alpha * 0.35})`
-          ctx.arc(p.x, p.y - (frame % 240) * 0.4, p.size * 2.4, 0, Math.PI * 2)
+          ctx.arc(p.x, p.y, p.size * 2.4, 0, Math.PI * 2)
           ctx.fill()
         }
       }
@@ -99,7 +122,7 @@ export function Particles({ weather, reduceMotion }: Props) {
     }
 
     window.addEventListener('resize', resize)
-    tick()
+    raf = requestAnimationFrame(tick)
     return () => {
       window.removeEventListener('resize', resize)
       cancelAnimationFrame(raf)

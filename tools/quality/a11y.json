@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T05:34:00.892Z",
+  "generatedAt": "2026-10-21T14:24:13.132Z",
   "url": "http://127.0.0.1:4173/",
   "semanticsMenu": {
     "label": "menu",
@@ -313,8 +313,8 @@
     "panelVisible": true,
     "afterOpenFocus": {
       "tag": "button",
-      "cls": "chip",
-      "name": "1937年10月26日深夜，524团…",
+      "cls": "text-button",
+      "name": "关闭",
       "role": "",
       "ariaPressed": null,
       "outline": "2px solid rgb(200, 160, 99)",
@@ -331,7 +331,7 @@
     "ariaHidden": null,
     "canvasDisplay": "block",
     "skipText": "点击跳过这段画面",
-    "focusableCount": 0
+    "focusableCount": 1
   },
   "semanticsEnding": {
     "label": "ending",
@@ -516,9 +516,9 @@
       "fontSize": 14,
       "large": false,
       "need": 4.5,
-      "p05": 5.42,
+      "p05": 5.48,
       "median": 5.76,
-      "min": 4.5,
+      "min": 4.82,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1054
@@ -530,9 +530,9 @@
       "fontSize": 14,
       "large": false,
       "need": 4.5,
-      "p05": 13.96,
+      "p05": 14.14,
       "median": 14.91,
-      "min": 10.1,
+      "min": 11.36,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1938
@@ -558,9 +558,9 @@
       "fontSize": 12,
       "large": false,
       "need": 4.5,
-      "p05": 8.78,
+      "p05": 8.95,
       "median": 9.34,
-      "min": 7.92,
+      "min": 8.3,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1425
@@ -656,8 +656,8 @@
       "fontSize": 12,
       "large": false,
       "need": 4.5,
-      "p05": 5.96,
-      "median": 6.35,
+      "p05": 5.78,
+      "median": 6.32,
       "min": 3.86,
       "belowNeedPct": 0.4,
       "pass": true,
@@ -684,9 +684,9 @@
       "fontSize": 12,
       "large": false,
       "need": 4.5,
-      "p05": 11.89,
+      "p05": 12.35,
       "median": 12.97,
-      "min": 10.8,
+      "min": 11.47,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1513
@@ -712,9 +712,9 @@
       "fontSize": 17,
       "large": false,
       "need": 4.5,
-      "p05": 15.36,
+      "p05": 15.33,
       "median": 15.47,
-      "min": 15.02,
+      "min": 14.74,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1782
@@ -755,7 +755,7 @@
       "large": false,
       "need": 4.5,
       "p05": 5.26,
-      "median": 5.7,
+      "median": 5.74,
       "min": 5.26,
       "belowNeedPct": 0,
       "pass": true,

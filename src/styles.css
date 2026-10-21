@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    《把名字留下来》视觉系统
    色板：旗帜红 / 铁锈 / 沙金 / 烟黑 / 纸白
    ========================================================================== */
@@ -349,7 +349,11 @@ button {
   background: rgba(237, 230, 216, 0.045);
   border: 1px solid var(--line);
   border-radius: 2px;
-  transition: background 220ms var(--ease), border-color 220ms var(--ease), transform 220ms var(--ease);
+  transition:
+    background 220ms var(--ease),
+    border-color 220ms var(--ease),
+    transform 220ms var(--ease),
+    filter 120ms var(--ease);
 }
 
 .choice:hover,
@@ -366,6 +370,7 @@ button {
   font-size: 15px;
   line-height: 1.9;
   min-width: 16px;
+  transition: color 200ms var(--ease), transform 200ms var(--ease);
 }
 
 .choice-text {
@@ -392,7 +397,12 @@ button {
 .quiet-button,
 .text-button {
   border-radius: 2px;
-  transition: background 220ms var(--ease), color 220ms var(--ease), border-color 220ms var(--ease);
+  transition:
+    background 220ms var(--ease),
+    color 220ms var(--ease),
+    border-color 220ms var(--ease),
+    transform 120ms var(--ease),
+    filter 120ms var(--ease);
 }
 
 .primary-button {
@@ -468,6 +478,12 @@ button {
   background: rgba(237, 230, 216, 0.05);
   border: 1px solid var(--line);
   border-radius: 999px;
+  transition:
+    color 200ms var(--ease),
+    border-color 200ms var(--ease),
+    background 200ms var(--ease),
+    transform 120ms var(--ease),
+    filter 120ms var(--ease);
 }
 
 .chip:hover {
@@ -580,6 +596,26 @@ button {
   padding: clamp(48px, 10vh, 120px) clamp(20px, 5vw, 40px);
   animation: rise 700ms var(--ease) both;
 }
+
+/* 菜单入场与正文段落用同一套错峰：每块 50ms 递进、上限 200ms，
+   整段仍在 700ms 内收束（截图与"一次性 700ms 淡入"的观感一致，不会拖长） */
+.menu > * {
+  animation: fadeUp 480ms var(--ease) both;
+}
+
+.menu > :nth-child(2) { animation-delay: 50ms; }
+.menu > :nth-child(3) { animation-delay: 100ms; }
+.menu > :nth-child(4) { animation-delay: 150ms; }
+.menu > :nth-child(n + 5) { animation-delay: 200ms; }
+
+/* 章节卡（场次标题组）也错峰入场；换场时仍由墨迹幕整体遮住，不叠第二套转场 */
+.scene-head > * {
+  animation: fadeUp 460ms var(--ease) both;
+}
+
+.scene-head > :nth-child(2) { animation-delay: 60ms; }
+.scene-head > :nth-child(3) { animation-delay: 120ms; }
+.scene-head > :nth-child(4) { animation-delay: 180ms; }
 
 .menu .title {
   font-size: clamp(40px, 8vw, 74px);
@@ -1092,10 +1128,20 @@ button {
   left: 50%;
   bottom: 26px;
   transform: translateX(-50%);
+  padding: 6px 14px;
+  background: none;
+  border: none;
+  font: inherit;
   font-size: 11px;
   letter-spacing: 0.28em;
   color: rgba(237, 230, 216, 0.42);
   animation: skipPulse 2.4s ease-in-out infinite;
+  transition: color 200ms var(--ease);
+}
+
+.finale-skip:hover,
+.finale-skip:focus-visible {
+  color: rgba(237, 230, 216, 0.8);
 }
 
 @keyframes skipPulse {
@@ -1107,7 +1153,9 @@ button {
   position: relative;
   overflow: hidden;
   --accent: rgba(200, 160, 99, 0.55);
-  animation: choiceIn 520ms var(--ease) both;
+  /* fill-mode 必须是 backwards 而不是 both：both 会让动画的终帧一直压着
+     transform，:hover / :active 的位移（每种载体不同的手感）全部失效。 */
+  animation: choiceIn 520ms var(--ease) backwards;
   animation-delay: calc(var(--i, 0) * 70ms);
 }
 
@@ -1168,7 +1216,22 @@ button {
   transform: translateY(-1px);
 }
 
-.choice:active { transform: scale(0.995); }
+.choice:active {
+  transform: scale(0.995);
+  filter: brightness(0.93);
+}
+
+/* 其余按钮的按下回执：位移 1px + 压暗，和选项同一套语言（悬停 200–220ms、按下 120ms） */
+.primary-button:active,
+.quiet-button:active,
+.text-button:active,
+.chip:active,
+.people-card:active,
+.view3d-toggle:active,
+.audio-toggle:active {
+  transform: translateY(1px);
+  filter: brightness(0.9);
+}
 
 .prose p:nth-child(3n + 2) { animation-name: fadeUpLeft; }
 
@@ -1195,8 +1258,10 @@ button {
 .gallery-card.composite.open { border-color: rgba(200, 160, 99, 0.6); }
 
 @media (prefers-reduced-motion: reduce) {
-  .choice-burst,
-  .finale-canvas { display: none; }
+  /* 点击粒子整层关掉（JS 侧也有短路，两层保险） */
+  .choice-burst { display: none; }
+  /* 终极画面**不能**藏画布：reduced-motion 下 JS 只画 t=1 那一帧，
+     藏掉画布会让这 1.2s 变成纯黑屏（实测 canvas display:none、整屏 rgb(11,9,7)）。 */
   .choice { animation: none; }
 }
 
@@ -1325,5 +1390,12 @@ button {
   }
   .stage-content {
     padding-bottom: 72px;
+  }
+}
+
+/* 700—1180px 的 3D 模式：正文卡片收窄一点，让 3D 画面露出来 */
+@media (min-width: 700px) and (max-width: 1180px) {
+  .stage-3d .scene {
+    width: min(620px, 92%);
   }
 }

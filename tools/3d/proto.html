@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3C/svg%3E" />
     <title>3D 切片验证页 · 把名字留下来</title>
     <style>
       :root {
@@ -111,14 +112,14 @@
     </div>
 
     <div class="bar" id="bar"></div>
-    <div class="hint">1–4 切换切片 · 鼠标移动看 yaw ±18° / pitch ±14° · 滚轮不做任何事</div>
+    <div class="hint">1–5 切换切片 · 鼠标移动看 yaw ±18° / pitch ±14° · 滚轮不做任何事</div>
 
     <script type="module">
       import { createElement } from 'react'
       import { createRoot } from 'react-dom/client'
       import Scene3D from '/src/game/components/Scene3D.tsx'
 
-      const VARIANTS = ['warehouse-int', 'rooftop', 'bridge', 'office-1947']
+      const VARIANTS = ['warehouse-int', 'warehouse-ext', 'rooftop', 'bridge', 'office-1947']
       const params = new URLSearchParams(location.search)
       const requested = params.get('variant')
       const start = VARIANTS.includes(requested) ? requested : VARIANTS[0]

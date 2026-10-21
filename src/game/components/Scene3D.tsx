@@ -27,6 +27,13 @@ const MAX_PITCH = 14 * DEG
 const DAMP = 0.08
 const MAX_DPR = 2
 
+/**
+ * 打开 three 的加载缓存：GLB（470 KB）与远景贴图都走 FileLoader，
+ * 第二次进入同一切片时直接从内存拿，不再发一次 304 往返。
+ * 缓存上限就是这几个文件，约 0.5 MB 常驻，可接受。
+ */
+THREE.Cache.enabled = true
+
 /** 与 styles.css :root 同一套色板（旗帜红 / 铁锈 / 沙金 / 烟黑 / 纸白） */
 const PALETTE = {
   ink: 0x16130f,
@@ -222,6 +229,63 @@ function makeTrash(): { track: Track; dispose: () => void } {
   }
   return { track, dispose }
 }
+
+/** 材质上的贴图槽：material.dispose() 不会释放贴图，得自己点名 */
+const TEXTURE_SLOTS = [
+  'map',
+  'normalMap',
+  'roughnessMap',
+  'metalnessMap',
+  'aoMap',
+  'emissiveMap',
+  'alphaMap',
+] as const
+
+function materialTextures(material: THREE.Material): THREE.Texture[] {
+  const std = material as THREE.MeshStandardMaterial
+  const found: THREE.Texture[] = []
+  for (const slot of TEXTURE_SLOTS) {
+    const texture = std[slot]
+    if (texture) found.push(texture)
+  }
+  return found
+}
+
+/** 把一个对象树的 geometry / material / 贴图挂号，交给 slice 的垃圾桶统一释放 */
+function trackObject(track: Track, root: THREE.Object3D): void {
+  root.traverse((child) => {
+    const mesh = child as THREE.Mesh
+    if (!mesh.isMesh) return
+    track(mesh.geometry)
+    const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+    for (const material of materials) {
+      for (const texture of materialTextures(material)) track(texture)
+      track(material)
+    }
+  })
+}
+
+/** 立刻释放一个没人要的对象树（加载回来时组件已卸载的情况） */
+function disposeObject(root: THREE.Object3D): void {
+  const geometries = new Set<THREE.BufferGeometry>()
+  const materials = new Set<THREE.Material>()
+  const textures = new Set<THREE.Texture>()
+  root.traverse((child) => {
+    const mesh = child as THREE.Mesh
+    if (!mesh.isMesh) return
+    if (mesh.geometry) geometries.add(mesh.geometry)
+    const list = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+    for (const material of list) {
+      if (!material) continue
+      materials.add(material)
+      for (const texture of materialTextures(material)) textures.add(texture)
+    }
+  })
+  for (const geometry of geometries) geometry.dispose()
+  for (const material of materials) material.dispose()
+  for (const texture of textures) texture.dispose()
+}
+
 
 // ---------------------------------------------------------------- 程序化贴图（canvas 画，不占 GPU 生图）
 
@@ -949,11 +1013,14 @@ function buildWarehouse(track: Track, backdrop: string | null): Slice {
 /**
  * 四行仓库西墙外观（Blender 4.2.3 无头导出的 GLB，见 tools/blender/build_warehouse.py）。
  * 模型缺失时只保留地面、灯光与尘，不报错。
+ *
+ * onGlb 只是把加载状态写到宿主 data-* 上（tools/test-3d.mjs 要断言「到底加载了没」），
+ * 不参与渲染，也不改变任何视觉。
  */
-function buildWarehouseExt(track: Track): Slice {
+function buildWarehouseExt(track: Track, onGlb?: (status: 'loading' | 'ready' | 'failed') => void): Slice {
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0x0b0907)
-  scene.fog = new THREE.FogExp2(0x16120e, 0.016)
+  scene.fog = new THREE.FogExp2(0x16120e, 0.010)
 
   const { camera, baseYaw, basePitch } = makeCamera([24, 18, 68], [0, 12, 0], 40)
 
@@ -995,35 +1062,49 @@ function buildWarehouseExt(track: Track): Slice {
 
   let alive = true
   const loader = new GLTFLoader()
+  onGlb?.('loading')
   loader.load(
     `${import.meta.env.BASE_URL}models/warehouse-ext.glb`,
     (gltf) => {
-      if (!alive) return
       const model = gltf.scene
+      if (!alive) {
+        // 加载期间已经切场景/卸载：这次结果没人要，必须自己释放，
+        // 否则每次「点了 3D 又立刻切走」都会漏一套 geometry/material/texture。
+        disposeObject(model)
+        return
+      }
       model.traverse((child) => {
         const mesh = child as THREE.Mesh
         if (mesh.isMesh) {
-          track(mesh.geometry)
-          const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
-          for (const material of materials) track(material as THREE.Material)
+          trackObject(track, mesh)
         }
       })
-      // 归一化：底边落地、水平居中、立面高按 25m 对齐（Blender 里就是 64×25m）
-      const box = new THREE.Box3().setFromObject(model)
+      // 注：GLB 是单节点 join 过的（11 primitive / 1 mesh），逐个 mesh 挂号即可；
+      // trackObject 会把 geometry / material / 内嵌贴图全部进垃圾桶。
+      // 资产是米制、Y-up、节点无变换（见 docs/report/2026-10-22-blender-asset.md：
+      // bbox X±32.17 / Y −0.09…27.62 / Z −9.00…1.53，1 unit = 1 m）。
+      // 所以按原尺寸落地即可；只有单位明显不是米时才归一化，
+      // 否则 27.7 m 的总高（含女儿墙+楼梯间）会被当成「立面 = 25 m」缩成 22.6 m。
       const size = new THREE.Vector3()
-      box.getSize(size)
-      model.scale.setScalar(25 / Math.max(size.y, 0.001))
+      new THREE.Box3().setFromObject(model).getSize(size)
+      if (size.y < 12 || size.y > 60) model.scale.setScalar(25 / Math.max(size.y, 0.001))
       const box2 = new THREE.Box3().setFromObject(model)
       const center = new THREE.Vector3()
       box2.getCenter(center)
       model.position.x -= center.x
       model.position.z -= center.z
+      // 落地：把底边贴到 y=0；再抬 2 mm 让墙脚底面与地面不共面。
+      // 实测（tools/3d/glb-probe.html）共面时也没有观察到 z-fighting，这 2 mm 只是防御，
+      // 64 m 立面上肉眼与 0 不可区分。
       model.position.y -= box2.min.y
+      model.position.y += 0.002
       scene.add(model)
+      onGlb?.('ready')
     },
     undefined,
     () => {
-      /* 静默：模型缺失时保留地面与灯光 */
+      /* 静默：模型缺失（404 / 断网 / 文件损坏）时保留地面与灯光，绝不抛错 */
+      onGlb?.('failed')
     },
   )
 
@@ -1729,13 +1810,13 @@ function buildOffice(track: Track): Slice {
 
 // ---------------------------------------------------------------- 组装
 
-function createSlice(variant: Scene3DVariant): Slice {
+function createSlice(variant: Scene3DVariant, onGlb?: (status: 'loading' | 'ready' | 'failed') => void): Slice {
   const { track, dispose } = makeTrash()
   const backdrop = SCENE_3D_BACKDROP[variant]
   let slice: Slice
   switch (variant) {
     case 'warehouse-ext':
-      slice = buildWarehouseExt(track)
+      slice = buildWarehouseExt(track, onGlb)
       break
     case 'rooftop':
       slice = buildRooftop(track, backdrop)
@@ -1787,10 +1868,22 @@ export default function Scene3D({ variant }: Props) {
     const host = hostRef.current
     if (!host) return
 
+    // 每次挂载都从干净的 data-* 开始：否则上一轮（同一切片再次进入）的 fps / ready
+    // 会污染这一轮的首帧测量
+    delete host.dataset.fps
+    delete host.dataset.calls
+    delete host.dataset.tris
+    delete host.dataset.ready
+    delete host.dataset.glb
+    delete host.dataset.gl
+    // effect 开始跑的瞬间：和 data-ready 相减就是「WebGL 初始化 + 切片搭建」的耗时，
+    // 与 data-ready 减点击瞬间（含 lazy chunk 下载）分开记，报告里要能分辨是哪一段慢
+    host.dataset.mounted = String(Math.round(performance.now()))
     let created: THREE.WebGLRenderer | null = null
     try {
       created = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' })
     } catch {
+      host.dataset.gl = 'unavailable'
       return // WebGL 不可用：不画，父层背景还在
     }
     const gl = created
@@ -1805,13 +1898,19 @@ export default function Scene3D({ variant }: Props) {
     gl.toneMapping = THREE.ACESFilmicToneMapping
     gl.shadowMap.enabled = false // 见文件头：带影光会把 draw calls 翻倍
 
-    const slice = createSlice(variant)
+    const slice = createSlice(variant, (status) => {
+      host.dataset.glb = status
+    })
     gl.toneMappingExposure = slice.exposure
     const camera = slice.camera
 
     const resize = () => {
       const w = host.clientWidth || 1
       const h = host.clientHeight || 1
+      // 浏览器缩放会改 devicePixelRatio 并触发 resize：每次都重新夹一次，
+      // 否则从 100% 缩到 150% 之后缓冲区还是旧比例，3D 会一直发糊
+      const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR)
+      if (Math.abs(dpr - gl.getPixelRatio()) > 0.01) gl.setPixelRatio(dpr)
       gl.setSize(w, h, false)
       camera.aspect = w / h
       camera.updateProjectionMatrix()
@@ -1847,7 +1946,9 @@ export default function Scene3D({ variant }: Props) {
     let peakTris = 0
 
     const loop = (time: number) => {
-      const dt = last === 0 ? 1 / 60 : Math.min((time - last) / 1000, 0.05)
+      const raw = last === 0 ? 1 / 60 : (time - last) / 1000
+      // 动画用钳过的 dt：卡顿一帧之后不要一次把旗面/水面推出去太远
+      const dt = Math.min(raw, 0.05)
       last = time
       // 阻尼 0.08 = 「60fps 下每帧补 8%」，按 dt 归一后换帧率手感一致
       const k = 1 - Math.pow(1 - DAMP, dt * 60)
@@ -1856,12 +1957,15 @@ export default function Scene3D({ variant }: Props) {
       camera.rotation.set(slice.basePitch + pitch, slice.baseYaw + yaw, 0)
       if (!reduce) slice.tick(time / 1000, dt)
       gl.render(slice.scene, camera)
+      // 首帧到达时刻（毫秒，navigationStart 起算）：tools/test-3d.mjs 用它算「点按钮 → 出画面」
+      if (host.dataset.ready === undefined) host.dataset.ready = String(Math.round(performance.now()))
 
       const drawn = gl.info.render
       if (drawn.calls > peakCalls) peakCalls = drawn.calls
       if (drawn.triangles > peakTris) peakTris = drawn.triangles
       frames += 1
-      acc += dt
+      // fps 必须用没钳过的真实墙钟：用钳过的 dt 会在卡顿时把 20fps 报成 100fps
+      acc += Math.min(raw, 5)
       if (acc >= 0.5) {
         host.dataset.fps = (frames / acc).toFixed(1)
         host.dataset.calls = String(peakCalls)
@@ -1877,8 +1981,10 @@ export default function Scene3D({ variant }: Props) {
     })
     observer.observe(host)
 
+    let contextLost = false
+
     const onVisibility = () => {
-      if (document.hidden) {
+      if (document.hidden || contextLost) {
         gl.setAnimationLoop(null)
       } else {
         last = 0
@@ -1886,8 +1992,22 @@ export default function Scene3D({ variant }: Props) {
       }
     }
     const onContextLost = (event: Event) => {
+      // preventDefault 之后浏览器才会发 webglcontextrestored；不拦就永远回不来
       event.preventDefault()
+      contextLost = true
       gl.setAnimationLoop(null)
+      host.dataset.gl = 'lost'
+      delete host.dataset.fps
+      // 安全回退：先把画布藏起来，露出父层背景（正文卡片还在），不留一块死黑板
+      canvas.style.visibility = 'hidden'
+    }
+    const onContextRestored = () => {
+      contextLost = false
+      host.dataset.gl = 'restored'
+      canvas.style.visibility = 'visible'
+      // three 在 restore 时自己重建 GL 状态（几何/材质/贴图的 CPU 端还在），重开循环即可
+      last = 0
+      gl.setAnimationLoop(loop)
     }
 
     window.addEventListener('pointermove', onPointerMove, { passive: true })
@@ -1895,6 +2015,7 @@ export default function Scene3D({ variant }: Props) {
     document.addEventListener('pointerleave', onReset)
     document.addEventListener('visibilitychange', onVisibility)
     canvas.addEventListener('webglcontextlost', onContextLost)
+    canvas.addEventListener('webglcontextrestored', onContextRestored)
     // 滚轮不监听：页面该滚就滚，这里不改 fov 也不改距离
 
     return () => {
@@ -1905,6 +2026,7 @@ export default function Scene3D({ variant }: Props) {
       document.removeEventListener('pointerleave', onReset)
       document.removeEventListener('visibilitychange', onVisibility)
       canvas.removeEventListener('webglcontextlost', onContextLost)
+      canvas.removeEventListener('webglcontextrestored', onContextRestored)
       // 先扔场景资源，再扔 renderer
       slice.dispose()
       gl.dispose()
@@ -1913,6 +2035,10 @@ export default function Scene3D({ variant }: Props) {
       delete host.dataset.fps
       delete host.dataset.calls
       delete host.dataset.tris
+      delete host.dataset.ready
+      delete host.dataset.glb
+      delete host.dataset.gl
+      delete host.dataset.mounted
     }
   }, [variant])
 

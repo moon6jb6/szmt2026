@@ -48,7 +48,7 @@ a { color: #8a2b22; text-decoration: none; }
 <blockquote>
 <p>赛项：2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 指定命题「红色之旅 追梦铸魂」
 作品形态：网页端 2.5D 交互叙事（可运行 Demo）
-版本：v1.3（全本版 + 增强层：113,161 字正文 / 140 个场景 / 9 个结局 / 76 张史料卡 / 5 个真 3D 场景 / 28 条音效）</p>
+版本：v1.4（全本版 + 增强层：113,048 字正文 / 140 个场景 / 9 个结局 / 76 张史料卡 / 5 个真 3D 场景 / 28 条音效）</p>
 </blockquote>
 <hr>
 <h2 id="_1">一、项目定位</h2>
@@ -67,7 +67,7 @@ a { color: #8a2b22; text-decoration: none; }
 <h3 id="13">1.3 作品形态与时长</h3>
 <ul>
 <li>网页端 2.5D 交互叙事，桌面优先，兼容平板与手机</li>
-<li>正文 <strong>113,161 汉字</strong>（严格口径：只统计玩家读到的正文段落），<strong>140 个场景</strong>，<strong>9 个结局</strong>（6 个主结局 + 3 个合成结局）</li>
+<li>正文 <strong>113,048 汉字</strong>（严格口径：只统计玩家读到的正文段落），<strong>140 个场景</strong>，<strong>9 个结局</strong>（6 个主结局 + 3 个合成结局）</li>
 <li>单周目约 <strong>2—3 小时</strong>；读完全部内容（九结局 + 人物志 + 「后来」读者页 + 史料库）约 <strong>6 小时</strong></li>
 <li>无后端、无账号，存档在本地浏览器</li>
 <li>附加可读内容：10 篇人物志（人物志清单页）、15 篇「后来」读者页、76 张史料卡史料库</li>
@@ -104,9 +104,9 @@ a { color: #8a2b22; text-decoration: none; }
 <p><strong>纵深</strong>：三个背景层放在同一个 <code>perspective</code> 父层里，子层用静态 <code>translateZ</code> 定位，指针只驱动父层 <code>rotateX/rotateY</code>。持续运动压测下，「每层各自 transform」是 16.9 fps，改为「父层 3D 倾斜」后 48.0 fps（2.8 倍），且纵深从平移错觉变成真透视（近层放大、远层缩小，倾斜时带梯形变形）。模糊改为烘焙在静止的内容层上——逐帧改 <code>filter: blur()</code> 实测会掉到 22.7 fps，而恒定 blur 几乎免费。</p>
 <p><strong>转场</strong>：五夜之间不再是内容跳变，而是 Canvas「墨迹幕」合拢 → 全黑 → 退开，配合推镜。换场动作发生在全黑那一帧，同时遮住了背景图解码、字体度量与重排的抖动。实测 67.2 fps、p95 17.0 ms、掉帧 4.6%；4 倍 CPU 降频仍有 64.7 fps（瓶颈在合成器不在 JS）。整套转场只增加约 1.5 KB gzip。</p>
 <p><strong>无障碍</strong>：<code>prefers-reduced-motion</code> 打开时，3D 倾斜归零、墨迹幕短路为直接换场、粒子停止，流程仍完整可玩（JS 侧分支，不依赖 CSS 的全局降级）。</p>
-<p>这样做的结果是：首屏 JS 主包 845.59 kB（gzip 298.0 kB，主体是 113,161 字正文与 76 张史料卡数据，3D 另按需加载），dist 含背景图、插画、音频与 GLB 后约 23.46 MB，无外部字体、无外部 CDN、无动画库，断网也能跑。</p>
+<p>这样做的结果是：首屏 JS 主包 847.26 kB（gzip 298.5 kB，主体是 113,048 字正文与 76 张史料卡数据，3D 另按需加载），dist 含背景图、插画、音频与 GLB 后约 23.47 MB，无外部字体、无外部 CDN、无动画库，断网也能跑。</p>
 <h3 id="11_1">创新五：11 万字不是堆出来的——分工写作 + 双轨审计的生产管线</h3>
-<p>这一版把正文从 6,000 字扩到 <strong>113,161 字</strong>（严格口径），靠的不是堆形容词，而是一条可复核的生产管线：</p>
+<p>这一版把正文从 6,000 字扩到 <strong>113,048 字</strong>（严格口径），靠的不是堆形容词，而是一条可复核的生产管线：</p>
 <ul>
 <li><strong>分区写作</strong>：序卷/卷一、卷二（四行五夜）、卷三/卷四（孤军营/记忆线）、支线人物志，四个写作单元各自独立文件，互不覆盖；Lead 只做接线与集成。</li>
 <li><strong>双轨审计</strong>：一名史实审计（逐场景对照 76 张史料卡，查真实人物台词、时间线、挂源、红线）+ 一名文学审计（五维评分：具体性/情感真实/语言干净/结构功能/意象系统，均分 ≥4.0、单项 ≥3 才通过）。</li>
@@ -234,7 +234,7 @@ a { color: #8a2b22; text-decoration: none; }
 <li><strong>生成与质检</strong>：本地 SDXL base 1.0（fp16）+ SDXL-Lightning 4-step LoRA，<code>enable_model_cpu_offload</code>；8GB 显存实测 <code>peak_reserved=5.48 GiB</code>（常驻方案会到 10.9 GiB，触发 Windows WDDM 共享显存抖动，已放弃）。每张图固定 seed，prompt / negative / seed / 尺寸 / 步数 / 耗时全部写入同名 JSON，可复现。</li>
 <li><strong>逐张质检</strong>：本地 Qwen3-VL-2B 四维打分（prompt 符合度 / 时代准确性 / 画面瑕疵 / 危险元素）→ pass / retry / reject；retry 换 seed 重生成；人工每 50 张抽 10 张，重点查人脸、文字、现代建筑与「有没有叙事信息」。</li>
 <li><strong>实际产出</strong>：500 条总谱中落盘 <strong>496 张</strong>（场景 124 / 结局 30 / 其余 342 张为 moment、artifact、figure、atmo、ui 素材），入屏图 <strong>158 条逐张过 VLM 质检</strong>，初检通过率 93.0%，重生成后 <strong>95.6% 可用</strong>；4 张不合格剔除、对应场景走渐变回退。质检台账与失败类型分布见 <code>docs/art/image-qa-report.md</code>。</li>
-<li>首屏体积：dist 总计约 22.93 MB（含背景图、插画与音频）；JS 主包 844.87 kB（gzip 297.69 kB，主体是 113,161 字正文与 76 张史料卡数据）、3D 切片懒加载 150.66 kB gzip、CSS 4.92 kB gzip；无外部字体、无 CDN、无动画库，断网可跑。</li>
+<li>首屏体积：dist 总计约 23.47 MB（含背景图、插画与音频）；JS 主包 847.26 kB（gzip 298.5 kB，主体是 113,048 字正文与 76 张史料卡数据）、3D 切片懒加载 171.1 kB gzip、CSS 4.92 kB gzip；无外部字体、无 CDN、无动画库，断网可跑。</li>
 <li><strong>声音设计</strong>：本作有 28 条本地生成的环境音与动作音（共 4.88 MB，OGG）：六种记忆载体各有不同的点击音、翻页/纸/笔/墨、雨（轻/重）、雪风、河水、人群低语、室内底噪、磁带嘶声、旗面拍打、脚步、火柴、收音机杂音、六种结局 drone。声音跟随场景与天气切换，同一时刻最多一条环境声 + 一条结局低音；<strong>默认静音</strong>，用户点右下角「声音」才开启，状态本地记忆。全部由本地 Stable Audio Open Small（497M，Stability AI Community License）生成，逐条记录 prompt/seed/采样率/峰值显存，可复现。</li>
 </ul>
 <h3 id="34-76">3.4 史料卡系统（可插拔，76 条）</h3>
@@ -253,7 +253,7 @@ a { color: #8a2b22; text-decoration: none; }
 <h2 id="_8">四、成果状态</h2>
 <h3 id="_9">已完成（可运行、可演示）</h3>
 <ul>
-<li><strong>140 个场景</strong>的完整叙事：序卷 8 + 序幕 1 + 卷一 25 + 五夜 55 + 孤军营 25 + 尾声 1 + 后来 15 + 人物志 10（合计 140）；<strong>严格正文 113,161 汉字</strong></li>
+<li><strong>140 个场景</strong>的完整叙事：序卷 8 + 序幕 1 + 卷一 25 + 五夜 55 + 孤军营 25 + 尾声 1 + 后来 15 + 人物志 10（合计 140）；<strong>严格正文 113,048 汉字</strong></li>
 <li><strong>九个结局全部可达</strong>（6 主结局 + 3 合成结局）；存档注入法自动化测试 <strong>9/9 PASS、0 控制台错误</strong>；另有全流程走路测试（每步选第一个选项直到结局）</li>
 <li>每次点击的差异化反馈：六种载体粒子 + 五种天气转场 + 按载体区分的悬停位移与强调色 + 段落错峰入场</li>
 <li>九段「终极画面」：每个结局一段 6 秒 Canvas 收束动画，可跳过、可重看，<code>prefers-reduced-motion</code> 下只显示最终帧</li>
@@ -261,7 +261,7 @@ a { color: #8a2b22; text-decoration: none; }
 <li>记忆账本机制、结局判定、结局图鉴（9 格，合成结局显示解锁条件）、本地存档与继续游戏</li>
 <li>2.5D 舞台（父层 3D 倾斜 + 墨迹幕转场 + Canvas 粒子）、响应式布局、键盘操作、减少动效</li>
 <li>场景插画：本地 SDXL + Lightning 生成的场景/关键瞬间/文物/人物/结局插画，按 <code>docs/art/scene-map.json</code> 与场景 id 自动挂载；入屏 158 条逐张过 VLM 四维质检，其余 342 张素材为人工抽查</li>
-<li>生产构建：单页静态站点，无外部字体/CDN/动画库，断网可跑（JS 主包 844.87 kB / gzip 297.69 kB）</li>
+<li>生产构建：单页静态站点，无外部字体/CDN/动画库，断网可跑（JS 主包 847.26 kB / gzip 298.5 kB）</li>
 <li>质量证据：文学审计 0 P0 / 0 不合格（加权 4.59），史实审计 0 P0，构建与结构校验脚本全绿；新增 3 个合成结局与交互层沿用同一批已核史料卡，见 <code>docs/audit/2026-10-21-ending-expansion-note.md</code></li>
 </ul>
 <h3 id="_10">正在完善</h3>

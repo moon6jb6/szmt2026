@@ -1,39 +1,17 @@
-﻿# 依赖与构建产物
-node_modules/
+﻿node_modules/
 dist/
+*.local
 .env
-
-# 本地生成/截图工作区（交付图在 public/art 与 docs/deliverables）
-tools/shots/
-tools/imagegen/out/
-tools/imagegen/out-art/
-tools/imagegen/batches-run/
-tools/imagegen/*.log
-tools/imagegen/retry-ui.json
-tools/imagegen/fallback-120.json
-tools/imagegen/prebatch-60.json
-tools/imagegen/manifest-pre.json
-
-# 模型与缓存（模型不入库）
-*.safetensors
-*.ckpt
-*.pth
-*.bin
-hf-cache/
-
-# 杂项
-.DS_Store
-Thumbs.db
-*.tmp
-resident.log
-out-art/
+.env.*
 trash/
-public/generated/*/world.glb
-public/generated/*/world.obj
-public/generated/*/world.mtl
-
+out-art/
+deliverables/
 tools/audio/out/
+tools/shots/
+tools/quality/shots/
+tools/3d/shots/
+docs/report/anim-shots/
 docs/deliverables/_pdf_tmp/
 tools/blender/tex/
 tools/blender/_tmp.glb
-tools/quality/shots/
+*.log

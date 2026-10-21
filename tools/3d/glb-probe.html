@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3C/svg%3E" />
+    <title>GLB 体检页 · warehouse-ext</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        background: #08070a;
+        color: #ede6d8;
+        font: 12px/1.5 Consolas, ui-monospace, monospace;
+        overflow: hidden;
+      }
+      #stage {
+        position: fixed;
+        inset: 0;
+      }
+      #log {
+        position: fixed;
+        right: 8px;
+        bottom: 8px;
+        max-width: 46vw;
+        max-height: 40vh;
+        overflow: auto;
+        padding: 8px 10px;
+        background: rgba(10, 8, 7, 0.82);
+        border: 1px solid rgba(237, 230, 216, 0.2);
+        white-space: pre-wrap;
+        z-index: 9;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage"></div>
+    <div id="log">booting…</div>
+    <script type="module">
+      import * as THREE from 'three'
+      import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
+
+      /**
+       * 用和 src/game/components/Scene3D.tsx 完全一样的参数，把 GLB 单独装一遍并体检：
+       *  - 加载器给材质的 side / colorSpace 到底是多少（baseColor sRGB、normal NoColor、DoubleSide？）
+       *  - 按 Scene3D 的落地算法算出的最终包围盒 / 比例 / 底面 y
+       *  - 共面 z-fighting：同一机位下地面 y=0 与 y=-0.02 各渲染两帧（相机微动 0.02°），
+       *    数像素翻转量，翻转多即共面打架
+       */
+      const W = 800
+      const H = 500
+      const log = (line) => {
+        const node = document.getElementById('log')
+        node.textContent += `\n${line}`
+      }
+      document.getElementById('log').textContent = 'loading…'
+
+      // preserveDrawingBuffer：z-fighting 检测要 readPixels，否则合成之后缓冲区已被清空
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, preserveDrawingBuffer: true })
+      renderer.setPixelRatio(1)
+      renderer.setSize(W, H, false)
+      renderer.outputColorSpace = THREE.SRGBColorSpace
+      renderer.toneMapping = THREE.ACESFilmicToneMapping
+      renderer.toneMappingExposure = 1.25
+      renderer.shadowMap.enabled = false
+      renderer.domElement.style.width = `${W}px`
+      renderer.domElement.style.height = `${H}px`
+      document.getElementById('stage').appendChild(renderer.domElement)
+
+      const result = { stage: 'init' }
+      window.__result = result
+
+      const url = new URL('models/warehouse-ext.glb', location.origin).href
+      result.glbUrl = url
+
+      const gltf = await new GLTFLoader().loadAsync(url)
+      const model = gltf.scene
+
+      // ---- 材质 / 几何体检
+      const meshes = []
+      const materials = new Set()
+      const textures = new Set()
+      model.traverse((child) => {
+        if (!child.isMesh) return
+        const list = Array.isArray(child.material) ? child.material : [child.material]
+        const info = {
+          name: child.name,
+          triangles: child.geometry.index ? child.geometry.index.count / 3 : child.geometry.attributes.position.count / 3,
+          attributes: Object.keys(child.geometry.attributes),
+          hasIndex: Boolean(child.geometry.index),
+          materials: list.map((m) => {
+            materials.add(m)
+            const std = m
+            const slots = {
+              map: std.map?.colorSpace ?? null,
+              normalMap: std.normalMap?.colorSpace ?? null,
+              roughnessMap: std.roughnessMap?.colorSpace ?? null,
+            }
+            for (const t of [std.map, std.normalMap, std.roughnessMap]) if (t) textures.add(t)
+            return {
+              name: m.name,
+              side: m.side, // 0=FrontSide 1=BackSide 2=DoubleSide
+              sideName: m.side === 0 ? 'Front' : m.side === 1 ? 'Back' : 'Double',
+              transparent: m.transparent,
+              alphaTest: m.alphaTest,
+              mapColorSpace: slots.map,
+              normalMapColorSpace: slots.normalMap,
+              roughnessColorSpace: slots.roughnessMap,
+              mapAnisotropy: std.map?.anisotropy ?? null,
+              mapImageSize: std.map?.image ? `${std.map.image.width}×${std.map.image.height}` : null,
+              metalness: std.metalness,
+              roughness: std.roughness,
+              flatShading: std.flatShading,
+              vertexColors: std.vertexColors,
+              fog: std.fog,
+            }
+          }),
+        }
+        meshes.push(info)
+      })
+      result.meshes = meshes
+      result.counts = {
+        meshes: meshes.length,
+        materials: materials.size,
+        textures: textures.size,
+        triangles: meshes.reduce((sum, m) => sum + m.triangles, 0),
+      }
+      result.materialLut = {
+        sides: [...new Set(meshes.flatMap((m) => m.materials.map((x) => x.sideName)))],
+        mapColorSpaces: [...new Set(meshes.flatMap((m) => m.materials.map((x) => x.mapColorSpace)))],
+        normalColorSpaces: [...new Set(meshes.flatMap((m) => m.materials.map((x) => x.normalMapColorSpace)))],
+      }
+
+      // ---- 按 Scene3D 的算法落地（不改比例，只在单位明显不是米时才归一）
+      const rawBox = new THREE.Box3().setFromObject(model)
+      const rawSize = rawBox.getSize(new THREE.Vector3())
+      result.rawBox = { min: rawBox.min.toArray(), max: rawBox.max.toArray(), size: rawSize.toArray() }
+      const scale = rawSize.y < 12 || rawSize.y > 60 ? 25 / Math.max(rawSize.y, 0.001) : 1
+      model.scale.setScalar(scale)
+      const box2 = new THREE.Box3().setFromObject(model)
+      const center = box2.getCenter(new THREE.Vector3())
+      model.position.x -= center.x
+      model.position.z -= center.z
+      model.position.y -= box2.min.y
+      model.position.y += 0.002
+      const finalBox = new THREE.Box3().setFromObject(model)
+      result.grounded = {
+        appliedScale: Number(scale.toFixed(4)),
+        facadeWidth: Number((finalBox.max.x - finalBox.min.x).toFixed(3)),
+        totalHeight: Number((finalBox.max.y - finalBox.min.y).toFixed(3)),
+        depth: Number((finalBox.max.z - finalBox.min.z).toFixed(3)),
+        baseY: Number(finalBox.min.y.toFixed(4)),
+        centerX: Number(((finalBox.max.x + finalBox.min.x) / 2).toFixed(4)),
+        centerZ: Number(((finalBox.max.z + finalBox.min.z) / 2).toFixed(4)),
+        /** 立面外皮在 z≈0，屋面往 −Z；相机在 +Z → 正对西墙 */
+        facadeZ: Number(finalBox.max.z.toFixed(3)),
+      }
+
+      // ---- 复刻 Scene3D 的场景与相机
+      const scene = new THREE.Scene()
+      scene.background = new THREE.Color(0x0b0907)
+      scene.fog = new THREE.FogExp2(0x16120e, 0.016)
+      scene.add(new THREE.HemisphereLight(0x76828f, 0x1b1510, 1.5))
+      const moon = new THREE.DirectionalLight(0x9db4d2, 2.4)
+      moon.position.set(-38, 52, 44)
+      scene.add(moon)
+      const warm = new THREE.PointLight(0xe0a15a, 40, 110, 2)
+      warm.position.set(20, 7, 12)
+      scene.add(warm)
+      const fill = new THREE.DirectionalLight(0xc9b79a, 0.9)
+      fill.position.set(0, 18, 60)
+      scene.add(fill)
+      scene.add(model)
+
+      const camera = new THREE.PerspectiveCamera(40, W / H, 0.08, 160)
+      camera.position.set(24, 18, 68)
+      const dir = new THREE.Vector3(0 - 24, 12 - 18, 0 - 68).normalize()
+      camera.rotation.order = 'YXZ'
+      camera.rotation.set(Math.asin(dir.y), Math.atan2(-dir.x, -dir.z), 0)
+
+      // 地面：可切 y=0（与墙脚共面）或 y=-0.02（错开）
+      const ground = new THREE.Mesh(
+        new THREE.PlaneGeometry(280, 280),
+        new THREE.MeshStandardMaterial({ color: 0x16120e, roughness: 0.96, metalness: 0 }),
+      )
+      ground.rotation.x = -Math.PI / 2
+      scene.add(ground)
+
+      const frame = () => new Promise((done) => requestAnimationFrame(() => done()))
+      const renderAt = async (yawOffset) => {
+        camera.rotation.set(Math.asin(dir.y), Math.atan2(-dir.x, -dir.z) + yawOffset, 0)
+        renderer.render(scene, camera)
+        await frame()
+        renderer.render(scene, camera)
+        await frame()
+      }
+
+      /** 数两帧之间翻转的像素（只看下半屏：墙脚与地面交界就在那里） */
+      const flipCount = async (yawA, yawB) => {
+        const gl = renderer.getContext()
+        const read = () => {
+          const pixels = new Uint8Array(W * H * 4)
+          gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
+          return pixels
+        }
+        await renderAt(yawA)
+        const a = read()
+        await renderAt(yawB)
+        const b = read()
+        let changed = 0
+        let strong = 0
+        for (let i = 0; i < a.length; i += 4) {
+          const delta = Math.abs(a[i] - b[i]) + Math.abs(a[i + 1] - b[i + 1]) + Math.abs(a[i + 2] - b[i + 2])
+          if (delta > 2) changed += 1
+          if (delta > 24) strong += 1
+        }
+        return { changed, strong, totalPixels: W * H }
+      }
+
+      ground.position.y = 0
+      const coplanar = await flipCount(0, 0.00035)
+      ground.position.y = -0.02
+      const offset = await flipCount(0, 0.00035)
+      result.zFight = {
+        /** 墙脚底面与地面共面（修复前的状态） */
+        coplanar,
+        /** 地面下沉 2 cm（修复后的状态） */
+        offset,
+        note: '相机 yaw 微动 0.00035 rad（约 0.02°），数两帧之间 R/G/B 变化 >2 与 >24 的像素数；共面才会大面积翻转',
+      }
+
+      // ---- 背面剔除：全部 DoubleSide vs 强制 FrontSide，像素级比一比
+      const readFrame = async () => {
+        await renderAt(0)
+        const gl = renderer.getContext()
+        const pixels = new Uint8Array(W * H * 4)
+        gl.readPixels(0, 0, W, H, gl.RGBA, gl.UNSIGNED_BYTE, pixels)
+        return pixels
+      }
+      const diffFrames = (a, b) => {
+        let changed = 0
+        let strong = 0
+        for (let i = 0; i < a.length; i += 4) {
+          const delta = Math.abs(a[i] - b[i]) + Math.abs(a[i + 1] - b[i + 1]) + Math.abs(a[i + 2] - b[i + 2])
+          if (delta > 2) changed += 1
+          if (delta > 24) strong += 1
+        }
+        return { changed, strong }
+      }
+      const doubleSidedPixels = await readFrame()
+      for (const material of materials) material.side = THREE.FrontSide
+      const frontSidedPixels = await readFrame()
+      result.backface = {
+        doubleSideVsFrontSide: diffFrames(doubleSidedPixels, frontSidedPixels),
+        note: '整屏 400000 像素；差异为 0 表示改成 FrontSide 对外观无影响（纯省填充率）',
+      }
+      for (const material of materials) material.side = THREE.DoubleSide
+
+      // 干净成片（地面下沉版）
+      ground.position.y = -0.02
+      await renderAt(0)
+      await renderAt(0)
+      result.rendered = true
+      log(`triangles ${result.counts.triangles} / materials ${result.counts.materials} / sides ${result.materialLut.sides.join(',')}`)
+      log(`map sRGB: ${result.materialLut.mapColorSpaces.join(',')} · normal: ${result.materialLut.normalColorSpaces.join(',')}`)
+      log(`facade ${result.grounded.facadeWidth}m × ${result.grounded.totalHeight}m, base y=${result.grounded.baseY}`)
+      log(`z-fight coplanar changed=${coplanar.changed} strong=${coplanar.strong}`)
+      log(`z-fight offset   changed=${offset.changed} strong=${offset.strong}`)
+      result.stage = 'done'
+      window.__result = result
+    </script>
+  </body>
+</html>

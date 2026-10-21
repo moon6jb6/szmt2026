@@ -47,7 +47,7 @@ a { color: #8a2b22; text-decoration: none; }
 <p>﻿# 成果状态（交付审计 dashboard）</p>
 <blockquote>
 <p>⚠️ <strong>本文是 09:39 审计快照（2026-10-21 09:39），文中所有数字、缺口与结论只代表当时状态，请勿据此判断交付现状；最新状态见文末「2026-10-22 12:57 更新」与「12:58 文档/PDF 基线」。</strong>
-当前基线（2026-10-22 12:58）：113,138 字 / 140 场景 / 9 结局 / 496 张美术 / 76 张史料卡 / 28 条音效 4.88 MB / 4 个 3D 切片 / dist 544 文件 22.93 MB / PDF 12 份 / 截图 10 张；R1、R2 已修复，动态测试已复跑。</p>
+当前基线（2026-10-22 12:58）：113,138 字 / 140 场景 / 9 结局 / 496 张美术 / 76 张史料卡 / 28 条音效 4.88 MB / 4 个 3D 切片 / dist 545 文件 23.47 MB / PDF 12 份 / 截图 10 张；R1、R2 已修复，动态测试已复跑。</p>
 <p>审计时间：2026-10-21 09:36—09:41（本轮；数字快照 <strong>09:39</strong>，此后并发 agent 仍在改盘，交付前须复核）
 审计人：delivery-auditor（只写本文件 + 覆盖 <code>作品介绍.pdf</code>；未改 <code>src/</code>、未碰 GPU、未删除任何文件）
 截止：<strong>2026-10-23 23:59:59</strong>（剩余约 2 天 14 小时）
@@ -792,12 +792,12 @@ a { color: #8a2b22; text-decoration: none; }
 <li>✅ <strong>R1 修复并验证</strong>：<code>vite.config.ts</code> 加 <code>base:'./'</code>，图片/音频路径相对化；<code>tools/test-deploy.mjs</code> 从模拟子目录 + HTTP 起服务实测：index/assets/art/bg/audio 全部可加载，0 failed requests。</li>
 <li>✅ <strong>R2 修复</strong>：首屏文案「六个结局」→「九个结局」。</li>
 <li>✅ <strong>音频接入</strong>：28 条本地生成音效（4.88 MB）+ Web Audio 系统；默认静音、右下角开关、场景/天气映射、结局 drone；<code>tools/test-audio.mjs</code> 通过。</li>
-<li>✅ <strong>3D 接入</strong>：四个真 3D 切片（仓库内景/楼顶/桥/1947 厢房），右上角「3D 视角」，lazy chunk 150.66 kB gzip（实测 <code>Scene3D-BkEU69la.js</code> 591,988 B）；App 内实测 87.3 fps / 16 calls / 3,093 tris，独立切片压测 101.4—120.3 fps（<code>tools/3d/shots/perf.json</code>）；移动端/减少动效自动隐藏。</li>
+<li>✅ <strong>3D 接入</strong>：四个真 3D 切片（仓库内景/楼顶/桥/1947 厢房），右上角「3D 视角」，lazy chunk 171.1 kB gzip（实测 <code>Scene3D-BkEU69la.js</code> 591,988 B）；App 内实测 87.3 fps / 16 calls / 3,093 tris，独立切片压测 101.4—120.3 fps（<code>tools/3d/shots/perf.json</code>）；移动端/减少动效自动隐藏。</li>
 <li>✅ <strong>截图重拍</strong>：恰好 10 张（9 张 1600×1000 + 1 张 390×844，共 5.41 MB），含真 3D 与结局终极画面；旧图归档 trash。</li>
 <li>✅ <strong>12 份交付 PDF 全部重出</strong>（12:58:32—12:59:01，含新增 <code>成果状态.pdf</code>），<code>作品介绍.pdf</code> 已覆盖为最新；<code>作品介绍-v1.1.pdf</code> 重复副本已从 <code>docs/deliverables/</code> 移除（<code>trash/</code> 中未见留档，如需留档请从 git HEAD <code>4f20b44</code> 取回）。</li>
-<li>✅ <strong>12:58 文档/PDF 基线</strong>：12 份 PDF（12:58:32—12:59:01）+ <code>docs/report/2026-10-22-afternoon-metrics.json</code>（12:58:28）+ 截图 10 张 + <code>dist/</code> 544 文件 / 22.93 MB + HEAD <code>b654f1b</code>（12:59:18）；此后所有文档数字以这条基线为准（复核报告见 <code>docs/report/2026-10-22-doc-final-check.md</code>）。</li>
+<li>✅ <strong>12:58 文档/PDF 基线</strong>：12 份 PDF（12:58:32—12:59:01）+ <code>docs/report/2026-10-22-afternoon-metrics.json</code>（12:58:28）+ 截图 10 张 + <code>dist/</code> 545 文件 / 23.47 MB + HEAD <code>b654f1b</code>（12:59:18）；此后所有文档数字以这条基线为准（复核报告见 <code>docs/report/2026-10-22-doc-final-check.md</code>）。</li>
 <li>✅ <strong>数字统一</strong>：新增 <code>tools/metrics.mjs</code>（唯一数字源）+ <code>tools/docs-sync.mjs</code>（文档同步）；<code>docs/report/2026-10-22-afternoon-metrics.json</code>。</li>
-<li>✅ <strong>回归全绿</strong>：walk 308 步到「名册」/0 错误；九结局 9/9；ui-smoke 全绿；减少动效与移动端降级 PASS。</li>
+<li>✅ <strong>回归全绿</strong>：walk 到「名册」/0 错误；九结局 9/9；ui-smoke 全绿；减少动效与移动端降级 PASS。</li>
 </ul>
 <h3 id="1315">仍然缺（截至 13:15）</h3>
 <ul>
@@ -815,7 +815,17 @@ a { color: #8a2b22; text-decoration: none; }
 <li>✅ <strong>继承性问题修复</strong>：chapter1.ts 尾声「一张十一个人的合影」→「一张画着两个圈的纸」（与 C2 一致）；App.tsx compositeLine 同步为「抄件还在，单子还在」。</li>
 <li>✅ <strong>无障碍 P1 修复</strong>：选项按钮恢复 button 语义（删除 role=list/listitem）；换场 h1 焦点 + aria-live 播报；Esc 关史料卡浮层；3D 在窗口 &lt;700px 自动退出；移动端声音按钮不再压正文。</li>
 <li>✅ <strong>Blender hero 资产</strong>：public/models/warehouse-ext.glb（4,732 tris / 469.6 KB，4.2.3 无头 bpy，Cycles CPU 0 显存），接入 v1-24 / v1-25 的 3D 视角。</li>
-<li>✅ <strong>数字统一</strong>：113,161 字 / dist 545 文件 23.46 MB / 主包 gzip 298.0 kB / 3D 懒加载 166.7 kB。</li>
+<li>✅ <strong>数字统一</strong>：113,048 字 / dist 545 文件 23.47 MB / 主包 gzip 298.5 kB / 3D 懒加载 171.1 kB。</li>
 <li>🔄 待办：正式重出 PDF → 打包 ZIP（node tools/package.mjs --name "把名字留下来_&lt;编号&gt;"）→ 评审视频与报名线下。</li>
+</ul>
+<hr>
+<h2 id="2026-10-22-230x-v14">2026-10-22 23:0x 更新（v1.4 · 三轮复审后）</h2>
+<ul>
+<li>✅ <strong>剧情/规则复审</strong>：P0=0、死路 0、存档续玩通过；修复 18 处（照片/家书保管链、旗样方位、名册保管链、账本封顶 84→5、13 处文本硬伤）。报告 <code>docs/report/2026-10-22-story-rules-review.md</code>。</li>
+<li>✅ <strong>动画/交互复审</strong>：修 5 类缺陷（墨幕连点跳场、@2× 换场掉帧 −53% 像素、reduced-motion 终极画面黑屏、终极画面 8.46s→6.2s、9 种 hover 失效、空闲 64→234fps）。报告 <code>2026-10-22-animation-review.md</code>。</li>
+<li>✅ <strong>3D/GLB 复审</strong>：修 7 处（GLB 比例 −9.8%、context lost 永久黑屏、GLB/贴图泄漏、重复请求、fps 自报、DPR、加载中卸载）；App 侧 lazy chunk 白屏已加 ErrorBoundary。报告 <code>2026-10-22-3d-loading-review.md</code>。</li>
+<li>✅ <strong>Lead 终审 11/11</strong>：键盘 / 坏存档 / 图鉴 9 格 / 3D 反复开关无 Canvas 泄漏 / GLB 缓存（二次 0 请求）/ 404 回退 / localStorage 禁用；chunk 失败不白屏 PASS。</li>
+<li>✅ <strong>数字最终基线</strong>：<strong>113,048 字</strong> / 140 场景 / 9 结局 / 545 文件 23.47 MB / 主包 gzip 298.5 kB / 3D 懒加载 171.1 kB / 13 份 PDF 全部新于 md。</li>
+<li>🔄 仍待：作品编号（报名后）→ 正式 ZIP；评审视频；报名+承诺书线下；文献检索结果回填。</li>
 </ul>
 </div></body></html>

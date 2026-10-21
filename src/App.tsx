@@ -1,4 +1,13 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  Component,
+  lazy,
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react'
 import { InkCurtain, type CurtainHandle, type CurtainOpts } from './game/components/InkCurtain'
 import { Stage } from './game/components/Stage'
 import { ChoiceBurst, type BurstHandle, type BurstKind } from './game/components/ChoiceBurst'
@@ -25,6 +34,26 @@ import {
 
 /** 真 3D 切片按需加载：不进主包，只有点「3D 视角」才拉取 */
 const Scene3D = lazy(() => import('./game/components/Scene3D'))
+
+/**
+ * lazy chunk 拉取失败（断网/CDN 抖动）时，React 会把错误抛到根导致整树卸载。
+ * 这里兜住：回退 2.5D，正文继续可读；用户下次再点 3D 会重新尝试。
+ */
+class Scene3DBoundary extends Component<{ children: ReactNode; onError: () => void }, { failed: boolean }> {
+  state = { failed: false }
+
+  static getDerivedStateFromError() {
+    return { failed: true }
+  }
+
+  componentDidCatch() {
+    this.props.onError()
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children
+  }
+}
 import {
   NEEDED_SOURCES,
   PENDING_SOURCES,
@@ -58,21 +87,33 @@ const artSrc = (id?: string): string => {
   return `${base}art/${id}.jpg`
 }
 
-/** 这台设备/这个设置下能不能跑真 3D（失败就继续 2.5D，不报错） */
+/** WebGL 能力只探测一次：避免每次 render 都建 canvas/丢 context */
+let webglSupport: boolean | null = null
+function hasWebGL(): boolean {
+  if (webglSupport !== null) return webglSupport
+  try {
+    const canvas = document.createElement('canvas')
+    const gl = canvas.getContext('webgl2') ?? canvas.getContext('webgl')
+    if (!gl) {
+      webglSupport = false
+      return false
+    }
+    const lose = (gl as WebGLRenderingContext).getExtension('WEBGL_lose_context')
+    lose?.loseContext()
+    webglSupport = true
+    return true
+  } catch {
+    webglSupport = false
+    return false
+  }
+}
+
+/** 当前设备/设置下能不能显示「3D 视角」入口（失败就继续 2.5D，不报错） */
 function canUse3D(): boolean {
   if (typeof window === 'undefined') return false
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
   if (window.innerWidth < 700) return false
-  try {
-    const canvas = document.createElement('canvas')
-    const gl = canvas.getContext('webgl2') ?? canvas.getContext('webgl')
-    if (!gl) return false
-    const lose = (gl as WebGLRenderingContext).getExtension('WEBGL_lose_context')
-    lose?.loseContext()
-    return true
-  } catch {
-    return false
-  }
+  return hasWebGL()
 }
 
 /** 结局页插画：每个结局取 manifest 里该结局的第 1 张（ending-0xx，见 docs/art/image-manifest.json） */
@@ -96,6 +137,7 @@ const COMPOSITE_HINT: Record<string, string> = {
   wordofmouth: '带走旗样与那句口信，两样一起交',
 }
 
+const CURTAIN_OPEN: CurtainOpts = { coverMs: 700, holdMs: 200, revealMs: 700 }
 const CURTAIN_CHAPTER: CurtainOpts = { coverMs: 1200, holdMs: 320, revealMs: 1300 }
 const CURTAIN_ENDING: CurtainOpts = { coverMs: 1500, holdMs: 600, revealMs: 1600 }
 
@@ -163,7 +205,7 @@ export default function App() {
   const [laterId, setLaterId] = useState<string | null>(null)
   const [finaleDone, setFinaleDone] = useState(true)
   const [finaleKey, setFinaleKey] = useState(0)
-  const [view3d, setView3d] = useState(false)
+  const [view3dScene, setView3dScene] = useState<string | null>(null)
   // 默认静音（评审环境不突然出声）；用户点右下角「声音」才开启
   const [audioOn, setAudioOn] = useState(() => !isMuted())
   const curtain = useRef<CurtainHandle>(null)
@@ -176,14 +218,10 @@ export default function App() {
     if (next) void unlockAudio()
   }
 
-  // 换场景就回 2.5D，避免下一场无意中停在 3D 背景上
+  // 换场景天然回落 2.5D：view3dScene 只对当时那个场景有效，不做晚一拍的 effect 复位
   const sceneId = state.sceneId
-  useEffect(() => {
-    setView3d(false)
-  }, [sceneId])
-
   const scene3dSpec = useMemo(() => (screen === 'game' ? getScene3D(sceneId) : null), [screen, sceneId])
-  const show3d = view3d && Boolean(scene3dSpec)
+  const show3d = view3dScene === sceneId && Boolean(scene3dSpec)
 
   /** 点击效果的种类：结局 > 记忆载体 > 场景天气兜底，保证每次点击的动效都不同 */
   const burstKindFor = (choice?: Choice): BurstKind => {
@@ -221,26 +259,6 @@ export default function App() {
       swap()
     }
   }
-
-  // 键盘操作：1-4 选择，Enter/空格 继续
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (screen !== 'game' || !scene) return
-      if (state.pendingOutcome) {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault()
-          onAdvance()
-        }
-        return
-      }
-      const index = Number.parseInt(event.key, 10)
-      if (!Number.isNaN(index) && index >= 1 && index <= (scene.choices?.length ?? 0)) {
-        event.preventDefault()
-        onChoose(scene.choices![index - 1].id)
-      }    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  })
 
   useEffect(() => {
     setResumeAvailable(hasSave())
@@ -283,7 +301,7 @@ export default function App() {
   // 窗口缩到 700px 以下时自动退出 3D（避免手机宽度还挂着 WebGL）
   useEffect(() => {
     const onResize = () => {
-      if (window.innerWidth < 700) setView3d(false)
+      if (window.innerWidth < 700) setView3dScene(null)
     }
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
@@ -323,7 +341,7 @@ export default function App() {
         setScreen('game')
         setSourcePanel(null)
       },
-      CURTAIN_CHAPTER,
+      CURTAIN_OPEN,
     )
   }
 
@@ -381,12 +399,39 @@ export default function App() {
     )
   }
 
+  // 键盘操作：1-9 选择，Enter/空格 继续。
+  // 监听器只挂一次，用 ref 读最新状态，避免每次 render 重挂。
+  const keyState = useRef({ screen, scene, pending: state.pendingOutcome, onAdvance, onChoose })
+  keyState.current = { screen, scene, pending: state.pendingOutcome, onAdvance, onChoose }
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const { screen, scene, pending, onAdvance, onChoose } = keyState.current
+      if (screen !== 'game' || !scene) return
+      if (pending) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onAdvance()
+        }
+        return
+      }
+      const index = Number.parseInt(event.key, 10)
+      if (!Number.isNaN(index) && index >= 1 && index <= (scene.choices?.length ?? 0)) {
+        event.preventDefault()
+        onChoose(scene.choices![index - 1].id)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   const restart = () => {
     clearSave()
     startNew()
   }
 
   const toMenu = () => {
+    // 回菜单时重算：避免「玩到结局后回开头」看不到「继续上次」
+    setResumeAvailable(hasSave())
     setScreen('menu')
     setSourcePanel(null)
   }
@@ -412,7 +457,7 @@ export default function App() {
       <aside className="source-panel" role="dialog" aria-modal="false" aria-label="史料卡">
         <div className="source-panel-head">
           <span className="eyebrow">史料卡</span>
-          <button className="text-button" onClick={() => setSourcePanel(null)}>
+          <button className="text-button" autoFocus onClick={() => setSourcePanel(null)}>
             关闭
           </button>
         </div>
@@ -472,7 +517,7 @@ export default function App() {
     const hasOutcome = state.pendingOutcome !== null
 
     return (
-      <div className={`scene ${show3d ? 'scene-in-3d' : ''}`} data-scene={scene.id}>
+      <div key={scene.id} className={`scene ${show3d ? 'scene-in-3d' : ''}`} data-scene={scene.id}>
         <p className="sr-only" aria-live="polite">
           {`${scene.chapter} · ${scene.title}`}
         </p>
@@ -493,7 +538,7 @@ export default function App() {
               type="button"
               className={`view3d-toggle ${show3d ? 'on' : ''}`}
               aria-pressed={show3d}
-              onClick={() => setView3d((value) => !value)}
+              onClick={() => setView3dScene((current) => (current === sceneId ? null : sceneId))}
             >
               {show3d ? '回到 2.5D' : '3D 视角'}
             </button>
@@ -1074,9 +1119,11 @@ export default function App() {
           mode3d={show3d}
           scene3d={
             show3d && scene3dSpec ? (
-              <Suspense fallback={null}>
-                <Scene3D variant={scene3dSpec.variant} />
-              </Suspense>
+              <Scene3DBoundary onError={() => setView3dScene(null)}>
+                <Suspense fallback={null}>
+                  <Scene3D variant={scene3dSpec.variant} />
+                </Suspense>
+              </Scene3DBoundary>
             ) : null
           }
         >

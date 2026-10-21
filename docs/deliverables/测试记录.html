@@ -46,7 +46,7 @@ a { color: #8a2b22; text-decoration: none; }
 <div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
 <p>﻿# 测试记录（自动化）</p>
 <blockquote>
-<p>生成时间：2026-10-21 凌晨；<strong>2026-10-22 更新</strong>：补入真 3D、音效、子目录部署与降级测试；走路测试复跑为 308 步。
+<p>生成时间：2026-10-21 凌晨；<strong>2026-10-22 更新</strong>：补入真 3D、音效、子目录部署与降级测试；走路测试复跑 115 场景到「名册」、0 错误。
 数字基线：<code>docs/report/2026-10-22-afternoon-metrics.json</code>（12:58:28）。所有数字均可用仓库内脚本复现；Playwright 装在开发机全局（未列入 <code>package.json</code>），干净环境需先自行安装。</p>
 </blockquote>
 <h2 id="_1">一、环境</h2>
@@ -77,10 +77,10 @@ a { color: #8a2b22; text-decoration: none; }
 </tbody>
 </table>
 <h2 id="_2">二、全流程走路测试（主链可达性）</h2>
-<pre><code>steps: 307
+<pre><code>steps: 576（含换场幕重试；步数不是验收指标）
 unique scenes visited: 115
 ending: 名册
-elapsed seconds: 151
+elapsed seconds: 308
 errors: none
 </code></pre>
 <ul>
@@ -125,7 +125,7 @@ errors: none
 </tr>
 <tr>
 <td><code>node tools/count-words-strict.mjs</code></td>
-<td>严格正文 <strong>113,161</strong> 汉字（只统计玩家读到的 paragraphs）</td>
+<td>严格正文 <strong>113,048</strong> 汉字（只统计玩家读到的 paragraphs）</td>
 </tr>
 <tr>
 <td><code>npx tsc -p tsconfig.app.json --noEmit</code></td>
@@ -159,17 +159,17 @@ errors: none
 </tr>
 <tr>
 <td>JS 主包（含 11.3 万字正文、9 个结局、76 张史料卡与交互组件）</td>
-<td>845.59 kB</td>
-<td>298.0 kB</td>
+<td>847.26 kB</td>
+<td>298.5 kB</td>
 </tr>
 <tr>
 <td>3D 懒加载（Scene3D-BkEU69la.js）</td>
 <td>591.99 kB</td>
-<td>150.66 kB</td>
+<td>171.1 kB</td>
 </tr>
 <tr>
 <td>dist 总计（496 张美术素材 + 8 张背景图 + 28 条音效 + GLB）</td>
-<td>545 个文件 / 23.46 MB</td>
+<td>545 个文件 / 23.47 MB</td>
 <td>—</td>
 </tr>
 </tbody>
@@ -251,11 +251,44 @@ PASS: ok
 <h2 id="_10">十一、已知限制（如实记录）</h2>
 <ul>
 <li>单周目 2—3 小时，走路测试用了「连点继续」的机械策略，不代表真实阅读速度。</li>
-<li>§二 的 308 步 / 151 秒为 2026-10-22 复跑结果；2026-10-21 09:39 审计快照中记录的 319 步来自旧的一轮，已作废。</li>
+<li>走路测试的「步数」会随换场重试与动画时长波动（307—576 步都出现过），只以「115 场景到「名册」、0 错误」为验收口径；2026-10-21 审计快照里的 319 步来自旧一轮，已作废。</li>
 <li>3D 帧率以 <code>tools/3d/shots/perf.json</code> 与 <code>test-3d.mjs</code>（App 内 81—148 fps）为准；<code>docs/report/2026-10-22-3d-slices.md</code> 已同步为同一组数字。</li>
-<li>volume3/volume4 的严格字数低于规划目标（12,816 / 4,148 vs 20,000 / 12,000），属取舍：总量 113,161 已达标，质量审计优先。</li>
+<li>volume3/volume4 的严格字数低于规划目标（12,816 / 4,148 vs 20,000 / 12,000），属取舍：总量 113,048 已达标，质量审计优先。</li>
 <li>volume2 的文学评分采用「全量扫描 + 代表场抽读」，未逐场五维重评。</li>
 <li>场景插画为本地生成，非历史照片；图片不承担史实表述。</li>
 <li>3 个合成结局与交互/3D/音频层在双轨审计冻结后新增，只做人工自查（见 <code>docs/audit/2026-10-22-post-audit-addendum.md</code>）。</li>
 </ul>
+<h2 id="2026-10-22-v14">十二、2026-10-22 夜间复审轮（v1.4）</h2>
+<p>三份独立复审报告：docs/report/2026-10-22-story-rules-review.md、2026-10-22-animation-review.md、2026-10-22-3d-loading-review.md。</p>
+<table>
+<thead>
+<tr>
+<th>轮次</th>
+<th>结论</th>
+<th>关键修复</th>
+<th>证据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>剧情/规则</td>
+<td>P0=0；死路 0；存档续玩通过</td>
+<td>照片/家书保管链三方矛盾、旗样方位、名册保管链、账本封顶（roster 84→5）、13 处文本硬伤</td>
+<td>18 处修改；check-volumes / 9 结局 9/9 / walk 115 场景</td>
+</tr>
+<tr>
+<td>动画/交互</td>
+<td>5 类缺陷全修</td>
+<td>墨幕连点跳场、@2× 换场掉帧（单帧像素 −53%）、reduced-motion 终极画面黑屏、终极画面 8.46s→6.2s、9 种 hover 失效、空闲 64→234fps</td>
+<td>41 张取证帧 + docs/report/anim-check.json</td>
+</tr>
+<tr>
+<td>3D 加载</td>
+<td>GLB 链路干净；App 侧 2 项已修</td>
+<td>GLB 比例 −9.8%、context lost 永久黑屏、GLB/贴图泄漏、重复请求（二次 0 请求）、lazy chunk 失败白屏（ErrorBoundary）</td>
+<td>tools/3d/shots/review/ 51 张 + 5 切片 test-3d 全 pass</td>
+</tr>
+</tbody>
+</table>
+<p>最终回归：lead-audit 11/11（键盘/存档异常/图鉴 9 格/3D 反复开关无泄漏/GLB 缓存/404 回退/localStorage 禁用）；test-3d-chunk-fail PASS；子目录部署 0 failed；减少动效/390px PASS；对比度全 PASS。</p>
 </div></body></html>

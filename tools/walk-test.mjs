@@ -23,7 +23,25 @@ await page.evaluate(() => localStorage.clear())
 await page.reload({ waitUntil: 'networkidle' })
 await page.waitForTimeout(500)
 await page.getByRole('button', { name: '从头开始' }).click()
-await page.waitForTimeout(400)
+await page.waitForTimeout(2200)
+
+/** 换场幕可能盖住按钮：点击失败就等一会重试，最多 3 次，再不行 force */
+async function safeClick(locator) {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      await locator.click({ timeout: 2500 })
+      return true
+    } catch {
+      await page.waitForTimeout(400)
+    }
+  }
+  try {
+    await locator.click({ force: true, timeout: 1500 })
+    return true
+  } catch {
+    return false
+  }
+}
 
 const scenes = new Set()
 let steps = 0
@@ -41,8 +59,14 @@ for (let guard = 0; guard < 900; guard += 1) {
   if (await sceneEl.isVisible().catch(() => false)) {
     const id = await sceneEl.getAttribute('data-scene')
     if (id) scenes.add(id)
-    const count = await page.locator('.choice').count()
-    const continueCount = await page.locator('.continue').count()
+    let count = await page.locator('.choice').count()
+    let continueCount = await page.locator('.continue').count()
+    // 换场幕/入场动画期间 DOM 可能还没长出按钮：给最多 1.8s，别误判死路
+    for (let retry = 0; retry < 6 && count === 0 && continueCount === 0; retry += 1) {
+      await page.waitForTimeout(300)
+      count = await page.locator('.choice').count()
+      continueCount = await page.locator('.continue').count()
+    }
     if (count === 0 && continueCount === 0 && id) {
       // 无选项、无继续 = 死路
       struck = { scene: id, reason: 'no choices / no continue' }
@@ -52,16 +76,16 @@ for (let guard = 0; guard < 900; guard += 1) {
 
   const cont = page.locator('.continue')
   if (await cont.isVisible().catch(() => false)) {
-    await cont.click()
-    await page.waitForTimeout(160)
+    await safeClick(cont)
+    await page.waitForTimeout(180)
     steps += 1
     continue
   }
 
   const choice = page.locator('.choice').first()
   if (await choice.isVisible().catch(() => false)) {
-    await choice.click()
-    await page.waitForTimeout(160)
+    await safeClick(choice)
+    await page.waitForTimeout(180)
     steps += 1
     continue
   }

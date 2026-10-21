@@ -1,4 +1,4 @@
-﻿import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 
 export type CurtainOpts = {
   /** 墨合拢 */
@@ -19,6 +19,14 @@ type Props = {
 }
 
 const INK = '#16130f'
+
+/**
+ * 幕布的 dpr 上限。
+ * 换场是整屏 overdraw（7 块墨 + 天气平铺），像素量随 dpr² 涨：
+ * 实测 1600×1000 @2× 时墨幕只剩 20–28fps、掉帧 87–96%；@1× 是 105fps。
+ * 幕布上只有模糊的墨/雪/烟纹理，1.5× 与 2× 肉眼无差，所以这里比粒子层收得更紧。
+ */
+const MAX_DPR = 1.5
 
 /** 墨前沿锚点：从四边四角向画面中心推进 */
 const ANCHORS = [
@@ -130,28 +138,44 @@ function makeFlakeTile(color: string, count: number, minR: number, maxR: number,
 }
 
 function makeSmokeTile(): HTMLCanvasElement {
-  const w = 512
-  const tile = document.createElement('canvas')
-  tile.width = w
-  tile.height = w
-  const ctx = tile.getContext('2d')
-  if (!ctx) return tile
+  const w = 768
+  const shape = document.createElement('canvas')
+  shape.width = w
+  shape.height = w
+  const sx = shape.getContext('2d')
+  if (!sx) return shape
+  // 每团烟在九宫格里重复画一遍（含出界的那 8 份），模糊后接缝处仍然连续，
+  // 否则平铺时能看见 512px 的方格（实测截图有明显网格）。
+  const blobs = Array.from({ length: 26 }, () => ({
+    x: Math.random() * w,
+    y: Math.random() * w,
+    r: 40 + Math.random() * 90,
+    a: 0.07 + Math.random() * 0.12,
+  }))
+  for (const blob of blobs) {
+    sx.fillStyle = `rgba(120,116,108,${blob.a})`
+    for (const dx of [-w, 0, w]) {
+      for (const dy of [-w, 0, w]) {
+        sx.beginPath()
+        sx.arc(blob.x + dx, blob.y + dy, blob.r, 0, Math.PI * 2)
+        sx.fill()
+      }
+    }
+  }
+  // 模糊只做一次（整张烘焙），运行时不再碰 filter
+  const out = document.createElement('canvas')
+  out.width = w
+  out.height = w
+  const ox = out.getContext('2d')
+  if (!ox) return out
   try {
-    ctx.filter = 'blur(22px)'
+    ox.filter = 'blur(18px)'
   } catch {
     /* ignore */
   }
-  for (let i = 0; i < 22; i += 1) {
-    const x = Math.random() * w
-    const y = Math.random() * w
-    const r = 40 + Math.random() * 90
-    ctx.fillStyle = `rgba(120,116,108,${0.07 + Math.random() * 0.12})`
-    ctx.beginPath()
-    ctx.arc(x, y, r, 0, Math.PI * 2)
-    ctx.fill()
-  }
-  ctx.filter = 'none'
-  return tile
+  ox.drawImage(shape, 0, 0)
+  ox.filter = 'none'
+  return out
 }
 
 export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
@@ -165,12 +189,16 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
   const ashRef = useRef<HTMLCanvasElement | null>(null)
   const smokeRef = useRef<HTMLCanvasElement | null>(null)
   const runningRef = useRef(false)
+  /** 幕布此刻是否已经换过场（cover 之后为 true）；后到的播放请求靠它决定"排队还是直接执行" */
+  const swappedRef = useRef(false)
+  /** 幕布播放期间又来的换场请求：排到 hold 那一帧，避免墨没盖住就换内容（跳场） */
+  const pendingSwapRef = useRef<(() => void) | null>(null)
   const sizeRef = useRef({ dpr: 1, w: 0, h: 0 })
 
   const resize = () => {
     const canvas = canvasRef.current
     if (!canvas) return
-    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR)
     const w = Math.round(canvas.clientWidth * dpr)
     const h = Math.round(canvas.clientHeight * dpr)
     canvas.width = w
@@ -217,7 +245,15 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
     () => ({
       play(swap: () => void, opts: CurtainOpts = {}) {
         if (runningRef.current) {
-          swap()
+          // 幕布正在跑：**不能**在这里直接 swap——墨还没盖住就把内容换掉，
+          // 用户会看到新页面从半透明的墨里弹出来（实测连点/连续 Enter 时 288–410ms 就跳场）。
+          // 还在 cover 段就排到 hold 那一帧执行（那时已全黑，看不出换场）；
+          // 已经过了 hold 就直接执行（此时画面基本被墨盖住）。
+          if (!swappedRef.current) {
+            pendingSwapRef.current = swap
+          } else {
+            swap()
+          }
           return Promise.resolve()
         }
 
@@ -247,6 +283,7 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
         const root = document.documentElement
         const started = performance.now()
         runningRef.current = true
+        swappedRef.current = false
         canvas.setAttribute('data-live', '1')
 
         const drawInk = (scaleMul: number, alpha: number) => {
@@ -265,6 +302,9 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
           ctx.globalAlpha = 1
         }
 
+        let weatherPattern: CanvasPattern | null = null
+        let weatherPattern2: CanvasPattern | null = null
+
         const drawWeather = (phase: number, strength: number) => {
           if (variant === 'ink') return
           const tile =
@@ -276,36 +316,74 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
                   ? ashRef.current
                   : smokeRef.current
           if (!tile) return
+          if (!weatherPattern) weatherPattern = ctx.createPattern(tile, 'repeat')
+          if (!weatherPattern) return
+          // 整屏一次 fillRect（旧写法每帧 12–25 次 drawImage，@2× 时是掉帧主因）。
+          // 平铺按 dpr 放大、位移取模，视觉与逐块平铺一致。
           const s = tile.width * dpr
           const vx = variant === 'ash' ? -Math.round(s * 0.28) : variant === 'smoke' ? Math.round(s * 0.09) : 0
           const vy = variant === 'smoke' ? Math.round(s * 0.05) : Math.round(s * 0.35)
           const offsetX = (((phase * vx) % s) + s) % s
           const offsetY = (((phase * vy) % s) + s) % s
-          ctx.globalAlpha = (variant === 'smoke' ? 0.5 : 0.62) * strength
+          ctx.save()
+          // 烟要留出墨的暗度：0.5 时整屏灰到 mean≈73，像一块灰布而不是墨
+          ctx.globalAlpha = (variant === 'smoke' ? 0.28 : 0.62) * strength
           if (variant === 'rain') ctx.globalCompositeOperation = 'lighter'
-          for (let y = -s; y < H + s; y += s) {
-            for (let x = -s; x < W + s; x += s) {
-              ctx.drawImage(tile, x + offsetX, y + offsetY, s, s)
-            }
-          }
-          ctx.globalCompositeOperation = 'source-over'
-          ctx.globalAlpha = 1
+          ctx.setTransform(dpr, 0, 0, dpr, offsetX, offsetY)
+          ctx.fillStyle = weatherPattern
+          ctx.fillRect(0, 0, W / dpr + tile.width, H / dpr + tile.height)
+          ctx.restore()
+
+          if (variant !== 'smoke') return
+          // 第二层烟：同一张瓦片按 1.37 倍平铺、反向漂移。
+          // 单张瓦片平铺能明显看出 768px 的重复（像墙纸），第二层周期 1052px，
+          // 两者叠在一起就看不出一致的重复了；两层都是整屏一次 fillRect。
+          if (!weatherPattern2) weatherPattern2 = ctx.createPattern(tile, 'repeat')
+          if (!weatherPattern2) return
+          const s2 = s * 1.37
+          const ox = (((phase * -Math.round(s2 * 0.07)) % s2) + s2) % s2
+          const oy = (((phase * Math.round(s2 * 0.04)) % s2) + s2) % s2
+          ctx.save()
+          ctx.globalAlpha = 0.16 * strength
+          ctx.setTransform(s2, 0, 0, s2, ox, oy)
+          ctx.fillStyle = weatherPattern2
+          ctx.fillRect(0, 0, W / s2 + tile.width, H / s2 + tile.height)
+          ctx.restore()
         }
 
         return new Promise<void>((resolve) => {
           let swapped = false
 
+          const commitSwap = () => {
+            if (swapped) return
+            swapped = true
+            swappedRef.current = true
+            root.style.setProperty('--push', '1.04')
+            swap()
+            const extra = pendingSwapRef.current
+            pendingSwapRef.current = null
+            if (extra) extra()
+          }
+
           const finish = () => {
+            ctx.setTransform(1, 0, 0, 1, 0, 0)
             ctx.clearRect(0, 0, W, H)
             root.style.removeProperty('--push')
             canvas.setAttribute('data-live', '0')
             runningRef.current = false
+            swappedRef.current = false
+            pendingSwapRef.current = null
             resolve()
           }
 
           const frame = (now: number) => {
             const elapsed = now - started
+            ctx.setTransform(1, 0, 0, 1, 0, 0)
             ctx.clearRect(0, 0, W, H)
+
+            // 掉帧 / 标签页切后台时 rAF 会跳段：换场必须在 cover 之后补上，
+            // 否则这一场会"没换过去"（旧写法只在 hold 分支里 swap，跳过 hold 就永远不换）。
+            if (elapsed >= coverMs) commitSwap()
 
             if (elapsed < coverMs) {
               const p = easeOutCubic(elapsed / coverMs)
@@ -320,11 +398,6 @@ export const InkCurtain = forwardRef<CurtainHandle, Props>(function InkCurtain(
               ctx.fillStyle = INK
               ctx.fillRect(0, 0, W, H)
               drawWeather((elapsed - coverMs) / holdMs, 1)
-              if (!swapped) {
-                swap()
-                root.style.setProperty('--push', '1.04')
-                swapped = true
-              }
             } else if (elapsed < coverMs + holdMs + revealMs) {
               const q = easeInCubic((elapsed - coverMs - holdMs) / revealMs)
               ctx.fillStyle = INK

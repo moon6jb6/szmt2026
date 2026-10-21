@@ -82,7 +82,7 @@ a { color: #8a2b22; text-decoration: none; }
 <td>4</td>
 <td>作品评审视频（≤5 分钟，1080P，MP4）</td>
 <td>❌ 未录</td>
-<td>脚本 <code>docs/deliverables/评审视频脚本.md</code>（v1.2，已按 140 场景 / 113,161 字 / 九结局 + 3D + 音效更新，旁白实测 1,221 字）；需录屏 + 旁白 + 字幕后导出 1080P MP4</td>
+<td>脚本 <code>docs/deliverables/评审视频脚本.md</code>（v1.2，已按 140 场景 / 113,048 字 / 九结局 + 3D + 音效更新，旁白实测 1,221 字）；需录屏 + 旁白 + 字幕后导出 1080P MP4</td>
 </tr>
 <tr>
 <td>5</td>
@@ -94,13 +94,13 @@ a { color: #8a2b22; text-decoration: none; }
 <td>6</td>
 <td>参赛打包文件（ZIP/RAR/7Z，≤10GB）</td>
 <td>⏳ 待打包</td>
-<td>打包器 <code>tools/package.mjs</code> 已就绪并试打包成功（573 文件 / 29.28 MiB，含 <code>dist/</code> 原样 544 文件，含 UTF-8 文件名标志位）；试包输出在 workspace <code>trash/_package-test-2026-10-22/</code>、<strong>未提交</strong>，正式 ZIP 待作品编号确定后重跑（见 <code>docs/report/2026-10-22-package-manifest.json</code>）</td>
+<td>打包器 <code>tools/package.mjs</code> 已就绪并试打包成功（573 文件 / 29.28 MiB，含 <code>dist/</code> 原样 545 文件，含 UTF-8 文件名标志位）；试包输出在 workspace <code>trash/_package-test-2026-10-22/</code>、<strong>未提交</strong>，正式 ZIP 待作品编号确定后重跑（见 <code>docs/report/2026-10-22-package-manifest.json</code>）</td>
 </tr>
 <tr>
 <td>7</td>
 <td>作品及成果文件（包内必含）</td>
 <td>✅ 已构建</td>
-<td><code>dist/</code>（index.html + assets + art + bg + audio），<strong>545 个文件 / 23.46 MB</strong>；主包 JS 844.87 kB（gzip 297.69 kB），3D 懒加载 150.66 kB gzip</td>
+<td><code>dist/</code>（index.html + assets + art + bg + audio），<strong>545 个文件 / 23.47 MB</strong>；主包 JS 847.26 kB（gzip 298.5 kB），3D 懒加载 171.1 kB gzip</td>
 </tr>
 <tr>
 <td>8</td>
@@ -124,7 +124,7 @@ a { color: #8a2b22; text-decoration: none; }
 <td>11</td>
 <td>补充成果材料（按需）</td>
 <td>✅ 已备</td>
-<td>截图（10 张，含真 3D 视角与结局终极画面）、走路测试记录（308 步 / 115 场景 / 151 秒到「名册」）、九结局 9/9 测试、113,161 字严格字数统计、140 场景结构校验、76 张史料卡、双轨审计报告（<code>docs/audit/</code> 36 份 md + 8 个工具）、500 条图片总谱与质检报告（入屏 158 张 VLM 质检、95.6% 可用）、五个真 3D 场景报告（含 Blender 导出 GLB）、28 条本地生成音效（4.88 MB）与 manifest、子目录部署与减少动效验证记录</td>
+<td>截图（10 张，含真 3D 视角与结局终极画面）、走路测试记录（115 场景到「名册」/ 0 错误）、九结局 9/9 测试、113,048 字严格字数统计、140 场景结构校验、76 张史料卡、双轨审计报告（<code>docs/audit/</code> 36 份 md + 8 个工具）、500 条图片总谱与质检报告（入屏 158 张 VLM 质检、95.6% 可用）、五个真 3D 场景报告（含 Blender 导出 GLB）、28 条本地生成音效（4.88 MB）与 manifest、子目录部署与减少动效验证记录</td>
 </tr>
 <tr>
 <td>12</td>
@@ -147,7 +147,7 @@ a { color: #8a2b22; text-decoration: none; }
 </tbody>
 </table>
 <blockquote>
-<p><strong>交付文件现状（2026-10-22 12:58 基线）</strong>：<code>docs/deliverables/*.pdf</code> <strong>12 份</strong>（12:58:32—12:59:01），其中进打包目录的是 <strong>5 份</strong>（作品介绍 / 运行说明 / 测试记录 / 第三方资源说明 / AI使用说明），其余 7 份为内部或补充材料（规则见 <code>docs/deliverables/打包说明.md</code>）；截图 <strong>10 张</strong>；<code>dist/</code> <strong>544 文件 / 23.46 MB</strong>；评审视频 <strong>0 个</strong>；正式压缩包 <strong>0 个</strong>（13:13 有一次输出到 workspace <code>trash/</code> 的试打包，未提交）；报名系统信息与承诺书 <strong>未办</strong>。所有 PDF 需在本文档定稿后重出。</p>
+<p><strong>交付文件现状（2026-10-22 12:58 基线）</strong>：<code>docs/deliverables/*.pdf</code> <strong>13 份</strong>（含打包说明），其中进打包目录的是 <strong>5 份</strong>（作品介绍 / 运行说明 / 测试记录 / 第三方资源说明 / AI使用说明），其余 7 份为内部或补充材料（规则见 <code>docs/deliverables/打包说明.md</code>）；截图 <strong>10 张</strong>；<code>dist/</code> <strong>545 文件 / 23.47 MB</strong>；评审视频 <strong>0 个</strong>；正式压缩包 <strong>0 个</strong>（13:13 有一次输出到 workspace <code>trash/</code> 的试打包，未提交）；报名系统信息与承诺书 <strong>未办</strong>。所有 PDF 需在本文档定稿后重出。</p>
 </blockquote>
 <h2 id="_2">二、参赛打包文件目录（建议）</h2>
 <pre><code>作品名称_作品编号/
@@ -164,7 +164,7 @@ a { color: #8a2b22; text-decoration: none; }
 │   └─ 运行说明.pdf
 ├─ 05_补充成果材料/
 │   ├─ screenshots/           # 10 张作品截图
-│   ├─ 测试记录.pdf / .md     # 走路测试（308 步）+ 九结局 + 3D + 音效 + 部署/降级
+│   ├─ 测试记录.pdf / .md     # 走路测试（115 场景到结局）+ 九结局 + 3D + 音效 + 部署/降级
 │   ├─ 审计报告/              # FINAL-fact / FINAL-literary 等（36 份 md）
 │   └─ 美术报告/              # visual-bible、manifest 说明、质检报告
 ├─ 06_第三方资源说明/
@@ -173,7 +173,7 @@ a { color: #8a2b22; text-decoration: none; }
     └─ AI使用说明.pdf
 </code></pre>
 <blockquote>
-<p><code>dist/</code> 总 <strong>544 文件 / 23.46 MB</strong>（index.html 1 + assets 3 + art 496 + bg 16 + audio 28），打包后仍远低于 10GB 上限。</p>
+<p><code>dist/</code> 总 <strong>545 文件 / 23.47 MB</strong>（index.html 1 + assets 3 + art 496 + bg 16 + audio 28），打包后仍远低于 10GB 上限。</p>
 </blockquote>
 <h2 id="_3">三、匿名化检查</h2>
 <ul>
@@ -187,10 +187,10 @@ a { color: #8a2b22; text-decoration: none; }
 </blockquote>
 <h2 id="_4">四、提交前技术检查</h2>
 <ul>
-<li>[x] <code>npm run build</code> 零报错（tsc 0 错误；dist 544 文件 / 23.46 MB）</li>
-<li>[x] <code>node tools/walk-test.mjs &lt;url&gt;</code> 到达结局「名册」（308 步 / 115 场景 / 151 秒）、0 控制台错误</li>
+<li>[x] <code>npm run build</code> 零报错（tsc 0 错误；dist 545 文件 / 23.47 MB）</li>
+<li>[x] <code>node tools/walk-test.mjs &lt;url&gt;</code> 到达结局「名册」（115 场景到「名册」/ 0 错误（自动化点击含过渡重试））、0 控制台错误</li>
 <li>[x] <code>node tools/check-volumes.mjs</code> 通过（140 场景、next 328 条全部有效、sources 381 条全部存在）</li>
-<li>[x] <code>node tools/count-words-strict.mjs</code> 严格正文 ≥100,000（当前 113,161）</li>
+<li>[x] <code>node tools/count-words-strict.mjs</code> 严格正文 ≥100,000（当前 113,048）</li>
 <li>[x] 九结局全部可达（<code>node tools/ending-test-v3.mjs</code> 9/9 PASS，0 错误）</li>
 <li>[x] 本地静态服务器打开 dist/index.html 可正常运行（<code>test-deploy.mjs</code>：模拟子目录 + HTTP，0 failed requests）</li>
 <li>[x] 手机宽度（390px）下布局正常（<code>test-degrade.mjs</code> PASS，3D 按钮自动隐藏）</li>

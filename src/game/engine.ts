@@ -4,11 +4,37 @@ import {
   type GameState,
   type Ledger,
   type MemoryGain,
+  type MemoryKind,
   type Outcome,
   type SceneId,
 } from './types'
 
 export const SAVE_KEY = 'names-ledger-v1'
+
+/**
+ * 记忆账本上限（设计基线 v0.2 §6.1）：
+ * 名册 / 家书 / 口述 0—5，旗 / 照片 / 口信 0 | 1。
+ * 扩写后单场景 gain 仍是 1—2，140 个场景累加会把数值堆到八十多，
+ * 结局页「你带出来的 · 名册页 × 82」就说不通了，所以在引擎这一层封顶。
+ */
+const LEDGER_CAP: Record<MemoryKind, number> = {
+  roster: 5,
+  letters: 5,
+  flag: 1,
+  photo: 1,
+  testimony: 5,
+  message: 1,
+}
+
+/** 既用于累加后封顶，也用于读档时收敛旧档里的超限值 */
+export function clampLedger(ledger: Ledger): Ledger {
+  const next: Ledger = { ...ledger }
+  for (const key of Object.keys(LEDGER_CAP) as MemoryKind[]) {
+    const value = Number(next[key])
+    next[key] = Number.isFinite(value) ? Math.max(0, Math.min(LEDGER_CAP[key], value)) : 0
+  }
+  return next
+}
 
 export const INITIAL_STATE: GameState = {
   // 扩写后主线从序卷 v0-01 开始：v0-08 → prologue → v1-01 → … → night1
@@ -34,7 +60,7 @@ function applyGain(ledger: Ledger, gain?: MemoryGain): Ledger {
     const amount = gain[key] ?? 0
     next[key] = Math.max(0, next[key] + amount)
   }
-  return next
+  return clampLedger(next)
 }
 
 export function choose(
@@ -84,7 +110,7 @@ export function load(): GameState | null {
     if (!raw) return null
     const parsed = JSON.parse(raw) as GameState
     if (!parsed || typeof parsed.sceneId !== 'string') return null
-    return { ...INITIAL_STATE, ...parsed, ledger: { ...EMPTY_LEDGER, ...parsed.ledger } }
+    return { ...INITIAL_STATE, ...parsed, ledger: clampLedger({ ...EMPTY_LEDGER, ...parsed.ledger }) }
   } catch {
     return null
   }

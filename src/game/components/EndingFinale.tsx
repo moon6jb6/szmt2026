@@ -45,6 +45,15 @@ export function EndingFinale({ kind, onDone }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [leaving, setLeaving] = useState(false)
   const doneRef = useRef(false)
+  /** onDone 每次 render 都是新函数；放进 ref，避免父组件任何一次重渲染就把 6 秒动画重头播 */
+  const onDoneRef = useRef(onDone)
+  onDoneRef.current = onDone
+  const timersRef = useRef<number[]>([])
+  const later = (fn: () => void, ms: number) => {
+    const id = window.setTimeout(fn, ms)
+    timersRef.current.push(id)
+    return id
+  }
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -104,7 +113,7 @@ export function EndingFinale({ kind, onDone }: Props) {
       if (doneRef.current) return
       doneRef.current = true
       setLeaving(true)
-      window.setTimeout(() => onDone(), 520)
+      later(() => onDoneRef.current(), 520)
     }
 
     const onKey = (event: KeyboardEvent) => {
@@ -516,11 +525,18 @@ export function EndingFinale({ kind, onDone }: Props) {
       ctx.fillRect(0, 0, W, H)
     }
 
+    const cleanup = () => {
+      window.removeEventListener('keydown', onKey)
+      // 卸载时把待触发的定时器一起清掉：跳过/切屏后不再回调已卸载的组件
+      for (const id of timersRef.current) window.clearTimeout(id)
+      timersRef.current = []
+    }
+
     if (reduce) {
-      // 无障碍：直接给最终帧，再进正文
+      // 无障碍：把最终帧画出来停住（CSS 里不能把画布藏掉，否则只剩一块黑），1.2s 后自动进正文
       draw(1)
-      window.setTimeout(finish, 1800)
-      return () => window.removeEventListener('keydown', onKey)
+      later(finish, 1200)
+      return cleanup
     }
 
     const started = performance.now()
@@ -538,24 +554,37 @@ export function EndingFinale({ kind, onDone }: Props) {
 
     return () => {
       cancelAnimationFrame(raf)
-      window.removeEventListener('keydown', onKey)
+      cleanup()
     }
-  }, [kind, onDone])
+  }, [kind])
 
   return (
     <div
       className={`finale ${leaving ? 'finale-out' : ''}`}
       role="presentation"
       onClick={() => {
-        if (!doneRef.current) {
-          doneRef.current = true
-          setLeaving(true)
-          window.setTimeout(onDone, 520)
-        }
+        if (doneRef.current) return
+        doneRef.current = true
+        setLeaving(true)
+        later(() => onDoneRef.current(), 520)
       }}
     >
       <canvas ref={canvasRef} className="finale-canvas" aria-hidden="true" />
-      <span className="finale-skip">点击跳过这段画面</span>
+      {/* 用真按钮而不是 <span>：键盘用户有一个可见焦点，Enter/空格能跳过，读屏也读得到 */}
+      <button
+        type="button"
+        className="finale-skip"
+        aria-label="跳过这段画面"
+        autoFocus
+        onClick={() => {
+          if (doneRef.current) return
+          doneRef.current = true
+          setLeaving(true)
+          later(() => onDoneRef.current(), 520)
+        }}
+      >
+        点击跳过这段画面
+      </button>
     </div>
   )
 }
