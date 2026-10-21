@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T14:43:04.949Z",
+  "generatedAt": "2026-10-21T17:43:18.774Z",
   "gitHead": "ref: refs/heads/main",
   "words": {
     "total": 113048,
@@ -79,38 +79,38 @@
     "license": "Stability AI Community License"
   },
   "build": {
-    "distFiles": 545,
-    "distMb": 23.47,
-    "jsBytes": 1517431,
-    "cssBytes": 20242,
+    "distFiles": 550,
+    "distMb": 24.59,
+    "jsBytes": 1576243,
+    "cssBytes": 105287,
     "jsAssets": [
-      "index-Bsy15f3S.js",
-      "Scene3D-DROvoQgS.js"
+      "index-QKy_DOCM.js",
+      "Scene3D-CqCb4Vvf.js"
     ],
     "assetSizes": [
       {
-        "name": "index-Bsy15f3S.js",
-        "raw": 847267,
-        "gzip": 298543
+        "name": "index-QKy_DOCM.js",
+        "raw": 906079,
+        "gzip": 318984
       },
       {
-        "name": "Scene3D-DROvoQgS.js",
+        "name": "Scene3D-CqCb4Vvf.js",
         "raw": 670164,
-        "gzip": 171131
+        "gzip": 171133
       }
     ],
     "mainJs": {
-      "name": "index-Bsy15f3S.js",
-      "raw": 847267,
-      "gzip": 298543
+      "name": "index-QKy_DOCM.js",
+      "raw": 906079,
+      "gzip": 318984
     },
     "scene3d": {
-      "name": "Scene3D-DROvoQgS.js",
+      "name": "Scene3D-CqCb4Vvf.js",
       "raw": 670164,
-      "gzip": 171131
+      "gzip": 171133
     },
-    "jsGzipEstimate": 298543,
-    "cssGzipEstimate": 5246
+    "jsGzipEstimate": 318984,
+    "cssGzipEstimate": 22288
   },
   "threeD": {
     "slices": [

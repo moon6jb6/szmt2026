@@ -154,6 +154,12 @@ await page.reload({ waitUntil: 'networkidle' })
 await page.waitForTimeout(400)
 await page.getByRole('button', { name: '继续上次' }).click()
 await page.waitForTimeout(2200)
+
+  // 第一夜签名覆盖层：测试先跳过，再进入原断言
+  if (await page.locator('.signature-overlay').isVisible().catch(() => false)) {
+    await page.keyboard.press('Escape')
+    await page.waitForTimeout(900)
+  }
 // 基线 canvas 数（Particles / ChoiceBurst / InkCurtain 各自一张）：在「已进场景、未进 3D」时取，
 // 否则菜单页和场景页的 canvas 数本来就不同，回退断言会误报
 const baselineCanvases = await page.evaluate(() => document.querySelectorAll('canvas').length)
@@ -266,6 +272,10 @@ await mobile.reload({ waitUntil: 'networkidle' })
 await mobile.waitForTimeout(400)
 await mobile.getByRole('button', { name: '继续上次' }).click()
 await mobile.waitForTimeout(2000)
+  if (await mobile.locator('.signature-overlay').isVisible().catch(() => false)) {
+    await mobile.keyboard.press('Escape')
+    await mobile.waitForTimeout(900)
+  }
 result.mobile.toggleVisible = await mobile.getByRole('button', { name: '3D 视角' }).isVisible().catch(() => false)
 result.mobile.threeDCanvas = await mobile.evaluate(() => document.querySelectorAll('canvas').length)
 console.log('mobile 3D toggle visible (expect false):', result.mobile.toggleVisible)

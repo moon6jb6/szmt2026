@@ -1,6 +1,6 @@
 # 2026-10-22 质量终审：性能 / 无障碍 / 健壮性
 
-> 对象：`dist/` 构建（13:08 构建，545 文件 / 23.47 MB；与工作区 `src/` 的差异见 [§3.5](#35-构建)），提交形态为「本地目录 + 子目录 HTTP」。
+> 对象：`dist/` 构建（13:08 构建，550 文件 / 24.59 MB；与工作区 `src/` 的差异见 [§3.5](#35-构建)），提交形态为「本地目录 + 子目录 HTTP」。
 > 方法：无头 Chrome 155（Playwright `channel=chrome`）+ CDP 4× CPU 限速 + 真实渲染像素采样；**只读审计，未改 `src/`**。
 > 数字源：`tools/quality/{bundle-split,perf,a11y,robust,reduced-motion}.json`；截图 `tools/quality/shots/`。
 > 严重度：P0 阻断交付 / P1 核心路径受损或合规风险、建议截止前修 / P2 记录、不阻塞。
@@ -230,5 +230,5 @@ node tools/quality/robust-check.mjs                # 断网 / localStorage 禁�
 - **P1-1 已修**：删除 `.choices` 的 `role="list"` 与每个选项的 `role="listitem"`，原生 button 语义与可访问名恢复。
 - **P1-2 已修**：`.scene-title` 加 `tabIndex={-1}`，换场后 280ms 将焦点交给标题；场景页新增 `aria-live="polite"` 播报（章节 + 标题）。
 - **P2 顺手修**：史料卡浮层支持 Esc 关闭；窗口缩到 <700px 自动退出 3D；移动端声音按钮下移并给正文留 72px 底部间距。
-- 修复后 `dist` 已重建（本轮 847.26 kB / gzip 298.5 kB），并由 `tools/quality/a11y-check.mjs` 复跑复核。
+- 修复后 `dist` 已重建（本轮 847.26 kB / gzip 319.0 kB），并由 `tools/quality/a11y-check.mjs` 复跑复核。
 - 未做（按你的建议）：按屏 lazy 拆包、Service Worker。

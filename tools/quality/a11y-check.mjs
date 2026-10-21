@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 无障碍终审（无头 Chrome / Playwright），不改 src。
  *
  * 用法：node tools/quality/a11y-check.mjs [url]
@@ -72,6 +72,15 @@ const activeInfo = () =>
   })
 
 // ---------------------------------------------------------------- 1. 键盘走查
+async function advanceBeats() {
+  for (let i = 0; i < 6; i += 1) {
+    const btn = page.getByRole('button', { name: /继续读/ })
+    if (!(await btn.isVisible().catch(() => false))) break
+    await btn.click()
+    await new Promise((r) => setTimeout(r, 650))
+  }
+}
+
 async function keyboardWalk() {
   const order = []
   for (let i = 0; i < 9; i += 1) {
@@ -88,6 +97,7 @@ async function keyboardWalk() {
   const scene1 = await page.locator('.scene').getAttribute('data-scene')
   const h1 = (await page.locator('.scene h1').innerText()).trim()
   await shot('a11y-scene-keyboard.png')
+  await advanceBeats()
   const afterScreenFocus = await activeInfo()
 
   const sceneTabOrder = []
@@ -111,6 +121,7 @@ async function keyboardWalk() {
   const focusAfterAdvance = await activeInfo()
 
   // 空格继续（下一场有选项时用空格不该误触发）
+  await advanceBeats()
   const choiceCount2 = await page.locator('.choice').count()
   if (choiceCount2 > 0) {
     const beforeSpace = await page.evaluate((key) => JSON.parse(localStorage.getItem(key) || 'null'), SAVE_KEY)
@@ -408,8 +419,17 @@ await page.getByRole('button', { name: '继续上次' }).click()
     await page.waitForTimeout(700)
   }
 await wait(1900)
-await page.locator('.choice').nth(8).click()
-await wait(600)
+// 尾声现在是 CarryTray（桌上实物），选第 9 件再点「交出去」
+if (await page.locator('.carry-tray').isVisible().catch(() => false)) {
+  const items = page.locator('button[aria-label*="结局："]')
+  if ((await items.count()) >= 9) await items.nth(8).click()
+  await wait(500)
+  const commit = page.locator('.carry-tray button', { hasText: '交出去' }).first()
+  if (await commit.isVisible().catch(() => false)) await commit.click()
+} else {
+  await page.locator('.choice').nth(8).click().catch(() => {})
+}
+await wait(700)
 await page.locator('.continue').click().catch(() => {})
 await page.waitForSelector('.finale', { timeout: 15000 }).catch(() => {})
 await wait(400)

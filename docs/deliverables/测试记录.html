@@ -291,4 +291,67 @@ PASS: ok
 </tbody>
 </table>
 <p>最终回归：lead-audit 11/11（键盘/存档异常/图鉴 9 格/3D 反复开关无泄漏/GLB 缓存/404 回退/localStorage 禁用）；test-3d-chunk-fail PASS；子目录部署 0 failed；减少动效/390px PASS；对比度全 PASS。</p>
+<h2 id="2026-10-22-v15">十三、2026-10-22 深夜 v1.5 新交互回归</h2>
+<table>
+<thead>
+<tr>
+<th>测试</th>
+<th>结果</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>node tools/verify-signature.mjs &lt;url&gt;</code></td>
+<td>PASS</td>
+<td>night1 灯下找名字 / night3 升旗 / 尾声托盘均可出现、可跳过、无报错</td>
+</tr>
+<tr>
+<td><code>node tools/verify-carry.mjs &lt;url&gt;</code></td>
+<td>PASS</td>
+<td>尾声 9 件实物、键盘选中+交付、到达结局页</td>
+</tr>
+<tr>
+<td><code>node tools/verify-explore.mjs &lt;url&gt;</code></td>
+<td>PASS</td>
+<td>场景探索：背景图 200、热点可点、开卡/退出、无报错</td>
+</tr>
+<tr>
+<td><code>node tools/verify-beats.mjs &lt;url&gt;</code></td>
+<td>PASS</td>
+<td>长段落分 3 组、键盘不跳场、footer 选项、mood 与剪影切换</td>
+</tr>
+<tr>
+<td><code>node tools/audio/verify-events.mjs &lt;dev-url&gt;</code></td>
+<td>32/32 PASS</td>
+<td>42 事件、28 条素材无死条、混音补偿、悬停限流、点缀冷却</td>
+</tr>
+<tr>
+<td><code>node tools/ending-test-v3.mjs &lt;url&gt;</code></td>
+<td>9/9 PASS</td>
+<td>尾声已改 CarryTray 后重跑</td>
+</tr>
+<tr>
+<td><code>node tools/walk-test.mjs &lt;url&gt;</code></td>
+<td>PASS</td>
+<td>115 场景到「名册」0 错误（自动跳过签名覆盖层）</td>
+</tr>
+<tr>
+<td><code>node tools/lead-audit.mjs &lt;url&gt;</code></td>
+<td>11/11 PASS</td>
+<td>键盘/坏存档/图鉴/3D 泄漏/GLB 缓存/404 回退/localStorage 禁用</td>
+</tr>
+<tr>
+<td><code>node tools/test-deploy.mjs</code> / <code>test-degrade.mjs</code> / <code>test-3d-chunk-fail.mjs</code> / <code>test-3d.mjs</code></td>
+<td>PASS</td>
+<td>子目录部署 / 减少动效 / chunk 失败不白屏 / 5 切片</td>
+</tr>
+<tr>
+<td><code>node tools/quality/a11y-check.mjs &lt;url&gt;</code></td>
+<td>PASS</td>
+<td>对比度全 PASS、错误 none</td>
+</tr>
+</tbody>
+</table>
+<p>新构建数字：dist <strong>550 文件 / 24.59 MB</strong>；主包 <strong>906.07 kB（gzip 319.0 kB）</strong>；3D 懒加载 <strong>670.16 kB（gzip 171.1 kB）</strong>；CSS <strong>105.28 kB（gzip 22.3 kB）</strong>。</p>
 </div></body></html>

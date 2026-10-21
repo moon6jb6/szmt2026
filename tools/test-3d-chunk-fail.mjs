@@ -27,6 +27,12 @@ await page.waitForTimeout(500)
 await page.getByRole('button', { name: '继续上次' }).click()
 await page.waitForTimeout(2000)
 
+  // 第一夜签名覆盖层：测试先跳过，再进入原断言
+  if (await page.locator('.signature-overlay').isVisible().catch(() => false)) {
+    await page.keyboard.press('Escape')
+    await page.waitForTimeout(900)
+  }
+
 const toggle = page.getByRole('button', { name: '3D 视角' })
 const canToggle = await toggle.isVisible().catch(() => false)
 if (canToggle) await toggle.click()

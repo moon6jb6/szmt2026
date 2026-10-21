@@ -27,7 +27,7 @@
 
 | 产物 | 位置 | 大小 / 数量 |
 |---|---|---|
-| 构建产物 | `dist/` | 545 文件 / 23.47 MB（主包 JS 847.26 kB → gzip 299.81 kB；3D chunk 151.76 kB gzip；CSS 4.94 kB gzip） |
+| 构建产物 | `dist/` | 550 文件 / 24.59 MB（主包 JS 847.26 kB → gzip 299.81 kB；3D chunk 151.76 kB gzip；CSS 22.3 kB gzip） |
 | 场景插画 | `public/art/`、`dist/art/` | 496 张 / 124 场景挂载 + 6 结局插画 |
 | 音效 | `public/audio/`、`dist/audio/` | 28 条 OGG / 4.88 MB + manifest |
 | 真 3D | lazy chunk + `tools/3d/` | 4 切片，程序化几何，无外部模型 |

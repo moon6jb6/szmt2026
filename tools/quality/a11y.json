@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T14:24:13.132Z",
+  "generatedAt": "2026-10-21T17:42:18.549Z",
   "url": "http://127.0.0.1:4173/",
   "semanticsMenu": {
     "label": "menu",
@@ -17,7 +17,7 @@
     ],
     "axRoles": {
       "RootWebArea": 1,
-      "generic": 2,
+      "generic": 3,
       "main": 1,
       "heading": 1,
       "paragraph": 3,
@@ -156,16 +156,31 @@
     "scene1": "v0-01",
     "h1": "便条",
     "afterScreenFocus": {
-      "tag": "h1",
-      "cls": "scene-title",
-      "name": "便条",
-      "role": "",
-      "ariaPressed": null,
-      "outline": "1px dashed rgba(200, 160, 99, 0.6)",
-      "focusVisible": true,
-      "inViewport": true
+      "tag": "BODY",
+      "name": "(body)",
+      "outline": ""
     },
     "sceneTabOrder": [
+      {
+        "tag": "button",
+        "cls": "choice",
+        "name": "1 翻开册子，从头数一遍。 看还认得几个",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "choice",
+        "name": "2 把便条再看一遍，出门追那个送信人。 问一句，参议会还叫了谁",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
       {
         "tag": "button",
         "cls": "choice",
@@ -205,24 +220,9 @@
         "outline": "2px solid rgb(200, 160, 99)",
         "focusVisible": true,
         "inViewport": true
-      },
-      {
-        "tag": "button",
-        "cls": "audio-toggle ",
-        "name": "打开声音",
-        "role": "",
-        "ariaPressed": "false",
-        "outline": "2px solid rgb(200, 160, 99)",
-        "focusVisible": true,
-        "inViewport": true
-      },
-      {
-        "tag": "BODY",
-        "name": "(body)",
-        "outline": ""
       }
     ],
-    "choices": 2,
+    "choices": 4,
     "digitKeyWorked": true,
     "expectedNext": "v0-02",
     "advancedTo": "v0-02",
@@ -235,9 +235,9 @@
       "ariaPressed": null,
       "outline": "1px dashed rgba(200, 160, 99, 0.6)",
       "focusVisible": true,
-      "inViewport": false
+      "inViewport": true
     },
-    "choiceCount2": 2,
+    "choiceCount2": 4,
     "spaceIgnoredOnChoiceScreen": true
   },
   "semanticsScene": {
@@ -251,8 +251,9 @@
         "loaded": true
       }
     ],
-    "live": 1,
+    "live": 2,
     "pressed": [
+      "场景探索=false",
       "3D 视角=false",
       "打开声音=false"
     ],
@@ -264,37 +265,41 @@
     ],
     "axRoles": {
       "RootWebArea": 1,
-      "generic": 4,
+      "generic": 10,
       "main": 1,
-      "button": 8,
-      "StaticText": 49,
-      "paragraph": 31,
+      "button": 11,
+      "StaticText": 38,
+      "InlineTextBox": 39,
+      "paragraph": 13,
       "sectionheader": 1,
       "figure": 1,
+      "group": 1,
       "sectionfooter": 1,
-      "InlineTextBox": 51,
       "heading": 1,
       "image": 1,
-      "strong": 2,
-      "emphasis": 2
+      "strong": 4,
+      "emphasis": 4
     },
     "axButtons": [
       "打开声音",
       "1 把还能写清的名字先写在纸上。 写一个是一个",
       "2 只把册子包好，一个字也不写。 先弄清要交的是什么",
-      "3D 视角",
       "1947年《通城县抗战史料》由民国通…",
       "1947年民国通城县参议会《通城县抗…",
       "1937年10月28日《申报》以中央…",
-      "1947 年通城县参议会编《通城县抗…"
+      "1947 年通城县参议会编《通城县抗…",
+      "场景探索",
+      "3D 视角",
+      "1 把还能写清的名字先写在纸上。 写一个是一个",
+      "2 只把册子包好，一个字也不写。 先弄清要交的是什么"
     ],
     "axListitems": []
   },
   "view3d": {
     "toggleVisible": true,
     "on3d": {
-      "text": "回到 2.5D",
-      "ariaPressed": "true",
+      "text": "场景探索",
+      "ariaPressed": "false",
       "canvas": true,
       "hint": true
     }
@@ -355,16 +360,16 @@
     ],
     "axRoles": {
       "RootWebArea": 1,
-      "generic": 10,
+      "generic": 12,
       "main": 1,
       "button": 16,
       "StaticText": 103,
+      "InlineTextBox": 121,
       "heading": 1,
-      "paragraph": 47,
+      "paragraph": 46,
       "figure": 1,
       "list": 2,
       "sectionfooter": 1,
-      "InlineTextBox": 121,
       "image": 1,
       "listitem": 10
     },
@@ -461,11 +466,11 @@
       "large": true,
       "need": 3,
       "p05": 13.4,
-      "median": 13.63,
-      "min": 13.3,
+      "median": 13.64,
+      "min": 13.36,
       "belowNeedPct": 0,
       "pass": true,
-      "pixels": 930
+      "pixels": 960
     },
     {
       "screen": "menu",
@@ -488,9 +493,9 @@
       "fontSize": 14,
       "large": false,
       "need": 4.5,
-      "p05": 8.77,
-      "median": 8.84,
-      "min": 8.75,
+      "p05": 6.37,
+      "median": 8.82,
+      "min": 5.78,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1364
@@ -516,9 +521,9 @@
       "fontSize": 14,
       "large": false,
       "need": 4.5,
-      "p05": 5.48,
+      "p05": 5.71,
       "median": 5.76,
-      "min": 4.82,
+      "min": 4.65,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1054
@@ -530,9 +535,9 @@
       "fontSize": 14,
       "large": false,
       "need": 4.5,
-      "p05": 14.14,
+      "p05": 13.97,
       "median": 14.91,
-      "min": 11.36,
+      "min": 10.24,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1938
@@ -572,9 +577,9 @@
       "fontSize": 44,
       "large": true,
       "need": 3,
-      "p05": 10.11,
-      "median": 11.5,
-      "min": 9.81,
+      "p05": 11.49,
+      "median": 12.74,
+      "min": 11.33,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1122
@@ -586,9 +591,9 @@
       "fontSize": 12,
       "large": false,
       "need": 4.5,
-      "p05": 5.36,
-      "median": 5.42,
-      "min": 5.34,
+      "p05": 5.73,
+      "median": 5.81,
+      "min": 5.73,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1080
@@ -600,26 +605,12 @@
       "fontSize": 13,
       "large": false,
       "need": 4.5,
-      "p05": 5.96,
-      "median": 7.06,
-      "min": 5.96,
+      "p05": 6.88,
+      "median": 7.73,
+      "min": 6.88,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1320
-    },
-    {
-      "screen": "scene",
-      "selector": ".scene .prose p",
-      "text": "灯油添了一回。母亲回屋躺下了",
-      "fontSize": 17,
-      "large": false,
-      "need": 4.5,
-      "p05": 12.91,
-      "median": 13.69,
-      "min": 12.61,
-      "belowNeedPct": 0,
-      "pass": true,
-      "pixels": 1782
     },
     {
       "screen": "scene",
@@ -628,9 +619,9 @@
       "fontSize": 17,
       "large": false,
       "need": 4.5,
-      "p05": 10.71,
-      "median": 11.8,
-      "min": 10.56,
+      "p05": 8.54,
+      "median": 9.95,
+      "min": 8.42,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 2160
@@ -642,9 +633,9 @@
       "fontSize": 13,
       "large": false,
       "need": 4.5,
-      "p05": 7.76,
-      "median": 7.83,
-      "min": 7.65,
+      "p05": 7.07,
+      "median": 7.35,
+      "min": 6.88,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1600
@@ -656,9 +647,9 @@
       "fontSize": 12,
       "large": false,
       "need": 4.5,
-      "p05": 5.78,
+      "p05": 5.64,
       "median": 6.32,
-      "min": 3.86,
+      "min": 3.85,
       "belowNeedPct": 0.4,
       "pass": true,
       "pixels": 915
@@ -670,9 +661,9 @@
       "fontSize": 12,
       "large": false,
       "need": 4.5,
-      "p05": 5.82,
-      "median": 5.87,
-      "min": 5.82,
+      "p05": 5.81,
+      "median": 5.81,
+      "min": 5.79,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1494
@@ -680,16 +671,16 @@
     {
       "screen": "scene3d",
       "selector": ".view3d-toggle",
-      "text": "回到 2.5D",
+      "text": "场景探索",
       "fontSize": 12,
       "large": false,
       "need": 4.5,
-      "p05": 12.35,
-      "median": 12.97,
-      "min": 11.47,
+      "p05": 7.94,
+      "median": 8.25,
+      "min": 7.7,
       "belowNeedPct": 0,
       "pass": true,
-      "pixels": 1513
+      "pixels": 1581
     },
     {
       "screen": "scene3d",
@@ -700,24 +691,10 @@
       "need": 4.5,
       "p05": 7.87,
       "median": 7.94,
-      "min": 7.84,
+      "min": 7.85,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1254
-    },
-    {
-      "screen": "scene3d",
-      "selector": ".stage-3d .scene .prose p",
-      "text": "进底楼要低头。铁门只开一半，",
-      "fontSize": 17,
-      "large": false,
-      "need": 4.5,
-      "p05": 15.33,
-      "median": 15.47,
-      "min": 14.74,
-      "belowNeedPct": 0,
-      "pass": true,
-      "pixels": 1782
     },
     {
       "screen": "ending",
@@ -726,9 +703,9 @@
       "fontSize": 44,
       "large": true,
       "need": 3,
-      "p05": 10.33,
-      "median": 10.63,
-      "min": 10.22,
+      "p05": 10.1,
+      "median": 10.55,
+      "min": 9.76,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1122
@@ -740,9 +717,9 @@
       "fontSize": 17,
       "large": false,
       "need": 4.5,
-      "p05": 11.49,
-      "median": 11.49,
-      "min": 11.45,
+      "p05": 11.3,
+      "median": 11.8,
+      "min": 10.89,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1782
@@ -755,11 +732,11 @@
       "large": false,
       "need": 4.5,
       "p05": 5.26,
-      "median": 5.74,
-      "min": 5.26,
+      "median": 5.68,
+      "min": 4.95,
       "belowNeedPct": 0,
       "pass": true,
-      "pixels": 990
+      "pixels": 1056
     },
     {
       "screen": "sources",
@@ -768,9 +745,9 @@
       "fontSize": 15,
       "large": false,
       "need": 4.5,
-      "p05": 11.6,
-      "median": 11.99,
-      "min": 11.59,
+      "p05": 11.23,
+      "median": 11.37,
+      "min": 11.09,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1464
@@ -782,9 +759,9 @@
       "fontSize": 15.5,
       "large": false,
       "need": 4.5,
-      "p05": 11.31,
-      "median": 11.56,
-      "min": 11.16,
+      "p05": 10.86,
+      "median": 11.11,
+      "min": 10.71,
       "belowNeedPct": 0,
       "pass": true,
       "pixels": 1600
@@ -796,10 +773,10 @@
       "fontSize": 11,
       "large": false,
       "need": 4.5,
-      "p05": 5.35,
-      "median": 6.32,
-      "min": 2.4,
-      "belowNeedPct": 2.7,
+      "p05": 5.61,
+      "median": 6.03,
+      "min": 5.56,
+      "belowNeedPct": 0,
       "pass": true,
       "pixels": 1344
     }

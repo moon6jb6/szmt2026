@@ -123,7 +123,7 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| `src/game/components/SceneBeats.tsx` | 组件本体 + 分组/判词纯函数（约 470 行，含顶部关键词表与规则注释） |
+| `src/game/components/SceneBeats.tsx` | 组件本体 + 分组/判词纯函数（约 590 行，含顶部关键词表与规则注释） |
 | `src/game/components/beats.css` | 样式（自带 token 兜底，可独立跑；类名全部 `.beats*` / `.silhouette*`，不污染 `styles.css`） |
 | `src/game/components/SilhouetteFigure.tsx` | 人物剪影（纯内联 SVG：士兵 / 挽发女性，三层错位叠印做毛边） |
 | `tools/beats-harness.html` / `.tsx` | 验证页（五栏：主线七段 / 判词样例 / 分组矩阵 / 边界 / 扁平接入），App 不引用 |
@@ -198,7 +198,8 @@ node tools/beats-test.mjs http://127.0.0.1:5199/tools/beats-harness.html   # 对
 - 每个页面都挂 `framenavigated` 计数并断言 `navigations ≤ 1`：仓库里同时有别人在改文件，一旦 HMR 整页重载，状态会被清空、后面的断言全不作数——这条会直接把它抓出来（自起 server 关掉 HMR 之后恒为 1）。
 - 输出：控制台 `PASS/FAIL` + `tools/shots/beats/summary.json`。
 
-**结果：默认 84/84、挂 App CSS 87/87，单轮约 33—40s；连跑 5 轮全绿（其中两轮在别人改文件、dev server 被重载的情况下抓出过整页重载，见下面「全局」那两条）。**
+**结果：默认 84/84、挂 App CSS 87/87，单轮约 33—40s；最终版连跑 3 轮全绿（默认 ×2 + appcss ×1）。**
+过程中踩到过一个真问题：一开始对着别人的 dev server（5199）跑，别人改文件触发的 HMR 整页重载会把测试状态清空，于是出现「明明通过了却又失败」的假失败。现在测试**自起 dev server 并关掉 HMR**，同时每个页面都断言 `navigations ≤ 1`，同类问题会直接被报出来而不是变成随机红。
 
 | 组 | 项数 | 覆盖 |
 | --- | --- | --- |
