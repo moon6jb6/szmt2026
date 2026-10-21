@@ -1,86 +1,39 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<title>史料收集字典（交给另一个 AI 的作业本）</title>
-<style>
-@page { size: A4; margin: 20mm 17mm 18mm 17mm; }
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>史料收集字典.md</title><style>
+@page { size: A4; margin: 18mm 16mm; }
 * { box-sizing: border-box; }
-body {
-  font-family: "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 10.5pt; line-height: 1.8; color: #1b1b1b; margin: 0;
-}
-h1 {
-  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  font-size: 22pt; line-height: 1.35; margin: 0 0 6mm; color: #16130f;
-  border-bottom: 2px solid #a32b2b; padding-bottom: 3mm; letter-spacing: 0.04em;
-}
-h2 {
-  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  font-size: 15pt; margin: 7mm 0 2.5mm; color: #8a2b22; letter-spacing: 0.03em;
-  page-break-after: avoid;
-}
-h3 { font-size: 12pt; margin: 5mm 0 2mm; color: #2a2a2a; page-break-after: avoid; }
-p { margin: 0 0 3.2mm; text-align: justify; text-justify: inter-ideograph; }
-ul, ol { margin: 0 0 3.5mm; padding-left: 7mm; }
-li { margin-bottom: 1.2mm; }
-table { border-collapse: collapse; width: 100%; margin: 3mm 0 4mm; font-size: 9.5pt; }
-th, td { border: 1px solid #cfc7b8; padding: 2mm 2.5mm; vertical-align: top; text-align: left; }
-th { background: #f3eee4; font-weight: 600; }
-blockquote {
-  margin: 3mm 0; padding: 2.5mm 4mm; border-left: 3px solid #a32b2b;
-  background: #faf7f1; color: #3a3a3a;
-}
-blockquote p:last-child { margin-bottom: 0; }
-code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; background: #f2f0ea; padding: 0.4mm 1.2mm; }
-pre { background: #f6f4ee; border: 1px solid #e2dccf; padding: 3mm; overflow-x: auto; page-break-inside: avoid; }
-pre code { background: none; padding: 0; }
-hr { border: none; border-top: 1px solid #d8d0c1; margin: 6mm 0; }
-strong { font-weight: 700; }
-a { color: #8a2b22; text-decoration: none; }
-.sheet { max-width: 100%; }
-.doc-meta {
-  font-size: 9pt; color: #6b6358; letter-spacing: 0.06em;
-  margin: 0 0 8mm; padding-bottom: 2mm; border-bottom: 1px solid #e2dccf;
-}
-</style>
-</head><body><div class="sheet">
-<div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
-<h1 id="ai">史料收集字典（交给另一个 AI 的作业本）</h1>
-<blockquote>
-<p>用途：书找不到，就把「需要什么信息」拆成 56 个编号槽位，交给收集用的 AI 去公开来源里查。
-查回来按统一 JSON 回填，我用脚本直接并入项目，游戏里立刻能用。</p>
-<p>配套文件：
-- <a href="./史料收集模板.json">史料收集模板.json</a> —— 机器可读的 56 个槽位（把这个直接给 AI）
-- <code>tools/import-collected-sources.mjs</code> —— 回填 JSON 自动并入 <code>src/game/content/sources.auto.ts</code></p>
-</blockquote>
-<hr>
-<h2 id="_1">一、怎么用（三步）</h2>
-<ol>
-<li><strong>你把这一节 + <code>史料收集模板.json</code> 复制给另一个 AI</strong>（文末有现成的 Prompt）。</li>
-<li>它按槽位逐条查，输出一个回填 JSON（格式见第三节）。</li>
-<li>你把回填 JSON 存成 <code>docs/deliverables/史料收集回填.json</code>，告诉我，我跑脚本并入项目。</li>
-</ol>
-<hr>
-<h2 id="ai_1">二、给收集 AI 的规则（复制时一起带上）</h2>
-<p><strong>来源优先级（从高到低）</strong>
-1. 官方档案、博物馆/纪念馆官网与展陈
-2. 中央与地方主流媒体：新华社、人民日报、光明日报、央视、地方党报
-3. 学术专著与期刊：正规出版社、社科文献、学报
-4. 当事人回忆、口述史、日记（必须注明版本）</p>
-<p><strong>禁止作为最终出处</strong>
-- 百科类聚合条目（百度百科、维基等，只能当线索）
-- 自媒体、公众号、短视频文案、论坛帖子
-- AI 生成的总结或转述
-- 影视剧情、小说、演义</p>
-<p><strong>硬性要求</strong>
-- 每条必须能定位：<strong>URL</strong> 或 <strong>书名 + 页码/章节</strong>，两者都没有 = 未找到
-- 原文摘句必须<strong>逐字</strong>，删节用「……」，不允许意译后加引号
-- 同一事实说法不一 → <code>status: "ambiguous"</code>，并在 <code>quote</code> 里并列各版本
-- 找不到 → <code>status: "not_found"</code>，在 <code>note</code> 写清查了哪些来源、为什么没有
-- <strong>不允许编造</strong>：页码、书名、作者、年份、数字，一个都不许猜
-- 数字类必须给出统计口径（谁统计的、统计范围）</p>
-<hr>
-<h2 id="json">三、输出格式（回填 JSON）</h2>
-<pre><code class="language-json">{
+body { font-family: "SimSun", "Songti SC", "Noto Serif CJK SC", serif; color: #1a1a1a; font-size: 10.5pt; line-height: 1.55; }
+h1 { font-size: 19pt; text-align: center; margin: 4pt 0 8pt; }
+h2 { font-size: 14pt; margin: 16pt 0 6pt; border-bottom: 1px solid #c8a063; padding-bottom: 3pt; }
+h3 { font-size: 12pt; margin: 12pt 0 4pt; }
+h4 { font-size: 11pt; margin: 10pt 0 4pt; }
+p { margin: 4pt 0; text-align: justify; }
+blockquote { margin: 6pt 0; padding: 4pt 10pt; border-left: 2px solid #a32b2b; background: #faf6ee; color: #3b332a; }
+blockquote p { margin: 2pt 0; }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; font-size: 9.5pt; }
+th, td { border: 1px solid #b9ac97; padding: 4pt 5pt; vertical-align: top; word-break: break-word; }
+th { background: #efe7d8; font-weight: 700; }
+ul, ol { margin: 4pt 0 6pt; padding-left: 18pt; }
+li { margin: 2pt 0; }
+code { font-family: Consolas, monospace; font-size: 9pt; background: #f2ede2; padding: 0 2pt; }
+pre { background: #f5f0e6; border: 1px solid #ddd2bd; padding: 6pt; font-size: 8.5pt; white-space: pre-wrap; }
+hr { border: 0; border-top: 1px solid #d8cdb8; margin: 10pt 0; }
+a { color: #7a3a2a; text-decoration: none; }
+</style></head><body><h1>史料收集字典（交给另一个 AI 的作业本）</h1>
+<blockquote><p>用途：书找不到，就把「需要什么信息」拆成 56 个编号槽位，交给收集用的 AI 去公开来源里查。</p><p>查回来按统一 JSON 回填，我用脚本直接并入项目，游戏里立刻能用。</p><p></p><p>配套文件：</p><p>- <a href="./史料收集模板.json">史料收集模板.json</a> —— 机器可读的 56 个槽位（把这个直接给 AI）</p><p>- <code>tools/import-collected-sources.mjs</code> —— 回填 JSON 自动并入 <code>src/game/content/sources.auto.ts</code></p></blockquote>
+<hr/>
+<h2>一、怎么用（三步）</h2>
+<ol><li><strong>你把这一节 + <code>史料收集模板.json</code> 复制给另一个 AI</strong>（文末有现成的 Prompt）。</li><li>它按槽位逐条查，输出一个回填 JSON（格式见第三节）。</li><li>你把回填 JSON 存成 <code>docs/deliverables/史料收集回填.json</code>，告诉我，我跑脚本并入项目。</li></ol>
+<hr/>
+<h2>二、给收集 AI 的规则（复制时一起带上）</h2>
+<p><strong>来源优先级（从高到低）</strong></p>
+<ol><li>官方档案、博物馆/纪念馆官网与展陈</li><li>中央与地方主流媒体：新华社、人民日报、光明日报、央视、地方党报</li><li>学术专著与期刊：正规出版社、社科文献、学报</li><li>当事人回忆、口述史、日记（必须注明版本）</li></ol>
+<p><strong>禁止作为最终出处</strong></p>
+<ul><li>百科类聚合条目（百度百科、维基等，只能当线索）</li><li>自媒体、公众号、短视频文案、论坛帖子</li><li>AI 生成的总结或转述</li><li>影视剧情、小说、演义</li></ul>
+<p><strong>硬性要求</strong></p>
+<ul><li>每条必须能定位：<strong>URL</strong> 或 <strong>书名 + 页码/章节</strong>，两者都没有 = 未找到</li><li>原文摘句必须<strong>逐字</strong>，删节用「……」，不允许意译后加引号</li><li>同一事实说法不一 → <code>status: &quot;ambiguous&quot;</code>，并在 <code>quote</code> 里并列各版本</li><li>找不到 → <code>status: &quot;not_found&quot;</code>，在 <code>note</code> 写清查了哪些来源、为什么没有</li><li><strong>不允许编造</strong>：页码、书名、作者、年份、数字，一个都不许猜</li><li>数字类必须给出统计口径（谁统计的、统计范围）</li></ul>
+<hr/>
+<h2>三、输出格式（回填 JSON）</h2>
+<pre><code>{
   &quot;filled&quot;: [
     {
       &quot;slot_id&quot;: &quot;B-05&quot;,
@@ -100,510 +53,107 @@ a { color: #8a2b22; text-decoration: none; }
       &quot;note&quot;: &quot;&quot;
     }
   ]
-}
-</code></pre>
+}</code></pre>
 <p>字段说明：</p>
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>必填</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>slot_id</td>
-<td>✅</td>
-<td>必须是模板里的编号，如 <code>B-05</code></td>
-</tr>
-<tr>
-<td>status</td>
-<td>✅</td>
-<td><code>found</code> / <code>not_found</code> / <code>ambiguous</code></td>
-</tr>
-<tr>
-<td>fact</td>
-<td>found/ambiguous 必填</td>
-<td>一句话事实，可直接写进游戏正文</td>
-</tr>
-<tr>
-<td>quote</td>
-<td>needQuote=true 时必填</td>
-<td>逐字原句</td>
-</tr>
-<tr>
-<td>source</td>
-<td>found/ambiguous 必填</td>
-<td>见下</td>
-</tr>
-<tr>
-<td>source.type</td>
-<td>✅</td>
-<td><code>book</code> / <code>news</code> / <code>archive</code> / <code>museum</code> / <code>interview</code></td>
-</tr>
-<tr>
-<td>source.work</td>
-<td>✅</td>
-<td>书名 / 文章标题 / 档案名</td>
-</tr>
-<tr>
-<td>source.author</td>
-<td>建议</td>
-<td>作者 / 编者 / 发布机构</td>
-</tr>
-<tr>
-<td>source.publisher</td>
-<td>建议</td>
-<td>出版社 / 媒体 / 馆藏机构</td>
-</tr>
-<tr>
-<td>source.year</td>
-<td>建议</td>
-<td>出版年 / 发表年</td>
-</tr>
-<tr>
-<td>source.url</td>
-<td>网络来源必填</td>
-<td>可点击链接</td>
-</tr>
-<tr>
-<td>source.locator</td>
-<td>书籍必填</td>
-<td>页码 / 章节 / 段落 / 版次</td>
-</tr>
-<tr>
-<td>confidence</td>
-<td>✅</td>
-<td><code>high</code> / <code>medium</code> / <code>low</code></td>
-</tr>
-<tr>
-<td>note</td>
-<td>可选</td>
-<td>存疑点、版本差异</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2 id="56">四、槽位总表（56 条）</h2>
-<h3 id="a-10">A 编成与人物（10 条）</h3>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>优先级</th>
-<th>要问什么</th>
-<th>需要原句</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A-01</td>
-<td>P0</td>
-<td>88 师 524 团一营营长是谁？职务履历</td>
-<td>否</td>
-</tr>
-<tr>
-<td>A-02</td>
-<td>P0</td>
-<td>谢晋元在四行仓库时的准确职务（团附？中校团附？）</td>
-<td>否</td>
-</tr>
-<tr>
-<td>A-03</td>
-<td>P1</td>
-<td>524 团团长是谁？与一营、谢晋元的关系</td>
-<td>否</td>
-</tr>
-<tr>
-<td>A-04</td>
-<td>P0</td>
-<td>「八百壮士」称呼的由来与记者采访的原始记载</td>
-<td><strong>是</strong></td>
-</tr>
-<tr>
-<td>A-05</td>
-<td>P0</td>
-<td>通城籍士兵的番号与整编过程（县保安大队→保安五团→524 团一营）</td>
-<td>否</td>
-</tr>
-<tr>
-<td>A-06</td>
-<td>P1</td>
-<td>1947 年《通城县抗战史料》的编纂背景与名单来源</td>
-<td>否</td>
-</tr>
-<tr>
-<td>A-07</td>
-<td>P1</td>
-<td>谢晋元生平节点：出生、黄埔几期、淞沪前职务、遇刺、安葬</td>
-<td>否</td>
-</tr>
-<tr>
-<td>A-08</td>
-<td>P1</td>
-<td>杨惠敏身份与送旗一事的各版本说法</td>
-<td>否</td>
-</tr>
-<tr>
-<td>A-09</td>
-<td>P1</td>
-<td>孤军营地点、起止时间、人员规模</td>
-<td>否</td>
-</tr>
-<tr>
-<td>A-10</td>
-<td>P2</td>
-<td>谢晋元遇刺经过与凶手结局</td>
-<td>否</td>
-</tr>
-</tbody>
-</table>
-<h3 id="b-12">B 五夜战况（12 条）</h3>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>优先级</th>
-<th>要问什么</th>
-<th>需要原句</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>B-01</td>
-<td>P0</td>
-<td>10/26 夜间进驻时间、部队序列、布防</td>
-<td>否</td>
-</tr>
-<tr>
-<td>B-02</td>
-<td>P0</td>
-<td>四行仓库建筑参数（层数、结构、墙厚、朝向、与河/桥距离）</td>
-<td>否</td>
-</tr>
-<tr>
-<td>B-03</td>
-<td>P0</td>
-<td>10/27 日军首次进攻的时间、方式、守军应对</td>
-<td>否</td>
-</tr>
-<tr>
-<td>B-04</td>
-<td>P1</td>
-<td>10/27 夜是否火攻、挖掘、夜袭</td>
-<td>否</td>
-</tr>
-<tr>
-<td>B-05</td>
-<td>P0</td>
-<td>10/28 升旗的时间、旗的来源与尺寸</td>
-<td><strong>是</strong></td>
-</tr>
-<tr>
-<td>B-06</td>
-<td>P1</td>
-<td>10/28 日军炮击与仓库受损</td>
-<td>否</td>
-</tr>
-<tr>
-<td>B-07</td>
-<td>P1</td>
-<td>10/29 中外记者在南岸的位置、媒体、报道</td>
-<td>否</td>
-</tr>
-<tr>
-<td>B-08</td>
-<td>P1</td>
-<td>南岸市民支援形式（物资、旗、信、救护）</td>
-<td>否</td>
-</tr>
-<tr>
-<td>B-09</td>
-<td>P0</td>
-<td>10/30—31 撤退令的发出者与内容</td>
-<td>否</td>
-</tr>
-<tr>
-<td>B-10</td>
-<td>P0</td>
-<td>10/31 撤退时间、路线、伤亡、租界缴械</td>
-<td>否</td>
-</tr>
-<tr>
-<td>B-11</td>
-<td>P1</td>
-<td>守军与日军伤亡数字及统计口径</td>
-<td>否</td>
-</tr>
-<tr>
-<td>B-12</td>
-<td>P2</td>
-<td>租界缴械与安置经过、地点、依据</td>
-<td>否</td>
-</tr>
-</tbody>
-</table>
-<h3 id="c-8">C 名册与口述（8 条）</h3>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>优先级</th>
-<th>要问什么</th>
-<th>需要原句</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>C-01</td>
-<td>P0</td>
-<td>谢晋元日记中关于点名、造册、部属姓名的原话</td>
-<td><strong>是</strong></td>
-</tr>
-<tr>
-<td>C-02</td>
-<td>P0</td>
-<td>一营名册是否留存？现存何处</td>
-<td>否</td>
-</tr>
-<tr>
-<td>C-03</td>
-<td>P0</td>
-<td>通城四十九壮士名单中至少 10 个可引姓名与籍贯</td>
-<td><strong>是</strong></td>
-</tr>
-<tr>
-<td>C-04</td>
-<td>P1</td>
-<td>87 人查实过程中 1—2 个代表性老兵故事</td>
-<td>否</td>
-</tr>
-<tr>
-<td>C-05</td>
-<td>P1</td>
-<td>最后一位周福其的生平与去世时间</td>
-<td>否</td>
-</tr>
-<tr>
-<td>C-06</td>
-<td>P1</td>
-<td>一封真实的家书或遗书原文</td>
-<td><strong>是</strong></td>
-</tr>
-<tr>
-<td>C-07</td>
-<td>P2</td>
-<td>幸存者口述史段落（含采访时间与出处）</td>
-<td><strong>是</strong></td>
-</tr>
-<tr>
-<td>C-08</td>
-<td>P2</td>
-<td>1947 年造册的经办人与过程</td>
-<td>否</td>
-</tr>
-</tbody>
-</table>
-<h3 id="d-8">D 记忆与传播（8 条）</h3>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>优先级</th>
-<th>要问什么</th>
-<th>需要原句</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>D-01</td>
-<td>P0</td>
-<td>1938 年毛泽东在六届六中全会称八百壮士「民族革命典型」的原文与出处</td>
-<td><strong>是</strong></td>
-</tr>
-<tr>
-<td>D-02</td>
-<td>P1</td>
-<td>国民政府军事委员会嘉奖令原文</td>
-<td><strong>是</strong></td>
-</tr>
-<tr>
-<td>D-03</td>
-<td>P1</td>
-<td>《歌八百壮士》词曲作者、年代、流传</td>
-<td>否</td>
-</tr>
-<tr>
-<td>D-04</td>
-<td>P1</td>
-<td>四行仓库纪念馆建馆时间、西墙保护、展陈重点</td>
-<td>否</td>
-</tr>
-<tr>
-<td>D-05</td>
-<td>P2</td>
-<td>通城纪念设施、寻访组织与活动</td>
-<td>否</td>
-</tr>
-<tr>
-<td>D-06</td>
-<td>P1</td>
-<td>1980 年修县志时如何发现四十九壮士名单</td>
-<td>否</td>
-</tr>
-<tr>
-<td>D-07</td>
-<td>P1</td>
-<td>1991/2009/2013 三次寻访的组织者与新增数字</td>
-<td>否</td>
-</tr>
-<tr>
-<td>D-08</td>
-<td>P2</td>
-<td>八百壮士题材影视出版情况（仅作差异化说明）</td>
-<td>否</td>
-</tr>
-</tbody>
-</table>
-<h3 id="e-8">E 视觉与实物参考（8 条）</h3>
-<blockquote>
-<p>这一组是<strong>参考</strong>，不是素材。只用来校核我们的生成图是否离谱，<strong>不直接使用</strong>受版权保护的图片。</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>优先级</th>
-<th>要查什么</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>E-01</td>
-<td>P1</td>
-<td>四行仓库西墙现状与弹孔的官方影像</td>
-</tr>
-<tr>
-<td>E-02</td>
-<td>P1</td>
-<td>1937 年苏州河、新垃圾桥、公共租界历史照片</td>
-</tr>
-<tr>
-<td>E-03</td>
-<td>P1</td>
-<td>88 师军服、钢盔、臂章、步枪参考</td>
-</tr>
-<tr>
-<td>E-04</td>
-<td>P2</td>
-<td>1937 年上海公共租界街景</td>
-</tr>
-<tr>
-<td>E-05</td>
-<td>P2</td>
-<td>1940 年代通城民居、县衙/参议会建筑</td>
-</tr>
-<tr>
-<td>E-06</td>
-<td>P1</td>
-<td>谢晋元肖像与手迹来源</td>
-</tr>
-<tr>
-<td>E-07</td>
-<td>P2</td>
-<td>孤军营历史照片</td>
-</tr>
-<tr>
-<td>E-08</td>
-<td>P2</td>
-<td>当年《申报》《大公报》版面</td>
-</tr>
-</tbody>
-</table>
-<h3 id="f-5">F 红色属性与精神表述（5 条）</h3>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>优先级</th>
-<th>要问什么</th>
-<th>需要原句</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>F-01</td>
-<td>P0</td>
-<td>抗战精神的权威表述原文（2015-09-03 讲话）</td>
-<td><strong>是</strong></td>
-</tr>
-<tr>
-<td>F-02</td>
-<td>P0</td>
-<td>八百壮士在中共抗战叙事中的定位</td>
-<td>否</td>
-</tr>
-<tr>
-<td>F-03</td>
-<td>P1</td>
-<td>上海地下党/救亡团体与四行仓库、孤军的联系（没有就 not_found）</td>
-<td>否</td>
-</tr>
-<tr>
-<td>F-04</td>
-<td>P2</td>
-<td>2025 年抗战胜利 80 周年官方表述中与铭记/名字相关的句子</td>
-<td><strong>是</strong></td>
-</tr>
-<tr>
-<td>F-05</td>
-<td>P2</td>
-<td>四行仓库纪念馆官方解说词核心表述</td>
-<td>否</td>
-</tr>
-</tbody>
-</table>
-<h3 id="g-5">G 校核项（5 条）</h3>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>优先级</th>
-<th>要问什么</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>G-01</td>
-<td>P1</td>
-<td>「八百壮士」人数各说（800 / 400 余 / 420 / 452）分别出自哪里</td>
-</tr>
-<tr>
-<td>G-02</td>
-<td>P1</td>
-<td>升旗/送旗各版本差异点</td>
-</tr>
-<tr>
-<td>G-03</td>
-<td>P1</td>
-<td>撤退是「奉命」还是「被迫」？命令来源争议</td>
-</tr>
-<tr>
-<td>G-04</td>
-<td>P2</td>
-<td>击毙日军数字的不同说法与出处</td>
-</tr>
-<tr>
-<td>G-05</td>
-<td>P2</td>
-<td>谢晋元遇刺的凶手、幕后与后续处理</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h2 id="prompt">五、可直接复制的 Prompt</h2>
-<pre><code class="language-text">你是史料收集员。任务：按我给的《史料收集字典》逐条收集信息，输出回填 JSON。
+<table><thead><tr><th>字段</th><th>必填</th><th>说明</th></tr></thead><tbody>
+<tr><td>slot_id</td><td>✅</td><td>必须是模板里的编号，如 <code>B-05</code></td></tr>
+<tr><td>status</td><td>✅</td><td><code>found</code> / <code>not_found</code> / <code>ambiguous</code></td></tr>
+<tr><td>fact</td><td>found/ambiguous 必填</td><td>一句话事实，可直接写进游戏正文</td></tr>
+<tr><td>quote</td><td>needQuote=true 时必填</td><td>逐字原句</td></tr>
+<tr><td>source</td><td>found/ambiguous 必填</td><td>见下</td></tr>
+<tr><td>source.type</td><td>✅</td><td><code>book</code> / <code>news</code> / <code>archive</code> / <code>museum</code> / <code>interview</code></td></tr>
+<tr><td>source.work</td><td>✅</td><td>书名 / 文章标题 / 档案名</td></tr>
+<tr><td>source.author</td><td>建议</td><td>作者 / 编者 / 发布机构</td></tr>
+<tr><td>source.publisher</td><td>建议</td><td>出版社 / 媒体 / 馆藏机构</td></tr>
+<tr><td>source.year</td><td>建议</td><td>出版年 / 发表年</td></tr>
+<tr><td>source.url</td><td>网络来源必填</td><td>可点击链接</td></tr>
+<tr><td>source.locator</td><td>书籍必填</td><td>页码 / 章节 / 段落 / 版次</td></tr>
+<tr><td>confidence</td><td>✅</td><td><code>high</code> / <code>medium</code> / <code>low</code></td></tr>
+<tr><td>note</td><td>可选</td><td>存疑点、版本差异</td></tr>
+</tbody></table>
+<hr/>
+<h2>四、槽位总表（56 条）</h2>
+<h3>A 编成与人物（10 条）</h3>
+<table><thead><tr><th>ID</th><th>优先级</th><th>要问什么</th><th>需要原句</th></tr></thead><tbody>
+<tr><td>A-01</td><td>P0</td><td>88 师 524 团一营营长是谁？职务履历</td><td>否</td></tr>
+<tr><td>A-02</td><td>P0</td><td>谢晋元在四行仓库时的准确职务（团附？中校团附？）</td><td>否</td></tr>
+<tr><td>A-03</td><td>P1</td><td>524 团团长是谁？与一营、谢晋元的关系</td><td>否</td></tr>
+<tr><td>A-04</td><td>P0</td><td>「八百壮士」称呼的由来与记者采访的原始记载</td><td><strong>是</strong></td></tr>
+<tr><td>A-05</td><td>P0</td><td>通城籍士兵的番号与整编过程（县保安大队→保安五团→524 团一营）</td><td>否</td></tr>
+<tr><td>A-06</td><td>P1</td><td>1947 年《通城县抗战史料》的编纂背景与名单来源</td><td>否</td></tr>
+<tr><td>A-07</td><td>P1</td><td>谢晋元生平节点：出生、黄埔几期、淞沪前职务、遇刺、安葬</td><td>否</td></tr>
+<tr><td>A-08</td><td>P1</td><td>杨惠敏身份与送旗一事的各版本说法</td><td>否</td></tr>
+<tr><td>A-09</td><td>P1</td><td>孤军营地点、起止时间、人员规模</td><td>否</td></tr>
+<tr><td>A-10</td><td>P2</td><td>谢晋元遇刺经过与凶手结局</td><td>否</td></tr>
+</tbody></table>
+<h3>B 五夜战况（12 条）</h3>
+<table><thead><tr><th>ID</th><th>优先级</th><th>要问什么</th><th>需要原句</th></tr></thead><tbody>
+<tr><td>B-01</td><td>P0</td><td>10/26 夜间进驻时间、部队序列、布防</td><td>否</td></tr>
+<tr><td>B-02</td><td>P0</td><td>四行仓库建筑参数（层数、结构、墙厚、朝向、与河/桥距离）</td><td>否</td></tr>
+<tr><td>B-03</td><td>P0</td><td>10/27 日军首次进攻的时间、方式、守军应对</td><td>否</td></tr>
+<tr><td>B-04</td><td>P1</td><td>10/27 夜是否火攻、挖掘、夜袭</td><td>否</td></tr>
+<tr><td>B-05</td><td>P0</td><td>10/28 升旗的时间、旗的来源与尺寸</td><td><strong>是</strong></td></tr>
+<tr><td>B-06</td><td>P1</td><td>10/28 日军炮击与仓库受损</td><td>否</td></tr>
+<tr><td>B-07</td><td>P1</td><td>10/29 中外记者在南岸的位置、媒体、报道</td><td>否</td></tr>
+<tr><td>B-08</td><td>P1</td><td>南岸市民支援形式（物资、旗、信、救护）</td><td>否</td></tr>
+<tr><td>B-09</td><td>P0</td><td>10/30—31 撤退令的发出者与内容</td><td>否</td></tr>
+<tr><td>B-10</td><td>P0</td><td>10/31 撤退时间、路线、伤亡、租界缴械</td><td>否</td></tr>
+<tr><td>B-11</td><td>P1</td><td>守军与日军伤亡数字及统计口径</td><td>否</td></tr>
+<tr><td>B-12</td><td>P2</td><td>租界缴械与安置经过、地点、依据</td><td>否</td></tr>
+</tbody></table>
+<h3>C 名册与口述（8 条）</h3>
+<table><thead><tr><th>ID</th><th>优先级</th><th>要问什么</th><th>需要原句</th></tr></thead><tbody>
+<tr><td>C-01</td><td>P0</td><td>谢晋元日记中关于点名、造册、部属姓名的原话</td><td><strong>是</strong></td></tr>
+<tr><td>C-02</td><td>P0</td><td>一营名册是否留存？现存何处</td><td>否</td></tr>
+<tr><td>C-03</td><td>P0</td><td>通城四十九壮士名单中至少 10 个可引姓名与籍贯</td><td><strong>是</strong></td></tr>
+<tr><td>C-04</td><td>P1</td><td>87 人查实过程中 1—2 个代表性老兵故事</td><td>否</td></tr>
+<tr><td>C-05</td><td>P1</td><td>最后一位周福其的生平与去世时间</td><td>否</td></tr>
+<tr><td>C-06</td><td>P1</td><td>一封真实的家书或遗书原文</td><td><strong>是</strong></td></tr>
+<tr><td>C-07</td><td>P2</td><td>幸存者口述史段落（含采访时间与出处）</td><td><strong>是</strong></td></tr>
+<tr><td>C-08</td><td>P2</td><td>1947 年造册的经办人与过程</td><td>否</td></tr>
+</tbody></table>
+<h3>D 记忆与传播（8 条）</h3>
+<table><thead><tr><th>ID</th><th>优先级</th><th>要问什么</th><th>需要原句</th></tr></thead><tbody>
+<tr><td>D-01</td><td>P0</td><td>1938 年毛泽东在六届六中全会称八百壮士「民族革命典型」的原文与出处</td><td><strong>是</strong></td></tr>
+<tr><td>D-02</td><td>P1</td><td>国民政府军事委员会嘉奖令原文</td><td><strong>是</strong></td></tr>
+<tr><td>D-03</td><td>P1</td><td>《歌八百壮士》词曲作者、年代、流传</td><td>否</td></tr>
+<tr><td>D-04</td><td>P1</td><td>四行仓库纪念馆建馆时间、西墙保护、展陈重点</td><td>否</td></tr>
+<tr><td>D-05</td><td>P2</td><td>通城纪念设施、寻访组织与活动</td><td>否</td></tr>
+<tr><td>D-06</td><td>P1</td><td>1980 年修县志时如何发现四十九壮士名单</td><td>否</td></tr>
+<tr><td>D-07</td><td>P1</td><td>1991/2009/2013 三次寻访的组织者与新增数字</td><td>否</td></tr>
+<tr><td>D-08</td><td>P2</td><td>八百壮士题材影视出版情况（仅作差异化说明）</td><td>否</td></tr>
+</tbody></table>
+<h3>E 视觉与实物参考（8 条）</h3>
+<blockquote><p>这一组是<strong>参考</strong>，不是素材。只用来校核我们的生成图是否离谱，<strong>不直接使用</strong>受版权保护的图片。</p></blockquote>
+<table><thead><tr><th>ID</th><th>优先级</th><th>要查什么</th></tr></thead><tbody>
+<tr><td>E-01</td><td>P1</td><td>四行仓库西墙现状与弹孔的官方影像</td></tr>
+<tr><td>E-02</td><td>P1</td><td>1937 年苏州河、新垃圾桥、公共租界历史照片</td></tr>
+<tr><td>E-03</td><td>P1</td><td>88 师军服、钢盔、臂章、步枪参考</td></tr>
+<tr><td>E-04</td><td>P2</td><td>1937 年上海公共租界街景</td></tr>
+<tr><td>E-05</td><td>P2</td><td>1940 年代通城民居、县衙/参议会建筑</td></tr>
+<tr><td>E-06</td><td>P1</td><td>谢晋元肖像与手迹来源</td></tr>
+<tr><td>E-07</td><td>P2</td><td>孤军营历史照片</td></tr>
+<tr><td>E-08</td><td>P2</td><td>当年《申报》《大公报》版面</td></tr>
+</tbody></table>
+<h3>F 红色属性与精神表述（5 条）</h3>
+<table><thead><tr><th>ID</th><th>优先级</th><th>要问什么</th><th>需要原句</th></tr></thead><tbody>
+<tr><td>F-01</td><td>P0</td><td>抗战精神的权威表述原文（2015-09-03 讲话）</td><td><strong>是</strong></td></tr>
+<tr><td>F-02</td><td>P0</td><td>八百壮士在中共抗战叙事中的定位</td><td>否</td></tr>
+<tr><td>F-03</td><td>P1</td><td>上海地下党/救亡团体与四行仓库、孤军的联系（没有就 not_found）</td><td>否</td></tr>
+<tr><td>F-04</td><td>P2</td><td>2025 年抗战胜利 80 周年官方表述中与铭记/名字相关的句子</td><td><strong>是</strong></td></tr>
+<tr><td>F-05</td><td>P2</td><td>四行仓库纪念馆官方解说词核心表述</td><td>否</td></tr>
+</tbody></table>
+<h3>G 校核项（5 条）</h3>
+<table><thead><tr><th>ID</th><th>优先级</th><th>要问什么</th></tr></thead><tbody>
+<tr><td>G-01</td><td>P1</td><td>「八百壮士」人数各说（800 / 400 余 / 420 / 452）分别出自哪里</td></tr>
+<tr><td>G-02</td><td>P1</td><td>升旗/送旗各版本差异点</td></tr>
+<tr><td>G-03</td><td>P1</td><td>撤退是「奉命」还是「被迫」？命令来源争议</td></tr>
+<tr><td>G-04</td><td>P2</td><td>击毙日军数字的不同说法与出处</td></tr>
+<tr><td>G-05</td><td>P2</td><td>谢晋元遇刺的凶手、幕后与后续处理</td></tr>
+</tbody></table>
+<hr/>
+<h2>五、可直接复制的 Prompt</h2>
+<pre><code>你是史料收集员。任务：按我给的《史料收集字典》逐条收集信息，输出回填 JSON。
 
 【项目背景】我在做一部关于 1937 年四行仓库保卫战的交互叙事作品，需要可核实的史实与可引原句。
 
@@ -627,26 +177,15 @@ a { color: #8a2b22; text-decoration: none; }
 }
 
 【模板】见随附《史料收集模板.json》的 slots 数组，共 56 条。先做 P0 的 16 条，再做 P1，最后 P2。
-每条都要输出，不许省略 not_found 的条目。
-</code></pre>
-<hr>
-<h2 id="_2">六、收回来之后</h2>
-<ol>
-<li>把 AI 输出的 JSON 存为 <code>docs/deliverables/史料收集回填.json</code>。</li>
-<li>我跑：
-   <code>bash
-   node tools/import-collected-sources.mjs</code>
-   脚本会逐条校验（槽位号存在、found 必须有出处、needQuote 必须有原句、不许空定位），
-   生成 <code>src/game/content/sources.auto.ts</code>，并写一份 <code>史料回填报告.md</code>。</li>
-<li>游戏自动多出这些史料卡；「史料库」按文献分组；场景页脚自动挂上。</li>
-<li>我会人工抽查 2—3 条最关键的（D-01、C-01、B-05），确认没有问题再上线。</li>
-</ol>
-<hr>
-<h2 id="_3">七、优先级建议</h2>
+每条都要输出，不许省略 not_found 的条目。</code></pre>
+<hr/>
+<h2>六、收回来之后</h2>
+<ol><li>把 AI 输出的 JSON 存为 <code>docs/deliverables/史料收集回填.json</code>。</li><li>我跑：</li></ol>
+<p>   ```bash<br/>   node tools/import-collected-sources.mjs<br/>   ```<br/>   脚本会逐条校验（槽位号存在、found 必须有出处、needQuote 必须有原句、不许空定位），<br/>   生成 <code>src/game/content/sources.auto.ts</code>，并写一份 <code>史料回填报告.md</code>。</p>
+<ol><li>游戏自动多出这些史料卡；「史料库」按文献分组；场景页脚自动挂上。</li><li>我会人工抽查 2—3 条最关键的（D-01、C-01、B-05），确认没有问题再上线。</li></ol>
+<hr/>
+<h2>七、优先级建议</h2>
 <p>先只做 <strong>16 条 P0</strong>，就足够把游戏从「新闻级叙述」提升到「可引细节」：</p>
 <p>A-01、A-02、A-04、A-05、B-01、B-02、B-03、B-05、B-09、B-10、C-01、C-02、C-03、D-01、F-01、F-02。</p>
-<p>其中最关键三条：
-- <strong>C-01</strong> 谢晋元关于点名/名册的原话 —— 整个机制的史料支点
-- <strong>B-05</strong> 升旗的确切经过 —— 第三夜的核心
-- <strong>D-01</strong> 毛泽东「民族革命典型」原文 —— 红色赛道最硬的一条</p>
-</div></body></html>
+<p>其中最关键三条：</p>
+<ul><li><strong>C-01</strong> 谢晋元关于点名/名册的原话 —— 整个机制的史料支点</li><li><strong>B-05</strong> 升旗的确切经过 —— 第三夜的核心</li><li><strong>D-01</strong> 毛泽东「民族革命典型」原文 —— 红色赛道最硬的一条</li></ul></body></html>

@@ -1,190 +1,73 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<title>AI使用说明</title>
-<style>
-@page { size: A4; margin: 20mm 17mm 18mm 17mm; }
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>AI使用说明.md</title><style>
+@page { size: A4; margin: 18mm 16mm; }
 * { box-sizing: border-box; }
-body {
-  font-family: "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 10.5pt; line-height: 1.8; color: #1b1b1b; margin: 0;
-}
-h1 {
-  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  font-size: 22pt; line-height: 1.35; margin: 0 0 6mm; color: #16130f;
-  border-bottom: 2px solid #a32b2b; padding-bottom: 3mm; letter-spacing: 0.04em;
-}
-h2 {
-  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  font-size: 15pt; margin: 7mm 0 2.5mm; color: #8a2b22; letter-spacing: 0.03em;
-  page-break-after: avoid;
-}
-h3 { font-size: 12pt; margin: 5mm 0 2mm; color: #2a2a2a; page-break-after: avoid; }
-p { margin: 0 0 3.2mm; text-align: justify; text-justify: inter-ideograph; }
-ul, ol { margin: 0 0 3.5mm; padding-left: 7mm; }
-li { margin-bottom: 1.2mm; }
-table { border-collapse: collapse; width: 100%; margin: 3mm 0 4mm; font-size: 9.5pt; }
-th, td { border: 1px solid #cfc7b8; padding: 2mm 2.5mm; vertical-align: top; text-align: left; }
-th { background: #f3eee4; font-weight: 600; }
-blockquote {
-  margin: 3mm 0; padding: 2.5mm 4mm; border-left: 3px solid #a32b2b;
-  background: #faf7f1; color: #3a3a3a;
-}
-blockquote p:last-child { margin-bottom: 0; }
-code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; background: #f2f0ea; padding: 0.4mm 1.2mm; }
-pre { background: #f6f4ee; border: 1px solid #e2dccf; padding: 3mm; overflow-x: auto; page-break-inside: avoid; }
-pre code { background: none; padding: 0; }
-hr { border: none; border-top: 1px solid #d8d0c1; margin: 6mm 0; }
-strong { font-weight: 700; }
-a { color: #8a2b22; text-decoration: none; }
-.sheet { max-width: 100%; }
-.doc-meta {
-  font-size: 9pt; color: #6b6358; letter-spacing: 0.06em;
-  margin: 0 0 8mm; padding-bottom: 2mm; border-bottom: 1px solid #e2dccf;
-}
-</style>
-</head><body><div class="sheet">
-<div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
-<p>﻿# AI 工具使用情况说明</p>
-<blockquote>
-<p>参赛团队参考模板对应材料。按《参赛作品材料提交规范》第九部分要求填写。</p>
-</blockquote>
-<h2 id="_1">一、总体说明</h2>
+body { font-family: "SimSun", "Songti SC", "Noto Serif CJK SC", serif; color: #1a1a1a; font-size: 10.5pt; line-height: 1.55; }
+h1 { font-size: 19pt; text-align: center; margin: 4pt 0 8pt; }
+h2 { font-size: 14pt; margin: 16pt 0 6pt; border-bottom: 1px solid #c8a063; padding-bottom: 3pt; }
+h3 { font-size: 12pt; margin: 12pt 0 4pt; }
+h4 { font-size: 11pt; margin: 10pt 0 4pt; }
+p { margin: 4pt 0; text-align: justify; }
+blockquote { margin: 6pt 0; padding: 4pt 10pt; border-left: 2px solid #a32b2b; background: #faf6ee; color: #3b332a; }
+blockquote p { margin: 2pt 0; }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; font-size: 9.5pt; }
+th, td { border: 1px solid #b9ac97; padding: 4pt 5pt; vertical-align: top; word-break: break-word; }
+th { background: #efe7d8; font-weight: 700; }
+ul, ol { margin: 4pt 0 6pt; padding-left: 18pt; }
+li { margin: 2pt 0; }
+code { font-family: Consolas, monospace; font-size: 9pt; background: #f2ede2; padding: 0 2pt; }
+pre { background: #f5f0e6; border: 1px solid #ddd2bd; padding: 6pt; font-size: 8.5pt; white-space: pre-wrap; }
+hr { border: 0; border-top: 1px solid #d8cdb8; margin: 10pt 0; }
+a { color: #7a3a2a; text-decoration: none; }
+</style></head><body><p>﻿# AI 工具使用情况说明</p>
+<blockquote><p>参赛团队参考模板对应材料。按《参赛作品材料提交规范》第九部分要求填写。</p></blockquote>
+<h2>一、总体说明</h2>
 <p>本作品在创作过程中使用了生成式人工智能工具，主要用于<strong>视觉素材生成</strong>、<strong>文本生产与审计</strong>、<strong>代码辅助</strong>。作品的核心创意、叙事结构、机制设计、史料选择与事实核对、质量标准与最终取舍由团队成员确定。AI 生成内容均经过可复核的筛选、修改与审计，不存在「一键生成整件作品」的情况。</p>
 <p>本版特别把 AI 的使用过程做成了<strong>可审计的管线</strong>：分区写作 → 双轨审计（史实/文学）→ 逐条修改 → 复审计，全过程报告与可复现脚本随作品提交（<code>docs/audit/</code>）。</p>
-<h2 id="_2">二、工具清单</h2>
-<table>
-<thead>
-<tr>
-<th>工具 / 模型</th>
-<th>类型</th>
-<th>使用环节</th>
-<th>部署方式</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SDXL base 1.0（fp16）</td>
-<td>文生图</td>
-<td>场景背景图与插画</td>
-<td>本地部署（RTX 5070 Laptop 8GB）</td>
-</tr>
-<tr>
-<td>SDXL-Lightning 4-step LoRA</td>
-<td>加速蒸馏</td>
-<td>4 步出图</td>
-<td>本地部署</td>
-</tr>
-<tr>
-<td>Qwen3-VL-2B-Instruct</td>
-<td>视觉语言模型</td>
-<td>生成图逐张质检（prompt 符合度/时代准确性/瑕疵/人脸文字现代物）</td>
-<td>本地部署</td>
-</tr>
-<tr>
-<td>Stable Audio Open Small（497M）</td>
-<td>文生音频</td>
-<td>28 条环境音/动作音/结局低音</td>
-<td>本地部署（RTX 5070 Laptop 8GB）</td>
-</tr>
-<tr>
-<td>Blender 4.2.3（无头 bpy）</td>
-<td>3D 建模</td>
-<td>四行仓库西墙 GLB（4,732 tris / 469.6 KB）</td>
-<td>本地离线（CPU，0 显存）</td>
-</tr>
-<tr>
-<td>大语言模型（对话式）</td>
-<td>文本生成</td>
-<td>分区写作、史实审计、文学审计、代码与文档</td>
-<td>通过开发工具调用</td>
-</tr>
-</tbody>
-</table>
-<h2 id="_3">三、代表性环节一：场景插画生成与逐张质检</h2>
-<h3 id="ai">AI 输入</h3>
-<ul>
-<li>统一视觉圣经（色板、镜头语言、禁止项）与 500 条图片总谱（<code>docs/art/image-manifest.json</code>）：每条含场景 id、prompt、negative、seed、尺寸、用途；</li>
-<li>提示词示例（四行仓库内景）：<code>cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty concrete warehouse interior, burlap sandbags, dust in light shaft, no people, no text</code>；</li>
-<li>参数：本地 SDXL + Lightning 4 步、固定 seed、CPU offload（8GB 显存）、逐张记录参数与耗时。</li>
-</ul>
-<h3 id="ai_1">AI 输出</h3>
+<h2>二、工具清单</h2>
+<table><thead><tr><th>工具 / 模型</th><th>类型</th><th>使用环节</th><th>部署方式</th></tr></thead><tbody>
+<tr><td>SDXL base 1.0（fp16）</td><td>文生图</td><td>场景背景图与插画</td><td>本地部署（RTX 5070 Laptop 8GB）</td></tr>
+<tr><td>SDXL-Lightning 4-step LoRA</td><td>加速蒸馏</td><td>4 步出图</td><td>本地部署</td></tr>
+<tr><td>Qwen3-VL-2B-Instruct</td><td>视觉语言模型</td><td>生成图逐张质检（prompt 符合度/时代准确性/瑕疵/人脸文字现代物）</td><td>本地部署</td></tr>
+<tr><td>Stable Audio Open Small（497M）</td><td>文生音频</td><td>28 条环境音/动作音/结局低音</td><td>本地部署（RTX 5070 Laptop 8GB）</td></tr>
+<tr><td>Blender 4.2.3（无头 bpy）</td><td>3D 建模</td><td>四行仓库西墙 GLB（4,732 tris / 469.6 KB）</td><td>本地离线（CPU，0 显存）</td></tr>
+<tr><td>大语言模型（对话式）</td><td>文本生成</td><td>分区写作、史实审计、文学审计、代码与文档</td><td>通过开发工具调用</td></tr>
+</tbody></table>
+<h2>三、代表性环节一：场景插画生成与逐张质检</h2>
+<h3>AI 输入</h3>
+<ul><li>统一视觉圣经（色板、镜头语言、禁止项）与 500 条图片总谱（<code>docs/art/image-manifest.json</code>）：每条含场景 id、prompt、negative、seed、尺寸、用途；</li><li>提示词示例（四行仓库内景）：<code>cinematic film still, 1937 China, muted desaturated warm sepia palette, volumetric haze, painterly realism, empty concrete warehouse interior, burlap sandbags, dust in light shaft, no people, no text</code>；</li><li>参数：本地 SDXL + Lightning 4 步、固定 seed、CPU offload（8GB 显存）、逐张记录参数与耗时。</li></ul>
+<h3>AI 输出</h3>
 <p>场景/关键瞬间/文物/人物剪影/结局插画候选图。</p>
-<h3 id="_4">团队后续处理</h3>
-<ol>
-<li><strong>VLM 逐张质检</strong>：四维打分（prompt 符合度 / 时代准确性 / 画面瑕疵 / 危险元素），输出 <code>pass / retry / reject</code>；retry 换 seed 重生成；</li>
-<li><strong>人工抽查</strong>：每 50 张抽 10 张，重点看「有没有叙事信息」（具体物、一道光、人的缺席），以及是否出现清晰人脸、文字、现代物、旗帜图案错误；</li>
-<li>不合格图归档到 <code>tools/imagegen/out-art/rejected/</code>，并记录原因；</li>
-<li>通过质检的图按 <code>docs/art/scene-map.json</code> 与场景 id 映射挂载，不承担史实表述功能，不出现具体人物面孔。</li>
-</ol>
-<h3 id="_5">最终成果中的使用</h3>
+<h3>团队后续处理</h3>
+<ol><li><strong>VLM 逐张质检</strong>：四维打分（prompt 符合度 / 时代准确性 / 画面瑕疵 / 危险元素），输出 <code>pass / retry / reject</code>；retry 换 seed 重生成；</li><li><strong>人工抽查</strong>：每 50 张抽 10 张，重点看「有没有叙事信息」（具体物、一道光、人的缺席），以及是否出现清晰人脸、文字、现代物、旗帜图案错误；</li><li>不合格图归档到 <code>tools/imagegen/out-art/rejected/</code>，并记录原因；</li><li>通过质检的图按 <code>docs/art/scene-map.json</code> 与场景 id 映射挂载，不承担史实表述功能，不出现具体人物面孔。</li></ol>
+<h3>最终成果中的使用</h3>
 <p>场景页横幅插画、人物志与「后来」读者页配图。图片不作为史料证据。</p>
-<h2 id="113138">四、代表性环节二：分区写作 + 双轨审计（113,138 字）</h2>
-<h3 id="ai_2">AI 输入</h3>
-<ul>
-<li>已确定的故事大纲、人物设定、叙事圣经与硬性约束（不虚构真实人物台词、不写伤亡数字、第三人称限知、禁用套话清单、每段必须有具体物与动作）；</li>
-<li>76 张史料卡（已核 63 张 / 待核 7 张 / 待接入 6 张）与逐场挂卡要求；</li>
-<li>分区任务：序卷+卷一、卷二（四行五夜）、卷三+卷四（孤军营/记忆线）、支线人物志。</li>
-</ul>
-<h3 id="ai_3">AI 输出</h3>
+<h2>四、代表性环节二：分区写作 + 双轨审计（113,138 字）</h2>
+<h3>AI 输入</h3>
+<ul><li>已确定的故事大纲、人物设定、叙事圣经与硬性约束（不虚构真实人物台词、不写伤亡数字、第三人称限知、禁用套话清单、每段必须有具体物与动作）；</li><li>76 张史料卡（已核 63 张 / 待核 7 张 / 待接入 6 张）与逐场挂卡要求；</li><li>分区任务：序卷+卷一、卷二（四行五夜）、卷三+卷四（孤军营/记忆线）、支线人物志。</li></ul>
+<h3>AI 输出</h3>
 <p>各卷场景数据（TypeScript 数据文件：场景、段落、抉择、结果、史料卡引用）。</p>
-<h3 id="_6">团队后续处理</h3>
-<ol>
-<li><strong>史实审计</strong>：逐场景对照史料卡，检查真实人物台词、时间线、挂源覆盖、红线（暴行细节、伤亡数字、未核史实）；P0 必须为 0；</li>
-<li><strong>文学审计</strong>：逐单元五维评分（具体性/情感真实/语言干净/结构功能/意象系统），均分 ≥4.0 且无单项 &lt;3；AI 味、套话、解释性旁白、三连排比零容忍；</li>
-<li><strong>迭代修改</strong>：每轮审计出编号清单，作者逐条修改后复审，最多 3 轮；</li>
-<li><strong>集成校验</strong>：构建、场景链可达性、史料卡引用存在性、严格字数统计全部用脚本复现。</li>
-</ol>
-<h3 id="_7">最终成果中的使用</h3>
+<h3>团队后续处理</h3>
+<ol><li><strong>史实审计</strong>：逐场景对照史料卡，检查真实人物台词、时间线、挂源覆盖、红线（暴行细节、伤亡数字、未核史实）；P0 必须为 0；</li><li><strong>文学审计</strong>：逐单元五维评分（具体性/情感真实/语言干净/结构功能/意象系统），均分 ≥4.0 且无单项 &lt;3；AI 味、套话、解释性旁白、三连排比零容忍；</li><li><strong>迭代修改</strong>：每轮审计出编号清单，作者逐条修改后复审，最多 3 轮；</li><li><strong>集成校验</strong>：构建、场景链可达性、史料卡引用存在性、严格字数统计全部用脚本复现。</li></ol>
+<h3>最终成果中的使用</h3>
 <p>游戏正文与附加读者页。审计结论：文学 P0 = 0、不合格 0 / 146 经审单元（3 个合成结局已补独立审计：史实 P0=0、文学均分 4.35）、加权均分 4.59；史实 P0 = 0；严格正文 113,048 字（<code>tools/count-words-strict.mjs</code> 可复现）。</p>
 <p><strong>补充说明（如实披露）</strong>：六个主结局经过完整双轨审计；新增的三个合成结局（档案 / 遗物 / 口耳，约 3,141 字）已在 2026-10-22 补做独立双轨审计——史实 P0 4→0、文学 3.99→4.35（报告：<code>docs/audit/2026-10-22-composite-fact.md</code> / <code>-literary.md</code>）。点击/结局画面交互、5 个真 3D 场景（含 Blender 建模的仓库西墙）与 28 条音效不承担史实表述，做人工验收与性能测试；覆盖边界见 <code>docs/audit/2026-10-22-post-audit-addendum.md</code>。</p>
-<h2 id="28">五、代表性环节三：环境音生成（28 条）</h2>
-<h3 id="ai_4">AI 输入</h3>
-<ul>
-<li>每个音效的用途与质感描述（克制、具体、不煽情），如「记忆载体 名册 点击：厚册页翻开合上，闷、沉、有分量」；</li>
-<li>固定 seed、8—10 秒片段、循环类 22 秒并要求首尾可无缝衔接。</li>
-</ul>
-<h3 id="ai_5">AI 输出</h3>
-<ul>
-<li>Stable Audio Open Small（497M）本地生成的原始 wav（44.1 kHz）；</li>
-<li>每条记录 prompt / seed / steps / 耗时 / 峰值显存（2.8—3.3 GiB，manifest 峰值 3,364 MiB）/ 许可。</li>
-</ul>
-<h3 id="_8">团队后续处理</h3>
-<ol>
-<li>用经典 DSP（非第二个模型）做 EQ、响度归一、循环点交叉淡化、重采样到 48 kHz、导出 OGG；</li>
-<li>逐条检查波形与频谱（<code>tools/audio/inspect_audio.py</code>），循环接缝做跳变检测；</li>
-<li>接入 Web Audio：默认静音、用户手势解锁、场景/天气映射、同一时刻最多一条环境声 + 一条结局低音、页面隐藏即 suspend；</li>
-<li>全部参数写入 <code>docs/audio/audio-manifest.json</code>，可复现。</li>
-</ol>
-<h3 id="_9">最终成果中的使用</h3>
+<h2>五、代表性环节三：环境音生成（28 条）</h2>
+<h3>AI 输入</h3>
+<ul><li>每个音效的用途与质感描述（克制、具体、不煽情），如「记忆载体 名册 点击：厚册页翻开合上，闷、沉、有分量」；</li><li>固定 seed、8—10 秒片段、循环类 22 秒并要求首尾可无缝衔接。</li></ul>
+<h3>AI 输出</h3>
+<ul><li>Stable Audio Open Small（497M）本地生成的原始 wav（44.1 kHz）；</li><li>每条记录 prompt / seed / steps / 耗时 / 峰值显存（2.8—3.3 GiB，manifest 峰值 3,364 MiB）/ 许可。</li></ul>
+<h3>团队后续处理</h3>
+<ol><li>用经典 DSP（非第二个模型）做 EQ、响度归一、循环点交叉淡化、重采样到 48 kHz、导出 OGG；</li><li>逐条检查波形与频谱（<code>tools/audio/inspect_audio.py</code>），循环接缝做跳变检测；</li><li>接入 Web Audio：默认静音、用户手势解锁、场景/天气映射、同一时刻最多一条环境声 + 一条结局低音、页面隐藏即 suspend；</li><li>全部参数写入 <code>docs/audio/audio-manifest.json</code>，可复现。</li></ol>
+<h3>最终成果中的使用</h3>
 <p>游戏内环境音与交互音效（28 条 / 4.88 MB）。不承担史实表述；音量与开关由用户控制。</p>
-<h2 id="_10">六、代表性环节四：代码辅助</h2>
-<h3 id="ai_6">AI 输入</h3>
-<ul>
-<li>数据模型与状态机设计（由团队确定）</li>
-<li>组件职责划分与约束（无后端、无外部字体、首屏体积目标）</li>
-</ul>
-<h3 id="ai_7">AI 输出</h3>
+<h2>六、代表性环节四：代码辅助</h2>
+<h3>AI 输入</h3>
+<ul><li>数据模型与状态机设计（由团队确定）</li><li>组件职责划分与约束（无后端、无外部字体、首屏体积目标）</li></ul>
+<h3>AI 输出</h3>
 <p>TypeScript 组件与样式初稿。</p>
-<h3 id="_11">团队后续处理</h3>
-<ol>
-<li>逐文件审查类型与边界条件；</li>
-<li>编写自动化测试，验证 9 个结局全部可达（9/9 通过）；</li>
-<li>性能与可访问性检查：键盘操作、减少动效、移动端布局；</li>
-<li>修正类型错误与运行时错误，直到构建零报错。</li>
-</ol>
-<h2 id="_12">七、版权、数据与合规</h2>
-<ul>
-<li>生成图仅用于本作品的场景背景，不包含真实人物肖像，不复制现有摄影作品。</li>
-<li>文字内容不直接引用受版权保护的原文；史料事实以概述方式呈现并注明出处。</li>
-<li>未使用任何未公开的个人信息、声音或肖像数据。</li>
-<li>AI 生成内容已在作品材料中如实披露，未隐瞒使用情况。</li>
-</ul>
-<h2 id="ai_8">八、AI 不参与的部分（团队原创贡献）</h2>
-<ul>
-<li>选题与切入角度（「把名字留下来」）</li>
-<li>记忆载体机制与九个结局的结构</li>
-<li>史料筛选标准与「史实层 / 表现层」分离原则</li>
-<li>全部史实表述的核对与出处标注</li>
-<li>最终文案、视觉规范、交互流程与测试</li>
-</ul>
-</div></body></html>
+<h3>团队后续处理</h3>
+<ol><li>逐文件审查类型与边界条件；</li><li>编写自动化测试，验证 9 个结局全部可达（9/9 通过）；</li><li>性能与可访问性检查：键盘操作、减少动效、移动端布局；</li><li>修正类型错误与运行时错误，直到构建零报错。</li></ol>
+<h2>七、版权、数据与合规</h2>
+<ul><li>生成图仅用于本作品的场景背景，不包含真实人物肖像，不复制现有摄影作品。</li><li>文字内容不直接引用受版权保护的原文；史料事实以概述方式呈现并注明出处。</li><li>未使用任何未公开的个人信息、声音或肖像数据。</li><li>AI 生成内容已在作品材料中如实披露，未隐瞒使用情况。</li></ul>
+<h2>八、AI 不参与的部分（团队原创贡献）</h2>
+<ul><li>选题与切入角度（「把名字留下来」）</li><li>记忆载体机制与九个结局的结构</li><li>史料筛选标准与「史实层 / 表现层」分离原则</li><li>全部史实表述的核对与出处标注</li><li>最终文案、视觉规范、交互流程与测试</li></ul></body></html>

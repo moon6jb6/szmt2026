@@ -81,6 +81,8 @@ const ENTRY_SPEC = [
   { to: '01_作品及成果文件/art', from: 'dist/art', tree: true, required: true },
   { to: '01_作品及成果文件/bg', from: 'dist/bg', tree: true, required: true },
   { to: '01_作品及成果文件/audio', from: 'dist/audio', tree: true, required: true },
+  { to: '01_作品及成果文件/models', from: 'dist/models', tree: true, required: true },
+  { to: '01_作品及成果文件/scene-bg', from: 'dist/scene-bg', tree: true, required: true },
 
   // ---- 03 / 04 文档 ----
   { to: '03_作品介绍文档/作品介绍.pdf', from: 'docs/deliverables/作品介绍.pdf', required: true },

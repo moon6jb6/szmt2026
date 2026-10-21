@@ -1,229 +1,62 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<title>第三方资源说明</title>
-<style>
-@page { size: A4; margin: 20mm 17mm 18mm 17mm; }
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>第三方资源说明.md</title><style>
+@page { size: A4; margin: 18mm 16mm; }
 * { box-sizing: border-box; }
-body {
-  font-family: "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 10.5pt; line-height: 1.8; color: #1b1b1b; margin: 0;
-}
-h1 {
-  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  font-size: 22pt; line-height: 1.35; margin: 0 0 6mm; color: #16130f;
-  border-bottom: 2px solid #a32b2b; padding-bottom: 3mm; letter-spacing: 0.04em;
-}
-h2 {
-  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  font-size: 15pt; margin: 7mm 0 2.5mm; color: #8a2b22; letter-spacing: 0.03em;
-  page-break-after: avoid;
-}
-h3 { font-size: 12pt; margin: 5mm 0 2mm; color: #2a2a2a; page-break-after: avoid; }
-p { margin: 0 0 3.2mm; text-align: justify; text-justify: inter-ideograph; }
-ul, ol { margin: 0 0 3.5mm; padding-left: 7mm; }
-li { margin-bottom: 1.2mm; }
-table { border-collapse: collapse; width: 100%; margin: 3mm 0 4mm; font-size: 9.5pt; }
-th, td { border: 1px solid #cfc7b8; padding: 2mm 2.5mm; vertical-align: top; text-align: left; }
-th { background: #f3eee4; font-weight: 600; }
-blockquote {
-  margin: 3mm 0; padding: 2.5mm 4mm; border-left: 3px solid #a32b2b;
-  background: #faf7f1; color: #3a3a3a;
-}
-blockquote p:last-child { margin-bottom: 0; }
-code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; background: #f2f0ea; padding: 0.4mm 1.2mm; }
-pre { background: #f6f4ee; border: 1px solid #e2dccf; padding: 3mm; overflow-x: auto; page-break-inside: avoid; }
-pre code { background: none; padding: 0; }
-hr { border: none; border-top: 1px solid #d8d0c1; margin: 6mm 0; }
-strong { font-weight: 700; }
-a { color: #8a2b22; text-decoration: none; }
-.sheet { max-width: 100%; }
-.doc-meta {
-  font-size: 9pt; color: #6b6358; letter-spacing: 0.06em;
-  margin: 0 0 8mm; padding-bottom: 2mm; border-bottom: 1px solid #e2dccf;
-}
-</style>
-</head><body><div class="sheet">
-<div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
-<p>﻿# 第三方资源说明</p>
-<blockquote>
-<p>按《参赛作品材料提交规范》第八部分填写。作品使用的主要第三方代码、模型、字体、素材与工具清单。</p>
-</blockquote>
-<h2 id="_1">一、运行时依赖（随作品分发）</h2>
-<table>
-<thead>
-<tr>
-<th>资源</th>
-<th>版本</th>
-<th>类型</th>
-<th>来源</th>
-<th>用途</th>
-<th>授权</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>React</td>
-<td>19.2.8</td>
-<td>前端框架</td>
-<td><a href="https://github.com/facebook/react">https://github.com/facebook/react</a></td>
-<td>UI 与状态管理</td>
-<td>MIT</td>
-</tr>
-<tr>
-<td>React DOM</td>
-<td>19.2.8</td>
-<td>前端框架</td>
-<td>同上</td>
-<td>DOM 渲染</td>
-<td>MIT</td>
-</tr>
-<tr>
-<td>Vite</td>
-<td>8.2.2</td>
-<td>构建工具</td>
-<td><a href="https://github.com/vitejs/vite">https://github.com/vitejs/vite</a></td>
-<td>构建与开发服务器</td>
-<td>MIT</td>
-</tr>
-<tr>
-<td>TypeScript</td>
-<td>7.0.2</td>
-<td>语言工具链</td>
-<td><a href="https://github.com/microsoft/TypeScript">https://github.com/microsoft/TypeScript</a></td>
-<td>类型系统</td>
-<td>Apache-2.0</td>
-</tr>
-<tr>
-<td>three.js</td>
-<td>0.186</td>
-<td>3D 渲染库</td>
-<td><a href="https://github.com/mrdoob/three.js">https://github.com/mrdoob/three.js</a></td>
-<td>四个真 3D 切片场景（按需加载）</td>
-<td>MIT</td>
-</tr>
-</tbody>
-</table>
+body { font-family: "SimSun", "Songti SC", "Noto Serif CJK SC", serif; color: #1a1a1a; font-size: 10.5pt; line-height: 1.55; }
+h1 { font-size: 19pt; text-align: center; margin: 4pt 0 8pt; }
+h2 { font-size: 14pt; margin: 16pt 0 6pt; border-bottom: 1px solid #c8a063; padding-bottom: 3pt; }
+h3 { font-size: 12pt; margin: 12pt 0 4pt; }
+h4 { font-size: 11pt; margin: 10pt 0 4pt; }
+p { margin: 4pt 0; text-align: justify; }
+blockquote { margin: 6pt 0; padding: 4pt 10pt; border-left: 2px solid #a32b2b; background: #faf6ee; color: #3b332a; }
+blockquote p { margin: 2pt 0; }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; font-size: 9.5pt; }
+th, td { border: 1px solid #b9ac97; padding: 4pt 5pt; vertical-align: top; word-break: break-word; }
+th { background: #efe7d8; font-weight: 700; }
+ul, ol { margin: 4pt 0 6pt; padding-left: 18pt; }
+li { margin: 2pt 0; }
+code { font-family: Consolas, monospace; font-size: 9pt; background: #f2ede2; padding: 0 2pt; }
+pre { background: #f5f0e6; border: 1px solid #ddd2bd; padding: 6pt; font-size: 8.5pt; white-space: pre-wrap; }
+hr { border: 0; border-top: 1px solid #d8cdb8; margin: 10pt 0; }
+a { color: #7a3a2a; text-decoration: none; }
+</style></head><body><p>﻿# 第三方资源说明</p>
+<blockquote><p>按《参赛作品材料提交规范》第八部分填写。作品使用的主要第三方代码、模型、字体、素材与工具清单。</p></blockquote>
+<h2>一、运行时依赖（随作品分发）</h2>
+<table><thead><tr><th>资源</th><th>版本</th><th>类型</th><th>来源</th><th>用途</th><th>授权</th></tr></thead><tbody>
+<tr><td>React</td><td>19.2.8</td><td>前端框架</td><td>&lt;https://github.com/facebook/react&gt;</td><td>UI 与状态管理</td><td>MIT</td></tr>
+<tr><td>React DOM</td><td>19.2.8</td><td>前端框架</td><td>同上</td><td>DOM 渲染</td><td>MIT</td></tr>
+<tr><td>Vite</td><td>8.2.2</td><td>构建工具</td><td>&lt;https://github.com/vitejs/vite&gt;</td><td>构建与开发服务器</td><td>MIT</td></tr>
+<tr><td>TypeScript</td><td>7.0.2</td><td>语言工具链</td><td>&lt;https://github.com/microsoft/TypeScript&gt;</td><td>类型系统</td><td>Apache-2.0</td></tr>
+<tr><td>three.js</td><td>0.186</td><td>3D 渲染库</td><td>&lt;https://github.com/mrdoob/three.js&gt;</td><td>四个真 3D 切片场景（按需加载）</td><td>MIT</td></tr>
+</tbody></table>
 <p>运行时不请求任何外部 CDN、字体、统计脚本或后端接口。</p>
-<h2 id="_2">二、开发期工具（不随作品分发）</h2>
-<table>
-<thead>
-<tr>
-<th>资源</th>
-<th>类型</th>
-<th>用途</th>
-<th>授权</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Playwright</td>
-<td>浏览器自动化</td>
-<td>全流程走路测试（115 场景到结局）、截图（已列入 <code>package.json</code> devDependencies（<code>npm i</code> 后可直接跑））</td>
-<td>Apache-2.0</td>
-</tr>
-<tr>
-<td>Python 3.12 / Anaconda</td>
-<td>运行环境</td>
-<td>本地出图与质检脚本</td>
-<td>BSD 系</td>
-</tr>
-<tr>
-<td>PyMuPDF</td>
-<td>PDF 处理</td>
-<td>文档转换与预览</td>
-<td>AGPL（仅开发期使用，不随作品分发）</td>
-</tr>
-<tr>
-<td>Markdown (Python)</td>
-<td>文档转换</td>
-<td>作品介绍等材料转 HTML</td>
-<td>BSD</td>
-</tr>
-<tr>
-<td>diffusers 0.41.0</td>
-<td>扩散模型库</td>
-<td>本地生成场景插画</td>
-<td>Apache-2.0</td>
-</tr>
-<tr>
-<td>PyTorch 2.11.0 + CUDA</td>
-<td>深度学习运行时</td>
-<td>本地推理</td>
-<td>BSD-3-Clause</td>
-</tr>
-<tr>
-<td>transformers</td>
-<td>模型加载</td>
-<td>Qwen3-VL 质检模型</td>
-<td>Apache-2.0</td>
-</tr>
-</tbody>
-</table>
-<h2 id="_3">三、生成与质检模型（不随作品分发，仅用于产出图片素材）</h2>
-<table>
-<thead>
-<tr>
-<th>模型</th>
-<th>参数</th>
-<th>来源</th>
-<th>用途</th>
-<th>授权</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>SDXL base 1.0（fp16）</td>
-<td>约 3.5B</td>
-<td>Stability AI，<a href="https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0">https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0</a></td>
-<td>插画基底模型</td>
-<td>CreativeML Open RAIL++-M</td>
-</tr>
-<tr>
-<td>SDXL-Lightning 4-step LoRA</td>
-<td>蒸馏加速权重</td>
-<td>ByteDance，<a href="https://huggingface.co/ByteDance/SDXL-Lightning">https://huggingface.co/ByteDance/SDXL-Lightning</a></td>
-<td>4 步出图</td>
-<td>随模型卡声明</td>
-</tr>
-<tr>
-<td>Qwen3-VL-2B-Instruct</td>
-<td>2B</td>
-<td>阿里云通义千问，<a href="https://huggingface.co/Qwen/Qwen3-VL-2B-Instruct">https://huggingface.co/Qwen/Qwen3-VL-2B-Instruct</a></td>
-<td>生成图逐张质检（四维打分）</td>
-<td>Apache-2.0</td>
-</tr>
-<tr>
-<td>Stable Audio Open Small</td>
-<td>497M</td>
-<td>Stability AI，<a href="https://huggingface.co/stabilityai/stable-audio-open-small">https://huggingface.co/stabilityai/stable-audio-open-small</a></td>
-<td>28 条环境音/动作音（全本地生成）</td>
-<td>Stability AI Community License（参赛为非商业学生竞赛，符合许可）</td>
-</tr>
-</tbody>
-</table>
+<h2>二、开发期工具（不随作品分发）</h2>
+<table><thead><tr><th>资源</th><th>类型</th><th>用途</th><th>授权</th></tr></thead><tbody>
+<tr><td>Playwright</td><td>浏览器自动化</td><td>全流程走路测试（115 场景到结局）、截图（已列入 <code>package.json</code> devDependencies（<code>npm i</code> 后可直接跑））</td><td>Apache-2.0</td></tr>
+<tr><td>Python 3.12 / Anaconda</td><td>运行环境</td><td>本地出图与质检脚本</td><td>BSD 系</td></tr>
+<tr><td>PyMuPDF</td><td>PDF 处理</td><td>文档转换与预览</td><td>AGPL（仅开发期使用，不随作品分发）</td></tr>
+<tr><td>Markdown (Python)</td><td>文档转换</td><td>作品介绍等材料转 HTML</td><td>BSD</td></tr>
+<tr><td>diffusers 0.41.0</td><td>扩散模型库</td><td>本地生成场景插画</td><td>Apache-2.0</td></tr>
+<tr><td>PyTorch 2.11.0 + CUDA</td><td>深度学习运行时</td><td>本地推理</td><td>BSD-3-Clause</td></tr>
+<tr><td>transformers</td><td>模型加载</td><td>Qwen3-VL 质检模型</td><td>Apache-2.0</td></tr>
+</tbody></table>
+<h2>三、生成与质检模型（不随作品分发，仅用于产出图片素材）</h2>
+<table><thead><tr><th>模型</th><th>参数</th><th>来源</th><th>用途</th><th>授权</th></tr></thead><tbody>
+<tr><td>SDXL base 1.0（fp16）</td><td>约 3.5B</td><td>Stability AI，&lt;https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0&gt;</td><td>插画基底模型</td><td>CreativeML Open RAIL++-M</td></tr>
+<tr><td>SDXL-Lightning 4-step LoRA</td><td>蒸馏加速权重</td><td>ByteDance，&lt;https://huggingface.co/ByteDance/SDXL-Lightning&gt;</td><td>4 步出图</td><td>随模型卡声明</td></tr>
+<tr><td>Qwen3-VL-2B-Instruct</td><td>2B</td><td>阿里云通义千问，&lt;https://huggingface.co/Qwen/Qwen3-VL-2B-Instruct&gt;</td><td>生成图逐张质检（四维打分）</td><td>Apache-2.0</td></tr>
+<tr><td>Stable Audio Open Small</td><td>497M</td><td>Stability AI，&lt;https://huggingface.co/stabilityai/stable-audio-open-small&gt;</td><td>28 条环境音/动作音（全本地生成）</td><td>Stability AI Community License（参赛为非商业学生竞赛，符合许可）</td></tr>
+</tbody></table>
 <p>生成图的提示词、seed、尺寸、步数、耗时全部记录在 <code>docs/art/image-manifest.json</code> 与同名 JSON，可复现；生成过程与质检报告见 <code>docs/art/</code>。生成图为本作品专门生成，未使用任何现有摄影作品、影视截图或真实人物肖像；人物一律剪影/背影，不出现清晰人脸。</p>
-<h2 id="_4">四、字体</h2>
+<h2>四、字体</h2>
 <p>作品使用<strong>系统字体回退</strong>，未打包、未下载任何字体文件，也未请求外部字体服务：</p>
 <pre><code>标题：Source Han Serif SC → Noto Serif SC → Songti SC → SimSun → serif
-正文：Source Han Sans SC → Noto Sans SC → PingFang SC → Microsoft YaHei → sans-serif
-</code></pre>
+正文：Source Han Sans SC → Noto Sans SC → PingFang SC → Microsoft YaHei → sans-serif</code></pre>
 <p>因此不存在字体授权问题；不同系统下字形略有差异，属预期行为。</p>
-<h2 id="_5">五、史料与文字</h2>
-<ul>
-<li>游戏正文中的史实表述均为团队根据公开报道与史料<strong>概述</strong>，不直接引用受版权保护的原文段落。</li>
-<li>全部史实条目在游戏内「史料库」页列出来源，主要有：
-  1. 新华社 2015-06-01 转荆楚网《淞沪会战「八百壮士」半数是湖北通城人 87 人查实姓名》
-  2. 光明日报 2010-08-28《八百壮士在重围中执戈为国》
-  3. 谢继民《我的父亲谢晋元将军——八百壮士浴血奋战记》，团结出版社，2010</li>
-<li>未使用任何档案影印件、历史照片或影像素材。</li>
-<li>主角陈望生为团队创作的复合型虚构角色，不对应任何真实人物。</li>
-</ul>
-<h2 id="_6">六、代码原创性说明</h2>
-<ul>
-<li>叙事引擎、内容数据、2.5D 舞台、粒子系统、样式系统为团队原创。</li>
-<li>未使用任何游戏引擎、模板或开源项目的整段代码。</li>
-<li>第三方库均通过 npm 正常依赖引入，未做源码修改。</li>
-</ul>
-<h2 id="_7">七、需要补充的材料</h2>
-<p>若后续引入音乐、历史影像或人声配音，将在此处补充来源与授权说明，并在报名系统中同步更新（本轮 28 条音效已按第三节列明模型、来源与授权）。</p>
-</div></body></html>
+<h2>五、史料与文字</h2>
+<ul><li>游戏正文中的史实表述均为团队根据公开报道与史料<strong>概述</strong>，不直接引用受版权保护的原文段落。</li><li>全部史实条目在游戏内「史料库」页列出来源，主要有：</li></ul>
+<ol><li>新华社 2015-06-01 转荆楚网《淞沪会战「八百壮士」半数是湖北通城人 87 人查实姓名》</li><li>光明日报 2010-08-28《八百壮士在重围中执戈为国》</li><li>谢继民《我的父亲谢晋元将军——八百壮士浴血奋战记》，团结出版社，2010</li></ol>
+<ul><li>未使用任何档案影印件、历史照片或影像素材。</li><li>主角陈望生为团队创作的复合型虚构角色，不对应任何真实人物。</li></ul>
+<h2>六、代码原创性说明</h2>
+<ul><li>叙事引擎、内容数据、2.5D 舞台、粒子系统、样式系统为团队原创。</li><li>未使用任何游戏引擎、模板或开源项目的整段代码。</li><li>第三方库均通过 npm 正常依赖引入，未做源码修改。</li></ul>
+<h2>七、需要补充的材料</h2>
+<p>若后续引入音乐、历史影像或人声配音，将在此处补充来源与授权说明，并在报名系统中同步更新（本轮 28 条音效已按第三节列明模型、来源与授权）。</p></body></html>

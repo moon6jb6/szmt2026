@@ -1,849 +1,174 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<title>第一部分 · 14 项提交材料逐项状态</title>
-<style>
-@page { size: A4; margin: 20mm 17mm 18mm 17mm; }
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>成果状态.md</title><style>
+@page { size: A4; margin: 18mm 16mm; }
 * { box-sizing: border-box; }
-body {
-  font-family: "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 10.5pt; line-height: 1.8; color: #1b1b1b; margin: 0;
-}
-h1 {
-  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  font-size: 22pt; line-height: 1.35; margin: 0 0 6mm; color: #16130f;
-  border-bottom: 2px solid #a32b2b; padding-bottom: 3mm; letter-spacing: 0.04em;
-}
-h2 {
-  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  font-size: 15pt; margin: 7mm 0 2.5mm; color: #8a2b22; letter-spacing: 0.03em;
-  page-break-after: avoid;
-}
-h3 { font-size: 12pt; margin: 5mm 0 2mm; color: #2a2a2a; page-break-after: avoid; }
-p { margin: 0 0 3.2mm; text-align: justify; text-justify: inter-ideograph; }
-ul, ol { margin: 0 0 3.5mm; padding-left: 7mm; }
-li { margin-bottom: 1.2mm; }
-table { border-collapse: collapse; width: 100%; margin: 3mm 0 4mm; font-size: 9.5pt; }
-th, td { border: 1px solid #cfc7b8; padding: 2mm 2.5mm; vertical-align: top; text-align: left; }
-th { background: #f3eee4; font-weight: 600; }
-blockquote {
-  margin: 3mm 0; padding: 2.5mm 4mm; border-left: 3px solid #a32b2b;
-  background: #faf7f1; color: #3a3a3a;
-}
-blockquote p:last-child { margin-bottom: 0; }
-code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; background: #f2f0ea; padding: 0.4mm 1.2mm; }
-pre { background: #f6f4ee; border: 1px solid #e2dccf; padding: 3mm; overflow-x: auto; page-break-inside: avoid; }
-pre code { background: none; padding: 0; }
-hr { border: none; border-top: 1px solid #d8d0c1; margin: 6mm 0; }
-strong { font-weight: 700; }
-a { color: #8a2b22; text-decoration: none; }
-.sheet { max-width: 100%; }
-.doc-meta {
-  font-size: 9pt; color: #6b6358; letter-spacing: 0.06em;
-  margin: 0 0 8mm; padding-bottom: 2mm; border-bottom: 1px solid #e2dccf;
-}
-</style>
-</head><body><div class="sheet">
-<div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
-<p>﻿# 成果状态（交付审计 dashboard）</p>
-<blockquote>
-<p>⚠️ <strong>本文是 09:39 审计快照（2026-10-21 09:39），文中所有数字、缺口与结论只代表当时状态，请勿据此判断交付现状；最新状态见文末「2026-10-22 12:57 更新」与「12:58 文档/PDF 基线」。</strong>
-当前基线（2026-10-22 12:58）：113,138 字 / 140 场景 / 9 结局 / 496 张美术 / 76 张史料卡 / 28 条音效 4.88 MB / 4 个 3D 切片 / dist 550 文件 24.59 MB / PDF 12 份 / 截图 10 张；R1、R2 已修复，动态测试已复跑。</p>
-<p>审计时间：2026-10-21 09:36—09:41（本轮；数字快照 <strong>09:39</strong>，此后并发 agent 仍在改盘，交付前须复核）
-审计人：delivery-auditor（只写本文件 + 覆盖 <code>作品介绍.pdf</code>；未改 <code>src/</code>、未碰 GPU、未删除任何文件）
-截止：<strong>2026-10-23 23:59:59</strong>（剩余约 2 天 14 小时）
-口径：<strong>文档里的数字一律不信，逐项用命令核实</strong>。凡标「实测」的，命令与输出见文末附录 A。</p>
-</blockquote>
+body { font-family: "SimSun", "Songti SC", "Noto Serif CJK SC", serif; color: #1a1a1a; font-size: 10.5pt; line-height: 1.55; }
+h1 { font-size: 19pt; text-align: center; margin: 4pt 0 8pt; }
+h2 { font-size: 14pt; margin: 16pt 0 6pt; border-bottom: 1px solid #c8a063; padding-bottom: 3pt; }
+h3 { font-size: 12pt; margin: 12pt 0 4pt; }
+h4 { font-size: 11pt; margin: 10pt 0 4pt; }
+p { margin: 4pt 0; text-align: justify; }
+blockquote { margin: 6pt 0; padding: 4pt 10pt; border-left: 2px solid #a32b2b; background: #faf6ee; color: #3b332a; }
+blockquote p { margin: 2pt 0; }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; font-size: 9.5pt; }
+th, td { border: 1px solid #b9ac97; padding: 4pt 5pt; vertical-align: top; word-break: break-word; }
+th { background: #efe7d8; font-weight: 700; }
+ul, ol { margin: 4pt 0 6pt; padding-left: 18pt; }
+li { margin: 2pt 0; }
+code { font-family: Consolas, monospace; font-size: 9pt; background: #f2ede2; padding: 0 2pt; }
+pre { background: #f5f0e6; border: 1px solid #ddd2bd; padding: 6pt; font-size: 8.5pt; white-space: pre-wrap; }
+hr { border: 0; border-top: 1px solid #d8cdb8; margin: 10pt 0; }
+a { color: #7a3a2a; text-decoration: none; }
+</style></head><body><p>﻿# 成果状态（交付审计 dashboard）</p>
+<blockquote><p>⚠️ <strong>本文是 09:39 审计快照（2026-10-21 09:39），文中所有数字、缺口与结论只代表当时状态，请勿据此判断交付现状；最新状态见文末「2026-10-22 12:57 更新」与「12:58 文档/PDF 基线」。</strong></p><p>当前基线（2026-10-22 12:58）：113,138 字 / 140 场景 / 9 结局 / 496 张美术 / 76 张史料卡 / 28 条音效 4.88 MB / 4 个 3D 切片 / dist 550 文件 24.59 MB / PDF 12 份 / 截图 10 张；R1、R2 已修复，动态测试已复跑。</p></blockquote>
+<blockquote><p>审计时间：2026-10-21 09:36—09:41（本轮；数字快照 <strong>09:39</strong>，此后并发 agent 仍在改盘，交付前须复核）</p><p>审计人：delivery-auditor（只写本文件 + 覆盖 <code>作品介绍.pdf</code>；未改 <code>src/</code>、未碰 GPU、未删除任何文件）</p><p>截止：<strong>2026-10-23 23:59:59</strong>（剩余约 2 天 14 小时）</p><p>口径：<strong>文档里的数字一律不信，逐项用命令核实</strong>。凡标「实测」的，命令与输出见文末附录 A。</p></blockquote>
 <p><strong>（09:39 快照结论，已被文末 10-22 更新覆盖）一句话结论：内部产物达标（113,138 字 / 140 场景 / 9 结局 / 496 图 / 76 卡全部实测通过），但当时还不能交——3 个必交项是空的（评审视频、打包 ZIP、系统内报名与承诺书），且 <code>dist</code> 双击打不开（R1）。</strong></p>
-<h2 id="0">0. 四条红线级问题（先看这个）</h2>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>问题</th>
-<th>后果</th>
-<th>证据</th>
-<th>谁改</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>R1</td>
-<td><code>dist/index.html</code> 用<strong>绝对路径</strong> <code>/assets/…</code>、<code>/art/…</code>；<code>运行说明</code> 的「方式 A：双击 index.html」必然白屏</td>
-<td>评委双击 → 白屏 → 直接判「跑不起来」。放子目录/子路径部署同样 404</td>
-<td><code>dist/index.html</code> 第 17–18 行 <code>src="/assets/index-V7GS7ops.js"</code>；<code>src/game/content/sceneImages.ts</code> 全部 <code>"/art/scene-NNN.jpg"</code>；<code>vite.config.ts</code> 未设 <code>base</code></td>
-<td>Lead（改 <code>base: './'</code> + 图片路径改相对 + 重新 build + 重拍截图）<strong>或</strong> 改写 <code>运行说明</code>：只留方式 B，且必须在 <code>01_作品及成果文件/</code> 内部起服务</td>
-</tr>
-<tr>
-<td>R2</td>
-<td>首屏菜单文案仍写「<strong>六个结局</strong>」</td>
-<td>评审第一屏就与「九结局」自相矛盾（尾声 9 个选项、图鉴 9 格）</td>
-<td><code>src/App.tsx:582</code> <code>&lt;li&gt;六个结局，没有好坏，只有「什么被留下」&lt;/li&gt;</code>；同文件 635 行已是「九个结局」</td>
-<td>Lead（改一个字）</td>
-</tr>
-<tr>
-<td>R3</td>
-<td><strong>评审视频（#4）完全不存在</strong>：全库无 <code>.mp4</code>；PPT（#5）、ZIP（#6）同样为 0</td>
-<td>#4 是必交项，没视频等于少一整项</td>
-<td>全库 <code>*.mp4/*.mov/*.pptx/*.zip/*.rar/*.7z</code> 搜索结果 0 条</td>
-<td>用户 + Lead（录屏/配音/字幕）</td>
-</tr>
-<tr>
-<td>R4</td>
-<td>对外文档数字互相矛盾（至少 15 处，见第四部分）</td>
-<td>评审若交叉比对，会认为数据不可信（这正是本项目最想证明的东西）</td>
-<td>见第四部分对账表</td>
-<td>delivery-auditor 已列出；Lead 改 3–5 份文档后重出 PDF</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<h1 id="14">第一部分 · 14 项提交材料逐项状态</h1>
-<blockquote>
-<p>「会不会被检查」权重：<strong>必交项（1/2/3/4/6/7）＞ 补充材料（9/10/11/12/13）＞ 可选（5/8）＞ 不适用（14）</strong>。</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>材料</th>
-<th>状态</th>
-<th>证据（文件 / 数量 / 时间戳）</th>
-<th>缺什么</th>
-<th>谁做</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>参赛报名信息（系统填写）</td>
-<td>⏳ 待填</td>
-<td>无本地文件可核；<code>提交清单.md</code> 第 10 行登记「待填」</td>
-<td>cmit.cn 内填：作品名、赛道、团队、简介、运行条件、AI 情况</td>
-<td>用户（团队负责人）</td>
-</tr>
-<tr>
-<td>2</td>
-<td>参赛承诺书（盖章）</td>
-<td>⏳ 待办</td>
-<td>无文件；<code>提交清单.md</code> 第 11 行</td>
-<td>系统生成 → 核对 → 盖章 → 上传</td>
-<td>用户 + 学校</td>
-</tr>
-<tr>
-<td>3</td>
-<td>作品截图（≤10 张）</td>
-<td>✅ 可交</td>
-<td><code>docs/deliverables/screenshots/</code> <strong>恰好 10 个文件</strong>，5.79 MB，时间戳 09:18:48—09:19:24；<strong>9 张 1600×1000 + 1 张 390×844</strong>（<code>10-mobile-menu.png</code>）</td>
-<td>①编号断档：有 00,01,03…10，<strong>缺 02</strong>（10 张里没有 02，评审看不出问题，但重命名更整齐）②<code>提交清单</code> 写「1600×1000」不准确</td>
-<td>Lead（重命名）/ 文档改一句</td>
-</tr>
-<tr>
-<td>4</td>
-<td>评审视频（≤5 min、1080P、MP4）</td>
-<td>❌ 未做</td>
-<td>全库 0 个视频文件；脚本 <code>评审视频脚本.md</code> v1.1 @09:18:36 / <code>.pdf</code> @09:20:31（1,050 字、目标 4:40）</td>
-<td>全部：录屏、旁白、字幕、导出 1080P MP4</td>
-<td>用户 + Lead</td>
-</tr>
-<tr>
-<td>5</td>
-<td>作品汇报 PPT（与 #4 二选一）</td>
-<td>❌ 未做</td>
-<td>全库 0 个 <code>.pptx</code></td>
-<td>全部（备用）</td>
-<td>用户决定是否需要</td>
-</tr>
-<tr>
-<td>6</td>
-<td>参赛打包文件（ZIP/RAR/7Z ≤10GB）</td>
-<td>❌ 未打包</td>
-<td>全库 0 个压缩包。素材已就位：<code>dist/</code> <strong>515 文件 / 17.48 MB</strong> + 12 份 PDF + 10 张截图</td>
-<td>按 <code>提交清单.md</code> 六段目录结构打包；<strong>注意 R1</strong>（包内 index.html 必须能起服务）</td>
-<td>Lead（或用户手动打包）</td>
-</tr>
-<tr>
-<td>7</td>
-<td>作品及成果文件（包内必含）</td>
-<td>🔄 已构建但<strong>打开方式有坑</strong></td>
-<td><code>dist/</code> @<strong>09:18:11</strong> = index.html(1,002 B) + assets(2) + art(<strong>496</strong>) + bg(<strong>16</strong>) = <strong>515 文件 / 17.48 MB</strong>；<code>npm run build</code> 产物与 tsc 一致（本轮 <code>tsc --noEmit</code> 复测退出码 0）</td>
-<td>①R1 必须解决 ②<code>dist</code> 时间戳 09:18 早于 09:35 的 <code>package.json</code> 变更（three 已装），<strong>一旦 3D 落地，dist 就是旧的</strong></td>
-<td>Lead</td>
-</tr>
-<tr>
-<td>8</td>
-<td>作品展示视频（按需）</td>
-<td>⏳ 可选未做</td>
-<td>同 #4</td>
-<td>可与 #4 复用素材</td>
-<td>用户</td>
-</tr>
-<tr>
-<td>9</td>
-<td>作品介绍文档（PDF）</td>
-<td>✅ 已换成 v1.1（本轮修复）</td>
-<td>原 <code>作品介绍.pdf</code> 是 <strong>03:59:36 / 765,320 B 的旧版</strong>（不含九结局）；<code>_pdf_tmp/作品介绍.pdf</code> 与 <code>作品介绍-v1.1.pdf</code> <strong>SHA256 完全相同</strong>（<code>627ED4F4…C5FD</code>）。<strong>本轮 09:37 已覆盖成功</strong>（不再被占用），现为 <strong>841,877 B / 09:20:00</strong></td>
-<td>①正文仍残留 3 处旧数字（110,020 字、JS 800.20 kB、dist 约 1.2 MB），见第四部分 ②磁盘上 <code>作品介绍-v1.1.pdf</code> 与 <code>作品介绍.pdf</code> 现在是<strong>同一份文件的两个副本</strong>，打包时只放一份</td>
-<td>Lead 改 md 后重出；打包时去重</td>
-</tr>
-<tr>
-<td>10</td>
-<td>运行或使用说明（按需）</td>
-<td>✅ 已出（<strong>内容要修</strong>）</td>
-<td><code>运行说明.pdf</code> 457,012 B @09:20:33 &gt; <code>运行说明.md</code> @09:18:04</td>
-<td>①「方式 A 双击 index.html」按 R1 必失败，需删或改写 ②第 86 行「结局一览｜<strong>六个结局</strong>的解锁情况」→ 九个</td>
-<td>Lead</td>
-</tr>
-<tr>
-<td>11</td>
-<td>补充成果材料（按需）</td>
-<td>🔄 齐了但数字要修</td>
-<td>截图 10 + <code>测试记录.pdf</code>（292,022 B @09:20:26）+ <code>docs/audit/</code> <strong>35 份 md + 8 个工具</strong> + <code>docs/art/</code>（manifest 500 / image-qa-report / spot-check / visual-bible / scene-map 128）</td>
-<td><code>测试记录</code> 4 处数字错（volume4 4,819→<strong>4,148</strong>；步数 319 vs 301；「496 张场景插画」措辞；两个「## 七」）</td>
-<td>delivery-auditor 已定位 / Lead 改</td>
-</tr>
-<tr>
-<td>12</td>
-<td>第三方资源说明（涉及时）</td>
-<td>✅ 已出（<strong>待补 1 条</strong>）</td>
-<td><code>第三方资源说明.pdf</code> 305,791 B @09:20:28；已列 React 19.2.8 / React DOM / Vite 8.2.2（均 MIT）</td>
-<td><code>package.json</code> 09:35 已新增 <code>three ^0.186.1</code> + <code>@types/three</code>（MIT）→ <strong>若 3D 进交付，必须补这一行</strong></td>
-<td>threejs-slice 落地后由 Lead 补</td>
-</tr>
-<tr>
-<td>13</td>
-<td>AI 工具使用情况说明</td>
-<td>✅ 已出（<strong>口径要更</strong>）</td>
-<td><code>AI使用说明.pdf</code> 428,610 B @09:19:57；已如实披露「3 个合成结局仅人工自查」</td>
-<td>第 43 行「110,020 字」、第 64 行「146 单元」、第 96 行「六个结局」→ 113,138 字 / 149 单元（其中 146 经审）/ 九个结局</td>
-<td>Lead</td>
-</tr>
-<tr>
-<td>14</td>
-<td>学籍证明等专项材料</td>
-<td>— 不适用</td>
-<td>非国际专项赛</td>
-<td>—</td>
-<td>—</td>
-</tr>
-</tbody>
-</table>
+<h2>0. 四条红线级问题（先看这个）</h2>
+<table><thead><tr><th>#</th><th>问题</th><th>后果</th><th>证据</th><th>谁改</th></tr></thead><tbody>
+<tr><td>R1</td><td><code>dist/index.html</code> 用<strong>绝对路径</strong> <code>/assets/…</code>、<code>/art/…</code>；<code>运行说明</code> 的「方式 A：双击 index.html」必然白屏</td><td>评委双击 → 白屏 → 直接判「跑不起来」。放子目录/子路径部署同样 404</td><td><code>dist/index.html</code> 第 17–18 行 <code>src=&quot;/assets/index-V7GS7ops.js&quot;</code>；<code>src/game/content/sceneImages.ts</code> 全部 <code>&quot;/art/scene-NNN.jpg&quot;</code>；<code>vite.config.ts</code> 未设 <code>base</code></td><td>Lead（改 <code>base: './'</code> + 图片路径改相对 + 重新 build + 重拍截图）<strong>或</strong> 改写 <code>运行说明</code>：只留方式 B，且必须在 <code>01_作品及成果文件/</code> 内部起服务</td></tr>
+<tr><td>R2</td><td>首屏菜单文案仍写「<strong>六个结局</strong>」</td><td>评审第一屏就与「九结局」自相矛盾（尾声 9 个选项、图鉴 9 格）</td><td><code>src/App.tsx:582</code> <code>&lt;li&gt;六个结局，没有好坏，只有「什么被留下」&lt;/li&gt;</code>；同文件 635 行已是「九个结局」</td><td>Lead（改一个字）</td></tr>
+<tr><td>R3</td><td><strong>评审视频（#4）完全不存在</strong>：全库无 <code>.mp4</code>；PPT（#5）、ZIP（#6）同样为 0</td><td>#4 是必交项，没视频等于少一整项</td><td>全库 <code><em>.mp4/</em>.mov/<em>.pptx/</em>.zip/<em>.rar/</em>.7z</code> 搜索结果 0 条</td><td>用户 + Lead（录屏/配音/字幕）</td></tr>
+<tr><td>R4</td><td>对外文档数字互相矛盾（至少 15 处，见第四部分）</td><td>评审若交叉比对，会认为数据不可信（这正是本项目最想证明的东西）</td><td>见第四部分对账表</td><td>delivery-auditor 已列出；Lead 改 3–5 份文档后重出 PDF</td></tr>
+</tbody></table>
+<hr/>
+<h1>第一部分 · 14 项提交材料逐项状态</h1>
+<blockquote><p>「会不会被检查」权重：<strong>必交项（1/2/3/4/6/7）＞ 补充材料（9/10/11/12/13）＞ 可选（5/8）＞ 不适用（14）</strong>。</p></blockquote>
+<table><thead><tr><th>#</th><th>材料</th><th>状态</th><th>证据（文件 / 数量 / 时间戳）</th><th>缺什么</th><th>谁做</th></tr></thead><tbody>
+<tr><td>1</td><td>参赛报名信息（系统填写）</td><td>⏳ 待填</td><td>无本地文件可核；<code>提交清单.md</code> 第 10 行登记「待填」</td><td>cmit.cn 内填：作品名、赛道、团队、简介、运行条件、AI 情况</td><td>用户（团队负责人）</td></tr>
+<tr><td>2</td><td>参赛承诺书（盖章）</td><td>⏳ 待办</td><td>无文件；<code>提交清单.md</code> 第 11 行</td><td>系统生成 → 核对 → 盖章 → 上传</td><td>用户 + 学校</td></tr>
+<tr><td>3</td><td>作品截图（≤10 张）</td><td>✅ 可交</td><td><code>docs/deliverables/screenshots/</code> <strong>恰好 10 个文件</strong>，5.79 MB，时间戳 09:18:48—09:19:24；<strong>9 张 1600×1000 + 1 张 390×844</strong>（<code>10-mobile-menu.png</code>）</td><td>①编号断档：有 00,01,03…10，<strong>缺 02</strong>（10 张里没有 02，评审看不出问题，但重命名更整齐）②<code>提交清单</code> 写「1600×1000」不准确</td><td>Lead（重命名）/ 文档改一句</td></tr>
+<tr><td>4</td><td>评审视频（≤5 min、1080P、MP4）</td><td>❌ 未做</td><td>全库 0 个视频文件；脚本 <code>评审视频脚本.md</code> v1.1 @09:18:36 / <code>.pdf</code> @09:20:31（1,050 字、目标 4:40）</td><td>全部：录屏、旁白、字幕、导出 1080P MP4</td><td>用户 + Lead</td></tr>
+<tr><td>5</td><td>作品汇报 PPT（与 #4 二选一）</td><td>❌ 未做</td><td>全库 0 个 <code>.pptx</code></td><td>全部（备用）</td><td>用户决定是否需要</td></tr>
+<tr><td>6</td><td>参赛打包文件（ZIP/RAR/7Z ≤10GB）</td><td>❌ 未打包</td><td>全库 0 个压缩包。素材已就位：<code>dist/</code> <strong>515 文件 / 17.48 MB</strong> + 12 份 PDF + 10 张截图</td><td>按 <code>提交清单.md</code> 六段目录结构打包；<strong>注意 R1</strong>（包内 index.html 必须能起服务）</td><td>Lead（或用户手动打包）</td></tr>
+<tr><td>7</td><td>作品及成果文件（包内必含）</td><td>🔄 已构建但<strong>打开方式有坑</strong></td><td><code>dist/</code> @<strong>09:18:11</strong> = index.html(1,002 B) + assets(2) + art(<strong>496</strong>) + bg(<strong>16</strong>) = <strong>515 文件 / 17.48 MB</strong>；<code>npm run build</code> 产物与 tsc 一致（本轮 <code>tsc --noEmit</code> 复测退出码 0）</td><td>①R1 必须解决 ②<code>dist</code> 时间戳 09:18 早于 09:35 的 <code>package.json</code> 变更（three 已装），<strong>一旦 3D 落地，dist 就是旧的</strong></td><td>Lead</td></tr>
+<tr><td>8</td><td>作品展示视频（按需）</td><td>⏳ 可选未做</td><td>同 #4</td><td>可与 #4 复用素材</td><td>用户</td></tr>
+<tr><td>9</td><td>作品介绍文档（PDF）</td><td>✅ 已换成 v1.1（本轮修复）</td><td>原 <code>作品介绍.pdf</code> 是 <strong>03:59:36 / 765,320 B 的旧版</strong>（不含九结局）；<code>_pdf_tmp/作品介绍.pdf</code> 与 <code>作品介绍-v1.1.pdf</code> <strong>SHA256 完全相同</strong>（<code>627ED4F4…C5FD</code>）。<strong>本轮 09:37 已覆盖成功</strong>（不再被占用），现为 <strong>841,877 B / 09:20:00</strong></td><td>①正文仍残留 3 处旧数字（110,020 字、JS 800.20 kB、dist 约 1.2 MB），见第四部分 ②磁盘上 <code>作品介绍-v1.1.pdf</code> 与 <code>作品介绍.pdf</code> 现在是<strong>同一份文件的两个副本</strong>，打包时只放一份</td><td>Lead 改 md 后重出；打包时去重</td></tr>
+<tr><td>10</td><td>运行或使用说明（按需）</td><td>✅ 已出（<strong>内容要修</strong>）</td><td><code>运行说明.pdf</code> 457,012 B @09:20:33 &gt; <code>运行说明.md</code> @09:18:04</td><td>①「方式 A 双击 index.html」按 R1 必失败，需删或改写 ②第 86 行「结局一览｜<strong>六个结局</strong>的解锁情况」→ 九个</td><td>Lead</td></tr>
+<tr><td>11</td><td>补充成果材料（按需）</td><td>🔄 齐了但数字要修</td><td>截图 10 + <code>测试记录.pdf</code>（292,022 B @09:20:26）+ <code>docs/audit/</code> <strong>35 份 md + 8 个工具</strong> + <code>docs/art/</code>（manifest 500 / image-qa-report / spot-check / visual-bible / scene-map 128）</td><td><code>测试记录</code> 4 处数字错（volume4 4,819→<strong>4,148</strong>；步数 319 vs 301；「496 张场景插画」措辞；两个「## 七」）</td><td>delivery-auditor 已定位 / Lead 改</td></tr>
+<tr><td>12</td><td>第三方资源说明（涉及时）</td><td>✅ 已出（<strong>待补 1 条</strong>）</td><td><code>第三方资源说明.pdf</code> 305,791 B @09:20:28；已列 React 19.2.8 / React DOM / Vite 8.2.2（均 MIT）</td><td><code>package.json</code> 09:35 已新增 <code>three ^0.186.1</code> + <code>@types/three</code>（MIT）→ <strong>若 3D 进交付，必须补这一行</strong></td><td>threejs-slice 落地后由 Lead 补</td></tr>
+<tr><td>13</td><td>AI 工具使用情况说明</td><td>✅ 已出（<strong>口径要更</strong>）</td><td><code>AI使用说明.pdf</code> 428,610 B @09:19:57；已如实披露「3 个合成结局仅人工自查」</td><td>第 43 行「110,020 字」、第 64 行「146 单元」、第 96 行「六个结局」→ 113,138 字 / 149 单元（其中 146 经审）/ 九个结局</td><td>Lead</td></tr>
+<tr><td>14</td><td>学籍证明等专项材料</td><td>— 不适用</td><td>非国际专项赛</td><td>—</td><td>—</td></tr>
+</tbody></table>
 <p><strong>汇总：✅ 5 项（3、9、10、12、13）· 🔄 2 项（7、11）· ⏳ 3 项（1、2、8）· ❌ 3 项（4、5、6）· — 1 项（14 不适用）＝ 14</strong></p>
-<blockquote>
-<p>必交项里，<strong>#4 视频、#6 打包、#1/#2 系统内填报</strong>三项是硬缺口；#7 素材齐但有 R1 打开方式隐患。</p>
-</blockquote>
-<hr>
-<h1 id="_1">第二部分 · 内部产物状态</h1>
-<table>
-<thead>
-<tr>
-<th>产物</th>
-<th>文档声明</th>
-<th><strong>实测（命令核实）</strong></th>
-<th>状态</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>正文严格字数</td>
-<td>113,138</td>
-<td><strong>113,138</strong>（<code>count-words-strict.mjs</code>，2026-10-21 本轮复跑：序 7,283 / 一 19,391 / 二 33,017 / 三 12,816 / 四 4,148 / 支 10,115 / 基础 11,213 / 结局 15,155）</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>场景数</td>
-<td>140</td>
-<td><strong>140</strong>（<code>check-volumes.mjs</code>：next/continueTo 328、sources 381、id 唯一、全部有效）</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>结局数</td>
-<td>9</td>
-<td><strong>9</strong>（<code>endings.ts</code> 9 个 kind：roster/letters/flag/photo/testimony/message/archive/relics/wordofmouth；截图 <code>04-epilogue-choices.png</code> 肉眼可见 9 个选项；<code>App.tsx:635</code> 写「九个结局」，<code>App.tsx:582</code> 仍写「六个」→ <strong>R2</strong>）</td>
-<td>✅（文案 ❌）</td>
-</tr>
-<tr>
-<td>图片</td>
-<td>500 总谱 / 496 落盘</td>
-<td><strong>496</strong>（<code>image-manifest.json</code> 数组 <strong>500</strong>；<code>public/art</code> = <code>dist/art</code> = <strong>496</strong>：scene <strong>124</strong> + ending <strong>30</strong> + moment 100 + artifact 80 + figure 60 + ui 60 + atmo 42 = 496，16.24 MB）；缺 4 张：<code>scene-056/060/110/123</code>（v2-23/v2-27/v4-07/v5-05，走渐变回退）；重生图 <code>scene-062/070/085</code> + <code>ending-002</code> 均在（03:52—03:53）</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>史料卡</td>
-<td>76（63 已核 / 7 待核 / 6 待接入）</td>
-<td><strong>76</strong> = <code>sources.ts</code> 20（14 verified + 6 needed）+ <code>sources.auto.ts</code> 56（49 verified + 7 pending）→ <strong>63 / 7 / 6</strong></td>
-<td>✅</td>
-</tr>
-<tr>
-<td>音频</td>
-<td>计划 18—22 条（plan §2）</td>
-<td><strong>0 条音效文件</strong>（09:39 快照）。09:38:03 刚出现 <code>tools/audio/fetch_model.py</code>（2,903 B）与空目录 <code>public/audio/</code>；<code>docs/audio/</code>、<code>dist/audio/</code>、<code>audio-manifest.json</code> 均无；<code>运行说明</code> 已如实写「本版暂未加入音乐与音效」</td>
-<td>🔄 刚开工（0/20）</td>
-</tr>
-<tr>
-<td>3D</td>
-<td>4 个切片（plan §1）</td>
-<td><strong>骨架刚出现</strong>（09:39 快照）：<code>src/game/content/scene3d.ts</code> 2,241 B / 53 行 @09:38:13；<code>three ^0.186.1</code> + <code>@types/three</code> 于 09:35 写入 <code>package.json</code>/<code>package-lock.json</code>；仍<strong>缺</strong> <code>src/game/components/Scene3D.tsx</code>、<code>tools/3d/</code>；<code>dist</code>（09:18）不含 3D</td>
-<td>🔄 刚起步</td>
-</tr>
-<tr>
-<td>审计</td>
-<td>双轨 FINAL 通过</td>
-<td><strong>有报告、但覆盖旧口径</strong>：<code>docs/audit/</code> 35 份 md（FINAL-fact @01:15、FINAL-literary @01:10，均签在<strong>6 结局 / 110,020 字</strong>上）+ 8 个只读工具；新增 3 结局只有 <code>2026-10-21-ending-expansion-note.md</code>（自查，明文承认「没有经过独立审计员逐段评分」）</td>
-<td>🔄</td>
-</tr>
-<tr>
-<td>测试</td>
-<td>走路 319 步、9/9、0 错误</td>
-<td>脚本齐（<code>tools/</code> 15 个 .mjs；walk / ending-v3 / ui-smoke / check-volumes / count-words-strict）；<strong>本轮 tsc 复测 0 错误</strong>；动态测试本轮<strong>未复跑</strong>（理由见附录 A.4）。文档内部：测试记录 319 步 vs build report 301 步 → <strong>两处不一致</strong>；<code>playwright</code> <strong>不在 <code>package.json</code></strong>，实际解析到<strong>项目外层</strong> <code>C:\Users\26298\OneDrive\Desktop\全栈开发\node_modules\playwright</code>→「所有数字可用仓库内脚本复现」这句在干净环境不成立</td>
-<td>🔄</td>
-</tr>
-<tr>
-<td>文档</td>
-<td>—</td>
-<td><code>docs/</code> <strong>65 份 md</strong>（含本文件与并发新增的 4 份文献检索请求）；<code>docs/deliverables/</code> <strong>12 md + 11 html + 12 pdf</strong>（11 份文档，作品介绍占 2 个文件）+ 10 截图；<code>docs/art/</code> manifest 500 / batches 10 / scene-map 128 / image-qa-report / spot-check / visual-bible / README</td>
-<td>✅（数字待修）</td>
-</tr>
-<tr>
-<td>git</td>
-<td>已 push 到 09:20</td>
-<td>HEAD <code>4f20b44</code> @<strong>2026-10-21 09:20:43</strong>「v1.1：九个结局…」。<strong>09:39 快照：3 项已修改 + 7 项未跟踪</strong> —— <code>M 作品介绍.pdf</code>（本轮覆盖）、<code>M package.json</code>、<code>M package-lock.json</code>（装 three）；<code>?? 成果状态.md</code>、<code>?? docs/research/文献检索请求-2026-10-22.{json,md,回填对照表.md}</code>、<code>?? 2026-10-22-3d-audio-plan.md</code>、<code>?? src/game/content/scene3d.ts</code>、<code>?? tools/audio/</code>。<code>dist/</code>、<code>tools/shots/</code> 按 <code>.gitignore</code> 不入库</td>
-<td>🔄</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>注：<code>git status</code> 在审计期间持续变化（09:20 只有 1 项未跟踪 → 09:39 变成 10 项），3D/音频/文献三个 agent 正在并发写入。<strong>交付前必须重新 <code>git status</code> + <code>git add -A</code> + commit</strong>，并确认 <code>dist</code> 是在最后一次 <code>src</code> 改动之后 build 的。</p>
-</blockquote>
-<hr>
-<h1 id="_2">第三部分 · 还缺什么（一页结论）</h1>
-<h2 id="a">A. 必须提交（不做就是缺项 / 交了打不开）</h2>
-<ol>
-<li><strong>评审视频</strong>（#4）：全库 0 个视频。脚本已 v1.1 且时间轴对得上（1,050 字≈4:40），缺的只有录制。<strong>这是当前最大的一整块空白。</strong></li>
-<li><strong>报名信息 + 承诺书盖章</strong>（#1/#2）：纯线下/系统动作，越早越好（盖章可能排队）。</li>
-<li><strong>打包 ZIP</strong>（#6）：素材齐（17.48 MB，远低于 10GB），但没有压缩包，也没有打包脚本。</li>
-<li><strong><code>dist</code> 打开方式（R1）</strong>：不改代码，就<strong>必须</strong>把 <code>运行说明</code> 的方式 A 删掉；否则「双击 index.html → 白屏」会被当成作品故障。</li>
-<li><strong>首屏「六个结局」文案（R2）</strong>：<code>App.tsx:582</code> 一个字的事，但出现在第一屏。</li>
-</ol>
-<h2 id="b">B. 影响评分（能交，但会被扣）</h2>
-<ol start="6">
-<li><strong>文档数字一致性（R4）</strong>：<code>提交清单</code> 4 处、<code>测试记录</code> 4 处、<code>作品介绍</code> 3 处、<code>AI使用说明</code> 3 处、<code>FINAL-*</code> 总量口径。逐条见第四部分。</li>
-<li><strong>九结局审计覆盖</strong>：FINAL 只签了 6 个主结局（110,020 字 / 146 单元），新增 3 篇（3,118 字 / 3 单元）仅自查。已在 AI 使用说明里如实披露——<strong>披露到位就不算硬伤</strong>，若能补一轮 <code>endings.ts</code> 后三篇的 fact/literary r1 更稳。</li>
-<li><strong><code>作品介绍.pdf</code> 内容旧数字</strong>：本轮只换了「新版本文件」，但新版正文本身仍写 110,020 字 / JS 800.20 kB / dist 约 1.2 MB。这是最显眼的一份文档。</li>
-<li><strong><code>第三方资源说明</code> 缺 three.js</strong>：3D 一旦上线就必须补（MIT，一行）；不补属漏报第三方依赖。</li>
-<li><strong>截图细节</strong>：编号缺 02；<code>提交清单</code> 把 10 张全说成 1600×1000（移动端那张是 390×844）。</li>
-<li><strong><code>作品介绍.pdf</code> 与 <code>作品介绍-v1.1.pdf</code> 双份</strong>：同 SHA256，评审看到两个同名文件会疑惑；打包只放一份。</li>
-</ol>
-<h2 id="c">C. 可选（有时间再做，不做不影响通过）</h2>
-<ol start="12">
-<li><strong>音频 18—22 条</strong>（plan §2）：现在 <strong>0 条音效文件</strong>（09:38 刚下 <code>fetch_model.py</code>、建空 <code>public/audio/</code>），<code>运行说明</code> 已把「无声音」写成明确取舍 → 不做也能交。若做：<strong>只有 audio-owner 能占 GPU</strong>，且启动前 <code>nvidia-smi</code> 必须无 compute 进程；音频没落地前，<code>第三方资源说明</code> 与 <code>运行说明</code> 的「无声音」口径要一致。</li>
-<li><strong>3D 切片</strong>（plan §1）：现在只有 <code>scene3d.ts</code> 骨架（53 行）、three 已装、无 <code>Scene3D.tsx</code>。<strong>风险提示</strong>：3D 一旦进交付，<code>dist</code>、10 张截图、<code>运行说明</code>§五、<code>作品介绍</code>§3.5 全部要重做一轮，且 &lt;700px / <code>prefers-reduced-motion</code> 回退必须实测；按目前 2 天窗口，建议<strong>只保留「桌面端增强、手机回退 2.5D」的最小切片</strong>，否则宁可不上线（plan 自己写「3D 是增强，不是必需」）。</li>
-<li><strong>4 个缺图场景</strong>（v2-23/v2-27/v4-07/v5-05）：现在是渐变回退，不影响叙事。</li>
-<li><strong>汇报 PPT</strong>（#5）：与视频二选一，视频优先。</li>
-<li><strong>匿名化 4 项检查</strong>（<code>提交清单</code> §三）：截图/视频/PDF 内不得出现学校、姓名、指导教师；目录名不含身份信息。<strong>本轮未执行</strong>（需逐张看图与查 PDF 元数据）。</li>
-<li><strong><code>作品介绍</code> §3.3 体积段</strong>（「dist 约 1.2 MB」与「十几 MB」自相矛盾）：顺手改成 17.5 MB。</li>
-</ol>
-<hr>
-<h1 id="vs">第四部分 · 数字对账（提交清单 / 测试记录 / 其他文档 vs 实际文件）</h1>
-<blockquote>
-<p>规则：以<strong>命令实测</strong>为准；「实测」列都是本轮跑出来的。</p>
-</blockquote>
-<h2 id="41-docsdeliverablesmd">4.1 <code>docs/deliverables/提交清单.md</code></h2>
-<table>
-<thead>
-<tr>
-<th>行</th>
-<th>文档写的</th>
-<th>实测</th>
-<th>判定</th>
-<th>改成</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>12</td>
-<td>截图「共 10 张，1600×1000」</td>
-<td>10 张：<strong>9 张 1600×1000 + 1 张 390×844</strong>（<code>10-mobile-menu.png</code>）</td>
-<td>⚠️ 部分错</td>
-<td>「10 张，桌面 9 张 1600×1000 + 移动端 1 张 390×844」</td>
-</tr>
-<tr>
-<td>16</td>
-<td><code>dist/</code> <strong>519 个文件 / 17.6 MB</strong></td>
-<td><strong>515 个文件 / 17.48 MB</strong>（1 index + 2 assets + 496 art + 16 bg）</td>
-<td>❌ 错</td>
-<td>515 / 17.5 MB</td>
-</tr>
-<tr>
-<td>20</td>
-<td>图片质检「<strong>96%</strong> 可用」</td>
-<td><strong>151/158 = 95.57%</strong>；VLM 台账 <code>out-art/reports/screen-images.json</code>：total 158 / pass 147 / retry 4 / reject 7 / pass_rate 0.9304</td>
-<td>⚠️ 四舍五入不一致（测试记录写 95.6%）</td>
-<td>统一 95.6%</td>
-</tr>
-<tr>
-<td>20</td>
-<td>「319 步到结局」</td>
-<td>无留存日志；<code>build report</code> 同一测试写 <strong>301 步</strong></td>
-<td>❌ 两处自相矛盾</td>
-<td>复跑一次取真值，或删掉步数只写「走到结局 / 0 错误」</td>
-</tr>
-<tr>
-<td>62</td>
-<td>严格正文「当前 <strong>110,020</strong>」</td>
-<td><strong>113,138</strong></td>
-<td>❌ 旧数</td>
-<td>113,138</td>
-</tr>
-<tr>
-<td>20/69</td>
-<td>「六结局全部可达（结局页面复测）」</td>
-<td>现有 <strong>9 结局</strong></td>
-<td>❌ 旧口径</td>
-<td>九结局 9/9</td>
-</tr>
-<tr>
-<td>20</td>
-<td>「500 条图片总谱」</td>
-<td><code>image-manifest.json</code> = <strong>500</strong> 条</td>
-<td>✅</td>
-<td>—</td>
-</tr>
-<tr>
-<td>20</td>
-<td>「76 张史料卡」「140 场景结构校验」「113,138 字」</td>
-<td>76 / 140 / 113,138</td>
-<td>✅</td>
-<td>—</td>
-</tr>
-</tbody>
-</table>
-<h2 id="42-docsdeliverablesmd">4.2 <code>docs/deliverables/测试记录.md</code></h2>
-<table>
-<thead>
-<tr>
-<th>行</th>
-<th>文档写的</th>
-<th>实测</th>
-<th>判定</th>
-<th>改成</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>63</td>
-<td>check-volumes：场景 140；next 328 全部有效；sources 381</td>
-<td><strong>140 / 328 / 381</strong>（复跑一致）</td>
-<td>✅</td>
-<td>—</td>
-</tr>
-<tr>
-<td>64</td>
-<td>严格正文 <strong>113,138</strong></td>
-<td><strong>113,138</strong></td>
-<td>✅</td>
-<td>—</td>
-</tr>
-<tr>
-<td>65</td>
-<td><code>npx tsc -p tsconfig.app.json --noEmit</code> 0 错误</td>
-<td><strong>退出码 0</strong>（本轮复测）</td>
-<td>✅</td>
-<td>—</td>
-</tr>
-<tr>
-<td>69–75</td>
-<td>index 1.00 kB / CSS 17.33 kB / JS 832.97 kB（gzip 295.20）/ dist 515 文件 17.5 MB</td>
-<td>1,002 B / 17,331 B / 832,974 B / <strong>515 文件 17.48 MB</strong></td>
-<td>✅</td>
-<td>—</td>
-</tr>
-<tr>
-<td>75</td>
-<td>「含 <strong>496 张场景插画</strong>与 8 张背景图」</td>
-<td>496 是<strong>全部美术文件</strong>（scene 124 + ending 30 + 其余 342）；背景图 8 张 jpg + 8 个 json = 16 文件</td>
-<td>⚠️ 措辞错</td>
-<td>「124 张场景插画 + 30 张结局图 + 8 张背景图（共 496 美术文件）」</td>
-</tr>
-<tr>
-<td>86–90</td>
-<td>质检：158 / 147 / 4 / 7 / 93.0% / 重生成 pass 4 / 151-158=95.6% / 四维 4.01-3.93-4.72-4.94</td>
-<td>与 <code>screen-images.json</code> <strong>完全一致</strong></td>
-<td>✅</td>
-<td>—</td>
-</tr>
-<tr>
-<td>97</td>
-<td>volume3/volume4 「12,816 / <strong>4,819</strong>」为严格字数</td>
-<td>volume4 严格字数 = <strong>4,148</strong>；4,819 是宽松口径（含注释中文）</td>
-<td>❌ 错</td>
-<td>4,148</td>
-</tr>
-<tr>
-<td>92/94</td>
-<td>两个「## 七」标题（七、图片质检 / 七、已知限制）</td>
-<td>编号重复</td>
-<td>⚠️ 排版错</td>
-<td>后者改「## 八」</td>
-</tr>
-<tr>
-<td>14–22</td>
-<td>走路测试 319 步 / 115 场景 / 结局「名册」/ 146 秒 / 0 错误</td>
-<td>无日志留存，且与 build report 的 301 步冲突；动态测试本轮未复跑</td>
-<td>⚠️ 不可复现</td>
-<td>复跑或标注「数据来自 04:00 本地运行，未留日志」</td>
-</tr>
-</tbody>
-</table>
-<h2 id="43">4.3 其他对外文档</h2>
-<table>
-<thead>
-<tr>
-<th>文档</th>
-<th>写的</th>
-<th>实测</th>
-<th>改成</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>作品介绍.md</code>（→PDF）第 88 行</td>
-<td>首屏 JS <strong>800.20 kB（gzip 284.81）</strong>，主体是 <strong>110,020</strong> 字正文</td>
-<td>832.97 kB（gzip 295.20）；113,138 字</td>
-<td>832.97 / 295.20 / 113,138</td>
-</tr>
-<tr>
-<td><code>作品介绍.md</code> 第 167 行</td>
-<td>「dist 总计约 <strong>1.2 MB</strong>」</td>
-<td><strong>17.48 MB</strong></td>
-<td>17.5 MB</td>
-</tr>
-<tr>
-<td><code>作品介绍.md</code> 第 32/92/166/172/192/193 行</td>
-<td>113,138 字 / 140 场景 / 9 结局 / 76 卡 / 496 图 / 158 张入屏图 95.6%</td>
-<td>全部一致</td>
-<td>✅</td>
-</tr>
-<tr>
-<td><code>运行说明.md</code> 第 86 行</td>
-<td>结局一览「<strong>六个</strong>结局」</td>
-<td>9</td>
-<td>九个</td>
-</tr>
-<tr>
-<td><code>运行说明.md</code> 方式 A</td>
-<td>「双击 index.html」</td>
-<td><code>dist/index.html</code> 引用 <code>/assets/…</code> 绝对路径 → file:// 必白屏</td>
-<td>删掉方式 A，或先做 R1</td>
-</tr>
-<tr>
-<td><code>AI使用说明.md</code> 第 43/64/96 行</td>
-<td>「…（<strong>110,020</strong> 字）」「<strong>146</strong> 单元」「<strong>六个</strong>结局的结构」</td>
-<td>113,138 字；149 单元（146 经审 + 3 自查）；9 结局</td>
-<td>分别改 113,138 / 149（注明 146 经独立审计）/ 九个</td>
-</tr>
-<tr>
-<td><code>FINAL-fact-audit.md</code> §一</td>
-<td>合计 <strong>122,950</strong>（宽松口径），Lead 严格口径 <strong>105,938</strong></td>
-<td>当前严格 <strong>113,138</strong>；105,938 是体积扩写前旧值</td>
-<td>加一句「本签字覆盖 6 结局 / 110,020 字；其后新增 3 篇见 expansion-note」</td>
-</tr>
-<tr>
-<td><code>FINAL-literary-audit.md</code> §0/§1</td>
-<td>严格 <strong>110,020</strong>，146 单元，加权 4.59</td>
-<td>现 113,138 / 149 单元；110,020 = 现总量 − 3 个新结局（+3,118 字）</td>
-<td>同上加覆盖边界说明</td>
-</tr>
-<tr>
-<td><code>docs/art/image-qa-report.md</code> 第 3 行 vs 第 30 行</td>
-<td>「其余 <strong>342</strong> 张素材（500−158）」；「496−124−6=<strong>366</strong> 张素材」</td>
-<td>落盘 496 = 124 scene + <strong>30</strong> ending + <strong>342</strong> 其他；两个分母（500 计划 / 496 落盘）混用</td>
-<td>统一为：496 = 124 + 30 + 342；入屏 158 = 128 + 30，其中 4 场景缺图</td>
-</tr>
-<tr>
-<td><code>2026-10-21-build-report.md</code> §三</td>
-<td>走路测试 <strong>301</strong> 步</td>
-<td>与测试记录 319 冲突</td>
-<td>二选一（建议复跑）</td>
-</tr>
-<tr>
-<td><code>2026-10-21-build-report.md</code> §二</td>
-<td>「交付 PDF 11 份」</td>
-<td>磁盘 <strong>12 个 pdf 文件</strong> = <strong>11 份文档</strong>（作品介绍占 2 个）</td>
-<td>「11 份文档（作品介绍含 v1.1 副本共 12 个文件）」</td>
-</tr>
-<tr>
-<td><code>package.json</code></td>
-<td>（文档未列 three）</td>
-<td>09:35 已含 <code>three ^0.186.1</code>、<code>@types/three</code></td>
-<td>第三方资源说明补 MIT 行</td>
-</tr>
-</tbody>
-</table>
-<h2 id="44-11-pdf-12">4.4 本轮实测的 11 份 PDF 时间戳（12 个文件）</h2>
-<table>
-<thead>
-<tr>
-<th>时间</th>
-<th>大小</th>
-<th>文件</th>
-<th>源文档</th>
-<th>源 → PDF</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>09:20:00</strong></td>
-<td>841,877</td>
-<td><code>作品介绍.pdf</code> ← <strong>本轮由旧版 03:59:36 / 765,320 覆盖而来</strong></td>
-<td><code>作品介绍.md</code> 09:14:09</td>
-<td>✅ 新</td>
-</tr>
-<tr>
-<td>09:19:57</td>
-<td>428,610</td>
-<td><code>AI使用说明.pdf</code></td>
-<td>09:18:24</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>09:20:00</td>
-<td>841,877</td>
-<td><code>作品介绍-v1.1.pdf</code>（与上面同 SHA256）</td>
-<td>同上</td>
-<td>✅ 重复副本</td>
-</tr>
-<tr>
-<td>09:20:13</td>
-<td>435,156</td>
-<td><code>史料书单.pdf</code></td>
-<td>10-20 23:34:07</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>09:20:16</td>
-<td>476,966</td>
-<td><code>史料卡模板.pdf</code></td>
-<td>10-20 22:49:02</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>09:20:18</td>
-<td>357,243</td>
-<td><code>史料回填报告.pdf</code></td>
-<td>10-21 00:11:19</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>09:20:22</td>
-<td>614,977</td>
-<td><code>史料收集字典.pdf</code></td>
-<td>10-20 23:33:07</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>09:20:24</td>
-<td>342,662</td>
-<td><code>提交清单.pdf</code></td>
-<td>09:18:22</td>
-<td>✅（数字待改）</td>
-</tr>
-<tr>
-<td>09:20:26</td>
-<td>292,022</td>
-<td><code>测试记录.pdf</code></td>
-<td>09:18:16</td>
-<td>✅（数字待改）</td>
-</tr>
-<tr>
-<td>09:20:28</td>
-<td>305,791</td>
-<td><code>第三方资源说明.pdf</code></td>
-<td>01:30:02</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>09:20:31</td>
-<td>391,666</td>
-<td><code>评审视频脚本.pdf</code></td>
-<td>09:18:36</td>
-<td>✅</td>
-</tr>
-<tr>
-<td>09:20:33</td>
-<td>457,012</td>
-<td><code>运行说明.pdf</code></td>
-<td>09:18:04</td>
-<td>✅（文案待改）</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>结论：<strong>11 份 PDF 全部晚于各自的 md 源文件</strong>，不存在「PDF 比 md 旧」的问题；唯一曾是旧版的是 <code>作品介绍.pdf</code>，本轮已修复。</p>
-</blockquote>
-<h2 id="45">4.5 本轮对文件的改动（仅此一处 + 一个新文件）</h2>
-<ol>
-<li><strong>覆盖</strong> <code>docs/deliverables/作品介绍.pdf</code>：765,320 B / 03:59:36 → <strong>841,877 B / 09:20:00</strong>，SHA256 <code>627ED4F46F23F9CDEC8B74CB26BE21573FE4B92E30A31CE4ED58CA382D7EC5FD</code>（与 <code>作品介绍-v1.1.pdf</code> 一致）。覆盖前独占打开测试通过（<strong>已不再被占用</strong>）。</li>
-<li><strong>新建</strong> 本文件 <code>docs/deliverables/成果状态.md</code>。</li>
-<li>未移动、未删除任何文件；旧版 <code>作品介绍.pdf</code> 内容已被新内容替代（如需留档，请从 git HEAD <code>4f20b44</code> 取回）。</li>
-</ol>
-<hr>
-<h1 id="a_1">附录 A · 本轮执行过的核实命令（可复现）</h1>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>命令</th>
-<th>关键输出</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A.1</td>
-<td><code>node tools/count-words-strict.mjs</code></td>
-<td>合计 <strong>113,138</strong> 字（分卷见第二部分）</td>
-</tr>
-<tr>
-<td>A.2</td>
-<td><code>node tools/check-volumes.mjs</code></td>
-<td>140 场景 / 328 next / 381 sources / id 唯一 / 引用全有效</td>
-</tr>
-<tr>
-<td>A.3</td>
-<td><code>npx tsc -p tsconfig.app.json --noEmit</code></td>
-<td>退出码 <strong>0</strong></td>
-</tr>
-<tr>
-<td>A.4</td>
-<td>动态测试（<code>walk-test.mjs</code> / <code>ending-test-v3.mjs</code> / <code>ui-smoke.mjs</code>）<strong>未复跑</strong></td>
-<td>理由：①需起 dev/preview 服务，且运行会写 <code>tools/shots/</code>，超出「只写本文件」的写权限；②审计期间另一 agent 正在改 <code>package.json</code>（装 three），此时跑构建类测试结果不稳定；③三项的<strong>静态前提</strong>已单独核实（140/9/10/15/76、9 个 ending kind、截图可见 9 选项）。<strong>建议交付前由 Lead 在干净环境下各跑一次并贴输出。</strong></td>
-</tr>
-<tr>
-<td>A.5</td>
-<td><code>Get-ChildItem dist -Recurse -File</code></td>
-<td><strong>515</strong> 文件 / <strong>17.48 MB</strong>；art 496 / bg 16 / assets 2 / index.html 1,002 B；dist @09:18:11</td>
-</tr>
-<tr>
-<td>A.6</td>
-<td><code>Get-ChildItem public\art -File</code> + 前缀分组</td>
-<td><strong>496</strong> 张：scene 124 / moment 100 / artifact 80 / ui 60 / figure 60 / atmo 42 / ending 30</td>
-</tr>
-<tr>
-<td>A.7</td>
-<td>缺席图抽查</td>
-<td><code>scene-056/060/110/123</code> 不存在；<code>scene-062/070/085</code>、<code>ending-002</code> 存在（03:52—03:53）</td>
-</tr>
-<tr>
-<td>A.8</td>
-<td><code>image-manifest.json</code> 解析</td>
-<td>数组 <strong>500</strong> 条；<code>scene-map.json</code> <strong>128</strong> 个场景映射</td>
-</tr>
-<tr>
-<td>A.9</td>
-<td><code>out-art/reports/screen-images.json</code> 解析</td>
-<td>total 158 / pass 147 / retry 4 / reject 7 / pass_rate 0.9304 / 均分 4.01·3.93·4.72·4.94</td>
-</tr>
-<tr>
-<td>A.10</td>
-<td>史料卡计数（<code>sources.ts</code> + <code>sources.auto.ts</code>）</td>
-<td><strong>76</strong> = 20（14 verified + 6 needed）+ 56（49 verified + 7 pending）= 63/7/6</td>
-</tr>
-<tr>
-<td>A.11</td>
-<td><code>endings.ts</code> kind 计数</td>
-<td>9 个：roster/letters/flag/photo/testimony/message/archive/relics/wordofmouth</td>
-</tr>
-<tr>
-<td>A.12</td>
-<td><code>git status --porcelain</code> / <code>git log -1</code></td>
-<td>09:39 快照：3 M + 7 ??；HEAD <code>4f20b44</code> @09:20:43</td>
-</tr>
-<tr>
-<td>A.13</td>
-<td>截图尺寸（System.Drawing）</td>
-<td>10 张；9×1600×1000 + 1×390×844；5.79 MB</td>
-</tr>
-<tr>
-<td>A.14</td>
-<td>PDF 时间戳/大小/SHA256</td>
-<td>见 4.4 / 4.5</td>
-</tr>
-<tr>
-<td>A.15</td>
-<td>全库 <code>*.mp4/*.mov/*.pptx/*.ppt/*.zip/*.rar/*.7z</code></td>
-<td><strong>0 条</strong></td>
-</tr>
-</tbody>
-</table>
-<h2 id="b_1">附录 B · 未执行 / 无法执行的检查（如实列出）</h2>
-<ol>
-<li><strong>动态测试复跑</strong>（A.4）——受写权限与并发改动限制。</li>
-<li><strong>PDF 内文抽检</strong>——本机无 python / pdftotext，只能核「PDF 比 md 新」与字节数，无法逐页比对文字。</li>
-<li><strong>截图逐张目检</strong>——只看了 3 张（<code>04</code> 九选项 ✓、<code>05</code> 终极画面 ✓、<code>10</code> 移动端 ✓，并因此发现 R2 文案问题）；其余 7 张仅核尺寸。</li>
-<li><strong>匿名化检查</strong>——需要逐张看图与查 PDF 元数据，本轮未做。</li>
-<li><strong><code>dist</code> 实机打开验证</strong>——按 R1 判断为必失败，未实际点开（避免启动替代服务）。<strong>这是交付前必须由 Lead 亲测的一条。</strong></li>
-</ol>
-<hr>
-<h2 id="2026-10-22-1257-lead">2026-10-22 12:57 更新（Lead）</h2>
-<blockquote>
-<p>本节覆盖上面快照中已变化的部分；上面的审计记录保留原样，作为历史快照。</p>
-</blockquote>
-<h3 id="_3">本轮完成</h3>
-<ul>
-<li>✅ <strong>R1 修复并验证</strong>：<code>vite.config.ts</code> 加 <code>base:'./'</code>，图片/音频路径相对化；<code>tools/test-deploy.mjs</code> 从模拟子目录 + HTTP 起服务实测：index/assets/art/bg/audio 全部可加载，0 failed requests。</li>
-<li>✅ <strong>R2 修复</strong>：首屏文案「六个结局」→「九个结局」。</li>
-<li>✅ <strong>音频接入</strong>：28 条本地生成音效（4.88 MB）+ Web Audio 系统；默认静音、右下角开关、场景/天气映射、结局 drone；<code>tools/test-audio.mjs</code> 通过。</li>
-<li>✅ <strong>3D 接入</strong>：四个真 3D 切片（仓库内景/楼顶/桥/1947 厢房），右上角「3D 视角」，lazy chunk 171.1 kB gzip（实测 <code>Scene3D-BkEU69la.js</code> 591,988 B）；App 内实测 87.3 fps / 16 calls / 3,093 tris，独立切片压测 101.4—120.3 fps（<code>tools/3d/shots/perf.json</code>）；移动端/减少动效自动隐藏。</li>
-<li>✅ <strong>截图重拍</strong>：恰好 10 张（9 张 1600×1000 + 1 张 390×844，共 5.41 MB），含真 3D 与结局终极画面；旧图归档 trash。</li>
-<li>✅ <strong>12 份交付 PDF 全部重出</strong>（12:58:32—12:59:01，含新增 <code>成果状态.pdf</code>），<code>作品介绍.pdf</code> 已覆盖为最新；<code>作品介绍-v1.1.pdf</code> 重复副本已从 <code>docs/deliverables/</code> 移除（<code>trash/</code> 中未见留档，如需留档请从 git HEAD <code>4f20b44</code> 取回）。</li>
-<li>✅ <strong>12:58 文档/PDF 基线</strong>：12 份 PDF（12:58:32—12:59:01）+ <code>docs/report/2026-10-22-afternoon-metrics.json</code>（12:58:28）+ 截图 10 张 + <code>dist/</code> 550 文件 / 24.59 MB + HEAD <code>b654f1b</code>（12:59:18）；此后所有文档数字以这条基线为准（复核报告见 <code>docs/report/2026-10-22-doc-final-check.md</code>）。</li>
-<li>✅ <strong>数字统一</strong>：新增 <code>tools/metrics.mjs</code>（唯一数字源）+ <code>tools/docs-sync.mjs</code>（文档同步）；<code>docs/report/2026-10-22-afternoon-metrics.json</code>。</li>
-<li>✅ <strong>回归全绿</strong>：walk 到「名册」/0 错误；九结局 9/9；ui-smoke 全绿；减少动效与移动端降级 PASS。</li>
-</ul>
-<h3 id="1315">仍然缺（截至 13:15）</h3>
-<ul>
-<li>❌ 评审视频（0 个 mp4）</li>
-<li>⏳ 正式打包 ZIP（<code>tools/package.mjs</code> 于 13:13 试打包通过：573 文件 / 29.28 MiB，占位名「待填编号」，待作品编号后重跑）</li>
-<li>⏳ 报名系统信息 + 承诺书盖章</li>
-<li>⏳ 文献检索结果（JSON 需求单已就绪，等用户搜索后回填）</li>
-<li>🔄 3 个合成结局仍为自查（覆盖边界见 <code>docs/audit/2026-10-22-post-audit-addendum.md</code>）</li>
-<li>🔄 4 个场景无插画（渐变回退）</li>
-</ul>
-<hr>
-<h2 id="2026-10-22-1350-v13">2026-10-22 13:50 更新（v1.3）</h2>
-<ul>
-<li>✅ <strong>合成结局独立审计补齐</strong>：史实 P0 4→0、文学 3.99→4.35；修复 4 个与主结局冲突的 P0（口述年份、互见人数、家书/照片原件入库）与 16 条 P1；六主结局零改动。</li>
-<li>✅ <strong>继承性问题修复</strong>：chapter1.ts 尾声「一张十一个人的合影」→「一张画着两个圈的纸」（与 C2 一致）；App.tsx compositeLine 同步为「抄件还在，单子还在」。</li>
-<li>✅ <strong>无障碍 P1 修复</strong>：选项按钮恢复 button 语义（删除 role=list/listitem）；换场 h1 焦点 + aria-live 播报；Esc 关史料卡浮层；3D 在窗口 &lt;700px 自动退出；移动端声音按钮不再压正文。</li>
-<li>✅ <strong>Blender hero 资产</strong>：public/models/warehouse-ext.glb（4,732 tris / 469.6 KB，4.2.3 无头 bpy，Cycles CPU 0 显存），接入 v1-24 / v1-25 的 3D 视角。</li>
-<li>✅ <strong>数字统一</strong>：113,048 字 / dist 550 文件 24.59 MB / 主包 gzip 319.0 kB / 3D 懒加载 171.1 kB。</li>
-<li>🔄 待办：正式重出 PDF → 打包 ZIP（node tools/package.mjs --name "把名字留下来_&lt;编号&gt;"）→ 评审视频与报名线下。</li>
-</ul>
-<hr>
-<h2 id="2026-10-22-230x-v14">2026-10-22 23:0x 更新（v1.4 · 三轮复审后）</h2>
-<ul>
-<li>✅ <strong>剧情/规则复审</strong>：P0=0、死路 0、存档续玩通过；修复 18 处（照片/家书保管链、旗样方位、名册保管链、账本封顶 84→5、13 处文本硬伤）。报告 <code>docs/report/2026-10-22-story-rules-review.md</code>。</li>
-<li>✅ <strong>动画/交互复审</strong>：修 5 类缺陷（墨幕连点跳场、@2× 换场掉帧 −53% 像素、reduced-motion 终极画面黑屏、终极画面 8.46s→6.2s、9 种 hover 失效、空闲 64→234fps）。报告 <code>2026-10-22-animation-review.md</code>。</li>
-<li>✅ <strong>3D/GLB 复审</strong>：修 7 处（GLB 比例 −9.8%、context lost 永久黑屏、GLB/贴图泄漏、重复请求、fps 自报、DPR、加载中卸载）；App 侧 lazy chunk 白屏已加 ErrorBoundary。报告 <code>2026-10-22-3d-loading-review.md</code>。</li>
-<li>✅ <strong>Lead 终审 11/11</strong>：键盘 / 坏存档 / 图鉴 9 格 / 3D 反复开关无 Canvas 泄漏 / GLB 缓存（二次 0 请求）/ 404 回退 / localStorage 禁用；chunk 失败不白屏 PASS。</li>
-<li>✅ <strong>数字最终基线</strong>：<strong>113,048 字</strong> / 140 场景 / 9 结局 / 550 文件 24.59 MB / 主包 gzip 319.0 kB / 3D 懒加载 171.1 kB / 13 份 PDF 全部新于 md。</li>
-<li>
-<p>🔄 仍待：作品编号（报名后）→ 正式 ZIP；评审视频；报名+承诺书线下；文献检索结果回填。</p>
-</li>
-<li>
-<p>✅ <strong>正式 ZIP 已出（460737）</strong>：<code>D:\提交\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip</code>，31.40 MiB / 579 文件 / SHA256 e4ca133e…07ce；仅剩视频与报名/承诺书两个占位。</p>
-</li>
-<li>
-<p>✅ <strong>作品名称定稿</strong>：把名字留下来：四行仓库·苏州河北岸的四百余个名字（编号 460737）；游戏内标题仍用「把名字留下来」。正式 ZIP 以长名重出。</p>
-</li>
-</ul>
-<hr>
-<h2 id="2026-10-22-020x-v15">2026-10-22 02:0x 更新（v1.5：交互强化）</h2>
-<ul>
-<li>✅ <strong>真 3D 场景 → 背景图 + 热点探索</strong>：5 张 1920×1080 背景图、22 处热点（悬停墨圈/旁白窄卡/史料卡/发现计数/双层视差/键盘/390px/减少动效）。<code>verify-explore</code> PASS。</li>
-<li>✅ <strong>长段落三段阅读 + 人物剪影</strong>：&gt;6 段自动分 3 组，mood 判定 scene/memory/figure-male/figure-female，卡片氛围与整页背景随组变化，人物组浮出剪影；键盘让位。<code>verify-beats</code> PASS。</li>
-<li>✅ <strong>音效 42 事件重建并接回 App</strong>：菜单/悬停/换场/载体/结局起势收束/8 类点缀/UI 回执；四总线+逐条补偿+卷积混响；<code>verify-events</code> 32/32。</li>
-<li>✅ <strong>前序交互保留</strong>：灯下找名字、升旗、尾声交付托盘（拖进匣子+按住 1 秒）、回顶修复。</li>
-<li>⚠️ 期间发生外部进程删除文件（源码与 .git 索引），已从 git 恢复、重建集成，并建立 <code>D:\backups\live</code> 每 2 分钟增量备份。</li>
-<li>🔄 仍待：正式重出 PDF、重新打包（新构建 550 文件 / 24.59 MB）、评审视频、报名/承诺书、文献回填。</li>
-</ul>
-</div></body></html>
+<blockquote><p>必交项里，<strong>#4 视频、#6 打包、#1/#2 系统内填报</strong>三项是硬缺口；#7 素材齐但有 R1 打开方式隐患。</p></blockquote>
+<hr/>
+<h1>第二部分 · 内部产物状态</h1>
+<table><thead><tr><th>产物</th><th>文档声明</th><th><strong>实测（命令核实）</strong></th><th>状态</th></tr></thead><tbody>
+<tr><td>正文严格字数</td><td>113,138</td><td><strong>113,138</strong>（<code>count-words-strict.mjs</code>，2026-10-21 本轮复跑：序 7,283 / 一 19,391 / 二 33,017 / 三 12,816 / 四 4,148 / 支 10,115 / 基础 11,213 / 结局 15,155）</td><td>✅</td></tr>
+<tr><td>场景数</td><td>140</td><td><strong>140</strong>（<code>check-volumes.mjs</code>：next/continueTo 328、sources 381、id 唯一、全部有效）</td><td>✅</td></tr>
+<tr><td>结局数</td><td>9</td><td><strong>9</strong>（<code>endings.ts</code> 9 个 kind：roster/letters/flag/photo/testimony/message/archive/relics/wordofmouth；截图 <code>04-epilogue-choices.png</code> 肉眼可见 9 个选项；<code>App.tsx:635</code> 写「九个结局」，<code>App.tsx:582</code> 仍写「六个」→ <strong>R2</strong>）</td><td>✅（文案 ❌）</td></tr>
+<tr><td>图片</td><td>500 总谱 / 496 落盘</td><td><strong>496</strong>（<code>image-manifest.json</code> 数组 <strong>500</strong>；<code>public/art</code> = <code>dist/art</code> = <strong>496</strong>：scene <strong>124</strong> + ending <strong>30</strong> + moment 100 + artifact 80 + figure 60 + ui 60 + atmo 42 = 496，16.24 MB）；缺 4 张：<code>scene-056/060/110/123</code>（v2-23/v2-27/v4-07/v5-05，走渐变回退）；重生图 <code>scene-062/070/085</code> + <code>ending-002</code> 均在（03:52—03:53）</td><td>✅</td></tr>
+<tr><td>史料卡</td><td>76（63 已核 / 7 待核 / 6 待接入）</td><td><strong>76</strong> = <code>sources.ts</code> 20（14 verified + 6 needed）+ <code>sources.auto.ts</code> 56（49 verified + 7 pending）→ <strong>63 / 7 / 6</strong></td><td>✅</td></tr>
+<tr><td>音频</td><td>计划 18—22 条（plan §2）</td><td><strong>0 条音效文件</strong>（09:39 快照）。09:38:03 刚出现 <code>tools/audio/fetch_model.py</code>（2,903 B）与空目录 <code>public/audio/</code>；<code>docs/audio/</code>、<code>dist/audio/</code>、<code>audio-manifest.json</code> 均无；<code>运行说明</code> 已如实写「本版暂未加入音乐与音效」</td><td>🔄 刚开工（0/20）</td></tr>
+<tr><td>3D</td><td>4 个切片（plan §1）</td><td><strong>骨架刚出现</strong>（09:39 快照）：<code>src/game/content/scene3d.ts</code> 2,241 B / 53 行 @09:38:13；<code>three ^0.186.1</code> + <code>@types/three</code> 于 09:35 写入 <code>package.json</code>/<code>package-lock.json</code>；仍<strong>缺</strong> <code>src/game/components/Scene3D.tsx</code>、<code>tools/3d/</code>；<code>dist</code>（09:18）不含 3D</td><td>🔄 刚起步</td></tr>
+<tr><td>审计</td><td>双轨 FINAL 通过</td><td><strong>有报告、但覆盖旧口径</strong>：<code>docs/audit/</code> 35 份 md（FINAL-fact @01:15、FINAL-literary @01:10，均签在<strong>6 结局 / 110,020 字</strong>上）+ 8 个只读工具；新增 3 结局只有 <code>2026-10-21-ending-expansion-note.md</code>（自查，明文承认「没有经过独立审计员逐段评分」）</td><td>🔄</td></tr>
+<tr><td>测试</td><td>走路 319 步、9/9、0 错误</td><td>脚本齐（<code>tools/</code> 15 个 .mjs；walk / ending-v3 / ui-smoke / check-volumes / count-words-strict）；<strong>本轮 tsc 复测 0 错误</strong>；动态测试本轮<strong>未复跑</strong>（理由见附录 A.4）。文档内部：测试记录 319 步 vs build report 301 步 → <strong>两处不一致</strong>；<code>playwright</code> <strong>不在 <code>package.json</code></strong>，实际解析到<strong>项目外层</strong> <code>C:\Users\26298\OneDrive\Desktop\全栈开发\node_modules\playwright</code>→「所有数字可用仓库内脚本复现」这句在干净环境不成立</td><td>🔄</td></tr>
+<tr><td>文档</td><td>—</td><td><code>docs/</code> <strong>65 份 md</strong>（含本文件与并发新增的 4 份文献检索请求）；<code>docs/deliverables/</code> <strong>12 md + 11 html + 12 pdf</strong>（11 份文档，作品介绍占 2 个文件）+ 10 截图；<code>docs/art/</code> manifest 500 / batches 10 / scene-map 128 / image-qa-report / spot-check / visual-bible / README</td><td>✅（数字待修）</td></tr>
+<tr><td>git</td><td>已 push 到 09:20</td><td>HEAD <code>4f20b44</code> @<strong>2026-10-21 09:20:43</strong>「v1.1：九个结局…」。<strong>09:39 快照：3 项已修改 + 7 项未跟踪</strong> —— <code>M 作品介绍.pdf</code>（本轮覆盖）、<code>M package.json</code>、<code>M package-lock.json</code>（装 three）；<code>?? 成果状态.md</code>、<code>?? docs/research/文献检索请求-2026-10-22.{json,md,回填对照表.md}</code>、<code>?? 2026-10-22-3d-audio-plan.md</code>、<code>?? src/game/content/scene3d.ts</code>、<code>?? tools/audio/</code>。<code>dist/</code>、<code>tools/shots/</code> 按 <code>.gitignore</code> 不入库</td><td>🔄</td></tr>
+</tbody></table>
+<blockquote><p>注：<code>git status</code> 在审计期间持续变化（09:20 只有 1 项未跟踪 → 09:39 变成 10 项），3D/音频/文献三个 agent 正在并发写入。<strong>交付前必须重新 <code>git status</code> + <code>git add -A</code> + commit</strong>，并确认 <code>dist</code> 是在最后一次 <code>src</code> 改动之后 build 的。</p></blockquote>
+<hr/>
+<h1>第三部分 · 还缺什么（一页结论）</h1>
+<h2>A. 必须提交（不做就是缺项 / 交了打不开）</h2>
+<ol><li><strong>评审视频</strong>（#4）：全库 0 个视频。脚本已 v1.1 且时间轴对得上（1,050 字≈4:40），缺的只有录制。<strong>这是当前最大的一整块空白。</strong></li><li><strong>报名信息 + 承诺书盖章</strong>（#1/#2）：纯线下/系统动作，越早越好（盖章可能排队）。</li><li><strong>打包 ZIP</strong>（#6）：素材齐（17.48 MB，远低于 10GB），但没有压缩包，也没有打包脚本。</li><li><strong><code>dist</code> 打开方式（R1）</strong>：不改代码，就<strong>必须</strong>把 <code>运行说明</code> 的方式 A 删掉；否则「双击 index.html → 白屏」会被当成作品故障。</li><li><strong>首屏「六个结局」文案（R2）</strong>：<code>App.tsx:582</code> 一个字的事，但出现在第一屏。</li></ol>
+<h2>B. 影响评分（能交，但会被扣）</h2>
+<ol><li><strong>文档数字一致性（R4）</strong>：<code>提交清单</code> 4 处、<code>测试记录</code> 4 处、<code>作品介绍</code> 3 处、<code>AI使用说明</code> 3 处、<code>FINAL-*</code> 总量口径。逐条见第四部分。</li><li><strong>九结局审计覆盖</strong>：FINAL 只签了 6 个主结局（110,020 字 / 146 单元），新增 3 篇（3,118 字 / 3 单元）仅自查。已在 AI 使用说明里如实披露——<strong>披露到位就不算硬伤</strong>，若能补一轮 <code>endings.ts</code> 后三篇的 fact/literary r1 更稳。</li><li><strong><code>作品介绍.pdf</code> 内容旧数字</strong>：本轮只换了「新版本文件」，但新版正文本身仍写 110,020 字 / JS 800.20 kB / dist 约 1.2 MB。这是最显眼的一份文档。</li><li><strong><code>第三方资源说明</code> 缺 three.js</strong>：3D 一旦上线就必须补（MIT，一行）；不补属漏报第三方依赖。</li><li><strong>截图细节</strong>：编号缺 02；<code>提交清单</code> 把 10 张全说成 1600×1000（移动端那张是 390×844）。</li><li><strong><code>作品介绍.pdf</code> 与 <code>作品介绍-v1.1.pdf</code> 双份</strong>：同 SHA256，评审看到两个同名文件会疑惑；打包只放一份。</li></ol>
+<h2>C. 可选（有时间再做，不做不影响通过）</h2>
+<ol><li><strong>音频 18—22 条</strong>（plan §2）：现在 <strong>0 条音效文件</strong>（09:38 刚下 <code>fetch_model.py</code>、建空 <code>public/audio/</code>），<code>运行说明</code> 已把「无声音」写成明确取舍 → 不做也能交。若做：<strong>只有 audio-owner 能占 GPU</strong>，且启动前 <code>nvidia-smi</code> 必须无 compute 进程；音频没落地前，<code>第三方资源说明</code> 与 <code>运行说明</code> 的「无声音」口径要一致。</li><li><strong>3D 切片</strong>（plan §1）：现在只有 <code>scene3d.ts</code> 骨架（53 行）、three 已装、无 <code>Scene3D.tsx</code>。<strong>风险提示</strong>：3D 一旦进交付，<code>dist</code>、10 张截图、<code>运行说明</code>§五、<code>作品介绍</code>§3.5 全部要重做一轮，且 &lt;700px / <code>prefers-reduced-motion</code> 回退必须实测；按目前 2 天窗口，建议<strong>只保留「桌面端增强、手机回退 2.5D」的最小切片</strong>，否则宁可不上线（plan 自己写「3D 是增强，不是必需」）。</li><li><strong>4 个缺图场景</strong>（v2-23/v2-27/v4-07/v5-05）：现在是渐变回退，不影响叙事。</li><li><strong>汇报 PPT</strong>（#5）：与视频二选一，视频优先。</li><li><strong>匿名化 4 项检查</strong>（<code>提交清单</code> §三）：截图/视频/PDF 内不得出现学校、姓名、指导教师；目录名不含身份信息。<strong>本轮未执行</strong>（需逐张看图与查 PDF 元数据）。</li><li><strong><code>作品介绍</code> §3.3 体积段</strong>（「dist 约 1.2 MB」与「十几 MB」自相矛盾）：顺手改成 17.5 MB。</li></ol>
+<hr/>
+<h1>第四部分 · 数字对账（提交清单 / 测试记录 / 其他文档 vs 实际文件）</h1>
+<blockquote><p>规则：以<strong>命令实测</strong>为准；「实测」列都是本轮跑出来的。</p></blockquote>
+<h2>4.1 <code>docs/deliverables/提交清单.md</code></h2>
+<table><thead><tr><th>行</th><th>文档写的</th><th>实测</th><th>判定</th><th>改成</th></tr></thead><tbody>
+<tr><td>12</td><td>截图「共 10 张，1600×1000」</td><td>10 张：<strong>9 张 1600×1000 + 1 张 390×844</strong>（<code>10-mobile-menu.png</code>）</td><td>⚠️ 部分错</td><td>「10 张，桌面 9 张 1600×1000 + 移动端 1 张 390×844」</td></tr>
+<tr><td>16</td><td><code>dist/</code> <strong>519 个文件 / 17.6 MB</strong></td><td><strong>515 个文件 / 17.48 MB</strong>（1 index + 2 assets + 496 art + 16 bg）</td><td>❌ 错</td><td>515 / 17.5 MB</td></tr>
+<tr><td>20</td><td>图片质检「<strong>96%</strong> 可用」</td><td><strong>151/158 = 95.57%</strong>；VLM 台账 <code>out-art/reports/screen-images.json</code>：total 158 / pass 147 / retry 4 / reject 7 / pass_rate 0.9304</td><td>⚠️ 四舍五入不一致（测试记录写 95.6%）</td><td>统一 95.6%</td></tr>
+<tr><td>20</td><td>「319 步到结局」</td><td>无留存日志；<code>build report</code> 同一测试写 <strong>301 步</strong></td><td>❌ 两处自相矛盾</td><td>复跑一次取真值，或删掉步数只写「走到结局 / 0 错误」</td></tr>
+<tr><td>62</td><td>严格正文「当前 <strong>110,020</strong>」</td><td><strong>113,138</strong></td><td>❌ 旧数</td><td>113,138</td></tr>
+<tr><td>20/69</td><td>「六结局全部可达（结局页面复测）」</td><td>现有 <strong>9 结局</strong></td><td>❌ 旧口径</td><td>九结局 9/9</td></tr>
+<tr><td>20</td><td>「500 条图片总谱」</td><td><code>image-manifest.json</code> = <strong>500</strong> 条</td><td>✅</td><td>—</td></tr>
+<tr><td>20</td><td>「76 张史料卡」「140 场景结构校验」「113,138 字」</td><td>76 / 140 / 113,138</td><td>✅</td><td>—</td></tr>
+</tbody></table>
+<h2>4.2 <code>docs/deliverables/测试记录.md</code></h2>
+<table><thead><tr><th>行</th><th>文档写的</th><th>实测</th><th>判定</th><th>改成</th></tr></thead><tbody>
+<tr><td>63</td><td>check-volumes：场景 140；next 328 全部有效；sources 381</td><td><strong>140 / 328 / 381</strong>（复跑一致）</td><td>✅</td><td>—</td></tr>
+<tr><td>64</td><td>严格正文 <strong>113,138</strong></td><td><strong>113,138</strong></td><td>✅</td><td>—</td></tr>
+<tr><td>65</td><td><code>npx tsc -p tsconfig.app.json --noEmit</code> 0 错误</td><td><strong>退出码 0</strong>（本轮复测）</td><td>✅</td><td>—</td></tr>
+<tr><td>69–75</td><td>index 1.00 kB / CSS 17.33 kB / JS 832.97 kB（gzip 295.20）/ dist 515 文件 17.5 MB</td><td>1,002 B / 17,331 B / 832,974 B / <strong>515 文件 17.48 MB</strong></td><td>✅</td><td>—</td></tr>
+<tr><td>75</td><td>「含 <strong>496 张场景插画</strong>与 8 张背景图」</td><td>496 是<strong>全部美术文件</strong>（scene 124 + ending 30 + 其余 342）；背景图 8 张 jpg + 8 个 json = 16 文件</td><td>⚠️ 措辞错</td><td>「124 张场景插画 + 30 张结局图 + 8 张背景图（共 496 美术文件）」</td></tr>
+<tr><td>86–90</td><td>质检：158 / 147 / 4 / 7 / 93.0% / 重生成 pass 4 / 151-158=95.6% / 四维 4.01-3.93-4.72-4.94</td><td>与 <code>screen-images.json</code> <strong>完全一致</strong></td><td>✅</td><td>—</td></tr>
+<tr><td>97</td><td>volume3/volume4 「12,816 / <strong>4,819</strong>」为严格字数</td><td>volume4 严格字数 = <strong>4,148</strong>；4,819 是宽松口径（含注释中文）</td><td>❌ 错</td><td>4,148</td></tr>
+<tr><td>92/94</td><td>两个「## 七」标题（七、图片质检 / 七、已知限制）</td><td>编号重复</td><td>⚠️ 排版错</td><td>后者改「## 八」</td></tr>
+<tr><td>14–22</td><td>走路测试 319 步 / 115 场景 / 结局「名册」/ 146 秒 / 0 错误</td><td>无日志留存，且与 build report 的 301 步冲突；动态测试本轮未复跑</td><td>⚠️ 不可复现</td><td>复跑或标注「数据来自 04:00 本地运行，未留日志」</td></tr>
+</tbody></table>
+<h2>4.3 其他对外文档</h2>
+<table><thead><tr><th>文档</th><th>写的</th><th>实测</th><th>改成</th></tr></thead><tbody>
+<tr><td><code>作品介绍.md</code>（→PDF）第 88 行</td><td>首屏 JS <strong>800.20 kB（gzip 284.81）</strong>，主体是 <strong>110,020</strong> 字正文</td><td>832.97 kB（gzip 295.20）；113,138 字</td><td>832.97 / 295.20 / 113,138</td></tr>
+<tr><td><code>作品介绍.md</code> 第 167 行</td><td>「dist 总计约 <strong>1.2 MB</strong>」</td><td><strong>17.48 MB</strong></td><td>17.5 MB</td></tr>
+<tr><td><code>作品介绍.md</code> 第 32/92/166/172/192/193 行</td><td>113,138 字 / 140 场景 / 9 结局 / 76 卡 / 496 图 / 158 张入屏图 95.6%</td><td>全部一致</td><td>✅</td></tr>
+<tr><td><code>运行说明.md</code> 第 86 行</td><td>结局一览「<strong>六个</strong>结局」</td><td>9</td><td>九个</td></tr>
+<tr><td><code>运行说明.md</code> 方式 A</td><td>「双击 index.html」</td><td><code>dist/index.html</code> 引用 <code>/assets/…</code> 绝对路径 → file:// 必白屏</td><td>删掉方式 A，或先做 R1</td></tr>
+<tr><td><code>AI使用说明.md</code> 第 43/64/96 行</td><td>「…（<strong>110,020</strong> 字）」「<strong>146</strong> 单元」「<strong>六个</strong>结局的结构」</td><td>113,138 字；149 单元（146 经审 + 3 自查）；9 结局</td><td>分别改 113,138 / 149（注明 146 经独立审计）/ 九个</td></tr>
+<tr><td><code>FINAL-fact-audit.md</code> §一</td><td>合计 <strong>122,950</strong>（宽松口径），Lead 严格口径 <strong>105,938</strong></td><td>当前严格 <strong>113,138</strong>；105,938 是体积扩写前旧值</td><td>加一句「本签字覆盖 6 结局 / 110,020 字；其后新增 3 篇见 expansion-note」</td></tr>
+<tr><td><code>FINAL-literary-audit.md</code> §0/§1</td><td>严格 <strong>110,020</strong>，146 单元，加权 4.59</td><td>现 113,138 / 149 单元；110,020 = 现总量 − 3 个新结局（+3,118 字）</td><td>同上加覆盖边界说明</td></tr>
+<tr><td><code>docs/art/image-qa-report.md</code> 第 3 行 vs 第 30 行</td><td>「其余 <strong>342</strong> 张素材（500−158）」；「496−124−6=<strong>366</strong> 张素材」</td><td>落盘 496 = 124 scene + <strong>30</strong> ending + <strong>342</strong> 其他；两个分母（500 计划 / 496 落盘）混用</td><td>统一为：496 = 124 + 30 + 342；入屏 158 = 128 + 30，其中 4 场景缺图</td></tr>
+<tr><td><code>2026-10-21-build-report.md</code> §三</td><td>走路测试 <strong>301</strong> 步</td><td>与测试记录 319 冲突</td><td>二选一（建议复跑）</td></tr>
+<tr><td><code>2026-10-21-build-report.md</code> §二</td><td>「交付 PDF 11 份」</td><td>磁盘 <strong>12 个 pdf 文件</strong> = <strong>11 份文档</strong>（作品介绍占 2 个）</td><td>「11 份文档（作品介绍含 v1.1 副本共 12 个文件）」</td></tr>
+<tr><td><code>package.json</code></td><td>（文档未列 three）</td><td>09:35 已含 <code>three ^0.186.1</code>、<code>@types/three</code></td><td>第三方资源说明补 MIT 行</td></tr>
+</tbody></table>
+<h2>4.4 本轮实测的 11 份 PDF 时间戳（12 个文件）</h2>
+<table><thead><tr><th>时间</th><th>大小</th><th>文件</th><th>源文档</th><th>源 → PDF</th></tr></thead><tbody>
+<tr><td><strong>09:20:00</strong></td><td>841,877</td><td><code>作品介绍.pdf</code> ← <strong>本轮由旧版 03:59:36 / 765,320 覆盖而来</strong></td><td><code>作品介绍.md</code> 09:14:09</td><td>✅ 新</td></tr>
+<tr><td>09:19:57</td><td>428,610</td><td><code>AI使用说明.pdf</code></td><td>09:18:24</td><td>✅</td></tr>
+<tr><td>09:20:00</td><td>841,877</td><td><code>作品介绍-v1.1.pdf</code>（与上面同 SHA256）</td><td>同上</td><td>✅ 重复副本</td></tr>
+<tr><td>09:20:13</td><td>435,156</td><td><code>史料书单.pdf</code></td><td>10-20 23:34:07</td><td>✅</td></tr>
+<tr><td>09:20:16</td><td>476,966</td><td><code>史料卡模板.pdf</code></td><td>10-20 22:49:02</td><td>✅</td></tr>
+<tr><td>09:20:18</td><td>357,243</td><td><code>史料回填报告.pdf</code></td><td>10-21 00:11:19</td><td>✅</td></tr>
+<tr><td>09:20:22</td><td>614,977</td><td><code>史料收集字典.pdf</code></td><td>10-20 23:33:07</td><td>✅</td></tr>
+<tr><td>09:20:24</td><td>342,662</td><td><code>提交清单.pdf</code></td><td>09:18:22</td><td>✅（数字待改）</td></tr>
+<tr><td>09:20:26</td><td>292,022</td><td><code>测试记录.pdf</code></td><td>09:18:16</td><td>✅（数字待改）</td></tr>
+<tr><td>09:20:28</td><td>305,791</td><td><code>第三方资源说明.pdf</code></td><td>01:30:02</td><td>✅</td></tr>
+<tr><td>09:20:31</td><td>391,666</td><td><code>评审视频脚本.pdf</code></td><td>09:18:36</td><td>✅</td></tr>
+<tr><td>09:20:33</td><td>457,012</td><td><code>运行说明.pdf</code></td><td>09:18:04</td><td>✅（文案待改）</td></tr>
+</tbody></table>
+<blockquote><p>结论：<strong>11 份 PDF 全部晚于各自的 md 源文件</strong>，不存在「PDF 比 md 旧」的问题；唯一曾是旧版的是 <code>作品介绍.pdf</code>，本轮已修复。</p></blockquote>
+<h2>4.5 本轮对文件的改动（仅此一处 + 一个新文件）</h2>
+<ol><li><strong>覆盖</strong> <code>docs/deliverables/作品介绍.pdf</code>：765,320 B / 03:59:36 → <strong>841,877 B / 09:20:00</strong>，SHA256 <code>627ED4F46F23F9CDEC8B74CB26BE21573FE4B92E30A31CE4ED58CA382D7EC5FD</code>（与 <code>作品介绍-v1.1.pdf</code> 一致）。覆盖前独占打开测试通过（<strong>已不再被占用</strong>）。</li><li><strong>新建</strong> 本文件 <code>docs/deliverables/成果状态.md</code>。</li><li>未移动、未删除任何文件；旧版 <code>作品介绍.pdf</code> 内容已被新内容替代（如需留档，请从 git HEAD <code>4f20b44</code> 取回）。</li></ol>
+<hr/>
+<h1>附录 A · 本轮执行过的核实命令（可复现）</h1>
+<table><thead><tr><th>#</th><th>命令</th><th>关键输出</th></tr></thead><tbody>
+<tr><td>A.1</td><td><code>node tools/count-words-strict.mjs</code></td><td>合计 <strong>113,138</strong> 字（分卷见第二部分）</td></tr>
+<tr><td>A.2</td><td><code>node tools/check-volumes.mjs</code></td><td>140 场景 / 328 next / 381 sources / id 唯一 / 引用全有效</td></tr>
+<tr><td>A.3</td><td><code>npx tsc -p tsconfig.app.json --noEmit</code></td><td>退出码 <strong>0</strong></td></tr>
+<tr><td>A.4</td><td>动态测试（<code>walk-test.mjs</code> / <code>ending-test-v3.mjs</code> / <code>ui-smoke.mjs</code>）<strong>未复跑</strong></td><td>理由：①需起 dev/preview 服务，且运行会写 <code>tools/shots/</code>，超出「只写本文件」的写权限；②审计期间另一 agent 正在改 <code>package.json</code>（装 three），此时跑构建类测试结果不稳定；③三项的<strong>静态前提</strong>已单独核实（140/9/10/15/76、9 个 ending kind、截图可见 9 选项）。<strong>建议交付前由 Lead 在干净环境下各跑一次并贴输出。</strong></td></tr>
+<tr><td>A.5</td><td><code>Get-ChildItem dist -Recurse -File</code></td><td><strong>515</strong> 文件 / <strong>17.48 MB</strong>；art 496 / bg 16 / assets 2 / index.html 1,002 B；dist @09:18:11</td></tr>
+<tr><td>A.6</td><td><code>Get-ChildItem public\art -File</code> + 前缀分组</td><td><strong>496</strong> 张：scene 124 / moment 100 / artifact 80 / ui 60 / figure 60 / atmo 42 / ending 30</td></tr>
+<tr><td>A.7</td><td>缺席图抽查</td><td><code>scene-056/060/110/123</code> 不存在；<code>scene-062/070/085</code>、<code>ending-002</code> 存在（03:52—03:53）</td></tr>
+<tr><td>A.8</td><td><code>image-manifest.json</code> 解析</td><td>数组 <strong>500</strong> 条；<code>scene-map.json</code> <strong>128</strong> 个场景映射</td></tr>
+<tr><td>A.9</td><td><code>out-art/reports/screen-images.json</code> 解析</td><td>total 158 / pass 147 / retry 4 / reject 7 / pass_rate 0.9304 / 均分 4.01·3.93·4.72·4.94</td></tr>
+<tr><td>A.10</td><td>史料卡计数（<code>sources.ts</code> + <code>sources.auto.ts</code>）</td><td><strong>76</strong> = 20（14 verified + 6 needed）+ 56（49 verified + 7 pending）= 63/7/6</td></tr>
+<tr><td>A.11</td><td><code>endings.ts</code> kind 计数</td><td>9 个：roster/letters/flag/photo/testimony/message/archive/relics/wordofmouth</td></tr>
+<tr><td>A.12</td><td><code>git status --porcelain</code> / <code>git log -1</code></td><td>09:39 快照：3 M + 7 ??；HEAD <code>4f20b44</code> @09:20:43</td></tr>
+<tr><td>A.13</td><td>截图尺寸（System.Drawing）</td><td>10 张；9×1600×1000 + 1×390×844；5.79 MB</td></tr>
+<tr><td>A.14</td><td>PDF 时间戳/大小/SHA256</td><td>见 4.4 / 4.5</td></tr>
+<tr><td>A.15</td><td>全库 <code><em>.mp4/</em>.mov/<em>.pptx/</em>.ppt/<em>.zip/</em>.rar/*.7z</code></td><td><strong>0 条</strong></td></tr>
+</tbody></table>
+<h2>附录 B · 未执行 / 无法执行的检查（如实列出）</h2>
+<ol><li><strong>动态测试复跑</strong>（A.4）——受写权限与并发改动限制。</li><li><strong>PDF 内文抽检</strong>——本机无 python / pdftotext，只能核「PDF 比 md 新」与字节数，无法逐页比对文字。</li><li><strong>截图逐张目检</strong>——只看了 3 张（<code>04</code> 九选项 ✓、<code>05</code> 终极画面 ✓、<code>10</code> 移动端 ✓，并因此发现 R2 文案问题）；其余 7 张仅核尺寸。</li><li><strong>匿名化检查</strong>——需要逐张看图与查 PDF 元数据，本轮未做。</li><li><strong><code>dist</code> 实机打开验证</strong>——按 R1 判断为必失败，未实际点开（避免启动替代服务）。<strong>这是交付前必须由 Lead 亲测的一条。</strong></li></ol>
+<hr/>
+<h2>2026-10-22 12:57 更新（Lead）</h2>
+<blockquote><p>本节覆盖上面快照中已变化的部分；上面的审计记录保留原样，作为历史快照。</p></blockquote>
+<h3>本轮完成</h3>
+<ul><li>✅ <strong>R1 修复并验证</strong>：<code>vite.config.ts</code> 加 <code>base:'./'</code>，图片/音频路径相对化；<code>tools/test-deploy.mjs</code> 从模拟子目录 + HTTP 起服务实测：index/assets/art/bg/audio 全部可加载，0 failed requests。</li><li>✅ <strong>R2 修复</strong>：首屏文案「六个结局」→「九个结局」。</li><li>✅ <strong>音频接入</strong>：28 条本地生成音效（4.88 MB）+ Web Audio 系统；默认静音、右下角开关、场景/天气映射、结局 drone；<code>tools/test-audio.mjs</code> 通过。</li><li>✅ <strong>3D 接入</strong>：四个真 3D 切片（仓库内景/楼顶/桥/1947 厢房），右上角「3D 视角」，lazy chunk 171.1 kB gzip（实测 <code>Scene3D-BkEU69la.js</code> 591,988 B）；App 内实测 87.3 fps / 16 calls / 3,093 tris，独立切片压测 101.4—120.3 fps（<code>tools/3d/shots/perf.json</code>）；移动端/减少动效自动隐藏。</li><li>✅ <strong>截图重拍</strong>：恰好 10 张（9 张 1600×1000 + 1 张 390×844，共 5.41 MB），含真 3D 与结局终极画面；旧图归档 trash。</li><li>✅ <strong>12 份交付 PDF 全部重出</strong>（12:58:32—12:59:01，含新增 <code>成果状态.pdf</code>），<code>作品介绍.pdf</code> 已覆盖为最新；<code>作品介绍-v1.1.pdf</code> 重复副本已从 <code>docs/deliverables/</code> 移除（<code>trash/</code> 中未见留档，如需留档请从 git HEAD <code>4f20b44</code> 取回）。</li><li>✅ <strong>12:58 文档/PDF 基线</strong>：12 份 PDF（12:58:32—12:59:01）+ <code>docs/report/2026-10-22-afternoon-metrics.json</code>（12:58:28）+ 截图 10 张 + <code>dist/</code> 550 文件 / 24.59 MB + HEAD <code>b654f1b</code>（12:59:18）；此后所有文档数字以这条基线为准（复核报告见 <code>docs/report/2026-10-22-doc-final-check.md</code>）。</li><li>✅ <strong>数字统一</strong>：新增 <code>tools/metrics.mjs</code>（唯一数字源）+ <code>tools/docs-sync.mjs</code>（文档同步）；<code>docs/report/2026-10-22-afternoon-metrics.json</code>。</li><li>✅ <strong>回归全绿</strong>：walk 到「名册」/0 错误；九结局 9/9；ui-smoke 全绿；减少动效与移动端降级 PASS。</li></ul>
+<h3>仍然缺（截至 13:15）</h3>
+<ul><li>❌ 评审视频（0 个 mp4）</li><li>⏳ 正式打包 ZIP（<code>tools/package.mjs</code> 于 13:13 试打包通过：573 文件 / 29.28 MiB，占位名「待填编号」，待作品编号后重跑）</li><li>⏳ 报名系统信息 + 承诺书盖章</li><li>⏳ 文献检索结果（JSON 需求单已就绪，等用户搜索后回填）</li><li>🔄 3 个合成结局仍为自查（覆盖边界见 <code>docs/audit/2026-10-22-post-audit-addendum.md</code>）</li><li>🔄 4 个场景无插画（渐变回退）</li></ul>
+<hr/>
+<h2>2026-10-22 13:50 更新（v1.3）</h2>
+<ul><li>✅ <strong>合成结局独立审计补齐</strong>：史实 P0 4→0、文学 3.99→4.35；修复 4 个与主结局冲突的 P0（口述年份、互见人数、家书/照片原件入库）与 16 条 P1；六主结局零改动。</li><li>✅ <strong>继承性问题修复</strong>：chapter1.ts 尾声「一张十一个人的合影」→「一张画着两个圈的纸」（与 C2 一致）；App.tsx compositeLine 同步为「抄件还在，单子还在」。</li><li>✅ <strong>无障碍 P1 修复</strong>：选项按钮恢复 button 语义（删除 role=list/listitem）；换场 h1 焦点 + aria-live 播报；Esc 关史料卡浮层；3D 在窗口 &lt;700px 自动退出；移动端声音按钮不再压正文。</li><li>✅ <strong>Blender hero 资产</strong>：public/models/warehouse-ext.glb（4,732 tris / 469.6 KB，4.2.3 无头 bpy，Cycles CPU 0 显存），接入 v1-24 / v1-25 的 3D 视角。</li><li>✅ <strong>数字统一</strong>：113,048 字 / dist 550 文件 24.59 MB / 主包 gzip 319.0 kB / 3D 懒加载 171.1 kB。</li><li>🔄 待办：正式重出 PDF → 打包 ZIP（node tools/package.mjs --name &quot;把名字留下来_&lt;编号&gt;&quot;）→ 评审视频与报名线下。</li></ul>
+<hr/>
+<h2>2026-10-22 23:0x 更新（v1.4 · 三轮复审后）</h2>
+<ul><li>✅ <strong>剧情/规则复审</strong>：P0=0、死路 0、存档续玩通过；修复 18 处（照片/家书保管链、旗样方位、名册保管链、账本封顶 84→5、13 处文本硬伤）。报告 <code>docs/report/2026-10-22-story-rules-review.md</code>。</li><li>✅ <strong>动画/交互复审</strong>：修 5 类缺陷（墨幕连点跳场、@2× 换场掉帧 −53% 像素、reduced-motion 终极画面黑屏、终极画面 8.46s→6.2s、9 种 hover 失效、空闲 64→234fps）。报告 <code>2026-10-22-animation-review.md</code>。</li><li>✅ <strong>3D/GLB 复审</strong>：修 7 处（GLB 比例 −9.8%、context lost 永久黑屏、GLB/贴图泄漏、重复请求、fps 自报、DPR、加载中卸载）；App 侧 lazy chunk 白屏已加 ErrorBoundary。报告 <code>2026-10-22-3d-loading-review.md</code>。</li><li>✅ <strong>Lead 终审 11/11</strong>：键盘 / 坏存档 / 图鉴 9 格 / 3D 反复开关无 Canvas 泄漏 / GLB 缓存（二次 0 请求）/ 404 回退 / localStorage 禁用；chunk 失败不白屏 PASS。</li><li>✅ <strong>数字最终基线</strong>：<strong>113,048 字</strong> / 140 场景 / 9 结局 / 550 文件 24.59 MB / 主包 gzip 319.0 kB / 3D 懒加载 171.1 kB / 13 份 PDF 全部新于 md。</li><li>🔄 仍待：作品编号（报名后）→ 正式 ZIP；评审视频；报名+承诺书线下；文献检索结果回填。</li></ul>
+<ul><li>✅ <strong>正式 ZIP 已出（460737）</strong>：<code>D:\提交\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip</code>，32.96 MiB / 587 文件 / SHA256 e4ca133e…07ce；仅剩视频与报名/承诺书两个占位。</li></ul>
+<ul><li>✅ <strong>作品名称定稿</strong>：把名字留下来：四行仓库·苏州河北岸的四百余个名字（编号 460737）；游戏内标题仍用「把名字留下来」。正式 ZIP 以长名重出。</li></ul>
+<hr/>
+<h2>2026-10-22 02:0x 更新（v1.5：交互强化）</h2>
+<ul><li>✅ <strong>真 3D 场景 → 背景图 + 热点探索</strong>：5 张 1920×1080 背景图、22 处热点（悬停墨圈/旁白窄卡/史料卡/发现计数/双层视差/键盘/390px/减少动效）。<code>verify-explore</code> PASS。</li><li>✅ <strong>长段落三段阅读 + 人物剪影</strong>：&gt;6 段自动分 3 组，mood 判定 scene/memory/figure-male/figure-female，卡片氛围与整页背景随组变化，人物组浮出剪影；键盘让位。<code>verify-beats</code> PASS。</li><li>✅ <strong>音效 42 事件重建并接回 App</strong>：菜单/悬停/换场/载体/结局起势收束/8 类点缀/UI 回执；四总线+逐条补偿+卷积混响；<code>verify-events</code> 32/32。</li><li>✅ <strong>前序交互保留</strong>：灯下找名字、升旗、尾声交付托盘（拖进匣子+按住 1 秒）、回顶修复。</li><li>⚠️ 期间发生外部进程删除文件（源码与 .git 索引），已从 git 恢复、重建集成，并建立 <code>D:\backups\live</code> 每 2 分钟增量备份。</li><li>🔄 仍待：正式重出 PDF、重新打包（新构建 550 文件 / 24.59 MB）、评审视频、报名/承诺书、文献回填。</li></ul></body></html>

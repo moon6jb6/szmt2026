@@ -1,103 +1,49 @@
-<!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<title>测试记录</title>
-<style>
-@page { size: A4; margin: 20mm 17mm 18mm 17mm; }
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>测试记录.md</title><style>
+@page { size: A4; margin: 18mm 16mm; }
 * { box-sizing: border-box; }
-body {
-  font-family: "Source Han Sans SC", "Noto Sans SC", "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 10.5pt; line-height: 1.8; color: #1b1b1b; margin: 0;
-}
-h1 {
-  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  font-size: 22pt; line-height: 1.35; margin: 0 0 6mm; color: #16130f;
-  border-bottom: 2px solid #a32b2b; padding-bottom: 3mm; letter-spacing: 0.04em;
-}
-h2 {
-  font-family: "Source Han Serif SC", "Noto Serif SC", "SimSun", serif;
-  font-size: 15pt; margin: 7mm 0 2.5mm; color: #8a2b22; letter-spacing: 0.03em;
-  page-break-after: avoid;
-}
-h3 { font-size: 12pt; margin: 5mm 0 2mm; color: #2a2a2a; page-break-after: avoid; }
-p { margin: 0 0 3.2mm; text-align: justify; text-justify: inter-ideograph; }
-ul, ol { margin: 0 0 3.5mm; padding-left: 7mm; }
-li { margin-bottom: 1.2mm; }
-table { border-collapse: collapse; width: 100%; margin: 3mm 0 4mm; font-size: 9.5pt; }
-th, td { border: 1px solid #cfc7b8; padding: 2mm 2.5mm; vertical-align: top; text-align: left; }
-th { background: #f3eee4; font-weight: 600; }
-blockquote {
-  margin: 3mm 0; padding: 2.5mm 4mm; border-left: 3px solid #a32b2b;
-  background: #faf7f1; color: #3a3a3a;
-}
-blockquote p:last-child { margin-bottom: 0; }
-code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; background: #f2f0ea; padding: 0.4mm 1.2mm; }
-pre { background: #f6f4ee; border: 1px solid #e2dccf; padding: 3mm; overflow-x: auto; page-break-inside: avoid; }
-pre code { background: none; padding: 0; }
-hr { border: none; border-top: 1px solid #d8d0c1; margin: 6mm 0; }
-strong { font-weight: 700; }
-a { color: #8a2b22; text-decoration: none; }
-.sheet { max-width: 100%; }
-.doc-meta {
-  font-size: 9pt; color: #6b6358; letter-spacing: 0.06em;
-  margin: 0 0 8mm; padding-bottom: 2mm; border-bottom: 1px solid #e2dccf;
-}
-</style>
-</head><body><div class="sheet">
-<div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
-<p>﻿# 测试记录（自动化）</p>
-<blockquote>
-<p>生成时间：2026-10-21 凌晨；<strong>2026-10-22 更新</strong>：补入真 3D、音效、子目录部署与降级测试；走路测试复跑 115 场景到「名册」、0 错误。
-数字基线：<code>docs/report/2026-10-22-afternoon-metrics.json</code>（12:58:28）。所有数字均可用仓库内脚本复现；Playwright 装在开发机全局（未列入 <code>package.json</code>），干净环境需先自行安装。</p>
-</blockquote>
-<h2 id="_1">一、环境</h2>
-<table>
-<thead>
-<tr>
-<th>项</th>
-<th>值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>浏览器</td>
-<td>Chrome（Playwright channel=chrome）</td>
-</tr>
-<tr>
-<td>视口</td>
-<td>1440×900（桌面）；390×844（移动端，见 mobile-shot.mjs）</td>
-</tr>
-<tr>
-<td>页面</td>
-<td>开发服务器 <a href="http://127.0.0.1:5199/">http://127.0.0.1:5199/</a> 与生产构建 <a href="http://127.0.0.1:4173/">http://127.0.0.1:4173/</a></td>
-</tr>
-<tr>
-<td>命令行</td>
-<td><code>node tools/walk-test.mjs &lt;url&gt;</code> / <code>node tools/ending-test-v3.mjs &lt;url&gt;</code> / <code>test-3d.mjs</code> / <code>test-audio.mjs</code> / <code>test-deploy.mjs</code> / <code>test-degrade.mjs</code></td>
-</tr>
-</tbody>
-</table>
-<h2 id="_2">二、全流程走路测试（主链可达性）</h2>
+body { font-family: "SimSun", "Songti SC", "Noto Serif CJK SC", serif; color: #1a1a1a; font-size: 10.5pt; line-height: 1.55; }
+h1 { font-size: 19pt; text-align: center; margin: 4pt 0 8pt; }
+h2 { font-size: 14pt; margin: 16pt 0 6pt; border-bottom: 1px solid #c8a063; padding-bottom: 3pt; }
+h3 { font-size: 12pt; margin: 12pt 0 4pt; }
+h4 { font-size: 11pt; margin: 10pt 0 4pt; }
+p { margin: 4pt 0; text-align: justify; }
+blockquote { margin: 6pt 0; padding: 4pt 10pt; border-left: 2px solid #a32b2b; background: #faf6ee; color: #3b332a; }
+blockquote p { margin: 2pt 0; }
+table { width: 100%; border-collapse: collapse; margin: 6pt 0 10pt; font-size: 9.5pt; }
+th, td { border: 1px solid #b9ac97; padding: 4pt 5pt; vertical-align: top; word-break: break-word; }
+th { background: #efe7d8; font-weight: 700; }
+ul, ol { margin: 4pt 0 6pt; padding-left: 18pt; }
+li { margin: 2pt 0; }
+code { font-family: Consolas, monospace; font-size: 9pt; background: #f2ede2; padding: 0 2pt; }
+pre { background: #f5f0e6; border: 1px solid #ddd2bd; padding: 6pt; font-size: 8.5pt; white-space: pre-wrap; }
+hr { border: 0; border-top: 1px solid #d8cdb8; margin: 10pt 0; }
+a { color: #7a3a2a; text-decoration: none; }
+</style></head><body><p>﻿# 测试记录（自动化）</p>
+<blockquote><p>生成时间：2026-10-21 凌晨；<strong>2026-10-22 更新</strong>：补入真 3D、音效、子目录部署与降级测试；走路测试复跑 115 场景到「名册」、0 错误。</p><p>数字基线：<code>docs/report/2026-10-22-afternoon-metrics.json</code>（12:58:28）。所有数字均可用仓库内脚本复现；Playwright 装在开发机全局（未列入 <code>package.json</code>），干净环境需先自行安装。</p></blockquote>
+<h2>一、环境</h2>
+<table><thead><tr><th>项</th><th>值</th></tr></thead><tbody>
+<tr><td>浏览器</td><td>Chrome（Playwright channel=chrome）</td></tr>
+<tr><td>视口</td><td>1440×900（桌面）；390×844（移动端，见 mobile-shot.mjs）</td></tr>
+<tr><td>页面</td><td>开发服务器 &lt;http://127.0.0.1:5199/&gt; 与生产构建 &lt;http://127.0.0.1:4173/&gt;</td></tr>
+<tr><td>命令行</td><td><code>node tools/walk-test.mjs &lt;url&gt;</code> / <code>node tools/ending-test-v3.mjs &lt;url&gt;</code> / <code>test-3d.mjs</code> / <code>test-audio.mjs</code> / <code>test-deploy.mjs</code> / <code>test-degrade.mjs</code></td></tr>
+</tbody></table>
+<h2>二、全流程走路测试（主链可达性）</h2>
 <pre><code>steps: 576（含换场幕重试；步数不是验收指标）
 unique scenes visited: 115
 ending: 名册
 elapsed seconds: 308
-errors: none
-</code></pre>
-<ul>
-<li>策略：从 v0-01 开始，每步选第一个选项 / 点继续，直到结局页。</li>
-<li>结论：主链无断链，无控制台错误，<code>check-volumes.mjs</code> 校验 next 全部有效。</li>
-</ul>
-<h2 id="_3">三、结局可达性测试（九个结局）</h2>
+errors: none</code></pre>
+<ul><li>策略：从 v0-01 开始，每步选第一个选项 / 点继续，直到结局页。</li><li>结论：主链无断链，无控制台错误，<code>check-volumes.mjs</code> 校验 next 全部有效。</li></ul>
+<h2>三、结局可达性测试（九个结局）</h2>
 <p><code>node tools/ending-test-v3.mjs &lt;url&gt;</code>：注入「已走到 epilogue」的存档，依次选择第 1—9 个结局，跳过终极画面后断言结局页标题。</p>
 <pre><code>route 1: 名册   route 2: 家书   route 3: 旗
 route 4: 照片   route 5: 口述   route 6: 口信
 route 7: 档案   route 8: 遗物   route 9: 口耳
 
 PASS: 9/9
-errors: none
-</code></pre>
+errors: none</code></pre>
 <p>（6 个主结局来自六种记忆载体；3 个合成结局需要两种载体同时在账本里，测试存档把六种都置 2。）</p>
-<h2 id="_4">四、扩展页面冒烟测试</h2>
+<h2>四、扩展页面冒烟测试</h2>
 <p><code>node tools/ui-smoke.mjs &lt;url&gt;</code>：</p>
 <pre><code>peopleCards: 10          # 人物志清单 10 篇
 peopleTitle: 收水        # 第一篇正文可打开
@@ -108,250 +54,77 @@ sourceGroups: 3          # 史料库按文献分组
 sourceCards: 76          # 史料卡总数
 sceneImage: 1            # 场景插画已挂载
 firstImageWidth: 768     # 插画实际加载成功（768×432）
-errors: none
-</code></pre>
-<h2 id="_5">五、结构与字数校验</h2>
-<table>
-<thead>
-<tr>
-<th>命令</th>
-<th>结果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>node tools/check-volumes.mjs</code></td>
-<td>场景 140；next/continueTo 引用 328 条全部有效；sources 引用 381 条全部存在；id 唯一</td>
-</tr>
-<tr>
-<td><code>node tools/count-words-strict.mjs</code></td>
-<td>严格正文 <strong>113,048</strong> 汉字（只统计玩家读到的 paragraphs）</td>
-</tr>
-<tr>
-<td><code>npx tsc -p tsconfig.app.json --noEmit</code></td>
-<td>0 错误</td>
-</tr>
-<tr>
-<td><code>npm run build</code></td>
-<td>通过（单页静态站点）</td>
-</tr>
-</tbody>
-</table>
-<h2 id="_6">六、构建体积</h2>
-<table>
-<thead>
-<tr>
-<th>文件</th>
-<th>原始</th>
-<th>gzip</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>index.html</td>
-<td>1.00 kB</td>
-<td>0.68 kB</td>
-</tr>
-<tr>
-<td>CSS（index-MLU40nco.css）</td>
-<td>18.75 kB</td>
-<td>4.92 kB</td>
-</tr>
-<tr>
-<td>JS 主包（含 11.3 万字正文、9 个结局、76 张史料卡与交互组件）</td>
-<td>847.26 kB</td>
-<td>298.5 kB</td>
-</tr>
-<tr>
-<td>3D 懒加载（Scene3D-BkEU69la.js）</td>
-<td>591.99 kB</td>
-<td>171.1 kB</td>
-</tr>
-<tr>
-<td>dist 总计（496 张美术素材 + 8 张背景图 + 28 条音效 + GLB）</td>
-<td>545 个文件 / 23.47 MB</td>
-<td>—</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>gzip 为 <code>node zlib</code> 对 <code>dist/assets/</code> 现有文件实测（默认压缩级别）；<code>tools/metrics.mjs</code> 里的 gzip 字段是按比例估算，非实测。</p>
-</blockquote>
+errors: none</code></pre>
+<h2>五、结构与字数校验</h2>
+<table><thead><tr><th>命令</th><th>结果</th></tr></thead><tbody>
+<tr><td><code>node tools/check-volumes.mjs</code></td><td>场景 140；next/continueTo 引用 328 条全部有效；sources 引用 381 条全部存在；id 唯一</td></tr>
+<tr><td><code>node tools/count-words-strict.mjs</code></td><td>严格正文 <strong>113,048</strong> 汉字（只统计玩家读到的 paragraphs）</td></tr>
+<tr><td><code>npx tsc -p tsconfig.app.json --noEmit</code></td><td>0 错误</td></tr>
+<tr><td><code>npm run build</code></td><td>通过（单页静态站点）</td></tr>
+</tbody></table>
+<h2>六、构建体积</h2>
+<table><thead><tr><th>文件</th><th>原始</th><th>gzip</th></tr></thead><tbody>
+<tr><td>index.html</td><td>1.00 kB</td><td>0.68 kB</td></tr>
+<tr><td>CSS（index-MLU40nco.css）</td><td>18.75 kB</td><td>4.92 kB</td></tr>
+<tr><td>JS 主包（含 11.3 万字正文、9 个结局、76 张史料卡与交互组件）</td><td>847.26 kB</td><td>298.5 kB</td></tr>
+<tr><td>3D 懒加载（Scene3D-BkEU69la.js）</td><td>591.99 kB</td><td>171.1 kB</td></tr>
+<tr><td>dist 总计（496 张美术素材 + 8 张背景图 + 28 条音效 + GLB）</td><td>545 个文件 / 23.47 MB</td><td>—</td></tr>
+</tbody></table>
+<blockquote><p>gzip 为 <code>node zlib</code> 对 <code>dist/assets/</code> 现有文件实测（默认压缩级别）；<code>tools/metrics.mjs</code> 里的 gzip 字段是按比例估算，非实测。</p></blockquote>
 <p>无外部字体、无 CDN、无后端请求，断网可运行。</p>
-<h2 id="_7">七、图片质检</h2>
+<h2>七、图片质检</h2>
 <p>见 <code>docs/art/image-qa-report.md</code>：</p>
-<table>
-<thead>
-<tr>
-<th>项</th>
-<th>数值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>入屏图（scene 128 + ending 30）</td>
-<td>158 条（落盘 154 张，4 个场景缺图）</td>
-</tr>
-<tr>
-<td>VLM 初检 pass / retry / reject</td>
-<td>147 / 4 / 7（通过率 93.0%）</td>
-</tr>
-<tr>
-<td>重生成 8 张后 pass</td>
-<td>4</td>
-</tr>
-<tr>
-<td>最终可用</td>
-<td><strong>151 / 158 = 95.6%</strong></td>
-</tr>
-<tr>
-<td>剔除（走渐变回退）</td>
-<td>4 个场景：v2-23、v2-27、v4-07、v5-05</td>
-</tr>
-<tr>
-<td>四维均分（初检）</td>
-<td>prompt 4.01 / 时代 3.93 / 洁净 4.72 / 安全 4.94</td>
-</tr>
-</tbody>
-</table>
+<table><thead><tr><th>项</th><th>数值</th></tr></thead><tbody>
+<tr><td>入屏图（scene 128 + ending 30）</td><td>158 条（落盘 154 张，4 个场景缺图）</td></tr>
+<tr><td>VLM 初检 pass / retry / reject</td><td>147 / 4 / 7（通过率 93.0%）</td></tr>
+<tr><td>重生成 8 张后 pass</td><td>4</td></tr>
+<tr><td>最终可用</td><td><strong>151 / 158 = 95.6%</strong></td></tr>
+<tr><td>剔除（走渐变回退）</td><td>4 个场景：v2-23、v2-27、v4-07、v5-05</td></tr>
+<tr><td>四维均分（初检）</td><td>prompt 4.01 / 时代 3.93 / 洁净 4.72 / 安全 4.94</td></tr>
+</tbody></table>
 <p>人工抽查记录见 <code>docs/art/spot-check.md</code>（每 50 抽 10，含 r1→r6 的 prompt 迭代闭环）。</p>
-<h2 id="3d">八、3D 切片测试</h2>
+<h2>八、3D 切片测试</h2>
 <p><code>node tools/test-3d.mjs &lt;url&gt;</code>（注入 night1 存档 → 点「3D 视角」）：</p>
 <pre><code>desktop toggle visible: true
 3D metrics: { fps: '81.3—120.1', calls: '16', tris: '3093' }（night1）；warehouse-ext（v1-25）147.6fps / 13 calls / 4,734 tris
 mobile 3D toggle visible (expect false): false
-errors: none
-</code></pre>
-<ul>
-<li>四切片独立验证（<code>tools/3d/perf.mjs</code>）：warehouse-int 101.4fps / 16 calls / 3,093 tris；rooftop 120.3fps / 12 / 2,096；bridge 105fps / 11 / 2,176；office-1947 114.6fps / 15 / 828。</li>
-<li>预算：≤6,000 tris、≤25 draw calls、桌面 55fps+；全部通过。</li>
-</ul>
-<h2 id="_8">九、声音系统测试</h2>
+errors: none</code></pre>
+<ul><li>四切片独立验证（<code>tools/3d/perf.mjs</code>）：warehouse-int 101.4fps / 16 calls / 3,093 tris；rooftop 120.3fps / 12 / 2,096；bridge 105fps / 11 / 2,176；office-1947 114.6fps / 15 / 828。</li><li>预算：≤6,000 tris、≤25 draw calls、桌面 55fps+；全部通过。</li></ul>
+<h2>九、声音系统测试</h2>
 <p><code>node tools/test-audio.mjs &lt;dev-url&gt;</code>（需要 dev 的 <code>window.__audio</code> 探针）：</p>
-<ul>
-<li>默认静音、AudioContext 未创建；点「从头开始」仍静音（符合预期）。</li>
-<li>点右下角「声音」→ AudioContext <code>running</code>、非静音；点击音 <code>click-*</code> 与 <code>page-turn</code> 预加载成功。</li>
-<li>场景切换：<code>night1</code> 环境声 <code>snow-wind</code>；结局为 <code>drone-ending-names</code>。</li>
-<li>刷新后静音状态持久化（按钮仍显示「声音 开」）。</li>
-<li>无控制台错误。</li>
-</ul>
-<h2 id="_9">十、打包形态与降级验证</h2>
+<ul><li>默认静音、AudioContext 未创建；点「从头开始」仍静音（符合预期）。</li><li>点右下角「声音」→ AudioContext <code>running</code>、非静音；点击音 <code>click-*</code> 与 <code>page-turn</code> 预加载成功。</li><li>场景切换：<code>night1</code> 环境声 <code>snow-wind</code>；结局为 <code>drone-ending-names</code>。</li><li>刷新后静音状态持久化（按钮仍显示「声音 开」）。</li><li>无控制台错误。</li></ul>
+<h2>十、打包形态与降级验证</h2>
 <p><strong>子目录 + HTTP（模拟 <code>作品名_编号/01_作品及成果文件/</code>）</strong>：<code>node tools/test-deploy.mjs</code></p>
 <pre><code>deploy url: http://127.0.0.1:8099/pkg/01_files/
 scene image naturalWidth: 768
 bg layer: has-url
 failed requests: none
-errors: none
-</code></pre>
+errors: none</code></pre>
 <p><strong>减少动效 / 移动端</strong>：<code>node tools/test-degrade.mjs &lt;url&gt;</code></p>
 <pre><code>reduced-motion → scene visible: true | 3D toggle (expect false): false | choice clicked: true | errors: none
 mobile 390 → 3D toggle (expect false): false | scene text length: 1268
-PASS: ok
-</code></pre>
-<h2 id="_10">十一、已知限制（如实记录）</h2>
-<ul>
-<li>单周目 2—3 小时，走路测试用了「连点继续」的机械策略，不代表真实阅读速度。</li>
-<li>走路测试的「步数」会随换场重试与动画时长波动（307—576 步都出现过），只以「115 场景到「名册」、0 错误」为验收口径；2026-10-21 审计快照里的 319 步来自旧一轮，已作废。</li>
-<li>3D 帧率以 <code>tools/3d/shots/perf.json</code> 与 <code>test-3d.mjs</code>（App 内 81—148 fps）为准；<code>docs/report/2026-10-22-3d-slices.md</code> 已同步为同一组数字。</li>
-<li>volume3/volume4 的严格字数低于规划目标（12,816 / 4,148 vs 20,000 / 12,000），属取舍：总量 113,048 已达标，质量审计优先。</li>
-<li>volume2 的文学评分采用「全量扫描 + 代表场抽读」，未逐场五维重评。</li>
-<li>场景插画为本地生成，非历史照片；图片不承担史实表述。</li>
-<li>3 个合成结局与交互/3D/音频层在双轨审计冻结后新增，只做人工自查（见 <code>docs/audit/2026-10-22-post-audit-addendum.md</code>）。</li>
-</ul>
-<h2 id="2026-10-22-v14">十二、2026-10-22 夜间复审轮（v1.4）</h2>
+PASS: ok</code></pre>
+<h2>十一、已知限制（如实记录）</h2>
+<ul><li>单周目 2—3 小时，走路测试用了「连点继续」的机械策略，不代表真实阅读速度。</li><li>走路测试的「步数」会随换场重试与动画时长波动（307—576 步都出现过），只以「115 场景到「名册」、0 错误」为验收口径；2026-10-21 审计快照里的 319 步来自旧一轮，已作废。</li><li>3D 帧率以 <code>tools/3d/shots/perf.json</code> 与 <code>test-3d.mjs</code>（App 内 81—148 fps）为准；<code>docs/report/2026-10-22-3d-slices.md</code> 已同步为同一组数字。</li><li>volume3/volume4 的严格字数低于规划目标（12,816 / 4,148 vs 20,000 / 12,000），属取舍：总量 113,048 已达标，质量审计优先。</li><li>volume2 的文学评分采用「全量扫描 + 代表场抽读」，未逐场五维重评。</li><li>场景插画为本地生成，非历史照片；图片不承担史实表述。</li><li>3 个合成结局与交互/3D/音频层在双轨审计冻结后新增，只做人工自查（见 <code>docs/audit/2026-10-22-post-audit-addendum.md</code>）。</li></ul>
+<h2>十二、2026-10-22 夜间复审轮（v1.4）</h2>
 <p>三份独立复审报告：docs/report/2026-10-22-story-rules-review.md、2026-10-22-animation-review.md、2026-10-22-3d-loading-review.md。</p>
-<table>
-<thead>
-<tr>
-<th>轮次</th>
-<th>结论</th>
-<th>关键修复</th>
-<th>证据</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>剧情/规则</td>
-<td>P0=0；死路 0；存档续玩通过</td>
-<td>照片/家书保管链三方矛盾、旗样方位、名册保管链、账本封顶（roster 84→5）、13 处文本硬伤</td>
-<td>18 处修改；check-volumes / 9 结局 9/9 / walk 115 场景</td>
-</tr>
-<tr>
-<td>动画/交互</td>
-<td>5 类缺陷全修</td>
-<td>墨幕连点跳场、@2× 换场掉帧（单帧像素 −53%）、reduced-motion 终极画面黑屏、终极画面 8.46s→6.2s、9 种 hover 失效、空闲 64→234fps</td>
-<td>41 张取证帧 + docs/report/anim-check.json</td>
-</tr>
-<tr>
-<td>3D 加载</td>
-<td>GLB 链路干净；App 侧 2 项已修</td>
-<td>GLB 比例 −9.8%、context lost 永久黑屏、GLB/贴图泄漏、重复请求（二次 0 请求）、lazy chunk 失败白屏（ErrorBoundary）</td>
-<td>tools/3d/shots/review/ 51 张 + 5 切片 test-3d 全 pass</td>
-</tr>
-</tbody>
-</table>
+<table><thead><tr><th>轮次</th><th>结论</th><th>关键修复</th><th>证据</th></tr></thead><tbody>
+<tr><td>剧情/规则</td><td>P0=0；死路 0；存档续玩通过</td><td>照片/家书保管链三方矛盾、旗样方位、名册保管链、账本封顶（roster 84→5）、13 处文本硬伤</td><td>18 处修改；check-volumes / 9 结局 9/9 / walk 115 场景</td></tr>
+<tr><td>动画/交互</td><td>5 类缺陷全修</td><td>墨幕连点跳场、@2× 换场掉帧（单帧像素 −53%）、reduced-motion 终极画面黑屏、终极画面 8.46s→6.2s、9 种 hover 失效、空闲 64→234fps</td><td>41 张取证帧 + docs/report/anim-check.json</td></tr>
+<tr><td>3D 加载</td><td>GLB 链路干净；App 侧 2 项已修</td><td>GLB 比例 −9.8%、context lost 永久黑屏、GLB/贴图泄漏、重复请求（二次 0 请求）、lazy chunk 失败白屏（ErrorBoundary）</td><td>tools/3d/shots/review/ 51 张 + 5 切片 test-3d 全 pass</td></tr>
+</tbody></table>
 <p>最终回归：lead-audit 11/11（键盘/存档异常/图鉴 9 格/3D 反复开关无泄漏/GLB 缓存/404 回退/localStorage 禁用）；test-3d-chunk-fail PASS；子目录部署 0 failed；减少动效/390px PASS；对比度全 PASS。</p>
-<h2 id="2026-10-22-v15">十三、2026-10-22 深夜 v1.5 新交互回归</h2>
-<table>
-<thead>
-<tr>
-<th>测试</th>
-<th>结果</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>node tools/verify-signature.mjs &lt;url&gt;</code></td>
-<td>PASS</td>
-<td>night1 灯下找名字 / night3 升旗 / 尾声托盘均可出现、可跳过、无报错</td>
-</tr>
-<tr>
-<td><code>node tools/verify-carry.mjs &lt;url&gt;</code></td>
-<td>PASS</td>
-<td>尾声 9 件实物、键盘选中+交付、到达结局页</td>
-</tr>
-<tr>
-<td><code>node tools/verify-explore.mjs &lt;url&gt;</code></td>
-<td>PASS</td>
-<td>场景探索：背景图 200、热点可点、开卡/退出、无报错</td>
-</tr>
-<tr>
-<td><code>node tools/verify-beats.mjs &lt;url&gt;</code></td>
-<td>PASS</td>
-<td>长段落分 3 组、键盘不跳场、footer 选项、mood 与剪影切换</td>
-</tr>
-<tr>
-<td><code>node tools/audio/verify-events.mjs &lt;dev-url&gt;</code></td>
-<td>32/32 PASS</td>
-<td>42 事件、28 条素材无死条、混音补偿、悬停限流、点缀冷却</td>
-</tr>
-<tr>
-<td><code>node tools/ending-test-v3.mjs &lt;url&gt;</code></td>
-<td>9/9 PASS</td>
-<td>尾声已改 CarryTray 后重跑</td>
-</tr>
-<tr>
-<td><code>node tools/walk-test.mjs &lt;url&gt;</code></td>
-<td>PASS</td>
-<td>115 场景到「名册」0 错误（自动跳过签名覆盖层）</td>
-</tr>
-<tr>
-<td><code>node tools/lead-audit.mjs &lt;url&gt;</code></td>
-<td>11/11 PASS</td>
-<td>键盘/坏存档/图鉴/3D 泄漏/GLB 缓存/404 回退/localStorage 禁用</td>
-</tr>
-<tr>
-<td><code>node tools/test-deploy.mjs</code> / <code>test-degrade.mjs</code> / <code>test-3d-chunk-fail.mjs</code> / <code>test-3d.mjs</code></td>
-<td>PASS</td>
-<td>子目录部署 / 减少动效 / chunk 失败不白屏 / 5 切片</td>
-</tr>
-<tr>
-<td><code>node tools/quality/a11y-check.mjs &lt;url&gt;</code></td>
-<td>PASS</td>
-<td>对比度全 PASS、错误 none</td>
-</tr>
-</tbody>
-</table>
-<p>新构建数字：dist <strong>550 文件 / 24.59 MB</strong>；主包 <strong>906.07 kB（gzip 319.0 kB）</strong>；3D 懒加载 <strong>670.16 kB（gzip 171.1 kB）</strong>；CSS <strong>105.28 kB（gzip 22.3 kB）</strong>。</p>
-</div></body></html>
+<h2>十三、2026-10-22 深夜 v1.5 新交互回归</h2>
+<table><thead><tr><th>测试</th><th>结果</th><th>说明</th></tr></thead><tbody>
+<tr><td><code>node tools/verify-signature.mjs &lt;url&gt;</code></td><td>PASS</td><td>night1 灯下找名字 / night3 升旗 / 尾声托盘均可出现、可跳过、无报错</td></tr>
+<tr><td><code>node tools/verify-carry.mjs &lt;url&gt;</code></td><td>PASS</td><td>尾声 9 件实物、键盘选中+交付、到达结局页</td></tr>
+<tr><td><code>node tools/verify-explore.mjs &lt;url&gt;</code></td><td>PASS</td><td>场景探索：背景图 200、热点可点、开卡/退出、无报错</td></tr>
+<tr><td><code>node tools/verify-beats.mjs &lt;url&gt;</code></td><td>PASS</td><td>长段落分 3 组、键盘不跳场、footer 选项、mood 与剪影切换</td></tr>
+<tr><td><code>node tools/audio/verify-events.mjs &lt;dev-url&gt;</code></td><td>32/32 PASS</td><td>42 事件、28 条素材无死条、混音补偿、悬停限流、点缀冷却</td></tr>
+<tr><td><code>node tools/ending-test-v3.mjs &lt;url&gt;</code></td><td>9/9 PASS</td><td>尾声已改 CarryTray 后重跑</td></tr>
+<tr><td><code>node tools/walk-test.mjs &lt;url&gt;</code></td><td>PASS</td><td>115 场景到「名册」0 错误（自动跳过签名覆盖层）</td></tr>
+<tr><td><code>node tools/lead-audit.mjs &lt;url&gt;</code></td><td>11/11 PASS</td><td>键盘/坏存档/图鉴/3D 泄漏/GLB 缓存/404 回退/localStorage 禁用</td></tr>
+<tr><td><code>node tools/test-deploy.mjs</code> / <code>test-degrade.mjs</code> / <code>test-3d-chunk-fail.mjs</code> / <code>test-3d.mjs</code></td><td>PASS</td><td>子目录部署 / 减少动效 / chunk 失败不白屏 / 5 切片</td></tr>
+<tr><td><code>node tools/quality/a11y-check.mjs &lt;url&gt;</code></td><td>PASS</td><td>对比度全 PASS、错误 none</td></tr>
+</tbody></table>
+<p>新构建数字：dist <strong>550 文件 / 24.59 MB</strong>；主包 <strong>906.07 kB（gzip 319.0 kB）</strong>；3D 懒加载 <strong>670.16 kB（gzip 171.1 kB）</strong>；CSS <strong>105.28 kB（gzip 22.3 kB）</strong>。</p></body></html>

@@ -1,12 +1,12 @@
 {
   "schema": "dsh/package-manifest/v1",
   "project": "《把名字留下来》",
-  "generatedAt": "2026-10-21T17:52:53.534Z",
-  "generatedAtLocal": "2026-10-22 01:52:53 +08:00",
-  "durationSeconds": 3.91,
+  "generatedAt": "2026-10-21T23:55:35.931Z",
+  "generatedAtLocal": "2026-10-22 07:55:35 +08:00",
+  "durationSeconds": 3.81,
   "tool": "tools/package.mjs",
-  "command": "node tools/package.mjs --name 把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737 --out D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip --note v1.5：新增场景探索/三段阅读/42 事件音效；重新打包（460737）",
-  "runNote": "v1.5：新增场景探索/三段阅读/42 事件音效；重新打包（460737）",
+  "command": "node tools/package.mjs --name 把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737 --out D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip --note v1.6：AI 使用说明（docx+pdf）入包；补齐 dist models/scene-bg；截图重出 10 张",
+  "runNote": "v1.6：AI 使用说明（docx+pdf）入包；补齐 dist models/scene-bg；截图重出 10 张",
   "dryRun": false,
   "ok": true,
   "exitCode": 2,
@@ -15,8 +15,8 @@
   "nameIsPlaceholder": false,
   "git": {
     "available": true,
-    "head": "f6e01b1",
-    "dirty": 53
+    "head": "d66854c",
+    "dirty": 12
   },
   "metrics": {
     "path": "docs/report/2026-10-22-afternoon-metrics.json",
@@ -25,26 +25,26 @@
   "archive": {
     "path": "D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip",
     "pathRelative": "D:/提交/把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip",
-    "bytes": 32922607,
-    "human": "31.40 MiB",
-    "mib": 31.4,
-    "sha256": "471122706ed402d8adf4566ce6697ddea1a2547ecc2aab1d31bfc484867b9d52",
-    "entries": 597,
-    "files": 579,
-    "dirs": 18,
-    "compressionRatio": 0.93,
+    "bytes": 34556356,
+    "human": "32.96 MiB",
+    "mib": 32.96,
+    "sha256": "5751b48cf6308efcaabe5ae5cc4c2365fe6a7d79b6cc787b20c50c00809ed712",
+    "entries": 607,
+    "files": 587,
+    "dirs": 20,
+    "compressionRatio": 0.9236,
     "utf8FilenameFlag": true,
     "crossCheck": {
       "tool": "bsdtar -tf",
-      "entries": 597,
+      "entries": 607,
       "match": true,
       "note": "bsdtar 在中文 Windows 上把文件名转成控制台代码页输出，此处只比对条目数，不看名字"
     },
     "windowsCheck": {
       "tool": ".NET ZipFile.OpenRead（Windows 资源管理器 / Expand-Archive 同一套实现）",
       "shell": "powershell",
-      "entries": 597,
-      "expectedEntries": 597,
+      "entries": 607,
+      "expectedEntries": 607,
       "rootFolder": "把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737/",
       "rootFolderReadable": true,
       "ok": true,
@@ -55,7 +55,7 @@
       ],
       "reason": null
     },
-    "stagingDir": "D:\\提交\\_staging\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737__20261021175249\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737",
+    "stagingDir": "D:\\提交\\_staging\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737__20261021235532\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737",
     "stagingKept": true,
     "limitBytes": 10737418240,
     "limitHuman": "10 GiB",
@@ -64,21 +64,21 @@
   "verification": {
     "ok": true,
     "problems": [],
-    "checkedFiles": 579,
-    "checkedDirs": 18
+    "checkedFiles": 587,
+    "checkedDirs": 20
   },
   "totals": {
-    "files": 579,
+    "files": 587,
     "dirs": 16,
     "dirsIncludingRoot": 17,
-    "bytes": 35399275,
-    "human": "33.76 MiB",
+    "bytes": 37415788,
+    "human": "35.68 MiB",
     "byGroup": [
       {
         "group": "01_作品及成果文件",
-        "files": 544,
-        "bytes": 24271091,
-        "human": "23.15 MiB",
+        "files": 550,
+        "bytes": 25782304,
+        "human": "24.59 MiB",
         "label": "作品及成果文件（dist 原样）"
       },
       {
@@ -105,8 +105,8 @@
       {
         "group": "05_补充成果材料",
         "files": 29,
-        "bytes": 9015072,
-        "human": "8.60 MiB",
+        "bytes": 9027313,
+        "human": "8.61 MiB",
         "label": "截图 / 测试 / 审计 / 美术 / 音频 / 指标"
       },
       {
@@ -118,9 +118,9 @@
       },
       {
         "group": "07_AI工具使用补充说明",
-        "files": 1,
-        "bytes": 452471,
-        "human": "441.9 KiB",
+        "files": 3,
+        "bytes": 945530,
+        "human": "923.4 KiB",
         "label": "AI 使用说明 PDF"
       },
       {
@@ -139,9 +139,9 @@
       "path": "01_作品及成果文件",
       "label": "作品及成果文件（dist 原样）",
       "required": true,
-      "files": 544,
-      "bytes": 24271091,
-      "human": "23.15 MiB",
+      "files": 550,
+      "bytes": 25782304,
+      "human": "24.59 MiB",
       "status": "ok"
     },
     {
@@ -212,8 +212,8 @@
       "label": "截图 / 测试 / 审计 / 美术 / 音频 / 指标",
       "required": true,
       "files": 29,
-      "bytes": 9015072,
-      "human": "8.60 MiB",
+      "bytes": 9027313,
+      "human": "8.61 MiB",
       "status": "ok"
     },
     {
@@ -221,7 +221,7 @@
       "label": "作品截图（≤10 张）",
       "required": true,
       "files": 10,
-      "bytes": 7617630,
+      "bytes": 7617582,
       "human": "7.26 MiB",
       "status": "ok"
     },
@@ -230,8 +230,8 @@
       "label": "双轨审计 FINAL×2 + 覆盖边界补充",
       "required": true,
       "files": 5,
-      "bytes": 60834,
-      "human": "59.4 KiB",
+      "bytes": 61463,
+      "human": "60.0 KiB",
       "status": "ok"
     },
     {
@@ -239,8 +239,8 @@
       "label": "图片总谱 / 质检 / 视觉圣经",
       "required": true,
       "files": 6,
-      "bytes": 717718,
-      "human": "700.9 KiB",
+      "bytes": 728136,
+      "human": "711.1 KiB",
       "status": "ok"
     },
     {
@@ -265,9 +265,9 @@
       "path": "07_AI工具使用补充说明",
       "label": "AI 使用说明 PDF",
       "required": true,
-      "files": 1,
-      "bytes": 452471,
-      "human": "441.9 KiB",
+      "files": 3,
+      "bytes": 945530,
+      "human": "923.4 KiB",
       "status": "ok"
     },
     {
@@ -315,265 +315,281 @@
         "packagePath": "03_作品介绍文档/作品介绍.pdf",
         "sourcePath": "docs/deliverables/作品介绍.pdf",
         "bytes": 850636,
-        "mtime": "2026-10-21T17:52:08.907Z",
-        "mtimeLocal": "2026-10-22 01:52:08 +08:00",
-        "sha256": "f4ea7fb5d39141d911f567353def2104be4c5d9bdc1a3b852b9421fd839b3e7a"
+        "mtime": "2026-10-21T23:53:05.710Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "b4afb3f2ad27acd209094ec82da3af77d9130ad497d6855c3dce727f06a75243"
       },
       {
         "packagePath": "04_运行或使用说明/运行说明.pdf",
         "sourcePath": "docs/deliverables/运行说明.pdf",
         "bytes": 508757,
-        "mtime": "2026-10-21T17:52:49.019Z",
-        "mtimeLocal": "2026-10-22 01:52:49 +08:00",
-        "sha256": "3082ca3219e5b877dcb9b10e5a55a461aec6d12245a659b3d83d653b924a953e"
+        "mtime": "2026-10-21T23:53:05.846Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "dc7a1b22e833f5a53ceb8e3d234fdaf6dabba5a4f441f4e3e8b132ea99ae414e"
       },
       {
         "packagePath": "05_补充成果材料/测试记录.pdf",
         "sourcePath": "docs/deliverables/测试记录.pdf",
         "bytes": 486657,
-        "mtime": "2026-10-21T17:52:42.194Z",
-        "mtimeLocal": "2026-10-22 01:52:42 +08:00",
-        "sha256": "309cc4813ce36257f5dd031429214d19ce895724fe646450aeaea7ef090d98a4"
+        "mtime": "2026-10-21T23:53:05.817Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "7307b6726b28db16d0e6f06ae4e9f83c1ef5c07dc3111be5e942e0759696d684"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/00-menu.png",
         "sourcePath": "docs/deliverables/screenshots/00-menu.png",
         "bytes": 347178,
-        "mtime": "2026-10-21T17:51:07.782Z",
-        "mtimeLocal": "2026-10-22 01:51:07 +08:00",
+        "mtime": "2026-10-21T23:54:40.772Z",
+        "mtimeLocal": "2026-10-22 07:54:40 +08:00",
         "sha256": "bcb7eedfa28414fed95f7a5174d6f73f977a700715c6b42e57618dbf6343ce2b"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/01-scene-2.5d.png",
         "sourcePath": "docs/deliverables/screenshots/01-scene-2.5d.png",
-        "bytes": 1111542,
-        "mtime": "2026-10-21T17:51:12.797Z",
-        "mtimeLocal": "2026-10-22 01:51:12 +08:00",
-        "sha256": "c54848c01268a6c74e84b98d4c980ba6dbd9ee7d2f5b45ad8b51a1db9cec0df9"
+        "bytes": 1111229,
+        "mtime": "2026-10-21T23:54:45.800Z",
+        "mtimeLocal": "2026-10-22 07:54:45 +08:00",
+        "sha256": "db42cf5de46bb43792b263c4e2e9a0edb0060dc1be6773b53cea3cfebd074a2c"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/02-scene-explore.png",
         "sourcePath": "docs/deliverables/screenshots/02-scene-explore.png",
-        "bytes": 1560108,
-        "mtime": "2026-10-21T17:51:20.588Z",
-        "mtimeLocal": "2026-10-22 01:51:20 +08:00",
-        "sha256": "fd57fc64ae40225b474a757961bae9054cbcd682ccf532946149aa376c2b7c91"
+        "bytes": 1560095,
+        "mtime": "2026-10-21T23:54:53.665Z",
+        "mtimeLocal": "2026-10-22 07:54:53 +08:00",
+        "sha256": "163c7c1798f6405f686e20b052f682772b07770fdb405bfeac88dff342069a88"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/03-signature-spotlight.png",
         "sourcePath": "docs/deliverables/screenshots/03-signature-spotlight.png",
-        "bytes": 321192,
-        "mtime": "2026-10-21T17:51:28.363Z",
-        "mtimeLocal": "2026-10-22 01:51:28 +08:00",
-        "sha256": "6467d7f902f4d76b6ffebf47f48c87029c5d0a84bfbd5ffe3de5267fab06d89d"
+        "bytes": 321731,
+        "mtime": "2026-10-21T23:55:01.532Z",
+        "mtimeLocal": "2026-10-22 07:55:01 +08:00",
+        "sha256": "d86e37b1bead1303f1fab178c6a42d21a6fcadac76b048744c7dda52be3df915"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/04-epilogue-carrytray.png",
         "sourcePath": "docs/deliverables/screenshots/04-epilogue-carrytray.png",
-        "bytes": 1284874,
-        "mtime": "2026-10-21T17:51:35.112Z",
-        "mtimeLocal": "2026-10-22 01:51:35 +08:00",
-        "sha256": "02d60b3fc5ae58f3cb55068a193657f150414782688444df8f581f513ba1d722"
+        "bytes": 1284548,
+        "mtime": "2026-10-21T23:55:08.294Z",
+        "mtimeLocal": "2026-10-22 07:55:08 +08:00",
+        "sha256": "92faab3e17166a4c1fb1cf4f71589931da332cc6a26ecd083323740a4f760806"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/05-finale.png",
         "sourcePath": "docs/deliverables/screenshots/05-finale.png",
-        "bytes": 233483,
-        "mtime": "2026-10-21T17:51:41.880Z",
-        "mtimeLocal": "2026-10-22 01:51:41 +08:00",
-        "sha256": "acd0765d0ca7978232adf1cbc9c7ea6d28a2077c0490039027573a9e3a7f34c4"
+        "bytes": 233704,
+        "mtime": "2026-10-21T23:55:15.048Z",
+        "mtimeLocal": "2026-10-22 07:55:15 +08:00",
+        "sha256": "0b1dd829fc975d063cfb17127e6511d7ad45b809b935e5d3eb4ac76725d7f4d5"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/06-ending.png",
         "sourcePath": "docs/deliverables/screenshots/06-ending.png",
-        "bytes": 1042157,
-        "mtime": "2026-10-21T17:51:43.155Z",
-        "mtimeLocal": "2026-10-22 01:51:43 +08:00",
-        "sha256": "fd240ac1051b46eac0b7e9ba116e3ada0b0f09bfa48f0969061175d7a2bc9114"
+        "bytes": 1042206,
+        "mtime": "2026-10-21T23:55:16.318Z",
+        "mtimeLocal": "2026-10-22 07:55:16 +08:00",
+        "sha256": "878dc5a0d95fa14f41028f8f45064349a99507e98a6f6fe10f82b7a925c30199"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/07-beats-figure.png",
         "sourcePath": "docs/deliverables/screenshots/07-beats-figure.png",
-        "bytes": 1102198,
-        "mtime": "2026-10-21T17:51:49.176Z",
-        "mtimeLocal": "2026-10-22 01:51:49 +08:00",
-        "sha256": "0f900930948b3895953b5d907af0db2e72519ca3e0a7b367e4b94e8c2f053e38"
+        "bytes": 1101993,
+        "mtime": "2026-10-21T23:55:22.312Z",
+        "mtimeLocal": "2026-10-22 07:55:22 +08:00",
+        "sha256": "e0beef43f8e7c2fda4f976128fb596fdfa6c50f90f9b5160bd4efeffd8134e02"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/08-people.png",
         "sourcePath": "docs/deliverables/screenshots/08-people.png",
         "bytes": 455239,
-        "mtime": "2026-10-21T17:51:52.019Z",
-        "mtimeLocal": "2026-10-22 01:51:52 +08:00",
+        "mtime": "2026-10-21T23:55:25.137Z",
+        "mtimeLocal": "2026-10-22 07:55:25 +08:00",
         "sha256": "b87c27ba7b7bc4499b6fd32f4768e5e145f9528ff4028ed430171555bc458a4e"
       },
       {
         "packagePath": "05_补充成果材料/screenshots/09-mobile-menu.png",
         "sourcePath": "docs/deliverables/screenshots/09-mobile-menu.png",
         "bytes": 159659,
-        "mtime": "2026-10-21T17:51:54.576Z",
-        "mtimeLocal": "2026-10-22 01:51:54 +08:00",
+        "mtime": "2026-10-21T23:55:27.653Z",
+        "mtimeLocal": "2026-10-22 07:55:27 +08:00",
         "sha256": "65f3685d8d24c2357c98cf32ed4b880405626e00261091188bf447a23add50b9"
       },
       {
         "packagePath": "05_补充成果材料/审计报告/FINAL-fact-audit.md",
         "sourcePath": "docs/audit/FINAL-fact-audit.md",
-        "bytes": 11754,
-        "mtime": "2026-10-20T17:15:54.865Z",
-        "mtimeLocal": "2026-10-21 01:15:54 +08:00",
-        "sha256": "b6966158757c16721144ca289ce445e71a3a778d0371b7c32882019aefbfb3ca"
+        "bytes": 11883,
+        "mtime": "2026-10-21T23:53:05.458Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "5952953c3ab714880da23c4e8bbfae218521eb65f50aa435b2dde4a7583613f9"
       },
       {
         "packagePath": "05_补充成果材料/审计报告/FINAL-literary-audit.md",
         "sourcePath": "docs/audit/FINAL-literary-audit.md",
-        "bytes": 12136,
-        "mtime": "2026-10-20T17:15:24.509Z",
-        "mtimeLocal": "2026-10-21 01:15:24 +08:00",
-        "sha256": "117e5cf7d137b8061fe20e7bc9d47bb58adcb5d186dda9d343c7d1ef2edab978"
+        "bytes": 12268,
+        "mtime": "2026-10-21T23:53:05.460Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "2c542b23f6e1c3d73eaf39b34956fd975a12929c0f4651080fc01dc9828bbf01"
       },
       {
         "packagePath": "05_补充成果材料/审计报告/2026-10-22-post-audit-addendum.md",
         "sourcePath": "docs/audit/2026-10-22-post-audit-addendum.md",
-        "bytes": 3432,
-        "mtime": "2026-10-21T14:45:11.804Z",
-        "mtimeLocal": "2026-10-21 22:45:11 +08:00",
-        "sha256": "5cf8fb9220b4876e00b938e719309b25a02d7ebf2aa49d8dd6cc10f412119a68"
+        "bytes": 3475,
+        "mtime": "2026-10-21T23:53:05.455Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "d8900c704abbed86af11c758de48cb5c29b79adf5668385bc6d69c530cbfff80"
       },
       {
         "packagePath": "05_补充成果材料/审计报告/2026-10-22-composite-fact.md",
         "sourcePath": "docs/audit/2026-10-22-composite-fact.md",
-        "bytes": 21046,
-        "mtime": "2026-10-21T14:45:11.795Z",
-        "mtimeLocal": "2026-10-21 22:45:11 +08:00",
-        "sha256": "4fdcb224db02f53472a1bd6934923986e87504862f57bc2b3dac088626f1a3c3"
+        "bytes": 21242,
+        "mtime": "2026-10-21T23:53:05.451Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "f85c6fbdd11c10caf6d583b98478c1144fe1160b7a7ac25118fe3b3aa9623ee3"
       },
       {
         "packagePath": "05_补充成果材料/审计报告/2026-10-22-composite-literary.md",
         "sourcePath": "docs/audit/2026-10-22-composite-literary.md",
-        "bytes": 12466,
-        "mtime": "2026-10-21T05:24:59.503Z",
-        "mtimeLocal": "2026-10-21 13:24:59 +08:00",
-        "sha256": "e388de6cfdbedbc5196734dbb1c24748860ddf086f0a0ee67eeeba192ba53b8a"
+        "bytes": 12595,
+        "mtime": "2026-10-21T23:53:05.453Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "b5d2995beedc2d2e4a7d4677b21ee1502e844d2b57b1f86db642b125c09929ac"
       },
       {
         "packagePath": "05_补充成果材料/复审报告/2026-10-22-story-rules-review.md",
         "sourcePath": "docs/report/2026-10-22-story-rules-review.md",
-        "bytes": 16352,
-        "mtime": "2026-10-21T14:45:11.998Z",
-        "mtimeLocal": "2026-10-21 22:45:11 +08:00",
-        "sha256": "0f3e0c76a5a5999ebbb1b53da4bc67e486c900aeba07f47f7d20ecb19abf588f"
+        "bytes": 16469,
+        "mtime": "2026-10-21T23:53:05.889Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "4d1e1bd794c7972960849d34a8521177fbc48872fa53705ff114ed3d8808bad4"
       },
       {
         "packagePath": "05_补充成果材料/复审报告/2026-10-22-animation-review.md",
         "sourcePath": "docs/report/2026-10-22-animation-review.md",
-        "bytes": 21583,
-        "mtime": "2026-10-21T14:45:12.002Z",
-        "mtimeLocal": "2026-10-21 22:45:12 +08:00",
-        "sha256": "b8eaf38248b9c455774036b9c5ac4706c5834b8ccf6fc76b7fedc0776051393c"
+        "bytes": 21813,
+        "mtime": "2026-10-21T23:53:05.860Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "d8c7396032f4520ebad11d610a3ce4e565fb2ee7c4c75b192027f0f03aef63b3"
       },
       {
         "packagePath": "05_补充成果材料/复审报告/2026-10-22-3d-loading-review.md",
         "sourcePath": "docs/report/2026-10-22-3d-loading-review.md",
-        "bytes": 35896,
-        "mtime": "2026-10-21T14:45:12.008Z",
-        "mtimeLocal": "2026-10-21 22:45:12 +08:00",
-        "sha256": "0ddb16b8ad9387cd7f4fdecf26084e4c85369964d09ee750970b866d19c6213c"
+        "bytes": 36355,
+        "mtime": "2026-10-21T23:53:05.854Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "3b25102726dc2b87f91c7f52526b5a720bff121ae15349a26ba5a3e05b03e76f"
       },
       {
         "packagePath": "05_补充成果材料/复审报告/2026-10-22-blender-asset.md",
         "sourcePath": "docs/report/2026-10-22-blender-asset.md",
-        "bytes": 17593,
-        "mtime": "2026-10-21T05:29:40.518Z",
-        "mtimeLocal": "2026-10-21 13:29:40 +08:00",
-        "sha256": "695553ba9a0502123c0052ee18cba9d94b1667cbb220efbb3505796ccb94b1a3"
+        "bytes": 17831,
+        "mtime": "2026-10-21T23:53:05.867Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "951aa1ba3c3a490d4b8875232b9663b3fbe34a314e7668ab7b3dc47d595d6a52"
       },
       {
         "packagePath": "05_补充成果材料/美术报告/image-manifest.json",
         "sourcePath": "docs/art/image-manifest.json",
-        "bytes": 662134,
-        "mtime": "2026-10-20T17:07:54.004Z",
-        "mtimeLocal": "2026-10-21 01:07:54 +08:00",
-        "sha256": "99cd52e26c7d3be601c97e1a662bd6b586dab69eeaf511e7d05083acee8aab4e"
+        "bytes": 671434,
+        "mtime": "2026-10-21T23:53:05.427Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "79c8d5ab6e850171875d824317ffa56e74c631c3056a43782f50ddc4b968dce2"
       },
       {
         "packagePath": "05_补充成果材料/美术报告/scene-map.json",
         "sourcePath": "docs/art/scene-map.json",
-        "bytes": 19719,
-        "mtime": "2026-10-20T17:07:54.014Z",
-        "mtimeLocal": "2026-10-21 01:07:54 +08:00",
-        "sha256": "2ddafa3a62c77fa80137e400b3be18a5f9a1d95f2519fe9ee42bac50d23c908e"
+        "bytes": 20361,
+        "mtime": "2026-10-21T23:53:05.432Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "cdb6dd2911795f817c07a256abc82f96b03ca98165c5ff6ccaad4ae580be1f81"
       },
       {
         "packagePath": "05_补充成果材料/美术报告/image-qa-report.md",
         "sourcePath": "docs/art/image-qa-report.md",
-        "bytes": 3814,
-        "mtime": "2026-10-21T01:42:11.859Z",
-        "mtimeLocal": "2026-10-21 09:42:11 +08:00",
-        "sha256": "650a22b76848dcaaefe0001740da5900fb199dacb8d007d594bafebc10f91919"
+        "bytes": 3872,
+        "mtime": "2026-10-21T23:53:05.430Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "2a4a5eaa939cd0004509cd73b6c0eb6d0290f77d1cd60d49840244c9b207a313"
       },
       {
         "packagePath": "05_补充成果材料/美术报告/spot-check.md",
         "sourcePath": "docs/art/spot-check.md",
-        "bytes": 9739,
-        "mtime": "2026-10-20T17:14:01.609Z",
-        "mtimeLocal": "2026-10-21 01:14:01 +08:00",
-        "sha256": "7ae20182e6bf66c48aaab02208705aaf3394cddad564775460f2eac1a8740e57"
+        "bytes": 9850,
+        "mtime": "2026-10-21T23:53:05.435Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "4d6c611a459ab8face6ea2c3c2803bc2cbaef2bb281853c735b2c5fe358cecc6"
       },
       {
         "packagePath": "05_补充成果材料/美术报告/visual-bible.md",
         "sourcePath": "docs/art/visual-bible.md",
-        "bytes": 17930,
-        "mtime": "2026-10-20T17:09:49.743Z",
-        "mtimeLocal": "2026-10-21 01:09:49 +08:00",
-        "sha256": "dcad4da0a3c50c3508df778d733df3f19ae7fba70af0ee006fa40d6ad4556c3a"
+        "bytes": 18197,
+        "mtime": "2026-10-21T23:53:05.436Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "2aff70494b88298b8ea8ddae978a8a449df567dcb2b591451a953beb63834d3e"
       },
       {
         "packagePath": "05_补充成果材料/美术报告/README.md",
         "sourcePath": "docs/art/README.md",
-        "bytes": 4382,
-        "mtime": "2026-10-20T19:55:58.779Z",
-        "mtimeLocal": "2026-10-21 03:55:58 +08:00",
-        "sha256": "06bc8d380f11d268a1a6e6f137039ab55daca6c66b2d96e0e305dd477ba098a0"
+        "bytes": 4422,
+        "mtime": "2026-10-21T23:53:05.393Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "3eddc6388ac6b9c1702755be98f976f20e4effa0bc26495ee5ebe2114b756ad8"
       },
       {
         "packagePath": "05_补充成果材料/音频报告/audio-manifest.json",
         "sourcePath": "docs/audio/audio-manifest.json",
         "bytes": 34616,
-        "mtime": "2026-10-21T01:56:58.709Z",
-        "mtimeLocal": "2026-10-21 09:56:58 +08:00",
+        "mtime": "2026-10-21T23:53:05.442Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
         "sha256": "ff533d9368544f10ebddba4253ed13f7018c0721aaf71c6767e75fa522cb3c96"
       },
       {
         "packagePath": "05_补充成果材料/2026-10-22-3d-slices.md",
         "sourcePath": "docs/report/2026-10-22-3d-slices.md",
-        "bytes": 3530,
-        "mtime": "2026-10-21T05:30:45.041Z",
-        "mtimeLocal": "2026-10-21 13:30:45 +08:00",
-        "sha256": "d99cbf44778f9d929ffc2aecca581b3cb047782f377d0cda3a408bc0f3f988ac"
+        "bytes": 3585,
+        "mtime": "2026-10-21T23:53:05.856Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "003dccfcca6616722429c6b23292cf49e7aafb1b30372a3914779e0d8f173ce9"
       },
       {
         "packagePath": "05_补充成果材料/2026-10-22-afternoon-metrics.json",
         "sourcePath": "docs/report/2026-10-22-afternoon-metrics.json",
-        "bytes": 2663,
-        "mtime": "2026-10-21T17:43:18.783Z",
-        "mtimeLocal": "2026-10-22 01:43:18 +08:00",
-        "sha256": "2988f65fd34a5d6bc92a43104aa2cccedc811f63517bb03a5d38ee5c7d00c0d5"
+        "bytes": 2806,
+        "mtime": "2026-10-21T23:53:05.858Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "a6ba921f5c73edc74c4f5ff97739318f85444b0a109811f97a9edf08b303f2a5"
       },
       {
         "packagePath": "06_第三方资源说明/第三方资源说明.pdf",
         "sourcePath": "docs/deliverables/第三方资源说明.pdf",
         "bytes": 299210,
-        "mtime": "2026-10-21T17:52:44.141Z",
-        "mtimeLocal": "2026-10-22 01:52:44 +08:00",
-        "sha256": "54526259d6c2ed904a599edaadb7489fb6cca7b0020aeff15489b71bca16e9cc"
+        "mtime": "2026-10-21T23:53:05.825Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "567d0ece407241c8b1e962ad9036d52de093f0712d24f4879b54631f52c24b78"
       },
       {
         "packagePath": "07_AI工具使用补充说明/AI使用说明.pdf",
         "sourcePath": "docs/deliverables/AI使用说明.pdf",
         "bytes": 452471,
-        "mtime": "2026-10-21T17:52:05.203Z",
-        "mtimeLocal": "2026-10-22 01:52:05 +08:00",
-        "sha256": "33a41a42350516769f4ba4d4438e0d11dfabe3967f8d9ee30caba3ae7a17ef8e"
+        "mtime": "2026-10-21T23:53:05.677Z",
+        "mtimeLocal": "2026-10-22 07:53:05 +08:00",
+        "sha256": "9826ef83d4191d4c34dcaaff5be5c85c5432fbfb4735118dab10f673dbe9378a"
+      },
+      {
+        "packagePath": "07_AI工具使用补充说明/人工智能工具使用情况说明_460737.docx",
+        "sourcePath": "docs/deliverables/人工智能工具使用情况说明_460737.docx",
+        "bytes": 43896,
+        "mtime": "2026-10-21T23:47:28.507Z",
+        "mtimeLocal": "2026-10-22 07:47:28 +08:00",
+        "sha256": "4d932fb586a19058a9f1dfdedb220f25fe903b67f0a1bbb773b5479a4bef4da0"
+      },
+      {
+        "packagePath": "07_AI工具使用补充说明/人工智能工具使用情况说明.pdf",
+        "sourcePath": "docs/deliverables/人工智能工具使用情况说明.pdf",
+        "bytes": 449163,
+        "mtime": "2026-10-21T23:48:42.211Z",
+        "mtimeLocal": "2026-10-22 07:48:42 +08:00",
+        "sha256": "882a2e8aad62bd304bac2cd9e1b2dba6f8910c20485c9b2dd3125498a82b73c5"
       }
     ]
   },
@@ -679,8 +695,8 @@
       "indexPresent": true,
       "absoluteRefs": [],
       "staleness": {
-        "distBuiltAt": "2026-10-21T17:33:49.919Z",
-        "distBuiltAtLocal": "2026-10-22 01:33:49 +08:00",
+        "distBuiltAt": "2026-10-21T23:54:07.445Z",
+        "distBuiltAtLocal": "2026-10-22 07:54:07 +08:00",
         "scannedDirs": [
           "src",
           "public"
@@ -699,11 +715,11 @@
           "pdfPresent": true,
           "mdPresent": true,
           "pdfBytes": 850636,
-          "pdfMtime": "2026-10-21T17:52:08.907Z",
-          "pdfMtimeLocal": "2026-10-22 01:52:08 +08:00",
-          "mdMtime": "2026-10-21T17:43:41.081Z",
-          "mdMtimeLocal": "2026-10-22 01:43:41 +08:00",
-          "deltaSeconds": 508,
+          "pdfMtime": "2026-10-21T23:53:05.710Z",
+          "pdfMtimeLocal": "2026-10-22 07:53:05 +08:00",
+          "mdMtime": "2026-10-21T23:53:05.701Z",
+          "mdMtimeLocal": "2026-10-22 07:53:05 +08:00",
+          "deltaSeconds": 0,
           "status": "FRESH"
         },
         {
@@ -712,11 +728,11 @@
           "pdfPresent": true,
           "mdPresent": true,
           "pdfBytes": 508757,
-          "pdfMtime": "2026-10-21T17:52:49.019Z",
-          "pdfMtimeLocal": "2026-10-22 01:52:49 +08:00",
-          "mdMtime": "2026-10-21T17:43:32.570Z",
-          "mdMtimeLocal": "2026-10-22 01:43:32 +08:00",
-          "deltaSeconds": 556,
+          "pdfMtime": "2026-10-21T23:53:05.846Z",
+          "pdfMtimeLocal": "2026-10-22 07:53:05 +08:00",
+          "mdMtime": "2026-10-21T23:53:05.839Z",
+          "mdMtimeLocal": "2026-10-22 07:53:05 +08:00",
+          "deltaSeconds": 0,
           "status": "FRESH"
         },
         {
@@ -725,11 +741,11 @@
           "pdfPresent": true,
           "mdPresent": true,
           "pdfBytes": 299210,
-          "pdfMtime": "2026-10-21T17:52:44.141Z",
-          "pdfMtimeLocal": "2026-10-22 01:52:44 +08:00",
-          "mdMtime": "2026-10-21T14:45:11.929Z",
-          "mdMtimeLocal": "2026-10-21 22:45:11 +08:00",
-          "deltaSeconds": 11252,
+          "pdfMtime": "2026-10-21T23:53:05.825Z",
+          "pdfMtimeLocal": "2026-10-22 07:53:05 +08:00",
+          "mdMtime": "2026-10-21T23:53:05.820Z",
+          "mdMtimeLocal": "2026-10-22 07:53:05 +08:00",
+          "deltaSeconds": 0,
           "status": "FRESH"
         },
         {
@@ -738,11 +754,11 @@
           "pdfPresent": true,
           "mdPresent": true,
           "pdfBytes": 452471,
-          "pdfMtime": "2026-10-21T17:52:05.203Z",
-          "pdfMtimeLocal": "2026-10-22 01:52:05 +08:00",
-          "mdMtime": "2026-10-21T14:45:11.901Z",
-          "mdMtimeLocal": "2026-10-21 22:45:11 +08:00",
-          "deltaSeconds": 11213,
+          "pdfMtime": "2026-10-21T23:53:05.677Z",
+          "pdfMtimeLocal": "2026-10-22 07:53:05 +08:00",
+          "mdMtime": "2026-10-21T23:53:05.671Z",
+          "mdMtimeLocal": "2026-10-22 07:53:05 +08:00",
+          "deltaSeconds": 0,
           "status": "FRESH"
         },
         {
@@ -751,11 +767,11 @@
           "pdfPresent": true,
           "mdPresent": true,
           "pdfBytes": 486657,
-          "pdfMtime": "2026-10-21T17:52:42.194Z",
-          "pdfMtimeLocal": "2026-10-22 01:52:42 +08:00",
-          "mdMtime": "2026-10-21T17:43:32.580Z",
-          "mdMtimeLocal": "2026-10-22 01:43:32 +08:00",
-          "deltaSeconds": 550,
+          "pdfMtime": "2026-10-21T23:53:05.817Z",
+          "pdfMtimeLocal": "2026-10-22 07:53:05 +08:00",
+          "mdMtime": "2026-10-21T23:53:05.810Z",
+          "mdMtimeLocal": "2026-10-22 07:53:05 +08:00",
+          "deltaSeconds": 0,
           "status": "FRESH"
         }
       ],
@@ -766,7 +782,7 @@
       "count": 10,
       "expected": 10,
       "ok": true,
-      "bytes": 7617630,
+      "bytes": 7617582,
       "names": [
         "00-menu.png",
         "01-scene-2.5d.png",
@@ -783,7 +799,7 @@
   },
   "anonymity": {
     "status": "PASS",
-    "conclusion": "未检出身分级敏感词（text 27 个文件 / 文件名 577 条 / PDF 元数据 5 份）",
+    "conclusion": "未检出身分级敏感词（text 27 个文件 / 文件名 585 条 / PDF 元数据 6 份）",
     "keywordTable": {
       "version": 1,
       "source": "内置默认表（脚本内 KEYWORDS）",
@@ -794,10 +810,10 @@
     },
     "scanned": {
       "textFiles": 27,
-      "textBytes": 926014,
+      "textBytes": 938303,
       "textLines": 13657,
-      "filenameOnlyFiles": 550,
-      "pdfFiles": 5
+      "filenameOnlyFiles": 558,
+      "pdfFiles": 6
     },
     "counts": {
       "block": 0,
@@ -874,8 +890,8 @@
           "Title": "作品介绍",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261021175206+00'00'",
-          "ModDate": "D:20261021175206+00'00'"
+          "CreationDate": "D:20261021175305+00'00'",
+          "ModDate": "D:20261021175305+00'00'"
         },
         "bytes": 850636
       },
@@ -885,8 +901,8 @@
           "Title": "运行与使用说明",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261021175247+00'00'",
-          "ModDate": "D:20261021175247+00'00'"
+          "CreationDate": "D:20261021175347+00'00'",
+          "ModDate": "D:20261021175347+00'00'"
         },
         "bytes": 508757
       },
@@ -896,8 +912,8 @@
           "Title": "测试记录",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261021175240+00'00'",
-          "ModDate": "D:20261021175240+00'00'"
+          "CreationDate": "D:20261021175340+00'00'",
+          "ModDate": "D:20261021175340+00'00'"
         },
         "bytes": 486657
       },
@@ -907,8 +923,8 @@
           "Title": "第三方资源说明",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261021175243+00'00'",
-          "ModDate": "D:20261021175243+00'00'"
+          "CreationDate": "D:20261021175343+00'00'",
+          "ModDate": "D:20261021175343+00'00'"
         },
         "bytes": 299210
       },
@@ -918,10 +934,21 @@
           "Title": "AI使用说明",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261021175203+00'00'",
-          "ModDate": "D:20261021175203+00'00'"
+          "CreationDate": "D:20261021175303+00'00'",
+          "ModDate": "D:20261021175303+00'00'"
         },
         "bytes": 452471
+      },
+      {
+        "packagePath": "07_AI工具使用补充说明/人工智能工具使用情况说明.pdf",
+        "info": {
+          "Title": "人工智能工具使用情况说明.md",
+          "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+          "Producer": "Skia/PDF m155",
+          "CreationDate": "D:20261021234841+00'00'",
+          "ModDate": "D:20261021234841+00'00'"
+        },
+        "bytes": 449163
       }
     ],
     "limitations": [
