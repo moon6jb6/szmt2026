@@ -87,6 +87,12 @@ a { color: #8a2b22; text-decoration: none; }
 <td>本地部署（RTX 5070 Laptop 8GB）</td>
 </tr>
 <tr>
+<td>Blender 4.2.3（无头 bpy）</td>
+<td>3D 建模</td>
+<td>四行仓库西墙 GLB（4,732 tris / 469.6 KB）</td>
+<td>本地离线（CPU，0 显存）</td>
+</tr>
+<tr>
 <td>大语言模型（对话式）</td>
 <td>文本生成</td>
 <td>分区写作、史实审计、文学审计、代码与文档</td>
@@ -116,7 +122,7 @@ a { color: #8a2b22; text-decoration: none; }
 <h3 id="ai_2">AI 输入</h3>
 <ul>
 <li>已确定的故事大纲、人物设定、叙事圣经与硬性约束（不虚构真实人物台词、不写伤亡数字、第三人称限知、禁用套话清单、每段必须有具体物与动作）；</li>
-<li>已核实的 76 张史料卡与逐场挂卡要求；</li>
+<li>76 张史料卡（已核 63 张 / 待核 7 张 / 待接入 6 张）与逐场挂卡要求；</li>
 <li>分区任务：序卷+卷一、卷二（四行五夜）、卷三+卷四（孤军营/记忆线）、支线人物志。</li>
 </ul>
 <h3 id="ai_3">AI 输出</h3>
@@ -129,8 +135,8 @@ a { color: #8a2b22; text-decoration: none; }
 <li><strong>集成校验</strong>：构建、场景链可达性、史料卡引用存在性、严格字数统计全部用脚本复现。</li>
 </ol>
 <h3 id="_7">最终成果中的使用</h3>
-<p>游戏正文与附加读者页。审计结论：文学 P0 = 0、不合格 0 / 146 经审单元（另有 3 个合成结局为自查）、加权均分 4.59；史实 P0 = 0；严格正文 113,138 字（<code>tools/count-words-strict.mjs</code> 可复现）。</p>
-<p><strong>补充说明（如实披露）</strong>：六个主结局经过完整双轨审计；之后新增的三个合成结局（档案 / 遗物 / 口耳，约 3,100 字）与点击/结局画面交互代码，是在审计冻结后新增的，只做了人工自查（真实人物零台词、无伤亡数字、第三人称、事实只用已核卡），没有独立审计员的第二轮评分。详见 <code>docs/audit/2026-10-21-ending-expansion-note.md</code>。</p>
+<p>游戏正文与附加读者页。审计结论：文学 P0 = 0、不合格 0 / 146 经审单元（3 个合成结局已补独立审计：史实 P0=0、文学均分 4.35）、加权均分 4.59；史实 P0 = 0；严格正文 113,161 字（<code>tools/count-words-strict.mjs</code> 可复现）。</p>
+<p><strong>补充说明（如实披露）</strong>：六个主结局经过完整双轨审计；新增的三个合成结局（档案 / 遗物 / 口耳，约 3,141 字）已在 2026-10-22 补做独立双轨审计——史实 P0 4→0、文学 3.99→4.35（报告：<code>docs/audit/2026-10-22-composite-fact.md</code> / <code>-literary.md</code>）。点击/结局画面交互、5 个真 3D 场景（含 Blender 建模的仓库西墙）与 28 条音效不承担史实表述，做人工验收与性能测试；覆盖边界见 <code>docs/audit/2026-10-22-post-audit-addendum.md</code>。</p>
 <h2 id="28">五、代表性环节三：环境音生成（28 条）</h2>
 <h3 id="ai_4">AI 输入</h3>
 <ul>
@@ -140,7 +146,7 @@ a { color: #8a2b22; text-decoration: none; }
 <h3 id="ai_5">AI 输出</h3>
 <ul>
 <li>Stable Audio Open Small（497M）本地生成的原始 wav（44.1 kHz）；</li>
-<li>每条记录 prompt / seed / steps / 耗时 / 峰值显存（3.2—3.4 GB）/ 许可。</li>
+<li>每条记录 prompt / seed / steps / 耗时 / 峰值显存（2.8—3.3 GiB，manifest 峰值 3,364 MiB）/ 许可。</li>
 </ul>
 <h3 id="_8">团队后续处理</h3>
 <ol>

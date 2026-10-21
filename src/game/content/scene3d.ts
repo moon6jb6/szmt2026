@@ -2,17 +2,17 @@
  * 3D 切片清单（真 3D 是增强，不是必需）
  *
  * 依据 docs/superpowers/specs/2026-10-22-3d-audio-plan.md「一、3D 决策」：
- * 只做 4 个切片，不做全项目 3D 化。本文件只回答「哪个场景用哪个切片」，
+ * 只做少量 hero 切片，不做全项目 3D 化。本文件只回答「哪个场景用哪个切片」，
  * 画面怎么搭由 components/Scene3D.tsx 决定（内容与表现分离）。
  *
  * 回退：WebGL 不可用 / prefers-reduced-motion / 屏幕 < 700px 时，
  * App 侧不要挂 Scene3D，继续用 Stage 的 2.5D 分层。
+ *
+ * 路径约定：所有静态资源写相对路径（不带前导 /），由 Scene3D 拼 import.meta.env.BASE_URL，
+ * 这样 `vite base:'./'` 子目录部署也能取到；不要在这里写死 '/'。
  */
 
-export type Scene3DVariant = 'warehouse-int' | 'rooftop' | 'bridge' | 'office-1947'
-
-/** public 下静态资源的根（vite base 就是 /） */
-const ASSET_ROOT = '/'
+export type Scene3DVariant = 'warehouse-int' | 'warehouse-ext' | 'rooftop' | 'bridge' | 'office-1947'
 
 export type Scene3DSpec = {
   /** 场景切片 id */
@@ -21,9 +21,13 @@ export type Scene3DSpec = {
 
 /**
  * 场景 id → 切片。
- * 只挂「值得做 3D」的 10 个场景：五夜里的四场 + 对应扩写卷/序卷/尾声。
+ * 只挂「值得做 3D」的场景：五夜里的关键场 + 到达仓库 + 扩写卷/序卷/尾声。
  */
 export const SCENE_3D: Record<string, Scene3DSpec> = {
+  // 仓库外观（Blender 导出的西墙 GLB）：到达 / 铁门
+  'v1-24': { variant: 'warehouse-ext' },
+  'v1-25': { variant: 'warehouse-ext' },
+
   // 仓库底楼内景（夜·点名 / 扩写内景）
   night1: { variant: 'warehouse-int' },
   'v2-03': { variant: 'warehouse-int' },
@@ -49,13 +53,13 @@ export const SCENE_3D_IDS: string[] = Object.keys(SCENE_3D)
 /**
  * 每个切片的「远处背景贴图」，null 表示该切片不用贴图（远景走程序化天空板）。
  * - warehouse-int 用 warehouse.jpg 当远端墙面，麻袋与高窗的构图正好接得上；
- * - rooftop / bridge 的可用生成图里带旗杆、栏杆、湿地面，跟 3D 主体重复，
- *   铺上去会「两个地平线打架」，所以改成程序化天空 + 3D 剪影；
+ * - rooftop / bridge / warehouse-ext 用程序化天空 + 3D 主体，避免「两个地平线打架」；
  * - office-1947 是内景，窗外用 canvas 画的雪景。
  * 主体一律是真 3D，贴图只当远景。
  */
 export const SCENE_3D_BACKDROP: Record<Scene3DVariant, string | null> = {
-  'warehouse-int': `${ASSET_ROOT}bg/warehouse.jpg`,
+  'warehouse-int': 'bg/warehouse.jpg',
+  'warehouse-ext': null,
   rooftop: null,
   bridge: null,
   'office-1947': null,

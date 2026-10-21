@@ -260,6 +260,35 @@ export default function App() {
     }
   }, [])
 
+  // 换场景后把焦点交给标题：键盘用户不必从 body 重新 Tab；读屏靠上面的 aria-live 播报
+  useEffect(() => {
+    if (screen !== 'game') return
+    const timer = window.setTimeout(() => {
+      const title = document.querySelector<HTMLElement>('.scene-title')
+      title?.focus({ preventScroll: true })
+    }, 280)
+    return () => window.clearTimeout(timer)
+  }, [screen, sceneId, state.pendingOutcome])
+
+  // Esc 关闭史料卡浮层（无障碍 P2：弹层不能只靠点关闭）
+  useEffect(() => {
+    if (!sourcePanel) return
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSourcePanel(null)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [sourcePanel])
+
+  // 窗口缩到 700px 以下时自动退出 3D（避免手机宽度还挂着 WebGL）
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth < 700) setView3d(false)
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
   const scene: Scene | null = useMemo(() => {
     if (screen !== 'game') return null
     return getScene(state.sceneId, state.ledger)
@@ -444,9 +473,14 @@ export default function App() {
 
     return (
       <div className={`scene ${show3d ? 'scene-in-3d' : ''}`} data-scene={scene.id}>
+        <p className="sr-only" aria-live="polite">
+          {`${scene.chapter} · ${scene.title}`}
+        </p>
         <header className="scene-head">
           <span className="chapter">{scene.chapter}</span>
-          <h1>{scene.title}</h1>
+          <h1 className="scene-title" tabIndex={-1}>
+            {scene.title}
+          </h1>
           {(scene.date || scene.location) && (
             <p className="scene-meta">
               {scene.date}
@@ -493,14 +527,13 @@ export default function App() {
           )}
 
           {!hasOutcome && scene.choices && scene.choices.length > 0 && (
-            <div className="choices" role="list">
+            <div className="choices">
               {scene.choices.map((choice, index) => {
                 const kind = burstKindFor(choice)
                 return (
                   <button
                     key={choice.id}
                     className="choice"
-                    role="listitem"
                     data-choice={choice.id}
                     data-kind={kind}
                     style={{ ['--i' as string]: String(index) }}
@@ -566,7 +599,7 @@ export default function App() {
           const carried = (Object.keys(state.ledger) as MemoryKind[]).filter((kind) => state.ledger[kind] > 0)
           const compositeLine: Record<string, string> = {
             archive: '这一次交出去的不是一样东西。名字和话放在同一个匣子里，纸和口述互相作了证。',
-            relics: '这一次交出去的是字和人。信还在，照片还在，圈里的两个名字还是没有。',
+            relics: '这一次交出去的是字和人。抄件还在，单子还在，圈里的两个名字还是没有。',
             wordofmouth: '这一次交出去的，一个给眼睛，一个给耳朵。图样收进了匣子，话留在了人嘴里。',
           }
           const line = compositeLine[ending.kind]

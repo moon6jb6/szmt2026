@@ -34,3 +34,6 @@ public/generated/*/world.mtl
 
 tools/audio/out/
 docs/deliverables/_pdf_tmp/
+tools/blender/tex/
+tools/blender/_tmp.glb
+tools/quality/shots/

@@ -1,0 +1,663 @@
+{
+  "generatedAt": "2026-10-21T05:21:27.675Z",
+  "url": "http://127.0.0.1:4173/",
+  "chrome": "155.0.8059.85",
+  "desktopCold": {
+    "fcp": 228,
+    "lcp": 228,
+    "menuAt": 125,
+    "dcl": 117,
+    "load": 117,
+    "tbt": 1,
+    "cls": 0,
+    "jsDecodedKB": 845,
+    "heapMB": 2.6,
+    "firstSceneDomMs": 1444
+  },
+  "desktopCpu4x": {
+    "runs": 5,
+    "fcp": 664,
+    "lcp": 664,
+    "menuAt": 296,
+    "tbt": 396,
+    "tbtRange": [
+      296,
+      433
+    ],
+    "longestTask": 341
+  },
+  "runs": [
+    {
+      "fcp": 264,
+      "fp": 160,
+      "lcp": 264,
+      "lcpEl": "button.audio-toggle.",
+      "cls": 0,
+      "menuAt": 125,
+      "tbt": 1,
+      "longTasks": [
+        {
+          "at": 125,
+          "dur": 51
+        }
+      ],
+      "ttfb": 5,
+      "dcl": 117,
+      "load": 117,
+      "legacy": {
+        "navigationStart": 1792560053263,
+        "firstPaint": 5,
+        "domReady": 117,
+        "loadEnd": 117
+      },
+      "resources": [
+        {
+          "name": "index-CLSpgOr7.js",
+          "type": "script",
+          "start": 20,
+          "dur": 63,
+          "transfer": 297989,
+          "encoded": 297689,
+          "decoded": 844876
+        },
+        {
+          "name": "index-MLU40nco.css",
+          "type": "link",
+          "start": 21,
+          "dur": 15,
+          "transfer": 5223,
+          "encoded": 4923,
+          "decoded": 18751
+        }
+      ],
+      "transferTotal": 303212,
+      "jsDecoded": 844876,
+      "heapMB": 2.6,
+      "label": "desktop-cold-1",
+      "viewport": "1440x900",
+      "cpuRate": 1,
+      "reducedMotion": "no-preference",
+      "wallClockNavMs": 1639,
+      "errors": [],
+      "firstScene": {
+        "sceneDomMs": 1444,
+        "sceneAt": 3276,
+        "sceneId": "v0-01",
+        "proseChars": 870,
+        "newAssets": {
+          "count": 2,
+          "bytes": 74914,
+          "names": [
+            "dawn.jpg:40212",
+            "scene-001.jpg:34702"
+          ]
+        }
+      }
+    },
+    {
+      "fcp": 184,
+      "fp": 44,
+      "lcp": 184,
+      "lcpEl": "button.audio-toggle.",
+      "cls": 0,
+      "menuAt": 110,
+      "tbt": 0,
+      "longTasks": [
+        {
+          "at": 110,
+          "dur": 50
+        }
+      ],
+      "ttfb": 5,
+      "dcl": 102,
+      "load": 102,
+      "legacy": {
+        "navigationStart": 1792560059667,
+        "firstPaint": 4,
+        "domReady": 102,
+        "loadEnd": 102
+      },
+      "resources": [
+        {
+          "name": "index-CLSpgOr7.js",
+          "type": "script",
+          "start": 11,
+          "dur": 59,
+          "transfer": 297989,
+          "encoded": 297689,
+          "decoded": 844876
+        },
+        {
+          "name": "index-MLU40nco.css",
+          "type": "link",
+          "start": 11,
+          "dur": 13,
+          "transfer": 5223,
+          "encoded": 4923,
+          "decoded": 18751
+        }
+      ],
+      "transferTotal": 303212,
+      "jsDecoded": 844876,
+      "heapMB": 2.6,
+      "label": "desktop-cold-2",
+      "viewport": "1440x900",
+      "cpuRate": 1,
+      "reducedMotion": "no-preference",
+      "wallClockNavMs": 1625,
+      "errors": []
+    },
+    {
+      "fcp": 228,
+      "fp": 40,
+      "lcp": 228,
+      "lcpEl": "button.audio-toggle.",
+      "cls": 0,
+      "menuAt": 134,
+      "tbt": 19,
+      "longTasks": [
+        {
+          "at": 134,
+          "dur": 69
+        }
+      ],
+      "ttfb": 6,
+      "dcl": 124,
+      "load": 125,
+      "legacy": {
+        "navigationStart": 1792560061622,
+        "firstPaint": 5,
+        "domReady": 124,
+        "loadEnd": 124
+      },
+      "resources": [
+        {
+          "name": "index-CLSpgOr7.js",
+          "type": "script",
+          "start": 12,
+          "dur": 73,
+          "transfer": 297989,
+          "encoded": 297689,
+          "decoded": 844876
+        },
+        {
+          "name": "index-MLU40nco.css",
+          "type": "link",
+          "start": 12,
+          "dur": 17,
+          "transfer": 5223,
+          "encoded": 4923,
+          "decoded": 18751
+        }
+      ],
+      "transferTotal": 303212,
+      "jsDecoded": 844876,
+      "heapMB": 2.6,
+      "label": "desktop-cold-3",
+      "viewport": "1440x900",
+      "cpuRate": 1,
+      "reducedMotion": "no-preference",
+      "wallClockNavMs": 1639,
+      "errors": []
+    },
+    {
+      "fcp": 716,
+      "fp": 80,
+      "lcp": 716,
+      "lcpEl": "button.audio-toggle.",
+      "cls": 0,
+      "menuAt": 359,
+      "tbt": 430,
+      "longTasks": [
+        {
+          "at": 106,
+          "dur": 184
+        },
+        {
+          "at": 296,
+          "dur": 63
+        },
+        {
+          "at": 360,
+          "dur": 333
+        }
+      ],
+      "ttfb": 6,
+      "dcl": 289,
+      "load": 290,
+      "legacy": {
+        "navigationStart": 1792560063619,
+        "firstPaint": 5,
+        "domReady": 289,
+        "loadEnd": 290
+      },
+      "resources": [
+        {
+          "name": "index-CLSpgOr7.js",
+          "type": "script",
+          "start": 29,
+          "dur": 63,
+          "transfer": 297989,
+          "encoded": 297689,
+          "decoded": 844876
+        },
+        {
+          "name": "index-MLU40nco.css",
+          "type": "link",
+          "start": 33,
+          "dur": 13,
+          "transfer": 5223,
+          "encoded": 4923,
+          "decoded": 18751
+        }
+      ],
+      "transferTotal": 303212,
+      "jsDecoded": 844876,
+      "heapMB": 2.6,
+      "label": "desktop-cpu4x-1",
+      "viewport": "1440x900",
+      "cpuRate": 4,
+      "reducedMotion": "no-preference",
+      "wallClockNavMs": 1847,
+      "errors": []
+    },
+    {
+      "fcp": 720,
+      "fp": 72,
+      "lcp": 720,
+      "lcpEl": "button.audio-toggle.",
+      "cls": 0,
+      "menuAt": 373,
+      "tbt": 433,
+      "longTasks": [
+        {
+          "at": 117,
+          "dur": 194
+        },
+        {
+          "at": 318,
+          "dur": 55
+        },
+        {
+          "at": 374,
+          "dur": 319
+        },
+        {
+          "at": 704,
+          "dur": 53
+        },
+        {
+          "at": 765,
+          "dur": 62
+        }
+      ],
+      "ttfb": 6,
+      "dcl": 311,
+      "load": 311,
+      "legacy": {
+        "navigationStart": 1792560065819,
+        "firstPaint": 6,
+        "domReady": 311,
+        "loadEnd": 311
+      },
+      "resources": [
+        {
+          "name": "index-CLSpgOr7.js",
+          "type": "script",
+          "start": 25,
+          "dur": 79,
+          "transfer": 297989,
+          "encoded": 297689,
+          "decoded": 844876
+        },
+        {
+          "name": "index-MLU40nco.css",
+          "type": "link",
+          "start": 27,
+          "dur": 13,
+          "transfer": 5223,
+          "encoded": 4923,
+          "decoded": 18751
+        }
+      ],
+      "transferTotal": 303212,
+      "jsDecoded": 844876,
+      "heapMB": 2.6,
+      "label": "desktop-cpu4x-2",
+      "viewport": "1440x900",
+      "cpuRate": 4,
+      "reducedMotion": "no-preference",
+      "wallClockNavMs": 1843,
+      "errors": []
+    },
+    {
+      "fcp": 560,
+      "fp": 60,
+      "lcp": 560,
+      "lcpEl": "button.audio-toggle.",
+      "cls": 0,
+      "menuAt": 286,
+      "tbt": 296,
+      "longTasks": [
+        {
+          "at": 91,
+          "dur": 144
+        },
+        {
+          "at": 286,
+          "dur": 252
+        }
+      ],
+      "ttfb": 5,
+      "dcl": 234,
+      "load": 234,
+      "legacy": {
+        "navigationStart": 1792560067959,
+        "firstPaint": 5,
+        "domReady": 234,
+        "loadEnd": 235
+      },
+      "resources": [
+        {
+          "name": "index-CLSpgOr7.js",
+          "type": "script",
+          "start": 23,
+          "dur": 59,
+          "transfer": 297989,
+          "encoded": 297689,
+          "decoded": 844876
+        },
+        {
+          "name": "index-MLU40nco.css",
+          "type": "link",
+          "start": 25,
+          "dur": 11,
+          "transfer": 5223,
+          "encoded": 4923,
+          "decoded": 18751
+        }
+      ],
+      "transferTotal": 303212,
+      "jsDecoded": 844876,
+      "heapMB": 2.6,
+      "label": "desktop-cpu4x-3",
+      "viewport": "1440x900",
+      "cpuRate": 4,
+      "reducedMotion": "no-preference",
+      "wallClockNavMs": 1759,
+      "errors": []
+    },
+    {
+      "fcp": 664,
+      "fp": 68,
+      "lcp": 664,
+      "lcpEl": "button.audio-toggle.",
+      "cls": 0,
+      "menuAt": 296,
+      "tbt": 396,
+      "longTasks": [
+        {
+          "at": 94,
+          "dur": 148
+        },
+        {
+          "at": 296,
+          "dur": 341
+        },
+        {
+          "at": 701,
+          "dur": 57
+        }
+      ],
+      "ttfb": 5,
+      "dcl": 241,
+      "load": 242,
+      "legacy": {
+        "navigationStart": 1792560070011,
+        "firstPaint": 5,
+        "domReady": 241,
+        "loadEnd": 242
+      },
+      "resources": [
+        {
+          "name": "index-CLSpgOr7.js",
+          "type": "script",
+          "start": 23,
+          "dur": 60,
+          "transfer": 297989,
+          "encoded": 297689,
+          "decoded": 844876
+        },
+        {
+          "name": "index-MLU40nco.css",
+          "type": "link",
+          "start": 25,
+          "dur": 12,
+          "transfer": 5223,
+          "encoded": 4923,
+          "decoded": 18751
+        }
+      ],
+      "transferTotal": 303212,
+      "jsDecoded": 844876,
+      "heapMB": 2.6,
+      "label": "desktop-cpu4x-4",
+      "viewport": "1440x900",
+      "cpuRate": 4,
+      "reducedMotion": "no-preference",
+      "wallClockNavMs": 1775,
+      "errors": []
+    },
+    {
+      "fcp": 620,
+      "fp": 64,
+      "lcp": 620,
+      "lcpEl": "button.audio-toggle.",
+      "cls": 0,
+      "menuAt": 296,
+      "tbt": 346,
+      "longTasks": [
+        {
+          "at": 96,
+          "dur": 144
+        },
+        {
+          "at": 246,
+          "dur": 50
+        },
+        {
+          "at": 297,
+          "dur": 302
+        }
+      ],
+      "ttfb": 5,
+      "dcl": 239,
+      "load": 239,
+      "legacy": {
+        "navigationStart": 1792560072092,
+        "firstPaint": 5,
+        "domReady": 239,
+        "loadEnd": 239
+      },
+      "resources": [
+        {
+          "name": "index-CLSpgOr7.js",
+          "type": "script",
+          "start": 22,
+          "dur": 63,
+          "transfer": 297989,
+          "encoded": 297689,
+          "decoded": 844876
+        },
+        {
+          "name": "index-MLU40nco.css",
+          "type": "link",
+          "start": 24,
+          "dur": 12,
+          "transfer": 5223,
+          "encoded": 4923,
+          "decoded": 18751
+        }
+      ],
+      "transferTotal": 303212,
+      "jsDecoded": 844876,
+      "heapMB": 2.6,
+      "label": "desktop-cpu4x-5",
+      "viewport": "1440x900",
+      "cpuRate": 4,
+      "reducedMotion": "no-preference",
+      "wallClockNavMs": 1794,
+      "errors": []
+    },
+    {
+      "fcp": 756,
+      "fp": 76,
+      "lcp": 756,
+      "lcpEl": "button.audio-toggle.",
+      "cls": 0,
+      "menuAt": 381,
+      "tbt": 489,
+      "longTasks": [
+        {
+          "at": 111,
+          "dur": 171
+        },
+        {
+          "at": 288,
+          "dur": 93
+        },
+        {
+          "at": 382,
+          "dur": 349
+        },
+        {
+          "at": 743,
+          "dur": 55
+        },
+        {
+          "at": 808,
+          "dur": 71
+        }
+      ],
+      "ttfb": 7,
+      "dcl": 280,
+      "load": 281,
+      "legacy": {
+        "navigationStart": 1792560074269,
+        "firstPaint": 7,
+        "domReady": 280,
+        "loadEnd": 281
+      },
+      "resources": [
+        {
+          "name": "index-CLSpgOr7.js",
+          "type": "script",
+          "start": 32,
+          "dur": 65,
+          "transfer": 297989,
+          "encoded": 297689,
+          "decoded": 844876
+        },
+        {
+          "name": "index-MLU40nco.css",
+          "type": "link",
+          "start": 33,
+          "dur": 15,
+          "transfer": 5223,
+          "encoded": 4923,
+          "decoded": 18751
+        }
+      ],
+      "transferTotal": 303212,
+      "jsDecoded": 844876,
+      "heapMB": 2.6,
+      "label": "mobile-390-cpu4x",
+      "viewport": "390x844",
+      "cpuRate": 4,
+      "reducedMotion": "no-preference",
+      "wallClockNavMs": 1823,
+      "errors": [],
+      "firstScene": {
+        "sceneDomMs": 2734,
+        "sceneAt": 3416,
+        "sceneId": "v0-01",
+        "proseChars": 870,
+        "newAssets": {
+          "count": 2,
+          "bytes": 74914,
+          "names": [
+            "dawn.jpg:40212",
+            "scene-001.jpg:34702"
+          ]
+        }
+      }
+    },
+    {
+      "fcp": 212,
+      "fp": 40,
+      "lcp": 212,
+      "lcpEl": "h1.title",
+      "cls": 0,
+      "menuAt": 131,
+      "tbt": 10,
+      "longTasks": [
+        {
+          "at": 131,
+          "dur": 60
+        }
+      ],
+      "ttfb": 5,
+      "dcl": 120,
+      "load": 120,
+      "legacy": {
+        "navigationStart": 1792560082092,
+        "firstPaint": 5,
+        "domReady": 120,
+        "loadEnd": 121
+      },
+      "resources": [
+        {
+          "name": "index-CLSpgOr7.js",
+          "type": "script",
+          "start": 12,
+          "dur": 65,
+          "transfer": 297989,
+          "encoded": 297689,
+          "decoded": 844876
+        },
+        {
+          "name": "index-MLU40nco.css",
+          "type": "link",
+          "start": 12,
+          "dur": 15,
+          "transfer": 5223,
+          "encoded": 4923,
+          "decoded": 18751
+        }
+      ],
+      "transferTotal": 303212,
+      "jsDecoded": 844876,
+      "heapMB": 2.6,
+      "label": "desktop-reduced-motion",
+      "viewport": "1440x900",
+      "cpuRate": 1,
+      "reducedMotion": "reduce",
+      "wallClockNavMs": 1637,
+      "errors": [],
+      "firstScene": {
+        "sceneDomMs": 133,
+        "sceneAt": 1928,
+        "sceneId": "v0-01",
+        "proseChars": 870,
+        "newAssets": {
+          "count": 2,
+          "bytes": 74914,
+          "names": [
+            "dawn.jpg:40212",
+            "scene-001.jpg:34702"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-21T04:58:28.221Z",
+  "generatedAt": "2026-10-21T05:31:03.629Z",
   "gitHead": "ref: refs/heads/main",
   "words": {
-    "total": 113138,
+    "total": 113161,
     "byFile": {
       "volume0": 7283,
       "volume1": 19391,
@@ -11,7 +11,7 @@
       "volume4": 4148,
       "volume5": 10115,
       "chapter1": 11213,
-      "endings": 15155
+      "endings": 15178
     }
   },
   "scenes": 140,
@@ -79,16 +79,38 @@
     "license": "Stability AI Community License"
   },
   "build": {
-    "distFiles": 544,
-    "distMb": 22.93,
-    "jsBytes": 1436864,
-    "cssBytes": 18751,
+    "distFiles": 545,
+    "distMb": 23.46,
+    "jsBytes": 1514289,
+    "cssBytes": 19121,
     "jsAssets": [
-      "index-CLSpgOr7.js",
-      "Scene3D-BkEU69la.js"
+      "index-Dnz0dv5j.js",
+      "Scene3D-DtRZvOsT.js"
     ],
-    "jsGzipEstimate": 295707,
-    "cssGzipEstimate": 4875
+    "assetSizes": [
+      {
+        "name": "index-Dnz0dv5j.js",
+        "raw": 845595,
+        "gzip": 298006
+      },
+      {
+        "name": "Scene3D-DtRZvOsT.js",
+        "raw": 668694,
+        "gzip": 170770
+      }
+    ],
+    "mainJs": {
+      "name": "index-Dnz0dv5j.js",
+      "raw": 845595,
+      "gzip": 298006
+    },
+    "scene3d": {
+      "name": "Scene3D-DtRZvOsT.js",
+      "raw": 668694,
+      "gzip": 170770
+    },
+    "jsGzipEstimate": 298006,
+    "cssGzipEstimate": 5036
   },
   "threeD": {
     "slices": [

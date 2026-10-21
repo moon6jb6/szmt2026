@@ -1292,3 +1292,38 @@ button {
   border-color: rgba(200, 160, 99, 0.7);
   background: rgba(200, 160, 99, 0.12);
 }
+
+/* 屏幕阅读器专用文本（aria-live 播报） */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* 场景标题程序化聚焦：不画焦点框，避免鼠标用户看到突兀边框 */
+.scene-title:focus {
+  outline: none;
+}
+.scene-title:focus-visible {
+  outline: 1px dashed rgba(200, 160, 99, 0.6);
+  outline-offset: 6px;
+}
+
+/* 移动端：声音开关不压住正文最后一行 */
+@media (max-width: 600px) {
+  .audio-toggle {
+    right: 10px;
+    bottom: 10px;
+    padding: 7px 12px;
+    font-size: 11px;
+  }
+  .stage-content {
+    padding-bottom: 72px;
+  }
+}

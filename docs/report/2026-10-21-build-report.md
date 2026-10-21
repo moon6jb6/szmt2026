@@ -1,4 +1,4 @@
-# 2026-10-21/22 构建与验收报告（最终）
+﻿# 2026-10-21/22 构建与验收报告（最终）
 
 > 2026-10-21 凌晨完成扩写与出图；2026-10-22 下午完成 9 结局、交互、真 3D、音效与打包形态修复。
 > 所有数字可用仓库内脚本复现；唯一数字源：`docs/report/2026-10-22-afternoon-metrics.json`。
@@ -17,7 +17,7 @@
 | 真 3D | 加深 3D 效果 | **4 个切片**（仓库内景/楼顶/桥/1947 厢房），lazy 151.76 KB gzip，87—120 fps | ✅ |
 | 双轨审计 | 史实 P0=0，文学均分 ≥4.0 | 史实 **P0=0 / P1=0**；文学 **P0=0、不合格 0/146、加权 4.59**（覆盖 6 主结局；新增内容为自查，见 `docs/audit/2026-10-22-post-audit-addendum.md`） | ✅ |
 | 构建 | 零报错 | tsc + vite 通过 | ✅ |
-| 主链可达 | 走到结局 | **307 步 / 115 场景 / 0 错误 / 151 秒** | ✅ |
+| 主链可达 | 走到结局 | **308 步 / 115 场景 / 0 错误 / 151 秒** | ✅ |
 | 结局可达 | ≥6 | **9/9 PASS**（存档注入法，0 错误） | ✅ |
 | 扩展页面 | 人物志/后来/史料库 | 10 篇 / 15 篇 / 76 张卡，UI 冒烟全绿 | ✅ |
 | 打包形态 | 子目录起服务可用 | `test-deploy`：0 failed requests、0 错误 | ✅ |
@@ -43,7 +43,7 @@
 node tools/metrics.mjs                     唯一数字源（字数/场景/结局/图/音频/dist/3D）
 node tools/count-words-strict.mjs          严格正文 113,138 字（只算 paragraphs）
 node tools/check-volumes.mjs               140 场景；next 328 条全部有效；sources 381 条全部存在
-node tools/walk-test.mjs <url>             307 步、115 场景、结局「名册」、0 错误
+node tools/walk-test.mjs <url>             308 步、115 场景、结局「名册」、0 错误
 node tools/ending-test-v3.mjs <url>        9/9 PASS（6 主 + 3 合成）
 node tools/ui-smoke.mjs <url>              10 人物志 / 15 后来 / 76 史料卡 / 插画 768px，0 错误
 node tools/test-3d.mjs <url>               3D 87.3fps / 16 calls / 3,093 tris；移动端无按钮

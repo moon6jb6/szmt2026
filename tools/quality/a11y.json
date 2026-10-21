@@ -1,0 +1,808 @@
+{
+  "generatedAt": "2026-10-21T05:34:00.892Z",
+  "url": "http://127.0.0.1:4173/",
+  "semanticsMenu": {
+    "label": "menu",
+    "headings": [
+      "H1:把名字留下来"
+    ],
+    "imgs": [],
+    "live": 0,
+    "pressed": [
+      "打开声音=false"
+    ],
+    "roleOverrides": [],
+    "landmarks": [
+      "main"
+    ],
+    "axRoles": {
+      "RootWebArea": 1,
+      "generic": 2,
+      "main": 1,
+      "heading": 1,
+      "paragraph": 3,
+      "list": 1,
+      "button": 7,
+      "StaticText": 20,
+      "listitem": 4,
+      "InlineTextBox": 27
+    },
+    "axButtons": [
+      "从头开始",
+      "结局一览",
+      "史料库",
+      "人物志",
+      "后来",
+      "关于与史料",
+      "打开声音"
+    ],
+    "axListitems": [
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      }
+    ]
+  },
+  "keyboard": {
+    "tabOrderMenu": [
+      {
+        "tag": "button",
+        "cls": "primary-button",
+        "name": "从头开始",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "quiet-button",
+        "name": "结局一览",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "quiet-button",
+        "name": "史料库",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "quiet-button",
+        "name": "人物志",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "quiet-button",
+        "name": "后来",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "quiet-button",
+        "name": "关于与史料",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "audio-toggle ",
+        "name": "打开声音",
+        "role": "",
+        "ariaPressed": "false",
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "BODY",
+        "name": "(body)",
+        "outline": ""
+      },
+      {
+        "tag": "button",
+        "cls": "primary-button",
+        "name": "从头开始",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      }
+    ],
+    "focusStyle": {
+      "tag": "button",
+      "cls": "primary-button",
+      "name": "从头开始",
+      "role": "",
+      "ariaPressed": null,
+      "outline": "2px solid rgb(200, 160, 99)",
+      "focusVisible": true,
+      "inViewport": true
+    },
+    "scene1": "v0-01",
+    "h1": "便条",
+    "afterScreenFocus": {
+      "tag": "h1",
+      "cls": "scene-title",
+      "name": "便条",
+      "role": "",
+      "ariaPressed": null,
+      "outline": "1px dashed rgba(200, 160, 99, 0.6)",
+      "focusVisible": true,
+      "inViewport": true
+    },
+    "sceneTabOrder": [
+      {
+        "tag": "button",
+        "cls": "choice",
+        "name": "1 翻开册子，从头数一遍。 看还认得几个",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "choice",
+        "name": "2 把便条再看一遍，出门追那个送信人。 问一句，参议会还叫了谁",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "chip",
+        "name": "1947年《通城县抗战史料》由民国通…",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "chip",
+        "name": "1947 年通城县参议会编《通城县抗…",
+        "role": "",
+        "ariaPressed": null,
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "button",
+        "cls": "audio-toggle ",
+        "name": "打开声音",
+        "role": "",
+        "ariaPressed": "false",
+        "outline": "2px solid rgb(200, 160, 99)",
+        "focusVisible": true,
+        "inViewport": true
+      },
+      {
+        "tag": "BODY",
+        "name": "(body)",
+        "outline": ""
+      }
+    ],
+    "choices": 2,
+    "digitKeyWorked": true,
+    "expectedNext": "v0-02",
+    "advancedTo": "v0-02",
+    "scene2": "v0-02",
+    "focusAfterAdvance": {
+      "tag": "h1",
+      "cls": "scene-title",
+      "name": "半本册子",
+      "role": "",
+      "ariaPressed": null,
+      "outline": "1px dashed rgba(200, 160, 99, 0.6)",
+      "focusVisible": true,
+      "inViewport": false
+    },
+    "choiceCount2": 2,
+    "spaceIgnoredOnChoiceScreen": true
+  },
+  "semanticsScene": {
+    "label": "scene",
+    "headings": [
+      "H1:半本册子"
+    ],
+    "imgs": [
+      {
+        "alt": "半本册子",
+        "loaded": true
+      }
+    ],
+    "live": 1,
+    "pressed": [
+      "3D 视角=false",
+      "打开声音=false"
+    ],
+    "roleOverrides": [],
+    "landmarks": [
+      "main",
+      "header",
+      "footer"
+    ],
+    "axRoles": {
+      "RootWebArea": 1,
+      "generic": 4,
+      "main": 1,
+      "button": 8,
+      "StaticText": 49,
+      "paragraph": 31,
+      "sectionheader": 1,
+      "figure": 1,
+      "sectionfooter": 1,
+      "InlineTextBox": 51,
+      "heading": 1,
+      "image": 1,
+      "strong": 2,
+      "emphasis": 2
+    },
+    "axButtons": [
+      "打开声音",
+      "1 把还能写清的名字先写在纸上。 写一个是一个",
+      "2 只把册子包好，一个字也不写。 先弄清要交的是什么",
+      "3D 视角",
+      "1947年《通城县抗战史料》由民国通…",
+      "1947年民国通城县参议会《通城县抗…",
+      "1937年10月28日《申报》以中央…",
+      "1947 年通城县参议会编《通城县抗…"
+    ],
+    "axListitems": []
+  },
+  "view3d": {
+    "toggleVisible": true,
+    "on3d": {
+      "text": "回到 2.5D",
+      "ariaPressed": "true",
+      "canvas": true,
+      "hint": true
+    }
+  },
+  "sourcePanel": {
+    "beforeFocus": {
+      "tag": "button",
+      "cls": "chip",
+      "name": "1937年10月26日深夜，524团…",
+      "role": "",
+      "ariaPressed": null,
+      "outline": "3px none rgb(189, 179, 162)",
+      "focusVisible": false,
+      "inViewport": true
+    },
+    "panelVisible": true,
+    "afterOpenFocus": {
+      "tag": "button",
+      "cls": "chip",
+      "name": "1937年10月26日深夜，524团…",
+      "role": "",
+      "ariaPressed": null,
+      "outline": "2px solid rgb(200, 160, 99)",
+      "focusVisible": true,
+      "inViewport": true
+    },
+    "escClosed": true,
+    "panelSemantics": null
+  },
+  "endingTitle": "口耳",
+  "finale": {
+    "role": "presentation",
+    "tabIndex": -1,
+    "ariaHidden": null,
+    "canvasDisplay": "block",
+    "skipText": "点击跳过这段画面",
+    "focusableCount": 0
+  },
+  "semanticsEnding": {
+    "label": "ending",
+    "headings": [
+      "H1:口耳"
+    ],
+    "imgs": [
+      {
+        "alt": "口耳",
+        "loaded": true
+      }
+    ],
+    "live": 0,
+    "pressed": [
+      "打开声音=false"
+    ],
+    "roleOverrides": [],
+    "landmarks": [
+      "main",
+      "footer"
+    ],
+    "axRoles": {
+      "RootWebArea": 1,
+      "generic": 10,
+      "main": 1,
+      "button": 16,
+      "StaticText": 103,
+      "heading": 1,
+      "paragraph": 47,
+      "figure": 1,
+      "list": 2,
+      "sectionfooter": 1,
+      "InlineTextBox": 121,
+      "image": 1,
+      "listitem": 10
+    },
+    "axButtons": [
+      "打开声音",
+      "再走一遍",
+      "重看结局画面 · 一个给眼睛，一个给耳朵",
+      "看看所有结局",
+      "回到开头",
+      "读「后来」（15 篇）",
+      "读「人物志」（10 篇）",
+      "1947 年通城县参议会编《通城县抗…",
+      "通城籍壮士二百余人，整建制补充进 8…",
+      "1947年《通城县抗战史料》由民国通…",
+      "国旗于10月28日由上海市商会（经童…",
+      "另有 5 条史料",
+      "1941年4月24日晨5时许，谢晋元…",
+      "1937年一营原始花名册未见整体留存…",
+      "毛泽东1938年10月12日在中共六…",
+      "2015年9月3日，习近平在天安门广…"
+    ],
+    "axListitems": [
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      },
+      {
+        "name": "",
+        "level": 1
+      }
+    ]
+  },
+  "headingsSources": [
+    "H1:每一条都写了出处",
+    "H2:已核对 63 条",
+    "H3:淞沪会战「八百壮士」半数是湖",
+    "H3:八百壮士在重围中执戈为国",
+    "H3:独家：谢团长，宁愿死，不投降",
+    "H3:八百壮士之营长杨瑞符（《静海"
+  ],
+  "headingsGallery": [
+    "H1:哪一种记忆被留下",
+    "H2:？？",
+    "H2:？？",
+    "H2:？？"
+  ],
+  "headingsPeople": [
+    "H1:十个人，和一册没有名"
+  ],
+  "headingsAbout": [
+    "H1:这不是一个打仗的游戏",
+    "H2:史实",
+    "H2:虚构与边界",
+    "H2:技术"
+  ],
+  "contrast": [
+    {
+      "screen": "menu",
+      "selector": ".menu .title",
+      "text": "把名字留下来",
+      "fontSize": 74,
+      "large": true,
+      "need": 3,
+      "p05": 13.4,
+      "median": 13.63,
+      "min": 13.3,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 930
+    },
+    {
+      "screen": "menu",
+      "selector": ".menu-lead",
+      "text": "四行仓库里守了四天四夜的，是",
+      "fontSize": 16,
+      "large": false,
+      "need": 4.5,
+      "p05": 8.49,
+      "median": 8.6,
+      "min": 8.41,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 960
+    },
+    {
+      "screen": "menu",
+      "selector": ".menu-facts li",
+      "text": "从通城到上海，从四行仓库到孤",
+      "fontSize": 14,
+      "large": false,
+      "need": 4.5,
+      "p05": 8.77,
+      "median": 8.84,
+      "min": 8.75,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1364
+    },
+    {
+      "screen": "menu",
+      "selector": ".content-note",
+      "text": "内容提示：本作涉及战争与死亡",
+      "fontSize": 12,
+      "large": false,
+      "need": 4.5,
+      "p05": 8.61,
+      "median": 8.78,
+      "min": 8.53,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 952
+    },
+    {
+      "screen": "menu",
+      "selector": ".primary-button",
+      "text": "从头开始",
+      "fontSize": 14,
+      "large": false,
+      "need": 4.5,
+      "p05": 5.42,
+      "median": 5.76,
+      "min": 4.5,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1054
+    },
+    {
+      "screen": "menu",
+      "selector": ".quiet-button",
+      "text": "结局一览",
+      "fontSize": 14,
+      "large": false,
+      "need": 4.5,
+      "p05": 13.96,
+      "median": 14.91,
+      "min": 10.1,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1938
+    },
+    {
+      "screen": "menu",
+      "selector": ".eyebrow",
+      "text": "红色之旅 · 追梦铸魂",
+      "fontSize": 12,
+      "large": false,
+      "need": 4.5,
+      "p05": 6.84,
+      "median": 6.91,
+      "min": 6.79,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1368
+    },
+    {
+      "screen": "menu",
+      "selector": ".audio-toggle",
+      "text": "声音 关",
+      "fontSize": 12,
+      "large": false,
+      "need": 4.5,
+      "p05": 8.78,
+      "median": 9.34,
+      "min": 7.92,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1425
+    },
+    {
+      "screen": "scene",
+      "selector": ".scene-head h1",
+      "text": "半本册子",
+      "fontSize": 44,
+      "large": true,
+      "need": 3,
+      "p05": 10.11,
+      "median": 11.5,
+      "min": 9.81,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1122
+    },
+    {
+      "screen": "scene",
+      "selector": ".chapter",
+      "text": "序卷 · 一九四七",
+      "fontSize": 12,
+      "large": false,
+      "need": 4.5,
+      "p05": 5.36,
+      "median": 5.42,
+      "min": 5.34,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1080
+    },
+    {
+      "screen": "scene",
+      "selector": ".scene-meta",
+      "text": "民国三十六年 冬 · 天亮前",
+      "fontSize": 13,
+      "large": false,
+      "need": 4.5,
+      "p05": 5.96,
+      "median": 7.06,
+      "min": 5.96,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1320
+    },
+    {
+      "screen": "scene",
+      "selector": ".scene .prose p",
+      "text": "灯油添了一回。母亲回屋躺下了",
+      "fontSize": 17,
+      "large": false,
+      "need": 4.5,
+      "p05": 12.91,
+      "median": 13.69,
+      "min": 12.61,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1782
+    },
+    {
+      "screen": "scene",
+      "selector": ".choice-text strong",
+      "text": "把还能写清的名字先写在纸上。",
+      "fontSize": 17,
+      "large": false,
+      "need": 4.5,
+      "p05": 10.71,
+      "median": 11.8,
+      "min": 10.56,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 2160
+    },
+    {
+      "screen": "scene",
+      "selector": ".choice-text em",
+      "text": "写一个是一个",
+      "fontSize": 13,
+      "large": false,
+      "need": 4.5,
+      "p05": 7.76,
+      "median": 7.83,
+      "min": 7.65,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1600
+    },
+    {
+      "screen": "scene",
+      "selector": ".chip",
+      "text": "1947年《通城县抗战史料》",
+      "fontSize": 12,
+      "large": false,
+      "need": 4.5,
+      "p05": 5.96,
+      "median": 6.35,
+      "min": 3.86,
+      "belowNeedPct": 0.4,
+      "pass": true,
+      "pixels": 915
+    },
+    {
+      "screen": "scene",
+      "selector": ".source-row .eyebrow",
+      "text": "史料卡 · 4",
+      "fontSize": 12,
+      "large": false,
+      "need": 4.5,
+      "p05": 5.82,
+      "median": 5.87,
+      "min": 5.82,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1494
+    },
+    {
+      "screen": "scene3d",
+      "selector": ".view3d-toggle",
+      "text": "回到 2.5D",
+      "fontSize": 12,
+      "large": false,
+      "need": 4.5,
+      "p05": 11.89,
+      "median": 12.97,
+      "min": 10.8,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1513
+    },
+    {
+      "screen": "scene3d",
+      "selector": ".scene-3d-hint",
+      "text": "这是真 3D 场景：移动鼠标",
+      "fontSize": 12.5,
+      "large": false,
+      "need": 4.5,
+      "p05": 7.87,
+      "median": 7.94,
+      "min": 7.84,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1254
+    },
+    {
+      "screen": "scene3d",
+      "selector": ".stage-3d .scene .prose p",
+      "text": "进底楼要低头。铁门只开一半，",
+      "fontSize": 17,
+      "large": false,
+      "need": 4.5,
+      "p05": 15.36,
+      "median": 15.47,
+      "min": 15.02,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1782
+    },
+    {
+      "screen": "ending",
+      "selector": ".ending h1",
+      "text": "口耳",
+      "fontSize": 44,
+      "large": true,
+      "need": 3,
+      "p05": 10.33,
+      "median": 10.63,
+      "min": 10.22,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1122
+    },
+    {
+      "screen": "ending",
+      "selector": ".prose-ending p",
+      "text": "「我们是通城人。」",
+      "fontSize": 17,
+      "large": false,
+      "need": 4.5,
+      "p05": 11.49,
+      "median": 11.49,
+      "min": 11.45,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1782
+    },
+    {
+      "screen": "ending",
+      "selector": ".ending-coda",
+      "text": "通城籍两百多人里，还有一百多",
+      "fontSize": 22,
+      "large": false,
+      "need": 4.5,
+      "p05": 5.26,
+      "median": 5.7,
+      "min": 5.26,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 990
+    },
+    {
+      "screen": "sources",
+      "selector": ".source-claim",
+      "text": "四行仓库保卫战是淞沪会战的最",
+      "fontSize": 15,
+      "large": false,
+      "need": 4.5,
+      "p05": 11.6,
+      "median": 11.99,
+      "min": 11.59,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1464
+    },
+    {
+      "screen": "sources",
+      "selector": ".source-quote p",
+      "text": "「上海苏州河北岸的四行仓库保",
+      "fontSize": 15.5,
+      "large": false,
+      "need": 4.5,
+      "p05": 11.31,
+      "median": 11.56,
+      "min": 11.16,
+      "belowNeedPct": 0,
+      "pass": true,
+      "pixels": 1600
+    },
+    {
+      "screen": "sources",
+      "selector": ".badge",
+      "text": "已核对",
+      "fontSize": 11,
+      "large": false,
+      "need": 4.5,
+      "p05": 5.35,
+      "median": 6.32,
+      "min": 2.4,
+      "belowNeedPct": 2.7,
+      "pass": true,
+      "pixels": 1344
+    }
+  ],
+  "errors": []
+}

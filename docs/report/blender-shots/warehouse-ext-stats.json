@@ -1,0 +1,265 @@
+{
+  "generated_at": "2026-10-21 13:28:54",
+  "seed": 1937,
+  "damage": 0.6,
+  "facade": {
+    "width_m": 64.0,
+    "height_m": 25.0,
+    "depth_m": 0.9,
+    "floors": 5,
+    "bays": 8
+  },
+  "triangles": 4732,
+  "triangles_gltf_check": 4732,
+  "triangles_with_ground": 4744,
+  "triangles_breakdown": {
+    "wall": 628,
+    "windows": 1008,
+    "gate": 10,
+    "courses": 156,
+    "parapet": 288,
+    "gate_leaves": 144,
+    "damage": 2042,
+    "sandbags": 456
+  },
+  "objects": 8,
+  "windows": 32,
+  "windows_bricked": 12,
+  "shell_holes": 8,
+  "bullet_holes": 430,
+  "rubble_chunks": 18,
+  "glb": "public/models/warehouse-ext.glb",
+  "glb_bytes": 480860,
+  "glb_images": [
+    {
+      "mimeType": "image/jpeg",
+      "bytes": 46638,
+      "name": "granite_normal"
+    },
+    {
+      "mimeType": "image/jpeg",
+      "bytes": 62219,
+      "name": "granite_base"
+    },
+    {
+      "mimeType": "image/jpeg",
+      "bytes": 31675,
+      "name": "brick_base"
+    }
+  ],
+  "glb_primitives": 11,
+  "glb_materials": 11,
+  "glb_material_detail": [
+    {
+      "name": "granite",
+      "baseColorTexture": true,
+      "normalTexture": true,
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.8600000143051147,
+      "doubleSided": true
+    },
+    {
+      "name": "concrete",
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "baseColorFactor": [
+        0.044,
+        0.036,
+        0.027,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.9399999976158142,
+      "doubleSided": true
+    },
+    {
+      "name": "interior_void",
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "baseColorFactor": [
+        0.004,
+        0.003,
+        0.002,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.9800000190734863,
+      "doubleSided": true
+    },
+    {
+      "name": "granite_break",
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "baseColorFactor": [
+        0.159,
+        0.138,
+        0.098,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.8799999952316284,
+      "doubleSided": true
+    },
+    {
+      "name": "brick_infill",
+      "baseColorTexture": true,
+      "normalTexture": false,
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.9200000166893005,
+      "doubleSided": true
+    },
+    {
+      "name": "iron_rusted",
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "baseColorFactor": [
+        0.044,
+        0.036,
+        0.028,
+        1
+      ],
+      "metallic": 0.3499999940395355,
+      "roughness": 0.6800000071525574,
+      "doubleSided": true
+    },
+    {
+      "name": "granite_light",
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "baseColorFactor": [
+        0.296,
+        0.254,
+        0.191,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.8199999928474426,
+      "doubleSided": true
+    },
+    {
+      "name": "scar",
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "baseColorFactor": [
+        0.171,
+        0.147,
+        0.112,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.8999999761581421,
+      "doubleSided": true
+    },
+    {
+      "name": "granite_dark",
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "baseColorFactor": [
+        0.048,
+        0.04,
+        0.028,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.8999999761581421,
+      "doubleSided": true
+    },
+    {
+      "name": "rebar",
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "baseColorFactor": [
+        0.044,
+        0.036,
+        0.028,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.9200000166893005,
+      "doubleSided": true
+    },
+    {
+      "name": "sandbag_cloth",
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "baseColorFactor": [
+        0.262,
+        0.202,
+        0.117,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.949999988079071,
+      "doubleSided": true
+    }
+  ],
+  "timings_s": {
+    "textures": 4.2,
+    "geometry": 0.1,
+    "export": 0.5,
+    "render_total": 24.8,
+    "total": 29.8
+  },
+  "renders": [
+    {
+      "file": "docs/report/blender-shots/01-west-wall-night.png",
+      "seconds": 10.9,
+      "samples": 64,
+      "resolution": [
+        1024,
+        576
+      ],
+      "camera": {
+        "loc": [
+          -21.0,
+          -79.0,
+          12.0
+        ],
+        "look": [
+          0.0,
+          0.0,
+          13.2
+        ],
+        "lens_mm": 38.0
+      },
+      "engine": "CYCLES",
+      "device": "CPU"
+    },
+    {
+      "file": "docs/report/blender-shots/02-damage-detail.png",
+      "seconds": 13.9,
+      "samples": 64,
+      "resolution": [
+        1024,
+        576
+      ],
+      "camera": {
+        "loc": [
+          -30.5,
+          -8.5,
+          1.72
+        ],
+        "look": [
+          -11.0,
+          0.0,
+          13.5
+        ],
+        "lens_mm": 24.0
+      },
+      "engine": "CYCLES",
+      "device": "CPU"
+    }
+  ]
+}

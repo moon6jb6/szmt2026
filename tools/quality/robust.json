@@ -1,0 +1,193 @@
+{
+  "generatedAt": "2026-10-21T05:16:23.871Z",
+  "url": "http://127.0.0.1:4173/",
+  "offlineAbort": {
+    "externalRequests": 0,
+    "scenes": [
+      {
+        "id": "v0-01",
+        "title": "便条",
+        "proseChars": 870,
+        "choices": 2,
+        "img": {
+          "ok": true,
+          "w": 768,
+          "alt": "便条"
+        }
+      },
+      {
+        "id": "v0-02",
+        "title": "半本册子",
+        "proseChars": 937,
+        "choices": 2,
+        "img": {
+          "ok": true,
+          "w": 768,
+          "alt": "半本册子"
+        }
+      },
+      {
+        "id": "v0-03",
+        "title": "灶前",
+        "proseChars": 904,
+        "choices": 2,
+        "img": {
+          "ok": true,
+          "w": 768,
+          "alt": "灶前"
+        }
+      }
+    ],
+    "sourcesCards": 76,
+    "errors": [],
+    "failed": [],
+    "pass": true
+  },
+  "offlineHard": {
+    "scene": {
+      "id": "v0-02",
+      "title": "半本册子",
+      "proseChars": 937,
+      "choices": 2,
+      "img": {
+        "ok": false,
+        "w": 0,
+        "alt": "半本册子"
+      }
+    },
+    "failed": [
+      "GET office.jpg net::ERR_INTERNET_DISCONNECTED",
+      "GET scene-002.jpg net::ERR_INTERNET_DISCONNECTED"
+    ],
+    "errors": [
+      "Failed to load resource: net::ERR_INTERNET_DISCONNECTED",
+      "Failed to load resource: net::ERR_INTERNET_DISCONNECTED"
+    ],
+    "note": "setOffline 连本地资源也断，模拟「文件被移走」"
+  },
+  "noStorage": {
+    "menuButtons": 7,
+    "first": {
+      "id": "v0-01",
+      "title": "便条",
+      "proseChars": 870,
+      "choices": 2,
+      "img": {
+        "ok": true,
+        "w": 768,
+        "alt": "便条"
+      }
+    },
+    "outcomeShown": true,
+    "second": {
+      "id": "v0-02",
+      "title": "半本册子",
+      "proseChars": 937,
+      "choices": 2,
+      "img": {
+        "ok": true,
+        "w": 768,
+        "alt": "半本册子"
+      }
+    },
+    "storageReallyBlocked": true,
+    "errors": [],
+    "failed": [],
+    "pass": true
+  },
+  "rapid": {
+    "afterStart": {
+      "id": "v0-01",
+      "title": "便条",
+      "proseChars": 870,
+      "choices": 2,
+      "img": {
+        "ok": true,
+        "w": 768,
+        "alt": "便条"
+      }
+    },
+    "baselineLedger": {
+      "roster": 1,
+      "letters": 0,
+      "flag": 0,
+      "photo": 0,
+      "testimony": 0,
+      "message": 0
+    },
+    "ledgerBefore": {
+      "roster": 0,
+      "letters": 0,
+      "flag": 0,
+      "photo": 0,
+      "testimony": 0,
+      "message": 0
+    },
+    "ledgerAfter": {
+      "roster": 1,
+      "letters": 0,
+      "flag": 0,
+      "photo": 0,
+      "testimony": 0,
+      "message": 0
+    },
+    "ledgerMatchesSingleClick": true,
+    "outcomeCount": 1,
+    "expectedNext": "v0-02",
+    "advancedTo": "v0-02",
+    "skippedOneScene": true,
+    "sceneAfter": {
+      "id": "v0-02",
+      "title": "半本册子",
+      "proseChars": 937,
+      "choices": 2,
+      "img": {
+        "ok": true,
+        "w": 768,
+        "alt": "半本册子"
+      }
+    },
+    "errors": [],
+    "failed": [],
+    "pass": true
+  },
+  "resize": {
+    "desktopToggle": true,
+    "desktop3d": true,
+    "afterResize": {
+      "toggleVisible": true,
+      "toggleText": "回到 2.5D",
+      "ariaPressed": "true",
+      "canvas3dStillMounted": true,
+      "canvasSize": "390x844",
+      "docScrollWidth": 390,
+      "innerWidth": 390,
+      "horizontalOverflow": false,
+      "audioOverlapsScene": true,
+      "sceneWidth": 390,
+      "proseChars": 1039
+    },
+    "nextScene": {
+      "toggleVisible": false,
+      "canvas3d": false,
+      "scrollWidth": 390,
+      "innerWidth": 390
+    },
+    "mobileMenu": {
+      "scrollWidth": 390,
+      "innerWidth": 390,
+      "overflow": false
+    },
+    "mobileScene": {
+      "toggle": false,
+      "sceneWidth": 390,
+      "scrollWidth": 390,
+      "innerWidth": 390,
+      "overflow": false,
+      "proseChars": 870,
+      "audioInViewport": true
+    },
+    "errors": [],
+    "mobileErrors": []
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-10-21T05:15:54.447Z",
+  "url": "http://127.0.0.1:4173/",
+  "mediaQuery": true,
+  "scene": {
+    "proseAnimation": "1e-06s",
+    "proseOpacity": "1",
+    "stageTiltTransition": "1e-06s",
+    "particleCanvas": {
+      "w": 1440,
+      "h": 900,
+      "paintedAlphaPixels": 0
+    },
+    "toggle3d": false,
+    "toggle3dVisible": false,
+    "canvas3d": false,
+    "bodyHasCanvas3d": 3
+  },
+  "burst": {
+    "exists": true,
+    "display": "none"
+  },
+  "burstAfterClick": {
+    "display": "none",
+    "paintedAlphaPixelsTopLeft": 0
+  },
+  "finale": {
+    "canvasDisplay": "none",
+    "skipText": "点击跳过这段画面",
+    "paintedAlphaPixels": 2304,
+    "msFromContinueToEnding": 1320,
+    "endingTitle": "名册"
+  },
+  "errors": []
+}

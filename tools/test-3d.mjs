@@ -1,4 +1,4 @@
-import { chromium } from 'playwright'
+﻿import { chromium } from 'playwright'
 import { mkdir } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -10,11 +10,12 @@ import { fileURLToPath } from 'node:url'
  * - 移动端 390px：不应出现 3D 按钮（回退 2.5D）
  */
 const url = process.argv[2] ?? 'http://127.0.0.1:4173/'
+const sceneId = process.argv[3] ?? 'night1'
 const OUT = path.join(fileURLToPath(new URL('./shots/', import.meta.url)))
 await mkdir(OUT, { recursive: true })
 const SAVE_KEY = 'names-ledger-v1'
 const state = {
-  sceneId: 'night1',
+  sceneId,
   ledger: { roster: 1, letters: 0, flag: 0, photo: 0, testimony: 0, message: 0 },
   flags: [],
   pendingOutcome: null,
@@ -49,14 +50,14 @@ if (hasToggle) {
     return host ? { fps: host.dataset.fps, calls: host.dataset.calls, tris: host.dataset.tris } : null
   })
   console.log('3D metrics:', metrics)
-  await page.screenshot({ path: path.join(OUT, '3d-night1.png') })
+  await page.screenshot({ path: path.join(OUT, `3d-${sceneId}.png`) })
   // 拖动改变视角
   await page.mouse.move(400, 500)
   await page.waitForTimeout(500)
-  await page.screenshot({ path: path.join(OUT, '3d-night1-left.png') })
+  await page.screenshot({ path: path.join(OUT, `3d-${sceneId}-left.png`) })
   await page.mouse.move(1300, 400)
   await page.waitForTimeout(500)
-  await page.screenshot({ path: path.join(OUT, '3d-night1-right.png') })
+  await page.screenshot({ path: path.join(OUT, `3d-${sceneId}-right.png`) })
   // 切回 2.5D
   await page.getByRole('button', { name: '回到 2.5D' }).click()
   await page.waitForTimeout(900)

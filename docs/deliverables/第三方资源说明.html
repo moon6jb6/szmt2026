@@ -44,11 +44,11 @@ a { color: #8a2b22; text-decoration: none; }
 </style>
 </head><body><div class="sheet">
 <div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
-<h1 id="_1">第三方资源说明</h1>
+<p>﻿# 第三方资源说明</p>
 <blockquote>
 <p>按《参赛作品材料提交规范》第八部分填写。作品使用的主要第三方代码、模型、字体、素材与工具清单。</p>
 </blockquote>
-<h2 id="_2">一、运行时依赖（随作品分发）</h2>
+<h2 id="_1">一、运行时依赖（随作品分发）</h2>
 <table>
 <thead>
 <tr>
@@ -104,7 +104,7 @@ a { color: #8a2b22; text-decoration: none; }
 </tbody>
 </table>
 <p>运行时不请求任何外部 CDN、字体、统计脚本或后端接口。</p>
-<h2 id="_3">二、开发期工具（不随作品分发）</h2>
+<h2 id="_2">二、开发期工具（不随作品分发）</h2>
 <table>
 <thead>
 <tr>
@@ -118,7 +118,7 @@ a { color: #8a2b22; text-decoration: none; }
 <tr>
 <td>Playwright</td>
 <td>浏览器自动化</td>
-<td>全流程走路测试（301 步到结局）、截图</td>
+<td>全流程走路测试（308 步到结局）、截图（装在开发机全局，未列入 <code>package.json</code>）</td>
 <td>Apache-2.0</td>
 </tr>
 <tr>
@@ -159,7 +159,7 @@ a { color: #8a2b22; text-decoration: none; }
 </tr>
 </tbody>
 </table>
-<h2 id="_4">三、生成与质检模型（不随作品分发，仅用于产出图片素材）</h2>
+<h2 id="_3">三、生成与质检模型（不随作品分发，仅用于产出图片素材）</h2>
 <table>
 <thead>
 <tr>
@@ -202,13 +202,13 @@ a { color: #8a2b22; text-decoration: none; }
 </tbody>
 </table>
 <p>生成图的提示词、seed、尺寸、步数、耗时全部记录在 <code>docs/art/image-manifest.json</code> 与同名 JSON，可复现；生成过程与质检报告见 <code>docs/art/</code>。生成图为本作品专门生成，未使用任何现有摄影作品、影视截图或真实人物肖像；人物一律剪影/背影，不出现清晰人脸。</p>
-<h2 id="_5">四、字体</h2>
+<h2 id="_4">四、字体</h2>
 <p>作品使用<strong>系统字体回退</strong>，未打包、未下载任何字体文件，也未请求外部字体服务：</p>
 <pre><code>标题：Source Han Serif SC → Noto Serif SC → Songti SC → SimSun → serif
 正文：Source Han Sans SC → Noto Sans SC → PingFang SC → Microsoft YaHei → sans-serif
 </code></pre>
 <p>因此不存在字体授权问题；不同系统下字形略有差异，属预期行为。</p>
-<h2 id="_6">五、史料与文字</h2>
+<h2 id="_5">五、史料与文字</h2>
 <ul>
 <li>游戏正文中的史实表述均为团队根据公开报道与史料<strong>概述</strong>，不直接引用受版权保护的原文段落。</li>
 <li>全部史实条目在游戏内「史料库」页列出来源，主要有：
@@ -218,12 +218,12 @@ a { color: #8a2b22; text-decoration: none; }
 <li>未使用任何档案影印件、历史照片或影像素材。</li>
 <li>主角陈望生为团队创作的复合型虚构角色，不对应任何真实人物。</li>
 </ul>
-<h2 id="_7">六、代码原创性说明</h2>
+<h2 id="_6">六、代码原创性说明</h2>
 <ul>
 <li>叙事引擎、内容数据、2.5D 舞台、粒子系统、样式系统为团队原创。</li>
 <li>未使用任何游戏引擎、模板或开源项目的整段代码。</li>
 <li>第三方库均通过 npm 正常依赖引入，未做源码修改。</li>
 </ul>
-<h2 id="_8">七、需要补充的材料</h2>
-<p>若后续引入音乐、音效或历史影像，将在此处补充来源与授权说明，并在报名系统中同步更新。</p>
+<h2 id="_7">七、需要补充的材料</h2>
+<p>若后续引入音乐、历史影像或人声配音，将在此处补充来源与授权说明，并在报名系统中同步更新（本轮 28 条音效已按第三节列明模型、来源与授权）。</p>
 </div></body></html>

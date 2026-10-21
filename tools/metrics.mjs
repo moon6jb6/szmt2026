@@ -105,6 +105,9 @@ let jsGzip = 0
 let cssBytes = 0
 let cssGzip = 0
 const assets = []
+const assetSizes = []
+/** 真实 gzip（node:zlib 默认级别），不再用比例估算 */
+const { gzipSync } = await import('node:zlib')
 try {
   const walk = async (dir) => {
     for (const entry of await readdir(dir, { withFileTypes: true })) {
@@ -114,14 +117,18 @@ try {
         const info = await stat(full)
         distFiles += 1
         distBytes += info.size
+        const buffer = await readFile(full)
         if (entry.name.endsWith('.js')) {
+          const gz = gzipSync(buffer).length
           assets.push(entry.name)
+          assetSizes.push({ name: entry.name, raw: info.size, gzip: gz })
           jsBytes += info.size
-          if (entry.name.startsWith('index-')) jsGzip = Math.round(info.size * 0.35)
+          jsGzip += gz
+          if (entry.name.startsWith('index-')) jsGzip = jsGzip // keep total; 主包另算
         }
         if (entry.name.endsWith('.css')) {
           cssBytes += info.size
-          cssGzip = Math.round(info.size * 0.26)
+          cssGzip = gzipSync(buffer).length
         }
       }
     }
@@ -130,6 +137,8 @@ try {
 } catch {
   /* dist 不存在 */
 }
+const mainJs = assetSizes.find((a) => a.name.startsWith('index-')) ?? null
+const threeJs = assetSizes.find((a) => a.name.startsWith('Scene3D-')) ?? null
 
 // 3D 性能（来自验证脚本）
 const perf = JSON.parse(
@@ -171,7 +180,10 @@ const metrics = {
     jsBytes,
     cssBytes,
     jsAssets: assets,
-    jsGzipEstimate: jsGzip,
+    assetSizes,
+    mainJs,
+    scene3d: threeJs,
+    jsGzipEstimate: mainJs?.gzip ?? jsGzip,
     cssGzipEstimate: cssGzip,
   },
   threeD: {

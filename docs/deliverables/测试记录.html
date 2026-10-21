@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8">
-<title>测试记录（自动化）</title>
+<title>测试记录</title>
 <style>
 @page { size: A4; margin: 20mm 17mm 18mm 17mm; }
 * { box-sizing: border-box; }
@@ -44,11 +44,12 @@ a { color: #8a2b22; text-decoration: none; }
 </style>
 </head><body><div class="sheet">
 <div class="doc-meta">2026 年第十四届全国大学生数字媒体科技作品及创意竞赛 · 红色之旅 追梦铸魂 · 《把名字留下来》</div>
-<h1 id="_1">测试记录（自动化）</h1>
+<p>﻿# 测试记录（自动化）</p>
 <blockquote>
-<p>生成时间：2026-10-21 凌晨。所有数字均可用仓库内脚本复现。</p>
+<p>生成时间：2026-10-21 凌晨；<strong>2026-10-22 更新</strong>：补入真 3D、音效、子目录部署与降级测试；走路测试复跑为 308 步。
+数字基线：<code>docs/report/2026-10-22-afternoon-metrics.json</code>（12:58:28）。所有数字均可用仓库内脚本复现；Playwright 装在开发机全局（未列入 <code>package.json</code>），干净环境需先自行安装。</p>
 </blockquote>
-<h2 id="_2">一、环境</h2>
+<h2 id="_1">一、环境</h2>
 <table>
 <thead>
 <tr>
@@ -71,22 +72,22 @@ a { color: #8a2b22; text-decoration: none; }
 </tr>
 <tr>
 <td>命令行</td>
-<td><code>node tools/walk-test.mjs &lt;url&gt;</code> / <code>node tools/ending-test-v2.mjs &lt;url&gt;</code></td>
+<td><code>node tools/walk-test.mjs &lt;url&gt;</code> / <code>node tools/ending-test-v3.mjs &lt;url&gt;</code> / <code>test-3d.mjs</code> / <code>test-audio.mjs</code> / <code>test-deploy.mjs</code> / <code>test-degrade.mjs</code></td>
 </tr>
 </tbody>
 </table>
-<h2 id="_3">二、全流程走路测试（主链可达性）</h2>
-<pre><code>steps: 319
+<h2 id="_2">二、全流程走路测试（主链可达性）</h2>
+<pre><code>steps: 307
 unique scenes visited: 115
 ending: 名册
-elapsed seconds: 146
+elapsed seconds: 151
 errors: none
 </code></pre>
 <ul>
 <li>策略：从 v0-01 开始，每步选第一个选项 / 点继续，直到结局页。</li>
 <li>结论：主链无断链，无控制台错误，<code>check-volumes.mjs</code> 校验 next 全部有效。</li>
 </ul>
-<h2 id="_4">三、结局可达性测试（九个结局）</h2>
+<h2 id="_3">三、结局可达性测试（九个结局）</h2>
 <p><code>node tools/ending-test-v3.mjs &lt;url&gt;</code>：注入「已走到 epilogue」的存档，依次选择第 1—9 个结局，跳过终极画面后断言结局页标题。</p>
 <pre><code>route 1: 名册   route 2: 家书   route 3: 旗
 route 4: 照片   route 5: 口述   route 6: 口信
@@ -96,7 +97,7 @@ PASS: 9/9
 errors: none
 </code></pre>
 <p>（6 个主结局来自六种记忆载体；3 个合成结局需要两种载体同时在账本里，测试存档把六种都置 2。）</p>
-<h2 id="_5">四、扩展页面冒烟测试</h2>
+<h2 id="_4">四、扩展页面冒烟测试</h2>
 <p><code>node tools/ui-smoke.mjs &lt;url&gt;</code>：</p>
 <pre><code>peopleCards: 10          # 人物志清单 10 篇
 peopleTitle: 收水        # 第一篇正文可打开
@@ -109,7 +110,7 @@ sceneImage: 1            # 场景插画已挂载
 firstImageWidth: 768     # 插画实际加载成功（768×432）
 errors: none
 </code></pre>
-<h2 id="_6">五、结构与字数校验</h2>
+<h2 id="_5">五、结构与字数校验</h2>
 <table>
 <thead>
 <tr>
@@ -124,7 +125,7 @@ errors: none
 </tr>
 <tr>
 <td><code>node tools/count-words-strict.mjs</code></td>
-<td>严格正文 <strong>113,138</strong> 汉字（只统计玩家读到的 paragraphs）</td>
+<td>严格正文 <strong>113,161</strong> 汉字（只统计玩家读到的 paragraphs）</td>
 </tr>
 <tr>
 <td><code>npx tsc -p tsconfig.app.json --noEmit</code></td>
@@ -136,7 +137,7 @@ errors: none
 </tr>
 </tbody>
 </table>
-<h2 id="_7">六、构建体积</h2>
+<h2 id="_6">六、构建体积</h2>
 <table>
 <thead>
 <tr>
@@ -152,24 +153,32 @@ errors: none
 <td>0.68 kB</td>
 </tr>
 <tr>
-<td>CSS</td>
+<td>CSS（index-MLU40nco.css）</td>
 <td>18.75 kB</td>
-<td>4.94 kB</td>
+<td>4.92 kB</td>
 </tr>
 <tr>
 <td>JS 主包（含 11.3 万字正文、9 个结局、76 张史料卡与交互组件）</td>
-<td>844.87 kB</td>
-<td>299.81 kB</td>
+<td>845.59 kB</td>
+<td>298.0 kB</td>
 </tr>
 <tr>
-<td>dist 总计（含 496 张场景插画与 8 张背景图）</td>
-<td>544 个文件 / 22.93 MB</td>
+<td>3D 懒加载（Scene3D-BkEU69la.js）</td>
+<td>591.99 kB</td>
+<td>150.66 kB</td>
+</tr>
+<tr>
+<td>dist 总计（496 张美术素材 + 8 张背景图 + 28 条音效 + GLB）</td>
+<td>545 个文件 / 23.46 MB</td>
 <td>—</td>
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>gzip 为 <code>node zlib</code> 对 <code>dist/assets/</code> 现有文件实测（默认压缩级别）；<code>tools/metrics.mjs</code> 里的 gzip 字段是按比例估算，非实测。</p>
+</blockquote>
 <p>无外部字体、无 CDN、无后端请求，断网可运行。</p>
-<h2 id="_8">七、图片质检</h2>
+<h2 id="_7">七、图片质检</h2>
 <p>见 <code>docs/art/image-qa-report.md</code>：</p>
 <table>
 <thead>
@@ -181,7 +190,7 @@ errors: none
 <tbody>
 <tr>
 <td>入屏图（scene 128 + ending 30）</td>
-<td>158 张</td>
+<td>158 条（落盘 154 张，4 个场景缺图）</td>
 </tr>
 <tr>
 <td>VLM 初检 pass / retry / reject</td>
@@ -209,7 +218,7 @@ errors: none
 <h2 id="3d">八、3D 切片测试</h2>
 <p><code>node tools/test-3d.mjs &lt;url&gt;</code>（注入 night1 存档 → 点「3D 视角」）：</p>
 <pre><code>desktop toggle visible: true
-3D metrics: { fps: '87.3', calls: '16', tris: '3093' }
+3D metrics: { fps: '81.3—120.1', calls: '16', tris: '3093' }（night1）；warehouse-ext（v1-25）147.6fps / 13 calls / 4,734 tris
 mobile 3D toggle visible (expect false): false
 errors: none
 </code></pre>
@@ -217,7 +226,7 @@ errors: none
 <li>四切片独立验证（<code>tools/3d/perf.mjs</code>）：warehouse-int 101.4fps / 16 calls / 3,093 tris；rooftop 120.3fps / 12 / 2,096；bridge 105fps / 11 / 2,176；office-1947 114.6fps / 15 / 828。</li>
 <li>预算：≤6,000 tris、≤25 draw calls、桌面 55fps+；全部通过。</li>
 </ul>
-<h2 id="_9">九、声音系统测试</h2>
+<h2 id="_8">九、声音系统测试</h2>
 <p><code>node tools/test-audio.mjs &lt;dev-url&gt;</code>（需要 dev 的 <code>window.__audio</code> 探针）：</p>
 <ul>
 <li>默认静音、AudioContext 未创建；点「从头开始」仍静音（符合预期）。</li>
@@ -226,7 +235,7 @@ errors: none
 <li>刷新后静音状态持久化（按钮仍显示「声音 开」）。</li>
 <li>无控制台错误。</li>
 </ul>
-<h2 id="_10">十、打包形态与降级验证</h2>
+<h2 id="_9">十、打包形态与降级验证</h2>
 <p><strong>子目录 + HTTP（模拟 <code>作品名_编号/01_作品及成果文件/</code>）</strong>：<code>node tools/test-deploy.mjs</code></p>
 <pre><code>deploy url: http://127.0.0.1:8099/pkg/01_files/
 scene image naturalWidth: 768
@@ -239,10 +248,12 @@ errors: none
 mobile 390 → 3D toggle (expect false): false | scene text length: 1268
 PASS: ok
 </code></pre>
-<h2 id="_11">十一、已知限制（如实记录）</h2>
+<h2 id="_10">十一、已知限制（如实记录）</h2>
 <ul>
 <li>单周目 2—3 小时，走路测试用了「连点继续」的机械策略，不代表真实阅读速度。</li>
-<li>volume3/volume4 的严格字数低于规划目标（12,816 / 4,148 vs 20,000 / 12,000），属取舍：总量 113,138 已达标，质量审计优先。</li>
+<li>§二 的 308 步 / 151 秒为 2026-10-22 复跑结果；2026-10-21 09:39 审计快照中记录的 319 步来自旧的一轮，已作废。</li>
+<li>3D 帧率以 <code>tools/3d/shots/perf.json</code> 与 <code>test-3d.mjs</code>（App 内 81—148 fps）为准；<code>docs/report/2026-10-22-3d-slices.md</code> 已同步为同一组数字。</li>
+<li>volume3/volume4 的严格字数低于规划目标（12,816 / 4,148 vs 20,000 / 12,000），属取舍：总量 113,161 已达标，质量审计优先。</li>
 <li>volume2 的文学评分采用「全量扫描 + 代表场抽读」，未逐场五维重评。</li>
 <li>场景插画为本地生成，非历史照片；图片不承担史实表述。</li>
 <li>3 个合成结局与交互/3D/音频层在双轨审计冻结后新增，只做人工自查（见 <code>docs/audit/2026-10-22-post-audit-addendum.md</code>）。</li>

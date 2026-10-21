@@ -1,4 +1,4 @@
-import { chromium } from 'playwright'
+﻿import { chromium } from 'playwright'
 import { mkdir, readdir, unlink } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -62,7 +62,7 @@ await inject({ ...base, sceneId: 'v0-01' })
 await shot('01-scene-2.5d.png')
 
 // 2 真 3D：第一夜仓库内景
-await inject({ ...base, sceneId: 'night1' })
+await inject({ ...base, sceneId: 'v1-25' })
 const toggle = page.getByRole('button', { name: '3D 视角' })
 if (await toggle.isVisible().catch(() => false)) {
   await toggle.click()

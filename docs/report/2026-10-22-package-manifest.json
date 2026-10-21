@@ -1,0 +1,823 @@
+{
+  "schema": "dsh/package-manifest/v1",
+  "project": "《把名字留下来》",
+  "generatedAt": "2026-10-21T05:36:17.309Z",
+  "generatedAtLocal": "2026-10-21 13:36:17 +08:00",
+  "durationSeconds": 0.22,
+  "tool": "tools/package.mjs",
+  "command": "node tools/package.mjs --dry-run",
+  "runNote": null,
+  "dryRun": true,
+  "ok": true,
+  "exitCode": 2,
+  "submissionReady": false,
+  "name": "把名字留下来_待填编号",
+  "nameIsPlaceholder": true,
+  "git": {
+    "available": true,
+    "head": "b654f1b",
+    "dirty": 65
+  },
+  "metrics": {
+    "path": "docs/report/2026-10-22-afternoon-metrics.json",
+    "generatedAt": "2026-10-21T05:31:03.629Z"
+  },
+  "archive": null,
+  "verification": null,
+  "totals": {
+    "files": 573,
+    "dirs": 16,
+    "dirsIncludingRoot": 17,
+    "bytes": 32915999,
+    "human": "31.39 MiB",
+    "byGroup": [
+      {
+        "group": "01_作品及成果文件",
+        "files": 544,
+        "bytes": 24122950,
+        "human": "23.01 MiB",
+        "label": "作品及成果文件（dist 原样）"
+      },
+      {
+        "group": "02_作品展示视频",
+        "files": 1,
+        "bytes": 959,
+        "human": "959 B",
+        "label": "作品展示/评审视频（当前缺）"
+      },
+      {
+        "group": "03_作品介绍文档",
+        "files": 1,
+        "bytes": 850514,
+        "human": "830.6 KiB",
+        "label": "作品介绍 PDF"
+      },
+      {
+        "group": "04_运行或使用说明",
+        "files": 1,
+        "bytes": 476104,
+        "human": "464.9 KiB",
+        "label": "运行说明 PDF"
+      },
+      {
+        "group": "05_补充成果材料",
+        "files": 23,
+        "bytes": 6712655,
+        "human": "6.40 MiB",
+        "label": "截图 / 测试 / 审计 / 美术 / 音频 / 指标"
+      },
+      {
+        "group": "06_第三方资源说明",
+        "files": 1,
+        "bytes": 299359,
+        "human": "292.3 KiB",
+        "label": "第三方资源说明 PDF"
+      },
+      {
+        "group": "07_AI工具使用补充说明",
+        "files": 1,
+        "bytes": 452469,
+        "human": "441.9 KiB",
+        "label": "AI 使用说明 PDF"
+      },
+      {
+        "group": "报名与承诺书（线下办理）",
+        "files": 1,
+        "bytes": 989,
+        "human": "989 B",
+        "label": "报名信息 / 承诺书（线下办理，当前缺）"
+      }
+    ],
+    "distFiles": 545,
+    "distBytes": 24603810
+  },
+  "directories": [
+    {
+      "path": "01_作品及成果文件",
+      "label": "作品及成果文件（dist 原样）",
+      "required": true,
+      "files": 544,
+      "bytes": 24122950,
+      "human": "23.01 MiB",
+      "status": "ok"
+    },
+    {
+      "path": "01_作品及成果文件/assets",
+      "label": "打包产物 JS/CSS",
+      "required": true,
+      "files": 3,
+      "bytes": 1533410,
+      "human": "1.46 MiB",
+      "status": "ok"
+    },
+    {
+      "path": "01_作品及成果文件/art",
+      "label": "场景/结局/道具插画",
+      "required": true,
+      "files": 496,
+      "bytes": 17027967,
+      "human": "16.24 MiB",
+      "status": "ok"
+    },
+    {
+      "path": "01_作品及成果文件/bg",
+      "label": "2.5D 基准背景 + 参数 JSON",
+      "required": true,
+      "files": 16,
+      "bytes": 448456,
+      "human": "437.9 KiB",
+      "status": "ok"
+    },
+    {
+      "path": "01_作品及成果文件/audio",
+      "label": "本地生成音效",
+      "required": true,
+      "files": 28,
+      "bytes": 5112113,
+      "human": "4.88 MiB",
+      "status": "ok"
+    },
+    {
+      "path": "02_作品展示视频",
+      "label": "作品展示/评审视频（当前缺）",
+      "required": false,
+      "files": 1,
+      "bytes": 959,
+      "human": "959 B",
+      "status": "placeholder"
+    },
+    {
+      "path": "03_作品介绍文档",
+      "label": "作品介绍 PDF",
+      "required": true,
+      "files": 1,
+      "bytes": 850514,
+      "human": "830.6 KiB",
+      "status": "ok"
+    },
+    {
+      "path": "04_运行或使用说明",
+      "label": "运行说明 PDF",
+      "required": true,
+      "files": 1,
+      "bytes": 476104,
+      "human": "464.9 KiB",
+      "status": "ok"
+    },
+    {
+      "path": "05_补充成果材料",
+      "label": "截图 / 测试 / 审计 / 美术 / 音频 / 指标",
+      "required": true,
+      "files": 23,
+      "bytes": 6712655,
+      "human": "6.40 MiB",
+      "status": "ok"
+    },
+    {
+      "path": "05_补充成果材料/screenshots",
+      "label": "作品截图（≤10 张）",
+      "required": true,
+      "files": 10,
+      "bytes": 5528515,
+      "human": "5.27 MiB",
+      "status": "ok"
+    },
+    {
+      "path": "05_补充成果材料/审计报告",
+      "label": "双轨审计 FINAL×2 + 覆盖边界补充",
+      "required": true,
+      "files": 3,
+      "bytes": 27322,
+      "human": "26.7 KiB",
+      "status": "ok"
+    },
+    {
+      "path": "05_补充成果材料/美术报告",
+      "label": "图片总谱 / 质检 / 视觉圣经",
+      "required": true,
+      "files": 6,
+      "bytes": 717718,
+      "human": "700.9 KiB",
+      "status": "ok"
+    },
+    {
+      "path": "05_补充成果材料/音频报告",
+      "label": "音效 manifest",
+      "required": true,
+      "files": 1,
+      "bytes": 34616,
+      "human": "33.8 KiB",
+      "status": "ok"
+    },
+    {
+      "path": "06_第三方资源说明",
+      "label": "第三方资源说明 PDF",
+      "required": true,
+      "files": 1,
+      "bytes": 299359,
+      "human": "292.3 KiB",
+      "status": "ok"
+    },
+    {
+      "path": "07_AI工具使用补充说明",
+      "label": "AI 使用说明 PDF",
+      "required": true,
+      "files": 1,
+      "bytes": 452469,
+      "human": "441.9 KiB",
+      "status": "ok"
+    },
+    {
+      "path": "报名与承诺书（线下办理）",
+      "label": "报名信息 / 承诺书（线下办理，当前缺）",
+      "required": false,
+      "files": 1,
+      "bytes": 989,
+      "human": "989 B",
+      "status": "placeholder"
+    }
+  ],
+  "contents": {
+    "01_作品及成果文件": {
+      "source": "dist/",
+      "files": 545,
+      "bytes": 24603810,
+      "human": "23.46 MiB",
+      "subdirs": {
+        "assets": {
+          "files": 3,
+          "bytes": 1533410,
+          "present": true
+        },
+        "art": {
+          "files": 496,
+          "bytes": 17027967,
+          "present": true
+        },
+        "bg": {
+          "files": 16,
+          "bytes": 448456,
+          "present": true
+        },
+        "audio": {
+          "files": 28,
+          "bytes": 5112113,
+          "present": true
+        }
+      },
+      "indexHtmlBytes": 1004
+    },
+    "others": [
+      {
+        "packagePath": "03_作品介绍文档/作品介绍.pdf",
+        "sourcePath": "docs/deliverables/作品介绍.pdf",
+        "bytes": 850514,
+        "mtime": "2026-10-21T05:35:41.442Z",
+        "mtimeLocal": "2026-10-21 13:35:41 +08:00",
+        "sha256": "16194d44b329dee188b94be002006b86991ed8aed7e7817c7dee641852744d1b"
+      },
+      {
+        "packagePath": "04_运行或使用说明/运行说明.pdf",
+        "sourcePath": "docs/deliverables/运行说明.pdf",
+        "bytes": 476104,
+        "mtime": "2026-10-21T05:36:11.883Z",
+        "mtimeLocal": "2026-10-21 13:36:11 +08:00",
+        "sha256": "ca5c6b579f705d523b2a044895134d6e1d76290e704c0e2d933c5e9b804bcd40"
+      },
+      {
+        "packagePath": "05_补充成果材料/测试记录.pdf",
+        "sourcePath": "docs/deliverables/测试记录.pdf",
+        "bytes": 398293,
+        "mtime": "2026-10-21T05:36:04.884Z",
+        "mtimeLocal": "2026-10-21 13:36:04 +08:00",
+        "sha256": "eeb14352816a377e585ac1c2886564978007c6ea3f6d0c3103f6c60dfbda7625"
+      },
+      {
+        "packagePath": "05_补充成果材料/screenshots/00-menu.png",
+        "sourcePath": "docs/deliverables/screenshots/00-menu.png",
+        "bytes": 346180,
+        "mtime": "2026-10-21T05:34:57.338Z",
+        "mtimeLocal": "2026-10-21 13:34:57 +08:00",
+        "sha256": "fdbdadfd0c8523dc7b6f96cc69623e91ba514187c7d4a160473bf3907123875a"
+      },
+      {
+        "packagePath": "05_补充成果材料/screenshots/01-scene-2.5d.png",
+        "sourcePath": "docs/deliverables/screenshots/01-scene-2.5d.png",
+        "bytes": 1017268,
+        "mtime": "2026-10-21T05:35:01.871Z",
+        "mtimeLocal": "2026-10-21 13:35:01 +08:00",
+        "sha256": "ff0be87ec5d9e502174fb884d2751c1ef09593572e8166983ddf496ddaff880b"
+      },
+      {
+        "packagePath": "05_补充成果材料/screenshots/02-scene-3d.png",
+        "sourcePath": "docs/deliverables/screenshots/02-scene-3d.png",
+        "bytes": 376093,
+        "mtime": "2026-10-21T05:35:09.027Z",
+        "mtimeLocal": "2026-10-21 13:35:09 +08:00",
+        "sha256": "2391978f9e34b70988892d8cdd4a273634f414710b0ee31d92628088c46f157b"
+      },
+      {
+        "packagePath": "05_补充成果材料/screenshots/03-epilogue-choices.png",
+        "sourcePath": "docs/deliverables/screenshots/03-epilogue-choices.png",
+        "bytes": 1059097,
+        "mtime": "2026-10-21T05:35:14.383Z",
+        "mtimeLocal": "2026-10-21 13:35:14 +08:00",
+        "sha256": "27f9965a18c1d69dca215723586438ad16197b41ad4f0028c70ef80fc6789029"
+      },
+      {
+        "packagePath": "05_补充成果材料/screenshots/04-finale.png",
+        "sourcePath": "docs/deliverables/screenshots/04-finale.png",
+        "bytes": 194303,
+        "mtime": "2026-10-21T05:35:20.494Z",
+        "mtimeLocal": "2026-10-21 13:35:20 +08:00",
+        "sha256": "96a719e17971d4ad6ecad57c70101ed1bd4ba82d923fd152a5e0f1df9eb5a761"
+      },
+      {
+        "packagePath": "05_补充成果材料/screenshots/05-ending.png",
+        "sourcePath": "docs/deliverables/screenshots/05-ending.png",
+        "bytes": 1018220,
+        "mtime": "2026-10-21T05:35:21.772Z",
+        "mtimeLocal": "2026-10-21 13:35:21 +08:00",
+        "sha256": "5aed028517d03760f5dd3d49d76b2a74f353b95206dba11014fb2e122cac151d"
+      },
+      {
+        "packagePath": "05_补充成果材料/screenshots/06-people.png",
+        "sourcePath": "docs/deliverables/screenshots/06-people.png",
+        "bytes": 451229,
+        "mtime": "2026-10-21T05:35:24.493Z",
+        "mtimeLocal": "2026-10-21 13:35:24 +08:00",
+        "sha256": "d2b4f0d33cb775cf6b161ac41fd04f5be8e0b7a72aef0357c1564419d793324a"
+      },
+      {
+        "packagePath": "05_补充成果材料/screenshots/07-later.png",
+        "sourcePath": "docs/deliverables/screenshots/07-later.png",
+        "bytes": 517516,
+        "mtime": "2026-10-21T05:35:26.802Z",
+        "mtimeLocal": "2026-10-21 13:35:26 +08:00",
+        "sha256": "8acc28292327b0d06737fa952d1052bbc57b700cf796298aae697183f47773c5"
+      },
+      {
+        "packagePath": "05_补充成果材料/screenshots/08-sources.png",
+        "sourcePath": "docs/deliverables/screenshots/08-sources.png",
+        "bytes": 390788,
+        "mtime": "2026-10-21T05:35:29.550Z",
+        "mtimeLocal": "2026-10-21 13:35:29 +08:00",
+        "sha256": "1b24e351c900248b4cb9f1cea3696cd2ba58a71cff19d4e3ccd0f796c8124b26"
+      },
+      {
+        "packagePath": "05_补充成果材料/screenshots/09-mobile-menu.png",
+        "sourcePath": "docs/deliverables/screenshots/09-mobile-menu.png",
+        "bytes": 157821,
+        "mtime": "2026-10-21T05:35:31.954Z",
+        "mtimeLocal": "2026-10-21 13:35:31 +08:00",
+        "sha256": "cde8b945ddce103f7ad196161556b4daece973b1bcd8c307fe83f1bceaa51ed4"
+      },
+      {
+        "packagePath": "05_补充成果材料/审计报告/FINAL-fact-audit.md",
+        "sourcePath": "docs/audit/FINAL-fact-audit.md",
+        "bytes": 11754,
+        "mtime": "2026-10-20T17:15:54.865Z",
+        "mtimeLocal": "2026-10-21 01:15:54 +08:00",
+        "sha256": "b6966158757c16721144ca289ce445e71a3a778d0371b7c32882019aefbfb3ca"
+      },
+      {
+        "packagePath": "05_补充成果材料/审计报告/FINAL-literary-audit.md",
+        "sourcePath": "docs/audit/FINAL-literary-audit.md",
+        "bytes": 12136,
+        "mtime": "2026-10-20T17:15:24.509Z",
+        "mtimeLocal": "2026-10-21 01:15:24 +08:00",
+        "sha256": "117e5cf7d137b8061fe20e7bc9d47bb58adcb5d186dda9d343c7d1ef2edab978"
+      },
+      {
+        "packagePath": "05_补充成果材料/审计报告/2026-10-22-post-audit-addendum.md",
+        "sourcePath": "docs/audit/2026-10-22-post-audit-addendum.md",
+        "bytes": 3432,
+        "mtime": "2026-10-21T05:30:45.049Z",
+        "mtimeLocal": "2026-10-21 13:30:45 +08:00",
+        "sha256": "803784c91d9197c298142f80849e25ff6b3078fe89dada45f5e30b446fb23155"
+      },
+      {
+        "packagePath": "05_补充成果材料/美术报告/image-manifest.json",
+        "sourcePath": "docs/art/image-manifest.json",
+        "bytes": 662134,
+        "mtime": "2026-10-20T17:07:54.004Z",
+        "mtimeLocal": "2026-10-21 01:07:54 +08:00",
+        "sha256": "99cd52e26c7d3be601c97e1a662bd6b586dab69eeaf511e7d05083acee8aab4e"
+      },
+      {
+        "packagePath": "05_补充成果材料/美术报告/scene-map.json",
+        "sourcePath": "docs/art/scene-map.json",
+        "bytes": 19719,
+        "mtime": "2026-10-20T17:07:54.014Z",
+        "mtimeLocal": "2026-10-21 01:07:54 +08:00",
+        "sha256": "2ddafa3a62c77fa80137e400b3be18a5f9a1d95f2519fe9ee42bac50d23c908e"
+      },
+      {
+        "packagePath": "05_补充成果材料/美术报告/image-qa-report.md",
+        "sourcePath": "docs/art/image-qa-report.md",
+        "bytes": 3814,
+        "mtime": "2026-10-21T01:42:11.859Z",
+        "mtimeLocal": "2026-10-21 09:42:11 +08:00",
+        "sha256": "650a22b76848dcaaefe0001740da5900fb199dacb8d007d594bafebc10f91919"
+      },
+      {
+        "packagePath": "05_补充成果材料/美术报告/spot-check.md",
+        "sourcePath": "docs/art/spot-check.md",
+        "bytes": 9739,
+        "mtime": "2026-10-20T17:14:01.609Z",
+        "mtimeLocal": "2026-10-21 01:14:01 +08:00",
+        "sha256": "7ae20182e6bf66c48aaab02208705aaf3394cddad564775460f2eac1a8740e57"
+      },
+      {
+        "packagePath": "05_补充成果材料/美术报告/visual-bible.md",
+        "sourcePath": "docs/art/visual-bible.md",
+        "bytes": 17930,
+        "mtime": "2026-10-20T17:09:49.743Z",
+        "mtimeLocal": "2026-10-21 01:09:49 +08:00",
+        "sha256": "dcad4da0a3c50c3508df778d733df3f19ae7fba70af0ee006fa40d6ad4556c3a"
+      },
+      {
+        "packagePath": "05_补充成果材料/美术报告/README.md",
+        "sourcePath": "docs/art/README.md",
+        "bytes": 4382,
+        "mtime": "2026-10-20T19:55:58.779Z",
+        "mtimeLocal": "2026-10-21 03:55:58 +08:00",
+        "sha256": "06bc8d380f11d268a1a6e6f137039ab55daca6c66b2d96e0e305dd477ba098a0"
+      },
+      {
+        "packagePath": "05_补充成果材料/音频报告/audio-manifest.json",
+        "sourcePath": "docs/audio/audio-manifest.json",
+        "bytes": 34616,
+        "mtime": "2026-10-21T01:56:58.709Z",
+        "mtimeLocal": "2026-10-21 09:56:58 +08:00",
+        "sha256": "ff533d9368544f10ebddba4253ed13f7018c0721aaf71c6767e75fa522cb3c96"
+      },
+      {
+        "packagePath": "05_补充成果材料/2026-10-22-3d-slices.md",
+        "sourcePath": "docs/report/2026-10-22-3d-slices.md",
+        "bytes": 3530,
+        "mtime": "2026-10-21T05:30:45.041Z",
+        "mtimeLocal": "2026-10-21 13:30:45 +08:00",
+        "sha256": "d99cbf44778f9d929ffc2aecca581b3cb047782f377d0cda3a408bc0f3f988ac"
+      },
+      {
+        "packagePath": "05_补充成果材料/2026-10-22-afternoon-metrics.json",
+        "sourcePath": "docs/report/2026-10-22-afternoon-metrics.json",
+        "bytes": 2661,
+        "mtime": "2026-10-21T05:31:03.634Z",
+        "mtimeLocal": "2026-10-21 13:31:03 +08:00",
+        "sha256": "c5384c68ce2487184cc4c162961f85b791345953ed83415e052598ec8dd7393a"
+      },
+      {
+        "packagePath": "06_第三方资源说明/第三方资源说明.pdf",
+        "sourcePath": "docs/deliverables/第三方资源说明.pdf",
+        "bytes": 299359,
+        "mtime": "2026-10-21T05:36:06.881Z",
+        "mtimeLocal": "2026-10-21 13:36:06 +08:00",
+        "sha256": "27366c7b9dd41e5212366fed036d46b6fe96ee3c0d8e2b904106f4d0e2776744"
+      },
+      {
+        "packagePath": "07_AI工具使用补充说明/AI使用说明.pdf",
+        "sourcePath": "docs/deliverables/AI使用说明.pdf",
+        "bytes": 452469,
+        "mtime": "2026-10-21T05:35:37.605Z",
+        "mtimeLocal": "2026-10-21 13:35:37 +08:00",
+        "sha256": "988b00c0c98a5ef135107c806192856e7d23b06a8db0afb631e23bb37f68dee9"
+      }
+    ]
+  },
+  "placeholders": [
+    {
+      "packagePath": "02_作品展示视频/占位说明.txt",
+      "whyEmpty": "作品展示/评审视频尚未录制（缺 MP4 源文件）",
+      "bytes": 959
+    },
+    {
+      "packagePath": "报名与承诺书（线下办理）/占位说明.txt",
+      "whyEmpty": "报名系统信息与承诺书盖章为线下环节，本地无文件",
+      "bytes": 989
+    }
+  ],
+  "missing": [],
+  "checks": {
+    "dist": {
+      "present": true,
+      "files": 545,
+      "bytes": 24603810,
+      "subdirs": {
+        "assets": {
+          "files": 3,
+          "bytes": 1533410,
+          "present": true
+        },
+        "art": {
+          "files": 496,
+          "bytes": 17027967,
+          "present": true
+        },
+        "bg": {
+          "files": 16,
+          "bytes": 448456,
+          "present": true
+        },
+        "audio": {
+          "files": 28,
+          "bytes": 5112113,
+          "present": true
+        }
+      },
+      "metrics": {
+        "agreement": [
+          {
+            "key": "build.distFiles",
+            "metrics": 545,
+            "actual": 545,
+            "ok": true
+          },
+          {
+            "key": "build.jsBytes",
+            "metrics": 1514289,
+            "actual": 1514289,
+            "ok": true
+          },
+          {
+            "key": "build.cssBytes",
+            "metrics": 19121,
+            "actual": 19121,
+            "ok": true
+          },
+          {
+            "key": "images.artFiles",
+            "metrics": 496,
+            "actual": 496,
+            "ok": true
+          },
+          {
+            "key": "images.backgroundFiles",
+            "metrics": 8,
+            "actual": 8,
+            "ok": true
+          },
+          {
+            "key": "audio.files",
+            "metrics": 28,
+            "actual": 28,
+            "ok": true
+          },
+          {
+            "key": "audio.bytes",
+            "metrics": 5112113,
+            "actual": 5112113,
+            "ok": true
+          },
+          {
+            "key": "build.distMb",
+            "metrics": 23.46,
+            "actual": 23.46,
+            "ok": true,
+            "note": "MiB（1024²）口径"
+          }
+        ],
+        "allMatch": true
+      },
+      "issues": [],
+      "artPresent": true,
+      "audioPresent": true,
+      "bgPresent": true,
+      "assetsPresent": true,
+      "indexPresent": true,
+      "absoluteRefs": [],
+      "staleness": {
+        "distBuiltAt": "2026-10-21T05:29:58.438Z",
+        "distBuiltAtLocal": "2026-10-21 13:29:58 +08:00",
+        "scannedDirs": [
+          "src",
+          "public"
+        ],
+        "newerFiles": [],
+        "stale": false,
+        "newestSourceLocal": null,
+        "newerCount": 0
+      }
+    },
+    "pdfFreshness": {
+      "rows": [
+        {
+          "pdf": "docs/deliverables/作品介绍.pdf",
+          "md": "docs/deliverables/作品介绍.md",
+          "pdfPresent": true,
+          "mdPresent": true,
+          "pdfBytes": 850514,
+          "pdfMtime": "2026-10-21T05:35:41.442Z",
+          "pdfMtimeLocal": "2026-10-21 13:35:41 +08:00",
+          "mdMtime": "2026-10-21T05:31:00.006Z",
+          "mdMtimeLocal": "2026-10-21 13:31:00 +08:00",
+          "deltaSeconds": 281,
+          "status": "FRESH"
+        },
+        {
+          "pdf": "docs/deliverables/运行说明.pdf",
+          "md": "docs/deliverables/运行说明.md",
+          "pdfPresent": true,
+          "mdPresent": true,
+          "pdfBytes": 476104,
+          "pdfMtime": "2026-10-21T05:36:11.883Z",
+          "pdfMtimeLocal": "2026-10-21 13:36:11 +08:00",
+          "mdMtime": "2026-10-21T05:30:45.090Z",
+          "mdMtimeLocal": "2026-10-21 13:30:45 +08:00",
+          "deltaSeconds": 327,
+          "status": "FRESH"
+        },
+        {
+          "pdf": "docs/deliverables/第三方资源说明.pdf",
+          "md": "docs/deliverables/第三方资源说明.md",
+          "pdfPresent": true,
+          "mdPresent": true,
+          "pdfBytes": 299359,
+          "pdfMtime": "2026-10-21T05:36:06.881Z",
+          "pdfMtimeLocal": "2026-10-21 13:36:06 +08:00",
+          "mdMtime": "2026-10-21T05:34:53.541Z",
+          "mdMtimeLocal": "2026-10-21 13:34:53 +08:00",
+          "deltaSeconds": 73,
+          "status": "FRESH"
+        },
+        {
+          "pdf": "docs/deliverables/AI使用说明.pdf",
+          "md": "docs/deliverables/AI使用说明.md",
+          "pdfPresent": true,
+          "mdPresent": true,
+          "pdfBytes": 452469,
+          "pdfMtime": "2026-10-21T05:35:37.605Z",
+          "pdfMtimeLocal": "2026-10-21 13:35:37 +08:00",
+          "mdMtime": "2026-10-21T05:30:59.926Z",
+          "mdMtimeLocal": "2026-10-21 13:30:59 +08:00",
+          "deltaSeconds": 278,
+          "status": "FRESH"
+        },
+        {
+          "pdf": "docs/deliverables/测试记录.pdf",
+          "md": "docs/deliverables/测试记录.md",
+          "pdfPresent": true,
+          "mdPresent": true,
+          "pdfBytes": 398293,
+          "pdfMtime": "2026-10-21T05:36:04.884Z",
+          "pdfMtimeLocal": "2026-10-21 13:36:04 +08:00",
+          "mdMtime": "2026-10-21T05:34:53.534Z",
+          "mdMtimeLocal": "2026-10-21 13:34:53 +08:00",
+          "deltaSeconds": 71,
+          "status": "FRESH"
+        }
+      ],
+      "allFresh": true,
+      "stale": []
+    },
+    "screenshots": {
+      "count": 10,
+      "expected": 10,
+      "ok": true,
+      "bytes": 5528515,
+      "names": [
+        "00-menu.png",
+        "01-scene-2.5d.png",
+        "02-scene-3d.png",
+        "03-epilogue-choices.png",
+        "04-finale.png",
+        "05-ending.png",
+        "06-people.png",
+        "07-later.png",
+        "08-sources.png",
+        "09-mobile-menu.png"
+      ]
+    }
+  },
+  "anonymity": {
+    "status": "PASS",
+    "conclusion": "未检出身分级敏感词（text 21 个文件 / 文件名 571 条 / PDF 元数据 5 份）",
+    "keywordTable": {
+      "version": 1,
+      "source": "内置默认表（脚本内 KEYWORDS）",
+      "block": 26,
+      "caution": 4,
+      "patterns": 7,
+      "exemptions": 1
+    },
+    "scanned": {
+      "textFiles": 21,
+      "textBytes": 801055,
+      "textLines": 12282,
+      "filenameOnlyFiles": 550,
+      "pdfFiles": 5
+    },
+    "counts": {
+      "block": 0,
+      "caution": 0,
+      "exempted": 1
+    },
+    "hits": [],
+    "exempted": [
+      {
+        "packagePath": "05_补充成果材料/审计报告/FINAL-fact-audit.md",
+        "where": "content",
+        "tier": "block",
+        "kind": "term",
+        "term": "姓名",
+        "id": null,
+        "line": 56,
+        "snippet": "…已核，挂源正确；撤退命令渠道只写 `auto-b-09` 版本；凶手姓名未列 |",
+        "exempted": true,
+        "exemptionReason": "原文「凶手姓名未列」，指叙事角色，不是参赛者真实姓名；上下文中无学校/人名实体。"
+      }
+    ],
+    "pdfMetadata": [
+      {
+        "packagePath": "03_作品介绍文档/作品介绍.pdf",
+        "info": {
+          "Title": "作品介绍",
+          "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+          "Producer": "Skia/PDF m155",
+          "CreationDate": "D:20261021053538+00'00'",
+          "ModDate": "D:20261021053538+00'00'"
+        },
+        "bytes": 850514
+      },
+      {
+        "packagePath": "04_运行或使用说明/运行说明.pdf",
+        "info": {
+          "Title": "运行与使用说明",
+          "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+          "Producer": "Skia/PDF m155",
+          "CreationDate": "D:20261021053610+00'00'",
+          "ModDate": "D:20261021053610+00'00'"
+        },
+        "bytes": 476104
+      },
+      {
+        "packagePath": "05_补充成果材料/测试记录.pdf",
+        "info": {
+          "Title": "测试记录",
+          "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+          "Producer": "Skia/PDF m155",
+          "CreationDate": "D:20261021053603+00'00'",
+          "ModDate": "D:20261021053603+00'00'"
+        },
+        "bytes": 398293
+      },
+      {
+        "packagePath": "06_第三方资源说明/第三方资源说明.pdf",
+        "info": {
+          "Title": "第三方资源说明",
+          "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+          "Producer": "Skia/PDF m155",
+          "CreationDate": "D:20261021053605+00'00'",
+          "ModDate": "D:20261021053605+00'00'"
+        },
+        "bytes": 299359
+      },
+      {
+        "packagePath": "07_AI工具使用补充说明/AI使用说明.pdf",
+        "info": {
+          "Title": "AI使用说明",
+          "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
+          "Producer": "Skia/PDF m155",
+          "CreationDate": "D:20261021053536+00'00'",
+          "ModDate": "D:20261021053536+00'00'"
+        },
+        "bytes": 452469
+      }
+    ],
+    "limitations": [
+      "01_作品及成果文件/assets/*.js、*.css 为 11 万字叙事的构建产物，只查文件名、不做正文关键词扫描：本作主题词即「姓名/名字」，正文扫描全是剧情用词，无判定价值（如需可加 --keywords 后自行全文扫描）。",
+      "截图 PNG / 插画 JPG / 音效 OGG 只查文件名，未做 OCR 与像素级人像检测。",
+      "PDF 只解析 Info 字典（Title/Author/Creator/Producer 等）与明文，正文流是压缩的，未逐页提取文字。",
+      "压缩包内文件的时间戳、EXIF 等元数据未做剔除处理（dist 为构建产物，无相机信息）。"
+    ]
+  },
+  "warnings": [
+    {
+      "id": "name-placeholder",
+      "message": "--name 仍是占位名「把名字留下来_待填编号」：报名拿到作品编号后必须重跑，见 docs/deliverables/打包说明.md"
+    },
+    {
+      "id": "placeholder",
+      "message": "占位：02_作品展示视频/占位说明.txt —— 作品展示/评审视频尚未录制（缺 MP4 源文件）"
+    },
+    {
+      "id": "placeholder",
+      "message": "占位：报名与承诺书（线下办理）/占位说明.txt —— 报名系统信息与承诺书盖章为线下环节，本地无文件"
+    }
+  ],
+  "readiness": {
+    "submissionReady": false,
+    "blockers": [
+      "目录名/文件名仍是占位「待填编号」",
+      "02_作品展示视频 为空（评审视频未录制）",
+      "报名与承诺书（线下办理）为空（线下环节未完成）"
+    ]
+  },
+  "nextSteps": [
+    "报名后拿到作品编号：node tools/package.mjs --name \"把名字留下来_<作品编号>\" --out \"<仓库外的 zip 路径>\"",
+    "录好评审视频 → 放入 02_作品展示视频/、删占位说明 → 重跑打包",
+    "承诺书盖章扫描 → 放入 报名与承诺书（线下办理）/、删占位说明 → 重跑打包",
+    "上传前对包内 ZIP 做一次解压验证（见 docs/deliverables/打包说明.md 检查清单）"
+  ]
+}

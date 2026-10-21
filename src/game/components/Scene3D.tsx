@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 3D 切片（plain three，不用 R3F）
  *
  * 硬预算：每切片 ≤ 6000 三角面、≤ 25 draw calls、DPR ≤ 2、桌面 55fps+。
@@ -18,6 +18,7 @@
 
 import { useEffect, useRef, type CSSProperties } from 'react'
 import * as THREE from 'three'
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js'
 import { SCENE_3D_BACKDROP, type Scene3DVariant } from '../content/scene3d'
 
 const DEG = Math.PI / 180
@@ -943,6 +944,107 @@ function buildWarehouse(track: Track, backdrop: string | null): Slice {
   return { scene, camera, baseYaw, basePitch, exposure: 1.22, tick, dispose: () => {} }
 }
 
+// ---------------------------------------------------------------- warehouse-ext：Blender 西墙
+
+/**
+ * 四行仓库西墙外观（Blender 4.2.3 无头导出的 GLB，见 tools/blender/build_warehouse.py）。
+ * 模型缺失时只保留地面、灯光与尘，不报错。
+ */
+function buildWarehouseExt(track: Track): Slice {
+  const scene = new THREE.Scene()
+  scene.background = new THREE.Color(0x0b0907)
+  scene.fog = new THREE.FogExp2(0x16120e, 0.016)
+
+  const { camera, baseYaw, basePitch } = makeCamera([24, 18, 68], [0, 12, 0], 40)
+
+  scene.add(new THREE.HemisphereLight(0x76828f, 0x1b1510, 1.5))
+  const moon = new THREE.DirectionalLight(0x9db4d2, 2.4)
+  moon.position.set(-38, 52, 44)
+  scene.add(moon)
+  const warm = new THREE.PointLight(0xe0a15a, 40, 110, 2)
+  warm.position.set(20, 7, 12)
+  scene.add(warm)
+  // 立面补光：让砖缝与弹孔在暗场里读得出来
+  const fill = new THREE.DirectionalLight(0xc9b79a, 0.9)
+  fill.position.set(0, 18, 60)
+  scene.add(fill)
+
+  const ground = new THREE.Mesh(
+    track(new THREE.PlaneGeometry(280, 280)),
+    track(new THREE.MeshStandardMaterial({ color: 0x16120e, roughness: 0.96, metalness: 0 })),
+  )
+  ground.rotation.x = -Math.PI / 2
+  scene.add(ground)
+
+  // 尘与火星：低配 Points，只动画透明度
+  const count = 240
+  const positions = new Float32Array(count * 3)
+  const rnd = prng(1937)
+  for (let i = 0; i < count; i += 1) {
+    positions[i * 3] = (rnd() - 0.5) * 96
+    positions[i * 3 + 1] = rnd() * 26
+    positions[i * 3 + 2] = (rnd() - 0.5) * 56 - 6
+  }
+  const dustGeo = track(new THREE.BufferGeometry())
+  dustGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+  const dustMat = track(
+    new THREE.PointsMaterial({ color: 0xc8a063, size: 0.18, transparent: true, opacity: 0.5, depthWrite: false }),
+  )
+  const dust = new THREE.Points(dustGeo, dustMat)
+  scene.add(dust)
+
+  let alive = true
+  const loader = new GLTFLoader()
+  loader.load(
+    `${import.meta.env.BASE_URL}models/warehouse-ext.glb`,
+    (gltf) => {
+      if (!alive) return
+      const model = gltf.scene
+      model.traverse((child) => {
+        const mesh = child as THREE.Mesh
+        if (mesh.isMesh) {
+          track(mesh.geometry)
+          const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
+          for (const material of materials) track(material as THREE.Material)
+        }
+      })
+      // 归一化：底边落地、水平居中、立面高按 25m 对齐（Blender 里就是 64×25m）
+      const box = new THREE.Box3().setFromObject(model)
+      const size = new THREE.Vector3()
+      box.getSize(size)
+      model.scale.setScalar(25 / Math.max(size.y, 0.001))
+      const box2 = new THREE.Box3().setFromObject(model)
+      const center = new THREE.Vector3()
+      box2.getCenter(center)
+      model.position.x -= center.x
+      model.position.z -= center.z
+      model.position.y -= box2.min.y
+      scene.add(model)
+    },
+    undefined,
+    () => {
+      /* 静默：模型缺失时保留地面与灯光 */
+    },
+  )
+
+  const tick = (time: number) => {
+    dustMat.opacity = 0.38 + Math.sin(time * 1.3) * 0.12
+    dust.rotation.y = Math.sin(time * 0.06) * 0.05
+  }
+
+  return {
+    scene,
+    camera,
+    baseYaw,
+    basePitch,
+    exposure: 1.25,
+    tick,
+    dispose: () => {
+      alive = false
+    },
+  }
+}
+
 // ---------------------------------------------------------------- rooftop：楼顶升旗
 
 function buildRooftop(track: Track, backdrop: string | null): Slice {
@@ -1203,7 +1305,7 @@ function buildRooftop(track: Track, backdrop: string | null): Slice {
     beamMat.opacity = 0.06 + Math.sin(time * 1.7) * 0.014
   }
 
-  return { scene, camera, baseYaw, basePitch, exposure: 1.0, tick, dispose: () => {} }
+  return { scene, camera, baseYaw, basePitch, exposure: 1.25, tick, dispose: () => {} }
 }
 
 // ---------------------------------------------------------------- bridge：雾里的桥
@@ -1632,6 +1734,9 @@ function createSlice(variant: Scene3DVariant): Slice {
   const backdrop = SCENE_3D_BACKDROP[variant]
   let slice: Slice
   switch (variant) {
+    case 'warehouse-ext':
+      slice = buildWarehouseExt(track)
+      break
     case 'rooftop':
       slice = buildRooftop(track, backdrop)
       break
@@ -1646,7 +1751,11 @@ function createSlice(variant: Scene3DVariant): Slice {
       slice = buildWarehouse(track, backdrop)
       break
   }
-  slice.dispose = dispose
+  const ownDispose = slice.dispose
+  slice.dispose = () => {
+    ownDispose()
+    dispose()
+  }
   return slice
 }
 

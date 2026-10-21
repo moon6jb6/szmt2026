@@ -1,0 +1,135 @@
+{
+  "generatedAt": "2026-10-21T05:09:34.061Z",
+  "method": "rolldown esm+minify 同参数量各成分；gzip zlib level 9；gzip 非严格可加",
+  "dist": {
+    "main": {
+      "rawKB": 844.88,
+      "gzipKB": 297.69
+    },
+    "three": {
+      "rawKB": 591.99,
+      "gzipKB": 150.66
+    },
+    "css": {
+      "rawKB": 18.75,
+      "gzipKB": 4.92
+    },
+    "html": {
+      "rawKB": 1,
+      "gzipKB": 0.68
+    }
+  },
+  "mainBundleSplit": {
+    "contentData": {
+      "rawKB": 602.83,
+      "gzipKB": 220.2,
+      "shareRawPct": 71.4
+    },
+    "reactRuntime": {
+      "rawKB": 191.34,
+      "gzipKB": 59.43,
+      "shareRawPct": 22.6
+    },
+    "appCode": {
+      "rawKB": 50.71,
+      "gzipKB": 18.05,
+      "shareRawPct": 6
+    }
+  },
+  "firstScreenData": {
+    "rawKB": 84.46,
+    "gzipKB": 34.72
+  },
+  "perVolume": [
+    {
+      "file": "chapter1.ts",
+      "label": "基础五夜 + 序章/尾声",
+      "raw": 53017,
+      "gz": 22530,
+      "rawKB": 53.02,
+      "gzipKB": 22.53,
+      "shareOfContentPct": 8.8
+    },
+    {
+      "file": "volume0.ts",
+      "label": "序卷",
+      "raw": 31589,
+      "gz": 13813,
+      "rawKB": 31.59,
+      "gzipKB": 13.81,
+      "shareOfContentPct": 5.2
+    },
+    {
+      "file": "volume1.ts",
+      "label": "卷一",
+      "raw": 90202,
+      "gz": 34704,
+      "rawKB": 90.2,
+      "gzipKB": 34.7,
+      "shareOfContentPct": 15
+    },
+    {
+      "file": "volume2.ts",
+      "label": "卷二",
+      "raw": 154021,
+      "gz": 55445,
+      "rawKB": 154.02,
+      "gzipKB": 55.45,
+      "shareOfContentPct": 25.5
+    },
+    {
+      "file": "volume3.ts",
+      "label": "卷三",
+      "raw": 65680,
+      "gz": 25617,
+      "rawKB": 65.68,
+      "gzipKB": 25.62,
+      "shareOfContentPct": 10.9
+    },
+    {
+      "file": "volume4.ts",
+      "label": "卷四（后来）",
+      "raw": 18458,
+      "gz": 8287,
+      "rawKB": 18.46,
+      "gzipKB": 8.29,
+      "shareOfContentPct": 3.1
+    },
+    {
+      "file": "volume5.ts",
+      "label": "卷五（人物志）",
+      "raw": 40842,
+      "gz": 17786,
+      "rawKB": 40.84,
+      "gzipKB": 17.79,
+      "shareOfContentPct": 6.8
+    },
+    {
+      "file": "endings.ts",
+      "label": "九结局",
+      "raw": 55775,
+      "gz": 22215,
+      "rawKB": 55.78,
+      "gzipKB": 22.22,
+      "shareOfContentPct": 9.3
+    },
+    {
+      "file": "sources.ts",
+      "label": "史料卡 76 张（含 sources.auto）",
+      "raw": 85630,
+      "gz": 29589,
+      "rawKB": 85.63,
+      "gzipKB": 29.59,
+      "shareOfContentPct": 14.2
+    },
+    {
+      "file": "sceneImages.ts",
+      "label": "场景图映射",
+      "raw": 3670,
+      "gz": 813,
+      "rawKB": 3.67,
+      "gzipKB": 0.81,
+      "shareOfContentPct": 0.6
+    }
+  ]
+}
