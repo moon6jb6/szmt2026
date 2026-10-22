@@ -1,12 +1,12 @@
 {
   "schema": "dsh/package-manifest/v1",
   "project": "《把名字留下来》",
-  "generatedAt": "2026-10-22T04:38:28.693Z",
-  "generatedAtLocal": "2026-10-22 12:38:28 +08:00",
-  "durationSeconds": 3.29,
+  "generatedAt": "2026-10-22T08:45:02.783Z",
+  "generatedAtLocal": "2026-10-22 16:45:02 +08:00",
+  "durationSeconds": 7.46,
   "tool": "tools/package.mjs",
-  "command": "node tools/package.mjs --name 把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737 --out D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip --final --note 正式提交材料包（不含截图/视频/PPT/承诺书）",
-  "runNote": "正式提交材料包（不含截图/视频/PPT/承诺书）",
+  "command": "node tools/package.mjs --name 把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737 --out D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip --final --note v1.7.1：运行说明新增「不能双击 index.html」置顶小节与 Windows 命令；重出 PDF 后重打包",
+  "runNote": "v1.7.1：运行说明新增「不能双击 index.html」置顶小节与 Windows 命令；重出 PDF 后重打包",
   "dryRun": false,
   "ok": true,
   "exitCode": 0,
@@ -15,8 +15,8 @@
   "nameIsPlaceholder": false,
   "git": {
     "available": true,
-    "head": "9809cd8",
-    "dirty": 11
+    "head": "f26f42d",
+    "dirty": 13
   },
   "metrics": {
     "path": "docs/report/2026-10-22-afternoon-metrics.json",
@@ -25,14 +25,14 @@
   "archive": {
     "path": "D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip",
     "pathRelative": "../提交/把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip",
-    "bytes": 26622958,
-    "human": "25.39 MiB",
-    "mib": 25.39,
-    "sha256": "0e528dc0a5e278f72f558453ef2ba1786417d6dd960cb30b682c21748a517e5b",
+    "bytes": 26741587,
+    "human": "25.50 MiB",
+    "mib": 25.5,
+    "sha256": "d4f13e65da91b9c6f146dca096c47a4778f5c318cc395d08ea9de272097d55bb",
     "entries": 592,
     "files": 575,
     "dirs": 17,
-    "compressionRatio": 0.9122,
+    "compressionRatio": 0.9117,
     "utf8FilenameFlag": true,
     "crossCheck": {
       "tool": "bsdtar -tf",
@@ -55,7 +55,7 @@
       ],
       "reason": null
     },
-    "stagingDir": "D:\\提交\\_staging\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737__20261022043825\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737",
+    "stagingDir": "D:\\提交\\_staging\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737__20261022084455\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737",
     "stagingKept": true,
     "limitBytes": 10737418240,
     "limitHuman": "10 GiB",
@@ -71,8 +71,8 @@
     "files": 575,
     "dirs": 13,
     "dirsIncludingRoot": 14,
-    "bytes": 29185232,
-    "human": "27.83 MiB",
+    "bytes": 29333135,
+    "human": "27.97 MiB",
     "byGroup": [
       {
         "group": "01_作品及成果文件",
@@ -84,15 +84,15 @@
       {
         "group": "03_作品介绍文档",
         "files": 1,
-        "bytes": 682369,
-        "human": "666.4 KiB",
+        "bytes": 683083,
+        "human": "667.1 KiB",
         "label": "作品介绍 PDF"
       },
       {
         "group": "04_运行或使用说明",
         "files": 1,
-        "bytes": 393288,
-        "human": "384.1 KiB",
+        "bytes": 540477,
+        "human": "527.8 KiB",
         "label": "运行说明 PDF"
       },
       {
@@ -171,8 +171,8 @@
       "label": "作品介绍 PDF",
       "required": true,
       "files": 1,
-      "bytes": 682369,
-      "human": "666.4 KiB",
+      "bytes": 683083,
+      "human": "667.1 KiB",
       "status": "ok"
     },
     {
@@ -180,8 +180,8 @@
       "label": "运行说明 PDF",
       "required": true,
       "files": 1,
-      "bytes": 393288,
-      "human": "384.1 KiB",
+      "bytes": 540477,
+      "human": "527.8 KiB",
       "status": "ok"
     },
     {
@@ -273,18 +273,18 @@
       {
         "packagePath": "03_作品介绍文档/作品介绍.pdf",
         "sourcePath": "docs/deliverables/作品介绍.pdf",
-        "bytes": 682369,
-        "mtime": "2026-10-22T04:31:47.742Z",
-        "mtimeLocal": "2026-10-22 12:31:47 +08:00",
-        "sha256": "49cf9fbf6575247f56e244cdc32047b617a77551c305a161a7f1827c6d27dec9"
+        "bytes": 683083,
+        "mtime": "2026-10-22T08:44:28.385Z",
+        "mtimeLocal": "2026-10-22 16:44:28 +08:00",
+        "sha256": "d1cf5edb72ace5ab33650e9e28f841c83027eef23d9b710c1faee67350ef9e07"
       },
       {
         "packagePath": "04_运行或使用说明/运行说明.pdf",
         "sourcePath": "docs/deliverables/运行说明.pdf",
-        "bytes": 393288,
-        "mtime": "2026-10-22T04:32:03.993Z",
-        "mtimeLocal": "2026-10-22 12:32:03 +08:00",
-        "sha256": "82271e4cacdf10ea2293d302cf61bce62d418cf85f4a38c81402f88440089599"
+        "bytes": 540477,
+        "mtime": "2026-10-22T08:44:24.456Z",
+        "mtimeLocal": "2026-10-22 16:44:24 +08:00",
+        "sha256": "a18eef8b1d72f7f46c28ca556c9dcd43f26733f8f6cc0046ef7e2c03664d1830"
       },
       {
         "packagePath": "05_补充成果材料/测试记录.pdf",
@@ -563,8 +563,8 @@
       "indexPresent": true,
       "absoluteRefs": [],
       "staleness": {
-        "distBuiltAt": "2026-10-22T04:34:36.427Z",
-        "distBuiltAtLocal": "2026-10-22 12:34:36 +08:00",
+        "distBuiltAt": "2026-10-22T08:20:25.258Z",
+        "distBuiltAtLocal": "2026-10-22 16:20:25 +08:00",
         "scannedDirs": [
           "src",
           "public"
@@ -582,12 +582,12 @@
           "md": "docs/deliverables/作品介绍.md",
           "pdfPresent": true,
           "mdPresent": true,
-          "pdfBytes": 682369,
-          "pdfMtime": "2026-10-22T04:31:47.742Z",
-          "pdfMtimeLocal": "2026-10-22 12:31:47 +08:00",
-          "mdMtime": "2026-10-22T04:31:42.765Z",
-          "mdMtimeLocal": "2026-10-22 12:31:42 +08:00",
-          "deltaSeconds": 5,
+          "pdfBytes": 683083,
+          "pdfMtime": "2026-10-22T08:44:28.385Z",
+          "pdfMtimeLocal": "2026-10-22 16:44:28 +08:00",
+          "mdMtime": "2026-10-22T08:44:13.571Z",
+          "mdMtimeLocal": "2026-10-22 16:44:13 +08:00",
+          "deltaSeconds": 15,
           "status": "FRESH"
         },
         {
@@ -595,12 +595,12 @@
           "md": "docs/deliverables/运行说明.md",
           "pdfPresent": true,
           "mdPresent": true,
-          "pdfBytes": 393288,
-          "pdfMtime": "2026-10-22T04:32:03.993Z",
-          "pdfMtimeLocal": "2026-10-22 12:32:03 +08:00",
-          "mdMtime": "2026-10-22T04:31:42.811Z",
-          "mdMtimeLocal": "2026-10-22 12:31:42 +08:00",
-          "deltaSeconds": 21,
+          "pdfBytes": 540477,
+          "pdfMtime": "2026-10-22T08:44:24.456Z",
+          "pdfMtimeLocal": "2026-10-22 16:44:24 +08:00",
+          "mdMtime": "2026-10-22T08:44:13.565Z",
+          "mdMtimeLocal": "2026-10-22 16:44:13 +08:00",
+          "deltaSeconds": 11,
           "status": "FRESH"
         },
         {
@@ -747,10 +747,10 @@
           "Title": "作品介绍.md",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261022043146+00'00'",
-          "ModDate": "D:20261022043146+00'00'"
+          "CreationDate": "D:20261022084426+00'00'",
+          "ModDate": "D:20261022084426+00'00'"
         },
-        "bytes": 682369
+        "bytes": 683083
       },
       {
         "packagePath": "04_运行或使用说明/运行说明.pdf",
@@ -758,10 +758,10 @@
           "Title": "运行说明.md",
           "Creator": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/155.0.0.0 Safari/537.36",
           "Producer": "Skia/PDF m155",
-          "CreationDate": "D:20261022043203+00'00'",
-          "ModDate": "D:20261022043203+00'00'"
+          "CreationDate": "D:20261022084423+00'00'",
+          "ModDate": "D:20261022084423+00'00'"
         },
-        "bytes": 393288
+        "bytes": 540477
       },
       {
         "packagePath": "05_补充成果材料/测试记录.pdf",

@@ -19,28 +19,39 @@ pre { background: #f5f0e6; border: 1px solid #ddd2bd; padding: 6pt; font-size: 8
 hr { border: 0; border-top: 1px solid #d8cdb8; margin: 10pt 0; }
 a { color: #7a3a2a; text-decoration: none; }
 </style></head><body><h1>运行与使用说明</h1>
+<h2>〇、先看这里：不能双击 <code>index.html</code></h2>
+<p>本作品是 ES Module 静态站点，<strong>必须用本地 HTTP 服务打开，不能直接双击 <code>index.html</code></strong>。</p>
+<p>双击后会看到：标签页标题正常（「把名字留下来 · 四行仓库一九三七」），<strong>页面却是一片全白</strong>，地址栏是 <code>file:///…/index.html</code>。按 <code>F12</code> 打开控制台，能看到 <code>… from origin 'null' has been blocked by CORS policy</code>。<strong>这不是作品坏了，也不是文件缺失</strong>——浏览器在 <code>file://</code> 下不允许加载 ES Module。换成 HTTP 打开即可。</p>
+<p>Windows 两行命令（「命令提示符」或 PowerShell 均可，整段复制）：</p>
+<pre><code>pushd &quot;D:\解压位置\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737\01_作品及成果文件&quot;
+python -m http.server 8080</code></pre>
+<p>浏览器打开 <strong>&lt;http://127.0.0.1:8080/&gt;</strong>（开头必须是 <code>http://</code>，不能是 <code>file://</code>）。打开正确的话，2—3 秒内会出现「把名字留下来」标题和「从头开始」按钮。</p>
+<ul><li>把 <code>D:\解压位置</code> 换成你实际解压的位置，<strong>引号保留</strong>（路径含中文、<code>·</code>、括号时没有引号会报「系统找不到指定的路径」）。</li><li><strong>先解压再打开</strong>：不要在压缩包预览窗口（Windows 自带 zip、7-Zip、WinRAR）里直接双击 <code>index.html</code>，那用的是临时目录和 <code>file://</code>，同样白屏。</li><li>手打路径容易错：在资源管理器打开 <code>01_作品及成果文件</code> 文件夹，地址栏清空后输入 <code>cmd</code> 回车，命令行会直接停在该目录，这时只跑第二行就行。</li><li><code>python</code> 报「不是内部或外部命令」或弹出微软商店：改用 <code>py -3 -m http.server 8080</code>。</li><li>没有 Python：见 §二 方式 A 的 Node 写法；端口被占：换 <code>8081</code>，地址同步改成 <code>http://127.0.0.1:8081/</code>。</li></ul>
 <h2>一、运行环境</h2>
 <table><thead><tr><th>项</th><th>要求</th></tr></thead><tbody>
 <tr><td>浏览器</td><td>Chrome / Edge / Firefox 最近两年版本</td></tr>
 <tr><td>分辨率</td><td>桌面 1280×720 及以上；兼容平板与手机</td></tr>
 <tr><td>网络</td><td><strong>无需联网</strong>。无外部字体、无 CDN、无后端请求</td></tr>
 <tr><td>其他</td><td>需要启用 JavaScript 与 localStorage（存档用）</td></tr>
+<tr><td>3D 视角（可选）</td><td>需要 WebGL2（Chrome / Edge 102+ 默认支持）。不支持、开启减少动效或窗口过窄时，「3D 视角」按钮自动隐藏，正文与结局不受影响</td></tr>
+<tr><td>前置条件</td><td>作品本身不用安装；但打开它需要本机装有 Python / Node / PHP 之一，用来起本地 HTTP 服务（见 §〇、§二）</td></tr>
 </tbody></table>
 <h2>二、评审期快速启动（推荐）</h2>
 <h3>方式 A：本地静态服务器（最稳，推荐）</h3>
-<p>构建产物用了 ES Module，<strong>必须通过 HTTP 起服务</strong>（直接双击 <code>index.html</code> 会被浏览器的 file:// 安全策略拦成白屏，这不是作品问题）。</p>
-<p>在 <code>01_作品及成果文件/</code> 目录下执行任意一种：</p>
-<pre><code># Python 3
-python -m http.server 8080
-
-# Node.js
-npx serve -l 8080
-
-# PHP
-php -S 127.0.0.1:8080</code></pre>
-<p>浏览器打开 &lt;http://127.0.0.1:8080/&gt;。</p>
-<blockquote><p>打包说明：构建已改成相对路径（<code>base: './'</code>），所以整个 <code>01_作品及成果文件/</code> 目录放在任意子目录下都行，在父目录起服务也能正常访问。</p></blockquote>
-<h3>方式 B：源码开发模式</h3>
+<p>做法与 §〇 相同，这里补上 Node / PHP 两种备选，以及在 Windows 上常撞的几个坑。</p>
+<p><strong>① 先进入目录</strong>（三种方式共用这一行，路径换成你的实际解压位置）：</p>
+<pre><code>pushd &quot;D:\解压位置\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737\01_作品及成果文件&quot;</code></pre>
+<p><strong>② 再任选一种起服务：</strong></p>
+<p>A-1 · Python（多数电脑可用，不需要联网）</p>
+<pre><code>python -m http.server 8080</code></pre>
+<p>A-2 · Node.js（没装 Python 时用）</p>
+<pre><code>npx --yes serve -l 8080</code></pre>
+<ul><li><code>npx</code> 第一次会联网下载 <code>serve</code>；完全断网且之前没下载过时会失败，那就用 A-1。</li><li>PowerShell 报「无法加载文件 …\npx.ps1，因为在此系统上禁止运行脚本」：改成 <code>npx.cmd --yes serve -l 8080</code>。</li></ul>
+<p>A-3 · PHP（可选）</p>
+<pre><code>php -S 127.0.0.1:8080</code></pre>
+<p><strong>③ 浏览器打开</strong> &lt;http://127.0.0.1:8080/&gt;。地址栏出现 <code>file://</code> 就是没走对：要么服务没起来，要么是直接双击了文件。</p>
+<blockquote><p>打包说明：构建已改成相对路径（<code>base: './'</code>），所以整个 <code>01_作品及成果文件/</code> 目录放在任意子目录下都行。<strong>但地址要跟着目录走</strong>：如果在上一级 <code>把名字留下来_…_460737/</code> 起服务，就要访问 <code>http://127.0.0.1:8080/01_作品及成果文件/</code>；此时打开 <code>http://127.0.0.1:8080/</code> 只会看到一个文件列表，那不是作品页面。</p></blockquote>
+<h3>方式 B：源码开发模式（仅开发用，评审不需要这一节）</h3>
 <pre><code>npm install
 npm run dev        # 开发预览
 npm run build      # 产出 dist/
@@ -79,7 +90,12 @@ npm run preview    # 预览构建产物</code></pre>
 <h2>八、内容提示</h2>
 <p>游戏里涉及战争与死亡，但不出血腥场面，也没有真实人物的肖像。虚构主角陈望生在第一次出场的地方标着「复合型虚构角色」。史实条目在游戏内「史料库」里都能查到来源。</p>
 <h2>九、常见问题</h2>
-<p><strong>Q：打开后是白屏？</strong><br/>A：用方式 A 起一个本地服务器（<code>file://</code> 双击会被 ES Module 的安全策略拦下）；或确认浏览器未禁用 JavaScript。</p>
+<p><strong>Q：双击 <code>index.html</code>，打开是白屏？</strong><br/>A：正常现象，不是作品坏了。<code>file://</code> 下浏览器不允许加载 ES Module，控制台会报 <code>origin 'null' … has been blocked by CORS policy</code>。按 §〇 起本地服务器，用 <code>http://127.0.0.1:8080/</code> 打开即可。如果 HTTP 下仍然白屏，再确认两件事：浏览器没禁用 JavaScript；服务日志里 <code>GET /assets/…</code> 是 200 而不是 404（404 通常是在错误的目录起了服务，见下一条）。</p>
+<p><strong>Q：打开 <code>http://127.0.0.1:8080/</code> 只看到一个文件列表？</strong><br/>A：服务起在了上一级目录。要么改访问 <code>http://127.0.0.1:8080/01_作品及成果文件/</code>，要么按 §〇 进入 <code>01_作品及成果文件/</code> 再起服务。</p>
+<p><strong>Q：提示端口被占用（<code>[WinError 10048]</code> / <code>EADDRINUSE</code>）？</strong><br/>A：8080 被别的程序占了。换端口重跑，例如 <code>python -m http.server 8081</code>，浏览器地址同步改成 <code>http://127.0.0.1:8081/</code>。</p>
+<p><strong>Q：PowerShell 报「无法加载文件 …\npx.ps1，因为在此系统上禁止运行脚本」？</strong><br/>A：这是 PowerShell 的执行策略，不是作品问题。把命令换成 <code>npx.cmd --yes serve -l 8080</code>，或先执行 <code>Set-ExecutionPolicy -Scope Process RemoteSigned</code> 再重试；也可以直接用 Python 那条命令（不受执行策略影响）。</p>
+<p><strong>Q：敲 <code>python</code> 弹出微软商店，或提示「不是内部或外部命令」？</strong><br/>A：说明这台机器没装 Python（Windows 自带的是个占位跳转）。改用 <code>py -3 -m http.server 8080</code>，或走 Node 的 <code>npx</code>，或 PHP。</p>
+<p><strong>Q：路径里有中文、<code>·</code>、括号或空格，命令报「系统找不到指定的路径」？</strong><br/>A：路径必须用英文双引号包住（§〇 的示例已经包住，照抄即可）。更省事的办法：在资源管理器里进入 <code>01_作品及成果文件</code> 文件夹，地址栏清空后输入 <code>cmd</code> 回车，命令行直接停在该目录，不用手打路径。</p>
 <p><strong>Q：结局页为什么先黑一下？</strong><br/>A：那是结局的「终极画面」（约 6 秒，Canvas 绘制）。点画面任意位置就能跳过，直接进结局正文。结局正文下面有「重看结局画面」按钮。系统开了「减少动态效果」时只显示最终帧。</p>
 <p><strong>Q：九个结局怎么解锁？</strong><br/>A：尾声只会列出你这一周目真正带出来的记忆。六个主结局对应六种载体；如果同时带走两样（名册+口述 / 家书+照片 / 旗样+口信），会额外出现合成结局「档案 / 遗物 / 口耳」。图鉴里 9 格，未解锁的会显示解锁条件。</p>
 <p><strong>Q：没有声音？</strong><br/>A：默认静音，点右下角「声音」才开，状态会记住。这一版只有 28 条环境音与动作音（4.88 MB），没有人声配音，也没有音乐。这是取舍，不是坏了。</p>
@@ -87,7 +103,7 @@ npm run preview    # 预览构建产物</code></pre>
 <p><strong>Q：如何只看结局？</strong><br/>A：菜单 →「结局一览」，已解锁的结局会显示标题与副标题。</p>
 <h2>十、目录结构</h2>
 <pre><code>作品名_作品编号/
-├─ 01_作品及成果文件/      # 构建产物（index.html + assets/ + art/ + bg/ + audio/，550 文件 / 23.47 MB）
+├─ 01_作品及成果文件/      # 构建产物（index.html + assets/ + art/ + bg/ + audio/，550 文件 / 24.58 MB）
 ├─ 02_作品展示视频/        # 按需
 ├─ 03_作品介绍文档/        # 作品介绍.pdf
 ├─ 04_运行或使用说明/      # 本文件
