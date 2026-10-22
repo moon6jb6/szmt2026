@@ -31,7 +31,7 @@ a { color: #7a3a2a; text-decoration: none; }
 <p>运行时不请求任何外部 CDN、字体、统计脚本或后端接口。</p>
 <h2>二、开发期工具（不随作品分发）</h2>
 <table><thead><tr><th>资源</th><th>类型</th><th>用途</th><th>授权</th></tr></thead><tbody>
-<tr><td>Playwright</td><td>浏览器自动化</td><td>全流程走路测试（115 场景到结局）、截图（已列入 <code>package.json</code> devDependencies（<code>npm i</code> 后可直接跑））</td><td>Apache-2.0</td></tr>
+<tr><td>Playwright</td><td>浏览器自动化</td><td>全流程走路测试（115 场景到结局）、截图；已列入 <code>package.json</code> devDependencies，<code>npm i</code> 后可直接跑</td><td>Apache-2.0</td></tr>
 <tr><td>Python 3.12 / Anaconda</td><td>运行环境</td><td>本地出图与质检脚本</td><td>BSD 系</td></tr>
 <tr><td>PyMuPDF</td><td>PDF 处理</td><td>文档转换与预览</td><td>AGPL（仅开发期使用，不随作品分发）</td></tr>
 <tr><td>Markdown (Python)</td><td>文档转换</td><td>作品介绍等材料转 HTML</td><td>BSD</td></tr>
@@ -46,17 +46,17 @@ a { color: #7a3a2a; text-decoration: none; }
 <tr><td>Qwen3-VL-2B-Instruct</td><td>2B</td><td>阿里云通义千问，&lt;https://huggingface.co/Qwen/Qwen3-VL-2B-Instruct&gt;</td><td>生成图逐张质检（四维打分）</td><td>Apache-2.0</td></tr>
 <tr><td>Stable Audio Open Small</td><td>497M</td><td>Stability AI，&lt;https://huggingface.co/stabilityai/stable-audio-open-small&gt;</td><td>28 条环境音/动作音（全本地生成）</td><td>Stability AI Community License（参赛为非商业学生竞赛，符合许可）</td></tr>
 </tbody></table>
-<p>生成图的提示词、seed、尺寸、步数、耗时全部记录在 <code>docs/art/image-manifest.json</code> 与同名 JSON，可复现；生成过程与质检报告见 <code>docs/art/</code>。生成图为本作品专门生成，未使用任何现有摄影作品、影视截图或真实人物肖像；人物一律剪影/背影，不出现清晰人脸。</p>
+<p>生成图的提示词、seed、尺寸、步数、耗时都记在 <code>docs/art/image-manifest.json</code> 与同名 JSON 里，可复现。生成过程与质检报告见 <code>docs/art/</code>。这些图是为本作品专门生成的，没有用任何现有摄影作品、影视截图或真实人物肖像。人物一律剪影或背影，不出现清晰人脸。</p>
 <h2>四、字体</h2>
 <p>作品使用<strong>系统字体回退</strong>，未打包、未下载任何字体文件，也未请求外部字体服务：</p>
 <pre><code>标题：Source Han Serif SC → Noto Serif SC → Songti SC → SimSun → serif
 正文：Source Han Sans SC → Noto Sans SC → PingFang SC → Microsoft YaHei → sans-serif</code></pre>
-<p>因此不存在字体授权问题；不同系统下字形略有差异，属预期行为。</p>
+<p>所以不涉及字体授权。不同系统下字形会略有差别，这是正常的。</p>
 <h2>五、史料与文字</h2>
-<ul><li>游戏正文中的史实表述均为团队根据公开报道与史料<strong>概述</strong>，不直接引用受版权保护的原文段落。</li><li>全部史实条目在游戏内「史料库」页列出来源，主要有：</li></ul>
+<ul><li>游戏正文里的史实表述，都是团队根据公开报道与史料<strong>概述</strong>的，不直接引用受版权保护的原文段落。</li><li>全部史实条目在游戏内「史料库」页列出来源，主要有：</li></ul>
 <ol><li>新华社 2015-06-01 转荆楚网《淞沪会战「八百壮士」半数是湖北通城人 87 人查实姓名》</li><li>光明日报 2010-08-28《八百壮士在重围中执戈为国》</li><li>谢继民《我的父亲谢晋元将军——八百壮士浴血奋战记》，团结出版社，2010</li></ol>
-<ul><li>未使用任何档案影印件、历史照片或影像素材。</li><li>主角陈望生为团队创作的复合型虚构角色，不对应任何真实人物。</li></ul>
+<ul><li>没有使用任何档案影印件、历史照片或影像素材。</li><li>主角陈望生是团队创作的复合型虚构角色，不对应任何真实人物。</li></ul>
 <h2>六、代码原创性说明</h2>
-<ul><li>叙事引擎、内容数据、2.5D 舞台、粒子系统、样式系统为团队原创。</li><li>未使用任何游戏引擎、模板或开源项目的整段代码。</li><li>第三方库均通过 npm 正常依赖引入，未做源码修改。</li></ul>
+<ul><li>叙事引擎、内容数据、2.5D 舞台、粒子系统、样式系统都由团队原创。</li><li>没有使用任何游戏引擎、模板或开源项目的整段代码。</li><li>第三方库都通过 npm 正常依赖引入，没有改过源码。</li></ul>
 <h2>七、需要补充的材料</h2>
 <p>若后续引入音乐、历史影像或人声配音，将在此处补充来源与授权说明，并在报名系统中同步更新（本轮 28 条音效已按第三节列明模型、来源与授权）。</p></body></html>

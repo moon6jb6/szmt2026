@@ -66,9 +66,9 @@ errors: none</code></pre>
 <table><thead><tr><th>文件</th><th>原始</th><th>gzip</th></tr></thead><tbody>
 <tr><td>index.html</td><td>1.00 kB</td><td>0.68 kB</td></tr>
 <tr><td>CSS（index-MLU40nco.css）</td><td>18.75 kB</td><td>4.92 kB</td></tr>
-<tr><td>JS 主包（含 11.3 万字正文、9 个结局、76 张史料卡与交互组件）</td><td>847.26 kB</td><td>298.5 kB</td></tr>
+<tr><td>JS 主包（含 11.3 万字正文、9 个结局、76 张史料卡与交互组件）</td><td>897.96 kB</td><td>298.5 kB</td></tr>
 <tr><td>3D 懒加载（Scene3D-BkEU69la.js）</td><td>591.99 kB</td><td>171.1 kB</td></tr>
-<tr><td>dist 总计（496 张美术素材 + 8 张背景图 + 28 条音效 + GLB）</td><td>545 个文件 / 23.47 MB</td><td>—</td></tr>
+<tr><td>dist 总计（496 张美术素材 + 8 张背景图 + 28 条音效 + GLB）</td><td>550 个文件 / 23.47 MB</td><td>—</td></tr>
 </tbody></table>
 <blockquote><p>gzip 为 <code>node zlib</code> 对 <code>dist/assets/</code> 现有文件实测（默认压缩级别）；<code>tools/metrics.mjs</code> 里的 gzip 字段是按比例估算，非实测。</p></blockquote>
 <p>无外部字体、无 CDN、无后端请求，断网可运行。</p>
@@ -127,4 +127,4 @@ PASS: ok</code></pre>
 <tr><td><code>node tools/test-deploy.mjs</code> / <code>test-degrade.mjs</code> / <code>test-3d-chunk-fail.mjs</code> / <code>test-3d.mjs</code></td><td>PASS</td><td>子目录部署 / 减少动效 / chunk 失败不白屏 / 5 切片</td></tr>
 <tr><td><code>node tools/quality/a11y-check.mjs &lt;url&gt;</code></td><td>PASS</td><td>对比度全 PASS、错误 none</td></tr>
 </tbody></table>
-<p>新构建数字：dist <strong>550 文件 / 24.59 MB</strong>；主包 <strong>906.07 kB（gzip 319.0 kB）</strong>；3D 懒加载 <strong>670.16 kB（gzip 171.1 kB）</strong>；CSS <strong>105.28 kB（gzip 22.3 kB）</strong>。</p></body></html>
+<p>新构建数字：dist <strong>550 文件 / 24.58 MB</strong>；主包 <strong>906.07 kB（gzip 316.6 kB）</strong>；3D 懒加载 <strong>670.16 kB（gzip 171.1 kB）</strong>；CSS <strong>105.28 kB（gzip 22.3 kB）</strong>。</p></body></html>

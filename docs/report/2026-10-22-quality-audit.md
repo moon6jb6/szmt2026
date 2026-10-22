@@ -1,6 +1,6 @@
 # 2026-10-22 质量终审：性能 / 无障碍 / 健壮性
 
-> 对象：`dist/` 构建（13:08 构建，550 文件 / 24.59 MB；与工作区 `src/` 的差异见 [§3.5](#35-构建)），提交形态为「本地目录 + 子目录 HTTP」。
+> 对象：`dist/` 构建（13:08 构建，550 文件 / 24.58 MB；与工作区 `src/` 的差异见 [§3.5](#35-构建)），提交形态为「本地目录 + 子目录 HTTP」。
 > 方法：无头 Chrome 155（Playwright `channel=chrome`）+ CDP 4× CPU 限速 + 真实渲染像素采样；**只读审计，未改 `src/`**。
 > 数字源：`tools/quality/{bundle-split,perf,a11y,robust,reduced-motion}.json`；截图 `tools/quality/shots/`。
 > 严重度：P0 阻断交付 / P1 核心路径受损或合规风险、建议截止前修 / P2 记录、不阻塞。
@@ -18,7 +18,7 @@
 
 截止前建议修 3 项、合计约 20 分钟：见 [§4](#4-截止前修什么)。
 
-**另有一个流程问题（P1）**：审计发现 `dist/`（13:08 构建）落后于工作区 `src/`——`chapter1.ts`、`endings.ts` 在 13:20/13:21 被改过。体积实测无差异（主包仍 847.26 kB），但**提交前必须重建**，详见 [§3.5](#35-构建)。
+**另有一个流程问题（P1）**：审计发现 `dist/`（13:08 构建）落后于工作区 `src/`——`chapter1.ts`、`endings.ts` 在 13:20/13:21 被改过。体积实测无差异（主包仍 897.96 kB），但**提交前必须重建**，详见 [§3.5](#35-构建)。
 
 ## 1. 性能
 
@@ -26,7 +26,7 @@
 
 | 产物 | raw | gzip | 说明 |
 |---|---|---|---|
-| `assets/index-*.js` 主包 | **847.26 kB** | **299.81 kB** | 一次拉全，含全部 140 场景数据 |
+| `assets/index-*.js` 主包 | **897.96 kB** | **299.81 kB** | 一次拉全，含全部 140 场景数据 |
 | `assets/Scene3D-*.js` | 591.99 kB | 151.76 kB | **lazy**：只有点「3D 视角」才下载 |
 | `assets/index-*.css` | 18.75 kB | 4.94 kB | — |
 | `index.html` | 1.00 kB | 0.68 kB | — |
@@ -184,7 +184,7 @@ CLS = 0（所有场景）；LCP 元素是右下角「声音」按钮（最大已
 
 `npm run build`：tsc 0 错误、vite 通过，只有 chunk>500 kB 提示与 6 条 `../bg/*.jpg` 运行时解析提示（见 §1.4 P2）。
 
-**构建一致性（P1，需在提交前处理）**：审计的是 `dist/`（构建于 13:08）。审计结束前发现工作区 `src/game/content/chapter1.ts`、`src/game/content/endings.ts` 在 13:20/13:21 被改过（`git diff`：endings +107/−98 行、chapter1 22 行），**dist 已落后于工作区**。我用 `npx vite build --outDir tools/quality/dist-probe` 单独重建量过当前工作区的体积：主包 847.26 kB（gzip 299.87）、CSS 18.75 kB、Scene3D 591.98 kB —— **与审计版完全相同**，所以性能/包体结论不受影响；但交付前必须正式重跑一次 `npm run build`，否则提交的 `dist/` 里结局文案是旧版。
+**构建一致性（P1，需在提交前处理）**：审计的是 `dist/`（构建于 13:08）。审计结束前发现工作区 `src/game/content/chapter1.ts`、`src/game/content/endings.ts` 在 13:20/13:21 被改过（`git diff`：endings +107/−98 行、chapter1 22 行），**dist 已落后于工作区**。我用 `npx vite build --outDir tools/quality/dist-probe` 单独重建量过当前工作区的体积：主包 897.96 kB（gzip 299.87）、CSS 18.75 kB、Scene3D 591.98 kB —— **与审计版完全相同**，所以性能/包体结论不受影响；但交付前必须正式重跑一次 `npm run build`，否则提交的 `dist/` 里结局文案是旧版。
 
 ## 4. 截止前修什么
 
@@ -230,5 +230,5 @@ node tools/quality/robust-check.mjs                # 断网 / localStorage 禁�
 - **P1-1 已修**：删除 `.choices` 的 `role="list"` 与每个选项的 `role="listitem"`，原生 button 语义与可访问名恢复。
 - **P1-2 已修**：`.scene-title` 加 `tabIndex={-1}`，换场后 280ms 将焦点交给标题；场景页新增 `aria-live="polite"` 播报（章节 + 标题）。
 - **P2 顺手修**：史料卡浮层支持 Esc 关闭；窗口缩到 <700px 自动退出 3D；移动端声音按钮下移并给正文留 72px 底部间距。
-- 修复后 `dist` 已重建（本轮 847.26 kB / gzip 319.0 kB），并由 `tools/quality/a11y-check.mjs` 复跑复核。
+- 修复后 `dist` 已重建（本轮 897.96 kB / gzip 316.6 kB），并由 `tools/quality/a11y-check.mjs` 复跑复核。
 - 未做（按你的建议）：按屏 lazy 拆包、Service Worker。

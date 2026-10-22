@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-21T17:43:18.774Z",
+  "generatedAt": "2026-10-22T04:31:26.615Z",
   "gitHead": "ref: refs/heads/main",
   "words": {
     "total": 113048,
@@ -80,36 +80,36 @@
   },
   "build": {
     "distFiles": 550,
-    "distMb": 24.59,
-    "jsBytes": 1576243,
+    "distMb": 24.58,
+    "jsBytes": 1568123,
     "cssBytes": 105287,
     "jsAssets": [
-      "index-QKy_DOCM.js",
-      "Scene3D-CqCb4Vvf.js"
+      "index-BjbJ_pzB.js",
+      "Scene3D-rk2M_lw7.js"
     ],
     "assetSizes": [
       {
-        "name": "index-QKy_DOCM.js",
-        "raw": 906079,
-        "gzip": 318984
+        "name": "index-BjbJ_pzB.js",
+        "raw": 897959,
+        "gzip": 316633
       },
       {
-        "name": "Scene3D-CqCb4Vvf.js",
+        "name": "Scene3D-rk2M_lw7.js",
         "raw": 670164,
         "gzip": 171133
       }
     ],
     "mainJs": {
-      "name": "index-QKy_DOCM.js",
-      "raw": 906079,
-      "gzip": 318984
+      "name": "index-BjbJ_pzB.js",
+      "raw": 897959,
+      "gzip": 316633
     },
     "scene3d": {
-      "name": "Scene3D-CqCb4Vvf.js",
+      "name": "Scene3D-rk2M_lw7.js",
       "raw": 670164,
       "gzip": 171133
     },
-    "jsGzipEstimate": 318984,
+    "jsGzipEstimate": 316633,
     "cssGzipEstimate": 22288
   },
   "threeD": {
