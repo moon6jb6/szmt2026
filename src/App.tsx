@@ -1,4 +1,4 @@
-﻿import {
+import {
   Component,
   lazy,
   Suspense,
@@ -980,7 +980,7 @@ export default function App() {
         </button>
       </div>
       <p className="content-note">
-        内容提示：本作涉及战争与死亡，不表现血腥场面。人物陈望生为复合型虚构角色，史实依据见文内「史料卡」。
+        内容提示：本作涉及战争与死亡，不表现血腥场面。陈望生是虚构人物，不是哪一个真人；史实依据见文内「史料卡」。
       </p>
     </div>
   )
@@ -1038,8 +1038,8 @@ export default function App() {
       </p>
       <h2>虚构与边界</h2>
       <p>
-        主角陈望生为复合型虚构角色。谢晋元等真实人物只以可查证的事实出现，不虚构其台词。
-        场景中的天气、对话细节为叙事重构；可核对的史实均标注来源。
+        主角陈望生不是哪个真人，是照着几个通城兵的样子拼出来的一个人。谢晋元这些真人只写能查到的事，不给他们编台词。
+        天气、对话这些细节是叙事补的；能核对的史实都标了出处。
       </p>
       <h2>技术</h2>
       <p>
@@ -1090,11 +1090,14 @@ export default function App() {
                   {card.scenes.length > 0 && (
                     <span className="source-scenes">用于 {card.scenes.length} 个场景</span>
                   )}
-                  {card.tags.slice(0, 3).map((tag) => (
-                    <span key={tag} className="source-tag">
-                      #{tag}
-                    </span>
-                  ))}
+                  {card.tags
+                    .filter((tag) => !tag.startsWith('confidence:') && !/^P\d$/.test(tag))
+                    .slice(0, 3)
+                    .map((tag) => (
+                      <span key={tag} className="source-tag">
+                        #{tag}
+                      </span>
+                    ))}
                 </div>
               </article>
             ))}
