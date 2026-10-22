@@ -66,3 +66,18 @@
 - `D:\backups\od-delete-report.txt`、`od-delete-wave.txt`（本次取证导出）
 - `%LOCALAPPDATA%\Microsoft\OneDrive\setup\logs\Update_2026-10-21_143333_16116-12828.log`
 - `%LOCALAPPDATA%\Microsoft\OneDrive\settings\Personal\global.ini`
+
+---
+
+## 七、2026-10-22 12:22 第二次自动重启（当日复查）
+
+- **12:22:08** OneDrive 进程被重新拉起；`setup\logs\Update_2026-10-22_042210_652-48948.log` 显示是 **OneDrive Per-Machine Standalone Update Task**（计划任务，执行 `C:\Program Files\Microsoft OneDrive\OneDriveStandaloneUpdater.exe`）在 12:22:10 做更新检查，日志明确写 `No applicable update node found`（没有新版本，但 updater 仍重启了客户端）。
+- 重启后立即进入 `EnumChanges | DifferentialResync | ClientTriggered`（与 10-21 22:34 开始删除前完全相同的状态）。
+- **12:22:39 已强制结束 OneDrive**（运行约 31 秒）。
+- 复查删除数据库：`deletes_last_touched_by_sync_engine` 总数仍为 **169**、最新仍是 **10-22 03:24:04**；`items_moved_to_recycle_bin`、postponed 删除队列全部为 0；`locallyDeleted/serverDeleted` 均为 0。**这次没有删任何东西**。
+- 已做防护：
+  1. 移除自启动 `HKCU\...\Run\OneDrive`（备份在 `D:\backups\onedrive-run-backup.txt`）；
+  2. 禁用 `OneDrive Startup Task`、`OneDrive Reporting Task`（成功）；`OneDrive Per-Machine Standalone Update Task` 需管理员权限，未能禁用（管理员 PowerShell 执行：`schtasks /Change /TN "OneDrive Per-Machine Standalone Update Task" /DISABLE`）；
+  3. 看门狗：`tools/keep-onedrive-off.ps1`，每 5 秒检查并结束 OneDrive；已在当前会话运行，并注册到 `HKCU\...\Run\KeepOneDriveOff`（登录自启，用户可删）；
+  4. 新增完整快照 `D:\backups\project-snapshot-2026-10-22-1230.zip`（935 文件 / 73.2 MB，不含 node_modules/dist）。
+- 结论不变：**重启→差分重同步→按错误状态批量删除**是 OneDrive 这条链路的问题；在工程移出 OneDrive 之前，只能靠「不让 OneDrive 启动」避免复发。
