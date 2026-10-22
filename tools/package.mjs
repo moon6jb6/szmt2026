@@ -32,7 +32,12 @@ import path from 'node:path';
 import zlib from 'node:zlib';
 import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath } from 'node:url'
+
+// --no-screenshots：截图按赛事要求单独上传，不放进材料压缩包
+const NO_SCREENSHOTS = process.argv.includes('--no-screenshots')
+// --final：正式材料包——不放截图、视频、承诺书/PPT 占位目录（这些单独上传）
+const EXCLUDE_HANDOFF = process.argv.includes('--final');
 
 // ============================================================================
 // 0. 路径与常量
@@ -72,6 +77,22 @@ const DIR_SPEC = [
   { p: '07_AI工具使用补充说明', label: 'AI 使用说明 PDF', required: true },
   { p: '报名与承诺书（线下办理）', label: '报名信息 / 承诺书（线下办理，当前缺）', required: false },
 ];
+
+if (EXCLUDE_HANDOFF) {
+  for (let i = DIR_SPEC.length - 1; i >= 0; i -= 1) {
+    if (DIR_SPEC[i].p.startsWith('02_作品展示视频') || DIR_SPEC[i].p.startsWith('报名与承诺书') || DIR_SPEC[i].p.endsWith('/screenshots')) {
+      DIR_SPEC.splice(i, 1)
+    }
+  }
+}
+
+
+// --no-screenshots：截图单独提交，材料包里不放
+if (NO_SCREENSHOTS) {
+  const i = DIR_SPEC.findIndex((d) => d.p.endsWith('/screenshots'))
+  if (i >= 0) DIR_SPEC.splice(i, 1)
+}
+
 
 // 打包内容：{ to: 包内相对路径, from: 源相对路径, tree?: 整目录, glob?: 文件模式, required }
 const ENTRY_SPEC = [
@@ -127,6 +148,21 @@ const ENTRY_SPEC = [
     required: true,
   },
 ];
+
+if (EXCLUDE_HANDOFF) {
+  for (let i = ENTRY_SPEC.length - 1; i >= 0; i -= 1) {
+    const to = String(ENTRY_SPEC[i].to || '')
+    if (to.startsWith('02_作品展示视频') || to.startsWith('报名与承诺书') || to.includes('screenshots')) ENTRY_SPEC.splice(i, 1)
+  }
+}
+
+
+if (NO_SCREENSHOTS) {
+  for (let i = ENTRY_SPEC.length - 1; i >= 0; i -= 1) {
+    if (String(ENTRY_SPEC[i].to || '').includes('screenshots')) ENTRY_SPEC.splice(i, 1)
+  }
+}
+
 
 // PDF → 源 md（新鲜度核对：PDF 必须晚于 md，否则说明改了文档没重出 PDF）
 const PDF_SOURCES = [
@@ -284,6 +320,8 @@ function parseArgs(argv) {
       case '--no-staging': o.keepStaging = false; break;
       case '--allow-out-in-repo': o.allowOutInRepo = true; break;
       case '--quiet': o.quiet = true; break;
+      case '--final': o.final = true; break;
+      case '--no-screenshots': o.noScreenshots = true; break;
       case '--help': case '-h': o.help = true; break;
       default: throw new Error(`未知参数 ${a}（--help 看用法）`);
     }
@@ -496,6 +534,8 @@ function placeholderTexts(name, missingVideo = true, missingEnroll = true) {
     '',
   ].join('\r\n');
 
+
+  if (EXCLUDE_HANDOFF) return []
   return [
     { to: '02_作品展示视频/占位说明.txt', text: p2, reason: '作品展示/评审视频尚未录制（缺 MP4 源文件）' },
     { to: '报名与承诺书（线下办理）/占位说明.txt', text: p7, reason: '报名系统信息与承诺书盖章为线下环节，本地无文件' },
@@ -1080,6 +1120,7 @@ function checkPdfFreshness() {
 }
 
 function checkScreenshots(files) {
+  if (NO_SCREENSHOTS || EXCLUDE_HANDOFF) return { count: 0, expected: 0, ok: true, bytes: 0, names: [] }
   const list = files.filter((f) => f.to.startsWith('05_补充成果材料/screenshots/'));
   return {
     count: list.length,
@@ -1297,8 +1338,10 @@ function main() {
   if (pdfCheck.stale.length) blockers.push(`${pdfCheck.stale.length} 份 PDF 旧于源 md（需重出）`);
   if (anonymity.status === 'FAIL') blockers.push(`匿名化检查命中 ${anonymity.counts.block} 处 block 级敏感词`);
   if (opt.name.includes(PLACEHOLDER_NAME_HINT)) blockers.push('目录名/文件名仍是占位「待填编号」');
-  blockers.push('02_作品展示视频 为空（评审视频未录制）');
-  blockers.push('报名与承诺书（线下办理）为空（线下环节未完成）');
+  if (!EXCLUDE_HANDOFF) {
+    blockers.push('02_作品展示视频 为空（评审视频未录制）');
+    blockers.push('报名与承诺书（线下办理）为空（线下环节未完成）');
+  }
 
   const ok = !fatal.length && !missingRequired.length && (!verify || verify.ok);
   const submissionReady = ok && blockers.length === 0;

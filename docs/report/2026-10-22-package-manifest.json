@@ -1,22 +1,22 @@
 {
   "schema": "dsh/package-manifest/v1",
   "project": "《把名字留下来》",
-  "generatedAt": "2026-10-22T04:32:12.666Z",
-  "generatedAtLocal": "2026-10-22 12:32:12 +08:00",
-  "durationSeconds": 4.43,
+  "generatedAt": "2026-10-22T04:38:28.693Z",
+  "generatedAtLocal": "2026-10-22 12:38:28 +08:00",
+  "durationSeconds": 3.29,
   "tool": "tools/package.mjs",
-  "command": "node tools/package.mjs --name 把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737 --out D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip --note v1.7：去 AI 味第 1 轮（文档 62 处 + 史料卡 64 条 + 场景脚注 35 条）；AI 说明 DOCX 由 md 重出",
-  "runNote": "v1.7：去 AI 味第 1 轮（文档 62 处 + 史料卡 64 条 + 场景脚注 35 条）；AI 说明 DOCX 由 md 重出",
+  "command": "node tools/package.mjs --name 把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737 --out D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip --final --note 正式提交材料包（不含截图/视频/PPT/承诺书）",
+  "runNote": "正式提交材料包（不含截图/视频/PPT/承诺书）",
   "dryRun": false,
   "ok": true,
-  "exitCode": 2,
-  "submissionReady": false,
+  "exitCode": 0,
+  "submissionReady": true,
   "name": "把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737",
   "nameIsPlaceholder": false,
   "git": {
     "available": true,
-    "head": "2d92877",
-    "dirty": 46
+    "head": "9809cd8",
+    "dirty": 11
   },
   "metrics": {
     "path": "docs/report/2026-10-22-afternoon-metrics.json",
@@ -24,27 +24,27 @@
   },
   "archive": {
     "path": "D:\\提交\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip",
-    "pathRelative": "D:/提交/把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip",
-    "bytes": 34246767,
-    "human": "32.66 MiB",
-    "mib": 32.66,
-    "sha256": "fe415e718c3248ab5719affcbf281b792e15931932a95d8740add07b7cfaacdd",
-    "entries": 607,
-    "files": 587,
-    "dirs": 20,
-    "compressionRatio": 0.9305,
+    "pathRelative": "../提交/把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737.zip",
+    "bytes": 26622958,
+    "human": "25.39 MiB",
+    "mib": 25.39,
+    "sha256": "0e528dc0a5e278f72f558453ef2ba1786417d6dd960cb30b682c21748a517e5b",
+    "entries": 592,
+    "files": 575,
+    "dirs": 17,
+    "compressionRatio": 0.9122,
     "utf8FilenameFlag": true,
     "crossCheck": {
       "tool": "bsdtar -tf",
-      "entries": 607,
+      "entries": 592,
       "match": true,
       "note": "bsdtar 在中文 Windows 上把文件名转成控制台代码页输出，此处只比对条目数，不看名字"
     },
     "windowsCheck": {
       "tool": ".NET ZipFile.OpenRead（Windows 资源管理器 / Expand-Archive 同一套实现）",
       "shell": "powershell",
-      "entries": 607,
-      "expectedEntries": 607,
+      "entries": 592,
+      "expectedEntries": 592,
       "rootFolder": "把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737/",
       "rootFolderReadable": true,
       "ok": true,
@@ -55,7 +55,7 @@
       ],
       "reason": null
     },
-    "stagingDir": "D:\\提交\\_staging\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737__20261022043208\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737",
+    "stagingDir": "D:\\提交\\_staging\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737__20261022043825\\把名字留下来_四行仓库·苏州河北岸的四百余个名字_460737",
     "stagingKept": true,
     "limitBytes": 10737418240,
     "limitHuman": "10 GiB",
@@ -64,15 +64,15 @@
   "verification": {
     "ok": true,
     "problems": [],
-    "checkedFiles": 587,
-    "checkedDirs": 20
+    "checkedFiles": 575,
+    "checkedDirs": 17
   },
   "totals": {
-    "files": 587,
-    "dirs": 16,
-    "dirsIncludingRoot": 17,
-    "bytes": 36804852,
-    "human": "35.10 MiB",
+    "files": 575,
+    "dirs": 13,
+    "dirsIncludingRoot": 14,
+    "bytes": 29185232,
+    "human": "27.83 MiB",
     "byGroup": [
       {
         "group": "01_作品及成果文件",
@@ -80,13 +80,6 @@
         "bytes": 25774184,
         "human": "24.58 MiB",
         "label": "作品及成果文件（dist 原样）"
-      },
-      {
-        "group": "02_作品展示视频",
-        "files": 1,
-        "bytes": 1004,
-        "human": "1004 B",
-        "label": "作品展示/评审视频（当前缺）"
       },
       {
         "group": "03_作品介绍文档",
@@ -104,9 +97,9 @@
       },
       {
         "group": "05_补充成果材料",
-        "files": 29,
-        "bytes": 8911427,
-        "human": "8.50 MiB",
+        "files": 19,
+        "bytes": 1293845,
+        "human": "1.23 MiB",
         "label": "截图 / 测试 / 审计 / 美术 / 音频 / 指标"
       },
       {
@@ -122,13 +115,6 @@
         "bytes": 809853,
         "human": "790.9 KiB",
         "label": "AI 使用说明 PDF"
-      },
-      {
-        "group": "报名与承诺书（线下办理）",
-        "files": 1,
-        "bytes": 1034,
-        "human": "1.0 KiB",
-        "label": "报名信息 / 承诺书（线下办理，当前缺）"
       }
     ],
     "distFiles": 550,
@@ -181,15 +167,6 @@
       "status": "ok"
     },
     {
-      "path": "02_作品展示视频",
-      "label": "作品展示/评审视频（当前缺）",
-      "required": false,
-      "files": 1,
-      "bytes": 1004,
-      "human": "1004 B",
-      "status": "placeholder"
-    },
-    {
       "path": "03_作品介绍文档",
       "label": "作品介绍 PDF",
       "required": true,
@@ -211,18 +188,9 @@
       "path": "05_补充成果材料",
       "label": "截图 / 测试 / 审计 / 美术 / 音频 / 指标",
       "required": true,
-      "files": 29,
-      "bytes": 8911427,
-      "human": "8.50 MiB",
-      "status": "ok"
-    },
-    {
-      "path": "05_补充成果材料/screenshots",
-      "label": "作品截图（≤10 张）",
-      "required": true,
-      "files": 10,
-      "bytes": 7617582,
-      "human": "7.26 MiB",
+      "files": 19,
+      "bytes": 1293845,
+      "human": "1.23 MiB",
       "status": "ok"
     },
     {
@@ -269,15 +237,6 @@
       "bytes": 809853,
       "human": "790.9 KiB",
       "status": "ok"
-    },
-    {
-      "path": "报名与承诺书（线下办理）",
-      "label": "报名信息 / 承诺书（线下办理，当前缺）",
-      "required": false,
-      "files": 1,
-      "bytes": 1034,
-      "human": "1.0 KiB",
-      "status": "placeholder"
     }
   ],
   "contents": {
@@ -334,86 +293,6 @@
         "mtime": "2026-10-22T04:32:01.216Z",
         "mtimeLocal": "2026-10-22 12:32:01 +08:00",
         "sha256": "b51b485ed04651582984bd79aaf2af84ec07012dc2216b6c99c08102697f5f22"
-      },
-      {
-        "packagePath": "05_补充成果材料/screenshots/00-menu.png",
-        "sourcePath": "docs/deliverables/screenshots/00-menu.png",
-        "bytes": 347178,
-        "mtime": "2026-10-21T23:54:40.772Z",
-        "mtimeLocal": "2026-10-22 07:54:40 +08:00",
-        "sha256": "bcb7eedfa28414fed95f7a5174d6f73f977a700715c6b42e57618dbf6343ce2b"
-      },
-      {
-        "packagePath": "05_补充成果材料/screenshots/01-scene-2.5d.png",
-        "sourcePath": "docs/deliverables/screenshots/01-scene-2.5d.png",
-        "bytes": 1111229,
-        "mtime": "2026-10-21T23:54:45.800Z",
-        "mtimeLocal": "2026-10-22 07:54:45 +08:00",
-        "sha256": "db42cf5de46bb43792b263c4e2e9a0edb0060dc1be6773b53cea3cfebd074a2c"
-      },
-      {
-        "packagePath": "05_补充成果材料/screenshots/02-scene-explore.png",
-        "sourcePath": "docs/deliverables/screenshots/02-scene-explore.png",
-        "bytes": 1560095,
-        "mtime": "2026-10-21T23:54:53.665Z",
-        "mtimeLocal": "2026-10-22 07:54:53 +08:00",
-        "sha256": "163c7c1798f6405f686e20b052f682772b07770fdb405bfeac88dff342069a88"
-      },
-      {
-        "packagePath": "05_补充成果材料/screenshots/03-signature-spotlight.png",
-        "sourcePath": "docs/deliverables/screenshots/03-signature-spotlight.png",
-        "bytes": 321731,
-        "mtime": "2026-10-21T23:55:01.532Z",
-        "mtimeLocal": "2026-10-22 07:55:01 +08:00",
-        "sha256": "d86e37b1bead1303f1fab178c6a42d21a6fcadac76b048744c7dda52be3df915"
-      },
-      {
-        "packagePath": "05_补充成果材料/screenshots/04-epilogue-carrytray.png",
-        "sourcePath": "docs/deliverables/screenshots/04-epilogue-carrytray.png",
-        "bytes": 1284548,
-        "mtime": "2026-10-21T23:55:08.294Z",
-        "mtimeLocal": "2026-10-22 07:55:08 +08:00",
-        "sha256": "92faab3e17166a4c1fb1cf4f71589931da332cc6a26ecd083323740a4f760806"
-      },
-      {
-        "packagePath": "05_补充成果材料/screenshots/05-finale.png",
-        "sourcePath": "docs/deliverables/screenshots/05-finale.png",
-        "bytes": 233704,
-        "mtime": "2026-10-21T23:55:15.048Z",
-        "mtimeLocal": "2026-10-22 07:55:15 +08:00",
-        "sha256": "0b1dd829fc975d063cfb17127e6511d7ad45b809b935e5d3eb4ac76725d7f4d5"
-      },
-      {
-        "packagePath": "05_补充成果材料/screenshots/06-ending.png",
-        "sourcePath": "docs/deliverables/screenshots/06-ending.png",
-        "bytes": 1042206,
-        "mtime": "2026-10-21T23:55:16.318Z",
-        "mtimeLocal": "2026-10-22 07:55:16 +08:00",
-        "sha256": "878dc5a0d95fa14f41028f8f45064349a99507e98a6f6fe10f82b7a925c30199"
-      },
-      {
-        "packagePath": "05_补充成果材料/screenshots/07-beats-figure.png",
-        "sourcePath": "docs/deliverables/screenshots/07-beats-figure.png",
-        "bytes": 1101993,
-        "mtime": "2026-10-21T23:55:22.312Z",
-        "mtimeLocal": "2026-10-22 07:55:22 +08:00",
-        "sha256": "e0beef43f8e7c2fda4f976128fb596fdfa6c50f90f9b5160bd4efeffd8134e02"
-      },
-      {
-        "packagePath": "05_补充成果材料/screenshots/08-people.png",
-        "sourcePath": "docs/deliverables/screenshots/08-people.png",
-        "bytes": 455239,
-        "mtime": "2026-10-21T23:55:25.137Z",
-        "mtimeLocal": "2026-10-22 07:55:25 +08:00",
-        "sha256": "b87c27ba7b7bc4499b6fd32f4768e5e145f9528ff4028ed430171555bc458a4e"
-      },
-      {
-        "packagePath": "05_补充成果材料/screenshots/09-mobile-menu.png",
-        "sourcePath": "docs/deliverables/screenshots/09-mobile-menu.png",
-        "bytes": 159659,
-        "mtime": "2026-10-21T23:55:27.653Z",
-        "mtimeLocal": "2026-10-22 07:55:27 +08:00",
-        "sha256": "65f3685d8d24c2357c98cf32ed4b880405626e00261091188bf447a23add50b9"
       },
       {
         "packagePath": "05_补充成果材料/审计报告/FINAL-fact-audit.md",
@@ -593,18 +472,7 @@
       }
     ]
   },
-  "placeholders": [
-    {
-      "packagePath": "02_作品展示视频/占位说明.txt",
-      "whyEmpty": "作品展示/评审视频尚未录制（缺 MP4 源文件）",
-      "bytes": 1004
-    },
-    {
-      "packagePath": "报名与承诺书（线下办理）/占位说明.txt",
-      "whyEmpty": "报名系统信息与承诺书盖章为线下环节，本地无文件",
-      "bytes": 1034
-    }
-  ],
+  "placeholders": [],
   "missing": [],
   "checks": {
     "dist": {
@@ -695,8 +563,8 @@
       "indexPresent": true,
       "absoluteRefs": [],
       "staleness": {
-        "distBuiltAt": "2026-10-22T04:18:54.276Z",
-        "distBuiltAtLocal": "2026-10-22 12:18:54 +08:00",
+        "distBuiltAt": "2026-10-22T04:34:36.427Z",
+        "distBuiltAtLocal": "2026-10-22 12:34:36 +08:00",
         "scannedDirs": [
           "src",
           "public"
@@ -779,27 +647,16 @@
       "stale": []
     },
     "screenshots": {
-      "count": 10,
-      "expected": 10,
+      "count": 0,
+      "expected": 0,
       "ok": true,
-      "bytes": 7617582,
-      "names": [
-        "00-menu.png",
-        "01-scene-2.5d.png",
-        "02-scene-explore.png",
-        "03-signature-spotlight.png",
-        "04-epilogue-carrytray.png",
-        "05-finale.png",
-        "06-ending.png",
-        "07-beats-figure.png",
-        "08-people.png",
-        "09-mobile-menu.png"
-      ]
+      "bytes": 0,
+      "names": []
     }
   },
   "anonymity": {
     "status": "PASS",
-    "conclusion": "未检出身分级敏感词（text 27 个文件 / 文件名 585 条 / PDF 元数据 6 份）",
+    "conclusion": "未检出身分级敏感词（text 27 个文件 / 文件名 575 条 / PDF 元数据 6 份）",
     "keywordTable": {
       "version": 1,
       "source": "内置默认表（脚本内 KEYWORDS）",
@@ -812,7 +669,7 @@
       "textFiles": 27,
       "textBytes": 938160,
       "textLines": 13657,
-      "filenameOnlyFiles": 558,
+      "filenameOnlyFiles": 548,
       "pdfFiles": 6
     },
     "counts": {
@@ -958,22 +815,10 @@
       "压缩包内文件的时间戳、EXIF 等元数据未做剔除处理（dist 为构建产物，无相机信息）。"
     ]
   },
-  "warnings": [
-    {
-      "id": "placeholder",
-      "message": "占位：02_作品展示视频/占位说明.txt —— 作品展示/评审视频尚未录制（缺 MP4 源文件）"
-    },
-    {
-      "id": "placeholder",
-      "message": "占位：报名与承诺书（线下办理）/占位说明.txt —— 报名系统信息与承诺书盖章为线下环节，本地无文件"
-    }
-  ],
+  "warnings": [],
   "readiness": {
-    "submissionReady": false,
-    "blockers": [
-      "02_作品展示视频 为空（评审视频未录制）",
-      "报名与承诺书（线下办理）为空（线下环节未完成）"
-    ]
+    "submissionReady": true,
+    "blockers": []
   },
   "nextSteps": [
     "报名后拿到作品编号：node tools/package.mjs --name \"把名字留下来_<作品编号>\" --out \"<仓库外的 zip 路径>\"",
